@@ -110,6 +110,18 @@
     2002-04-21  julian.reschke@greenbytes.de
     
     Make numbered list inside numbered lists use alphanumeric numbering.
+    
+    2002-05-05  julian.reschke@greenbytes.de
+    
+    Updated issue/editing support.
+    
+    2002-05-15  julian.reschke@greenbytes.de
+    
+    Bugfix for section numbering after introduction of ed:replace
+    
+    2002-06-21  julian.reschke@greenbytes.de
+    
+    When producing private documents, do not include document status, copyright etc.
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -117,7 +129,7 @@
                 xmlns:xalan="http://xml.apache.org/xalan"
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
                 xmlns:saxon="http://icl.com/saxon"
-                xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rfc2629.xslt"
+                xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rcf2629.xslt"
                 exclude-result-prefixes="msxsl xalan saxon myns ed"
                 xmlns:ed="http://greenbytes.de/2002/rfcedit"
                 >
@@ -325,25 +337,27 @@
 	<!-- add all other top-level sections under <back> -->
 	<xsl:apply-templates select="*[not(self::references)]" />
 
-	<!-- copyright statements -->
-  <xsl:variable name="copyright"><xsl:call-template name="insertCopyright" /></xsl:variable>
-
-  <!-- emit it -->
-  <xsl:choose>
-    <xsl:when test="function-available('msxsl:node-set')">
-      <xsl:apply-templates select="msxsl:node-set($copyright)" />
-    </xsl:when>
-    <xsl:when test="function-available('saxon:node-set')">
-      <xsl:apply-templates select="saxon:node-set($copyright)" />
-    </xsl:when>
-    <xsl:when test="function-available('xalan:nodeset')">
-      <xsl:apply-templates select="xalan:nodeset($copyright)" />
-    </xsl:when>
-    <xsl:otherwise> <!--proceed with fingers crossed-->
-      <xsl:apply-templates select="$copyright" />
-    </xsl:otherwise>
-  </xsl:choose>
-        
+  <xsl:if test="not($private)">
+  	<!-- copyright statements -->
+    <xsl:variable name="copyright"><xsl:call-template name="insertCopyright" /></xsl:variable>
+  
+    <!-- emit it -->
+    <xsl:choose>
+      <xsl:when test="function-available('msxsl:node-set')">
+        <xsl:apply-templates select="msxsl:node-set($copyright)" />
+      </xsl:when>
+      <xsl:when test="function-available('saxon:node-set')">
+        <xsl:apply-templates select="saxon:node-set($copyright)" />
+      </xsl:when>
+      <xsl:when test="function-available('xalan:nodeset')">
+        <xsl:apply-templates select="xalan:nodeset($copyright)" />
+      </xsl:when>
+      <xsl:otherwise> <!--proceed with fingers crossed-->
+        <xsl:apply-templates select="$copyright" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:if>
+  
 	<!-- insert the index if index entries exist -->
   <xsl:if test="//iref">
     <xsl:call-template name="insertIndex" />
@@ -432,28 +446,30 @@
     <div align="right"><span class="filename"><xsl:value-of select="/rfc/@docName"/></span></div>
   </xsl:if>  
   
-  <!-- Get status info formatted as per RFC2629-->
-  <xsl:variable name="preamble"><xsl:call-template name="insertPreamble" /></xsl:variable>
-  
-  <!-- emit it -->
-  <xsl:choose>
-    <xsl:when test="function-available('msxsl:node-set')">
-      <xsl:apply-templates select="msxsl:node-set($preamble)" />
-    </xsl:when>
-    <xsl:when test="function-available('saxon:node-set')">
-      <xsl:apply-templates select="saxon:node-set($preamble)" />
-    </xsl:when>
-    <xsl:when test="function-available('xalan:nodeset')">
-      <xsl:apply-templates select="xalan:nodeset($preamble)" />
-    </xsl:when>
-    <xsl:otherwise> <!--proceed with fingers crossed-->
-      <xsl:apply-templates select="$preamble" />
-    </xsl:otherwise>
-  </xsl:choose>
-          
-	<xsl:apply-templates select="abstract" />
-	<xsl:apply-templates select="note" />
-
+  <xsl:if test="not($private)">
+    <!-- Get status info formatted as per RFC2629-->
+    <xsl:variable name="preamble"><xsl:call-template name="insertPreamble" /></xsl:variable>
+    
+    <!-- emit it -->
+    <xsl:choose>
+      <xsl:when test="function-available('msxsl:node-set')">
+        <xsl:apply-templates select="msxsl:node-set($preamble)" />
+      </xsl:when>
+      <xsl:when test="function-available('saxon:node-set')">
+        <xsl:apply-templates select="saxon:node-set($preamble)" />
+      </xsl:when>
+      <xsl:when test="function-available('xalan:nodeset')">
+        <xsl:apply-templates select="xalan:nodeset($preamble)" />
+      </xsl:when>
+      <xsl:otherwise> <!--proceed with fingers crossed-->
+        <xsl:apply-templates select="$preamble" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:if>
+            
+  <xsl:apply-templates select="abstract" />
+  <xsl:apply-templates select="note" />
+    
 	<xsl:if test="$includeToc='yes'">
 		<xsl:apply-templates select="/" mode="toc" />
 		<xsl:call-template name="insertTocAppendix" />
@@ -1520,7 +1536,7 @@ ins
   <xsl:apply-templates select="middle|back" mode="toc" />
 </xsl:template>
 
-<xsl:template match="ed:del|ed:ins" mode="toc">
+<xsl:template match="ed:del|ed:ins|ed:replace" mode="toc">
   <xsl:apply-templates mode="toc" />
 </xsl:template>
 
@@ -1751,7 +1767,7 @@ ins
   <a name="{$anchor-prefix}.issue.{@name}">
    <table style="{$style}"> <!-- align="right" width="50%"> -->
       <tr>
-        <td>
+        <td colspan="3">
           <xsl:choose>
             <xsl:when test="@href">
               <em><a href="{@href}"><xsl:value-of select="@name" /></a></em>
@@ -1760,6 +1776,8 @@ ins
               <em><xsl:value-of select="@name" /></em>
             </xsl:otherwise>
           </xsl:choose>
+          &#0160;
+          (type: <xsl:value-of select="@type"/>, status: <xsl:value-of select="@status"/>)
         </td>
       </tr>
       <xsl:for-each select="ed:item">
@@ -1775,6 +1793,21 @@ ins
           </td>
         </tr>
       </xsl:for-each>
+      <xsl:for-each select="ed:resolution">
+        <tr>
+          <td valign="top">
+            <xsl:if test="@entered-by">
+              <a href="mailto:{@entered-by}?subject={/rfc/@docName}, {../@name}"><i><xsl:value-of select="@entered-by"/></i></a>
+            </xsl:if>
+          </td>
+          <td nowrap="nowrap" valign="top">
+            <xsl:value-of select="@date"/>
+          </td>
+          <td valign="top">
+            <em>Resolution:</em>&#0160;<xsl:copy-of select="node()" />
+          </td>
+        </tr>
+      </xsl:for-each>      
     </table>
   </a>
     
@@ -1790,6 +1823,7 @@ ins
       <xsl:sort select="@name" />
       <tr>
         <td><a href="#{$anchor-prefix}.issue.{@name}"><xsl:value-of select="@name" /></a></td>
+        <td><xsl:value-of select="@type" /></td>
         <td><xsl:value-of select="@status" /></td>
         <td><xsl:value-of select="ed:item[1]/@date" /></td>
         <td><a href="mailto:{ed:item[1]/@entered-by}?subject={/rfc/@docName}, {@name}"><xsl:value-of select="ed:item[1]/@entered-by" /></a></td>
@@ -1841,6 +1875,9 @@ ins
 <xsl:template match="ed:del">
   <del>
     <xsl:copy-of select="@*"/>
+    <xsl:if test="not(@title) and @ed:entered-by and @datetime">
+      <xsl:attribute name="title"><xsl:value-of select="concat(@datetime,', ',@ed:entered-by)"/></xsl:attribute>
+    </xsl:if>
     <xsl:apply-templates />
   </del>
 </xsl:template>
@@ -1848,26 +1885,68 @@ ins
 <xsl:template match="ed:ins">
   <ins>
     <xsl:copy-of select="@*"/>
+    <xsl:if test="not(@title) and @ed:entered-by and @datetime">
+      <xsl:attribute name="title"><xsl:value-of select="concat(@datetime,', ',@ed:entered-by)"/></xsl:attribute>
+    </xsl:if>
+    <xsl:if test="@ed:resolves">
+      <table style="background-color: khaki; border-width: thin; border-style: solid; border-color: black;" align="right">
+        <tr><td>resolves: <a href="#{$anchor-prefix}.issue.{@ed:resolves}"><xsl:value-of select="@ed:resolves"/></a></td></tr>
+      </table>
+    </xsl:if>
     <xsl:apply-templates />
+  </ins>
+</xsl:template>
+
+<xsl:template match="ed:replace">
+  <del>
+    <xsl:copy-of select="@*"/>
+    <xsl:if test="not(@title) and @ed:entered-by and @datetime">
+      <xsl:attribute name="title"><xsl:value-of select="concat(@datetime,', ',@ed:entered-by)"/></xsl:attribute>
+    </xsl:if>
+    <xsl:apply-templates select="ed:del/node()" />
+  </del>
+  <ins>
+    <xsl:copy-of select="@*"/>
+    <xsl:if test="not(@title) and @ed:entered-by and @datetime">
+      <xsl:attribute name="title"><xsl:value-of select="concat(@datetime,', ',@ed:entered-by)"/></xsl:attribute>
+    </xsl:if>
+    <xsl:if test="@ed:resolves">
+      <table style="background-color: khaki; border-width: thin; border-style: solid; border-color: black;" align="right">
+        <tr><td>resolves: <a href="#{$anchor-prefix}.issue.{@ed:resolves}"><xsl:value-of select="@ed:resolves"/></a></td></tr>
+      </table>
+    </xsl:if>
+    <xsl:apply-templates select="ed:ins/node()" />
   </ins>
 </xsl:template>
 
 <xsl:template name="sectionnumberAndEdits">
   <xsl:choose>
     <xsl:when test="ancestor::ed:del">del-<xsl:number count="ed:del//section" level="any"/></xsl:when>
+    <xsl:when test="self::section and parent::ed:ins and local-name(../..)='replace'">
+      <xsl:for-each select="../.."><xsl:call-template name="sectionnumberAndEdits" /></xsl:for-each>
+      <xsl:for-each select="..">
+        <xsl:if test="parent::ed:replace">
+          <xsl:for-each select="..">
+            <xsl:if test="parent::section">.</xsl:if><xsl:value-of select="1+count(preceding-sibling::section|preceding-sibling::ed:ins/section|preceding-sibling::ed:replace/ed:ins/section)" />
+          </xsl:for-each>
+        </xsl:if>
+      </xsl:for-each>
+    </xsl:when>
     <xsl:when test="self::section[parent::ed:ins]">
       <xsl:for-each select="../.."><xsl:call-template name="sectionnumberAndEdits" /></xsl:for-each>
-      <xsl:for-each select=".."><xsl:if test="parent::section">.</xsl:if><xsl:value-of select="1+count(preceding-sibling::section|preceding-sibling::ed:ins/section)" /></xsl:for-each>
+      <xsl:for-each select="..">
+        <xsl:if test="parent::section">.</xsl:if><xsl:value-of select="1+count(preceding-sibling::section|preceding-sibling::ed:ins/section|preceding-sibling::ed:replace/ed:ins/section)" />
+      </xsl:for-each>
     </xsl:when>
     <xsl:when test="self::section">
       <xsl:for-each select=".."><xsl:call-template name="sectionnumberAndEdits" /></xsl:for-each>
       <xsl:if test="parent::section">.</xsl:if>
       <xsl:choose>
         <xsl:when test="parent::back">
-          <xsl:number format="A" value="1+count(preceding-sibling::section|preceding-sibling::ed:ins/section)" />
+          <xsl:number format="A" value="1+count(preceding-sibling::section|preceding-sibling::ed:ins/section|preceding-sibling::ed:replace/ed:ins/section)" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:number value="1+count(preceding-sibling::section|preceding-sibling::ed:ins/section)" />
+          <xsl:number value="1+count(preceding-sibling::section|preceding-sibling::ed:ins/section|preceding-sibling::ed:replace/ed:ins/section)" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:when>
