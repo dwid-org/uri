@@ -63,9 +63,6 @@
 <td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>terminology</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#028-ref-rfc0952">028-ref-rfc0952</a></td><td>draft 00 normative reference to RFC 952</td><td>references</td><td nowrap="nowrap">pending</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#031-query-def">031-query-def</a></td><td>query definition</td><td>query</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
@@ -2440,7 +2437,7 @@ I will replace it with
 <th bgcolor="#FFFFCC"><font size="+2"><a name="028-ref-rfc0952">028-ref-rfc0952</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">draft 00 normative reference to RFC 952</font></th>
 </tr>
 <tr>
-<th>pending</th><th align="left">references</th>
+<th bgcolor="lightgreen">fixed in 01</th><th align="left">references</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2461,9 +2458,11 @@ RFC 791, or to section 2.1 of RFC 1123, which is already referenced.
   25 Feb 2003,
   issues list:
   <pre>
-I chose 952 because it was the only description of the notation.  I'll
-see if I can find one in the later RFCs, but I am sure that I checked
-before.  In any case, you are right that it should be non-normative.
+I chose 952 because it was the only description of the notation, and
+is in fact referenced as such by 1123.  In any case, you are right that
+it should be non-normative, as should the other related references
+because we define our own syntax rather than depend on those RFCs.
+I have fixed this in draft 01.
 </pre>
 </td>
 </tr>

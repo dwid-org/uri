@@ -731,6 +731,7 @@ is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 
 
 
+
 <b>&sect;&nbsp;
             <a href="#rfc.copyright">Full Copyright Statement</a></b>
 <br>
@@ -1595,7 +1596,8 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.iref.55"></a>
    A host identified by an IPv4 literal address is represented in
    dotted-decimal notation (a sequence of four decimal numbers in the
-   range 0 to 255, separated by ".") <a href="#RFC0952" title="DoD Internet host table specification">[RFC0952]</a>.
+   range 0 to 255, separated by "."), as described in <a href="#RFC1123" title="Requirements for Internet Hosts - Application and Support">[RFC1123]</a>
+   by reference to <a href="#RFC0952" title="DoD Internet host table specification">[RFC0952]</a>.
 <a name="rfc.iref.56"></a>
 <a name="rfc.iref.57"></a>
 
@@ -2348,7 +2350,7 @@ next component separator or the end of the reference.
    and Larry Masinter in <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>.
    In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
    Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman,
-   Graham Klyne, Bruce Lilly,
+   Graham Klyne, Dan Kohn, Bruce Lilly,
    Michael Mealling, Julian Reschke, Miles Sabin, Ronald Tschalaer,
    Marc Warne, Henry Zongaro, and Zefram are gratefully acknowledged.
 </p>
@@ -2371,34 +2373,9 @@ next component separator or the end of the reference.
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC1123">[RFC1123]</a></b></td><td valign="top"><a href="mailto:Braden@ISI.EDU" title="University of Southern California (USC), Information Sciences Institute">Braden, R.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1123.txt">Requirements for Internet Hosts - Application and Support</a>", STD&nbsp;3, RFC&nbsp;1123, October&nbsp;1989.</td>
-</tr>
-
-
-<tr>
 <td nowrap="nowrap" valign="top"><b><a name="RFC2234">[RFC2234]</a></b></td><td valign="top"><a href="mailto:dcrocker@imc.org" title="Internet Mail Consortium">Crocker, D.H.</a> and <a href="mailto:paulo@turnpike.com" title="Demon Internet Ltd">Overell, P.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2234.txt">Augmented BNF for Syntax Specifications: ABNF</a>", RFC&nbsp;2234, November&nbsp;1997.</td>
 </tr>
 
-
-<tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC0952">[RFC0952]</a></b></td><td valign="top">Harrenstien, K.,&nbsp;Stahl, M. and Feinler, E.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc952.txt">DoD Internet host table specification</a>", RFC&nbsp;952, October&nbsp;1985.</td>
-</tr>
-
-
-<tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2373">[RFC2373]</a></b></td><td valign="top"><a href="mailto:hinden@iprg.nokia.com" title="Nokia">Hinden, R.M.</a> and <a href="mailto:deering@cisco.com" title="Cisco Systems, Inc.">Deering, S.E.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2373.txt">IP Version 6 Addressing Architecture</a>", RFC&nbsp;2373, July&nbsp;1998.</td>
-</tr>
-
-
-<tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC1034">[RFC1034]</a></b></td><td valign="top">Mockapetris, P.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1034.txt">Domain names - concepts and facilities</a>", STD&nbsp;13, RFC&nbsp;1034, November&nbsp;1987.</td>
-</tr>
-
-
-<tr>
-<td nowrap="nowrap" valign="top"><b><a name="UTF-8">[UTF-8]</a></b></td><td valign="top"><a href="mailto:fyergeau@alis.com" title="Alis Technologies">Yergeau, F.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2279.txt">UTF-8, a transformation format of ISO 10646</a>", RFC&nbsp;2279, January&nbsp;1998.</td>
-</tr>
-  
   
 </table>
 <hr class="noprint">
@@ -2439,6 +2416,11 @@ next component separator or the end of the reference.
 
 
 <tr>
+<td nowrap="nowrap" valign="top"><b><a name="RFC1123">[RFC1123]</a></b></td><td valign="top"><a href="mailto:Braden@ISI.EDU" title="University of Southern California (USC), Information Sciences Institute">Braden, R.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1123.txt">Requirements for Internet Hosts - Application and Support</a>", STD&nbsp;3, RFC&nbsp;1123, October&nbsp;1989.</td>
+</tr>
+
+
+<tr>
 <td nowrap="nowrap" valign="top"><b><a name="RFC1808">[RFC1808]</a></b></td><td valign="top"><a href="mailto:fielding@ics.uci.edu" title="University of California Irvine, Department of Information and Computer Science">Fielding, R.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1808.txt">Relative Uniform Resource Locators</a>", RFC&nbsp;1808, June&nbsp;1995.</td>
 </tr>
 
@@ -2451,6 +2433,16 @@ next component separator or the end of the reference.
 <tr>
 <td nowrap="nowrap" valign="top"><b><a name="RFC2518">[RFC2518]</a></b></td><td valign="top"><a href="mailto:yarong@microsoft.com" title="Microsoft Corporation">Goland, Y.</a>,&nbsp;<a href="mailto:ejw@ics.uci.edu" title="Dept. Of Information and Computer
 Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mailto:asad@netscape.com" title="Netscape">Faizi, A.</a>,&nbsp;<a href="mailto:srcarter@novell.com" title="Novell">Carter, S.R.</a> and <a href="mailto:dcjensen@novell.com" title="Novell">Jensen, D.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2518.txt">HTTP Extensions for Distributed Authoring -- WEBDAV</a>", RFC&nbsp;2518, February&nbsp;1999.</td>
+</tr>
+
+
+<tr>
+<td nowrap="nowrap" valign="top"><b><a name="RFC0952">[RFC0952]</a></b></td><td valign="top">Harrenstien, K.,&nbsp;Stahl, M. and Feinler, E.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc952.txt">DoD Internet host table specification</a>", RFC&nbsp;952, October&nbsp;1985.</td>
+</tr>
+
+
+<tr>
+<td nowrap="nowrap" valign="top"><b><a name="RFC2373">[RFC2373]</a></b></td><td valign="top"><a href="mailto:hinden@iprg.nokia.com" title="Nokia">Hinden, R.M.</a> and <a href="mailto:deering@cisco.com" title="Cisco Systems, Inc.">Deering, S.E.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2373.txt">IP Version 6 Addressing Architecture</a>", RFC&nbsp;2373, July&nbsp;1998.</td>
 </tr>
 
 
@@ -2470,6 +2462,11 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 
 
 <tr>
+<td nowrap="nowrap" valign="top"><b><a name="RFC1034">[RFC1034]</a></b></td><td valign="top">Mockapetris, P.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1034.txt">Domain names - concepts and facilities</a>", STD&nbsp;13, RFC&nbsp;1034, November&nbsp;1987.</td>
+</tr>
+
+
+<tr>
 <td nowrap="nowrap" valign="top"><b><a name="RFC2110">[RFC2110]</a></b></td><td valign="top"><a href="mailto:jpalme@dsv.su.se" title="Stockholm University and KTH">Palme, J.</a> and <a href="mailto:alexhop@microsoft.com" title="Microsoft Corporation">Hopmann, A.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2110.txt">MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)</a>", RFC&nbsp;2110, March&nbsp;1997.</td>
 </tr>
 
@@ -2478,6 +2475,11 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <td nowrap="nowrap" valign="top"><b><a name="RFC2717">[RFC2717]</a></b></td><td valign="top"><a href="mailto:rpetke@wcom.net" title="UUNET Technologies">Petke, R.</a> and <a href="mailto:iking@microsoft.com" title="Microsoft Corporation">King, I.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2717.txt">Registration Procedures for URL Scheme Names</a>", BCP&nbsp;35, RFC&nbsp;2717, November&nbsp;1999.</td>
 </tr>
 
+
+<tr>
+<td nowrap="nowrap" valign="top"><b><a name="UTF-8">[UTF-8]</a></b></td><td valign="top"><a href="mailto:fyergeau@alis.com" title="Alis Technologies">Yergeau, F.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2279.txt">UTF-8, a transformation format of ISO 10646</a>", RFC&nbsp;2279, January&nbsp;1998.</td>
+</tr>
+  
 
 </table>
 <hr class="noprint">
@@ -3034,6 +3036,11 @@ the "about:" URI used by many browser implementations.
 </p>
 <p>
 <a name="rfc.section.G.2.p.3"></a>
+The ABNF of qualified has been simplified to remove a parsing ambiguity
+without changing the allowed syntax.
+</p>
+<p>
+<a name="rfc.section.G.2.p.4"></a>
 The resolving relative references algorithm of <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>
 has been rewritten using pseudocode for this revision to improve clarity
 and fix the following issues:

@@ -823,7 +823,8 @@ URI character sequence->octet sequence->original character sequence
 <iref item="dec-octet" primary="true"/>
    A host identified by an IPv4 literal address is represented in
    dotted-decimal notation (a sequence of four decimal numbers in the
-   range 0 to 255, separated by ".") <xref target="RFC0952"/>.
+   range 0 to 255, separated by "."), as described in <xref target="RFC1123"/>
+   by reference to <xref target="RFC0952"/>.
 <iref item="URI grammar" subitem="IPv4address" primary="true"/>
 <iref item="URI grammar" subitem="dec-octet" primary="true"/>
 </preamble><artwork>
@@ -1459,7 +1460,7 @@ next component separator or the end of the reference.
    and Larry Masinter in <xref target="RFC2732"/>.
    In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
    Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman,
-   Graham Klyne, Bruce Lilly,
+   Graham Klyne, Dan Kohn, Bruce Lilly,
    Michael Mealling, Julian Reschke, Miles Sabin, Ronald Tschalaer,
    Marc Warne, Henry Zongaro, and Zefram are gratefully acknowledged.
 </t>
@@ -1477,25 +1478,6 @@ next component separator or the end of the reference.
     <date month="" year="1986" />
   </front>
   <seriesInfo name="ANSI" value="X3.4" />
-</reference>
-
-<reference anchor='RFC1123'>
-<front>
-<title>Requirements for Internet Hosts - Application and Support</title>
-<author initials='R.' surname='Braden' fullname='Robert Braden'>
-<organization>University of Southern California (USC), Information Sciences Institute</organization>
-<address>
-<postal>
-<street>4676 Admiralty Way</street>
-<city>Marina del Rey</city>
-<region>CA</region>
-<code>90292-6695</code>
-<country>US</country></postal>
-<phone>+1 213 822 1511</phone>
-<email>Braden@ISI.EDU</email></address></author>
-<date month='October' year='1989'></date></front>
-<seriesInfo name='STD' value='3' />
-<seriesInfo name='RFC' value='1123' />
 </reference>
 
 <reference anchor='RFC2234'>
@@ -1529,89 +1511,6 @@ next component separator or the end of the reference.
 <format type='TXT' octets='24265' target='ftp://ftp.isi.edu/in-notes/rfc2234.txt' />
 </reference>
 
-<reference anchor='RFC0952'>
-<front>
-<title>DoD Internet host table specification</title>
-<author initials='K.' surname='Harrenstien' fullname='K. Harrenstien'>
-<organization>SRI International</organization></author>
-<author initials='M.' surname='Stahl' fullname='M. Stahl'>
-<organization>SRI International</organization></author>
-<author initials='E.' surname='Feinler' fullname='E. Feinler'>
-<organization>SRI International</organization></author>
-<date month='October' day='1' year='1985' /></front>
-<seriesInfo name='RFC' value='952' />
-<format type='TXT' octets='12388' target='ftp://ftp.isi.edu/in-notes/rfc952.txt' />
-</reference>
-
-<reference anchor='RFC2373'>
-<front>
-<title abbrev='IPv6 Addressing'>IP Version 6 Addressing Architecture</title>
-<author initials='R.M.' surname='Hinden' fullname='Robert M. Hinden'>
-<organization>Nokia</organization>
-<address>
-<postal>
-<street>232 Java Drive</street>
-<street>Sunnyvale</street>
-<street>CA 94089</street>
-<country>USA</country></postal>
-<phone>+1 408 990-2004</phone>
-<facsimile>+1 408 743-5677</facsimile>
-<email>hinden@iprg.nokia.com</email></address></author>
-<author initials='S.E.' surname='Deering' fullname='Stephen E. Deering'>
-<organization>Cisco Systems, Inc.</organization>
-<address>
-<postal>
-<street>170 West Tasman Drive</street>
-<street>San Jose</street>
-<street>CA 95134-1706</street>
-<country>USA</country></postal>
-<phone>+1 408 527-8213</phone>
-<facsimile>+1 408 527-8254</facsimile>
-<email>deering@cisco.com</email></address></author>
-<date month='July' year='1998' />
-<area>Internet</area>
-<keyword>internet protocol version 6</keyword>
-<keyword>IPv6</keyword>
-<keyword>addressing</keyword>
-<keyword>multicast</keyword>
-</front>
-<seriesInfo name='RFC' value='2373' />
-<format type='TXT' octets='52526' target='ftp://ftp.isi.edu/in-notes/rfc2373.txt' />
-<format type='HTML' octets='70216' target='http://xml.resource.org/public/rfc/html/rfc2373.html' />
-<format type='XML' octets='54927' target='http://xml.resource.org/public/rfc/xml/rfc2373.xml' />
-</reference>
-
-<reference anchor='RFC1034'>
-<front>
-<title abbrev='Domain Concepts and Facilities'>Domain names - concepts and facilities</title>
-<author initials='P.' surname='Mockapetris' fullname='P. Mockapetris'>
-<organization>Information Sciences Institute (ISI)</organization></author>
-<date month='November' year='1987'></date></front>
-<seriesInfo name='STD' value='13' />
-<seriesInfo name='RFC' value='1034' />
-</reference>
-
-<reference anchor='UTF-8'>
-<front>
-<title abbrev='UTF-8'>UTF-8, a transformation format of ISO 10646</title>
-<author initials='F.' surname='Yergeau' fullname='Francois Yergeau'>
-<organization>Alis Technologies</organization>
-<address>
-<postal>
-<street>100, boul. Alexis-Nihon</street>
-<street>Suite 600</street>
-<city>Montreal</city>
-<region>Quebec</region>
-<code>H4M 2P2</code>
-<country>CA</country></postal>
-<phone>+1 514 747 2547</phone>
-<facsimile>+1 514 747 2561</facsimile>
-<email>fyergeau@alis.com</email></address></author>
-<date month='January' year='1998'></date>
-</front>
-<seriesInfo name='RFC' value='2279' />
-</reference>
-  
   </references>
 
   <references title="Non-normative References">
@@ -1773,6 +1672,25 @@ next component separator or the end of the reference.
 <seriesInfo name='RFC' value='2396' />
 </reference>
 
+<reference anchor='RFC1123'>
+<front>
+<title>Requirements for Internet Hosts - Application and Support</title>
+<author initials='R.' surname='Braden' fullname='Robert Braden'>
+<organization>University of Southern California (USC), Information Sciences Institute</organization>
+<address>
+<postal>
+<street>4676 Admiralty Way</street>
+<city>Marina del Rey</city>
+<region>CA</region>
+<code>90292-6695</code>
+<country>US</country></postal>
+<phone>+1 213 822 1511</phone>
+<email>Braden@ISI.EDU</email></address></author>
+<date month='October' year='1989'></date></front>
+<seriesInfo name='STD' value='3' />
+<seriesInfo name='RFC' value='1123' />
+</reference>
+
 <reference anchor='RFC1808'>
 <front>
 <title>Relative Uniform Resource Locators</title>
@@ -1852,6 +1770,58 @@ Science, University of California, Irvine</organization>
 <date month="February" year="1999"/>
 </front>
 <seriesInfo name="RFC" value="2518"/>
+</reference>
+
+<reference anchor='RFC0952'>
+<front>
+<title>DoD Internet host table specification</title>
+<author initials='K.' surname='Harrenstien' fullname='K. Harrenstien'>
+<organization>SRI International</organization></author>
+<author initials='M.' surname='Stahl' fullname='M. Stahl'>
+<organization>SRI International</organization></author>
+<author initials='E.' surname='Feinler' fullname='E. Feinler'>
+<organization>SRI International</organization></author>
+<date month='October' day='1' year='1985' /></front>
+<seriesInfo name='RFC' value='952' />
+<format type='TXT' octets='12388' target='ftp://ftp.isi.edu/in-notes/rfc952.txt' />
+</reference>
+
+<reference anchor='RFC2373'>
+<front>
+<title abbrev='IPv6 Addressing'>IP Version 6 Addressing Architecture</title>
+<author initials='R.M.' surname='Hinden' fullname='Robert M. Hinden'>
+<organization>Nokia</organization>
+<address>
+<postal>
+<street>232 Java Drive</street>
+<street>Sunnyvale</street>
+<street>CA 94089</street>
+<country>USA</country></postal>
+<phone>+1 408 990-2004</phone>
+<facsimile>+1 408 743-5677</facsimile>
+<email>hinden@iprg.nokia.com</email></address></author>
+<author initials='S.E.' surname='Deering' fullname='Stephen E. Deering'>
+<organization>Cisco Systems, Inc.</organization>
+<address>
+<postal>
+<street>170 West Tasman Drive</street>
+<street>San Jose</street>
+<street>CA 95134-1706</street>
+<country>USA</country></postal>
+<phone>+1 408 527-8213</phone>
+<facsimile>+1 408 527-8254</facsimile>
+<email>deering@cisco.com</email></address></author>
+<date month='July' year='1998' />
+<area>Internet</area>
+<keyword>internet protocol version 6</keyword>
+<keyword>IPv6</keyword>
+<keyword>addressing</keyword>
+<keyword>multicast</keyword>
+</front>
+<seriesInfo name='RFC' value='2373' />
+<format type='TXT' octets='52526' target='ftp://ftp.isi.edu/in-notes/rfc2373.txt' />
+<format type='HTML' octets='70216' target='http://xml.resource.org/public/rfc/html/rfc2373.html' />
+<format type='XML' octets='54927' target='http://xml.resource.org/public/rfc/xml/rfc2373.xml' />
 </reference>
 
 <reference anchor='RFC2732'>
@@ -1944,6 +1914,16 @@ Science, University of California, Irvine</organization>
 <seriesInfo name='RFC' value='1737' />
 </reference>
 
+<reference anchor='RFC1034'>
+<front>
+<title abbrev='Domain Concepts and Facilities'>Domain names - concepts and facilities</title>
+<author initials='P.' surname='Mockapetris' fullname='P. Mockapetris'>
+<organization>Information Sciences Institute (ISI)</organization></author>
+<date month='November' year='1987'></date></front>
+<seriesInfo name='STD' value='13' />
+<seriesInfo name='RFC' value='1034' />
+</reference>
+
 <reference anchor='RFC2110'>
 <front>
 <title abbrev='MHTML'>MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)</title>
@@ -2011,6 +1991,27 @@ Science, University of California, Irvine</organization>
 <seriesInfo name='RFC' value='2717' />
 </reference>
 
+<reference anchor='UTF-8'>
+<front>
+<title abbrev='UTF-8'>UTF-8, a transformation format of ISO 10646</title>
+<author initials='F.' surname='Yergeau' fullname='Francois Yergeau'>
+<organization>Alis Technologies</organization>
+<address>
+<postal>
+<street>100, boul. Alexis-Nihon</street>
+<street>Suite 600</street>
+<city>Montreal</city>
+<region>Quebec</region>
+<code>H4M 2P2</code>
+<country>CA</country></postal>
+<phone>+1 514 747 2547</phone>
+<facsimile>+1 514 747 2561</facsimile>
+<email>fyergeau@alis.com</email></address></author>
+<date month='January' year='1998'></date>
+</front>
+<seriesInfo name='RFC' value='2279' />
+</reference>
+  
 </references>
 
 <section title="Collected BNF for URI">
@@ -2382,6 +2383,10 @@ to allow a relative URI path to be empty.  This also allows an
 absolute-URI to consist of nothing after the "scheme:", as is present
 in practice with the "DAV:" namespace <xref target="RFC2518"/> and
 the "about:" URI used by many browser implementations.
+</t>
+<t>
+The ABNF of qualified has been simplified to remove a parsing ambiguity
+without changing the allowed syntax.
 </t>
 <t>
 The resolving relative references algorithm of <xref target="RFC2396"/>

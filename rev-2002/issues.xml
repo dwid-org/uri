@@ -2106,7 +2106,7 @@ I will replace it with
  <type>references</type>
  <name>028-ref-rfc0952</name>
  <title>draft 00 normative reference to RFC 952</title>
- <status>pending</status>
+ <status>fixed in 01</status>
  <report>
   <author email="dan@dankohn.com">Dan Kohn</author>
   <date sort="20021109">09 Nov 2002</date>
@@ -2123,9 +2123,11 @@ RFC 791, or to section 2.1 of RFC 1123, which is already referenced.
   <date sort="20030225">25 Feb 2003</date>
   <where>issues list</where>
 <pre>
-I chose 952 because it was the only description of the notation.  I'll
-see if I can find one in the later RFCs, but I am sure that I checked
-before.  In any case, you are right that it should be non-normative.
+I chose 952 because it was the only description of the notation, and
+is in fact referenced as such by 1123.  In any case, you are right that
+it should be non-normative, as should the other related references
+because we define our own syntax rather than depend on those RFCs.
+I have fixed this in draft 01.
 </pre>
  </action>
 </issue>
