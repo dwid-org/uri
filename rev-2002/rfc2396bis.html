@@ -1964,8 +1964,8 @@ four octets is allowed by this grammar.
 
 <a name="rfc.iref.78"></a>
 <a name="rfc.iref.79"></a>
-A host identified by a registered name consists of 0 to 255 path
-characters that are intended for lookup within a locally-defined host or
+A host identified by a registered name is a string of 0 to 255
+characters that is intended for lookup within a locally-defined host or
 service name registry.  The most common of such registry mechanisms, and
 the format required for globally-scoped identifiers, is the Domain Name
 System (DNS), as defined by Section 3 of <a href="#RFC1034" title="Domain names - concepts and facilities">[RFC1034]</a> and
@@ -1979,7 +1979,7 @@ some local domain.
 <a name="rfc.iref.80"></a>
 
 </p>
-<pre>   reg-name    = 0*255( pchar )
+<pre>   reg-name    = 0*255( unreserved / pct-encoded / sub-delims )
 </pre>
 <p>
 If the host component is defined and the registered name is empty
@@ -3806,7 +3806,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
                / "2" %x30-34 DIGIT     ; 200-249
                / "25" %x30-35          ; 250-255
 
- reg-name      = 0*255( pchar )
+ reg-name      = 0*255( unreserved / pct-encoded / sub-delims )
 
  path          = segment *( "/" segment )
  segment       = *pchar
