@@ -2042,6 +2042,194 @@ The goal of the sentence is to describe the essence of what it means
 to be a resource.  None of the other suggestions do that.
 </pre>
  </action>
+ <report>
+  <author email="phayes@ai.uwf.edu">Pat Hayes</author>
+  <date sort="20030421">21 Apr 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I am writing to you as editor of the forthcoming document intended to
+replace RFC 2396, and more broadly to the URI WG, in order to comment on
+this issue and to request that you and/or the WG clarify the intended
+meanings of some of the introductory definitions.
+
+1. I appeal to the WG to please explain in more detail what the word
+"resource" is intended to refer to, if only in broad outline. In particular,
+If there is an intent to limit the meaning of "resource" to some subset of
+the universe of logically possible entities, it would be most valuable if
+this could be spelled out as clearly as possible. This issue appears to be
+central to many aspects of the semantic web, and probably to the web more
+generally. The language of the introductory sections of RFC 2396, reproduced
+in the current version of your document draft, is not sufficient to achieve
+a clear communication of this intent as it stands.
+
+As some examples, are any of the following NOT resources in the sense used
+in your document?
+
+a. A document which has not yet been written, eg a book in progress, which
+   has not (yet) been assigned a title or ISBN number.
+b. A particular elephant, eg one in a zoo.
+c. A particular elephant which is now dead, eg the original Jumbo.
+d. A particular elephant which it is hoped will be the product of a future
+   mating between two elephants.
+e. Santa Clause (in any sense, eg as a fictional character, or as a concept
+   in folk mythology, or whatever. Or use Sherlock Holmes or Superman or any
+   other fictional character, if you prefer.)
+f. The planet Mars.
+g. The number one thousand seven hundred and twenty-nine.
+h. An abstract class or category, such as the class of all types of French
+   red wine.
+
+----
+
+2. Miles Sabin, in an archived email comment, points out that the phrase 'that
+has an identity' is redundant as a qualifier, since everything necessarily has
+an identity. Your response says that 'The goal of the sentence ("A resource can
+be anything that has an identity.") is to describe the essence of what it means
+to be a resource' and that 'sameness of identity is the ... defining
+characteristic of a resource'. The only way I can interpret this is as saying
+that a resource can be anything, since the defining characteristic is
+apparently a tautology. Is that what you intended? If not, can you clarify your
+intended meaning? In particular, how do the following sentences differ in
+meaning, in your view?
+
+A. Anything with identity can be a resource but not necessarily is a resource.
+B. Anything can be a resource but not necessarily is a resource.
+
+It might help if you could indicate what you consider the phrase 'has an
+identity' to mean, particularly when used as a qualifier, perhaps by giving an
+example of something that does not have an identity, in your sense.
+
+----
+
+3. I would like to ask for some explication of the use of the words "can be" in
+the definition, to which you draw attention in your reply to Sabin. I take it
+that this is intended to convey that there is a distinction between entities
+which could possibly be resources, and those that actually are resources. If
+this is right, can you explain the criteria for distinguishing actual from
+merely possible resources? That is, suppose X is something which *could be* a
+resource; what would make X *actually be* a resource?
+
+Can something become an actual resource at a time, or cease to be a resource at
+a time? Can something be intermittently an actual resource, or must each actual
+resource have an uninterrupted period during which it is being the resource
+that it in fact is? Questions like this will be central if we try to make
+formal theories of resource-hood for use by reasoners.
+
+----
+
+4. RFC 2396 includes a particular note which is very hard to interpret: "The
+resource is the conceptual mapping to an entity or set of entities, not
+necessarily the entity which corresponds to that mapping at any particular
+instance in time. Thus, a resource can remain constant even when its
+content---the entities to which it currently corresponds---changes over time,
+provided that the conceptual mapping is not changed in the process."
+
+There are several problems with this.
+
+First, it does not specify what it means by "conceptual mapping", nor how such
+a mapping can remain constant while its range changes.
+
+Second, it does not say what is meant by the phrase "entity which corresponds
+to [a] mapping at [an] instant of time". What does it mean for something to
+'correspond to' a mapping?
+
+Third, the use of the word "content" seems to suggest that resources are
+something like representations or descriptions, rather than the entities which
+are represented or described; but this seems to be at odds with what the
+document says in the immediately preceding paragraphs. For example, we are told
+explicitly that a person or a book can be a resource, but neither people nor
+books are the kinds of entity which would normally be described as having
+"content".
+
+Fourth, the reference to time and change seems to imply that resources are
+inherently temporal or dynamic in their nature; but this does not seem to be
+reflected in any other part of the document, or in URI syntax, or in the
+examples given explicitly in the immediately previous paragraphs. For example,
+what kind of mappings can have different things 'corresponding' to them at
+different times?
+
+Fifth, is this paragraph supposed to apply to all resources, or only to
+indicate that some resources may be dynamic in the way indicated?
+
+(My purpose, let me emphasize, is not to urge that any particular
+interpretation be put on these words, only that their intended meaning be
+spelled out more clearly. )
+
+----
+
+5. The RFC 2396 text explicitly asserts that "not all resources are network
+"retrievable" ", but almost immediately then says: "having identified a
+resource, a system may perform a variety of operations on the resource, as
+might be characterized by such words as 'access', 'update', 'replace' or
+'find attributes' "
+
+These assertions seem to be at odds with each other, and to reflect different
+notions of 'resource', since the second sentence seems to refer only to
+entities which are "network-retrievable". Clearly, a resource which is not
+retrievable is not available to have operations performed on it, even if it is
+in some sense identified. As an example, the SS number of a dead US citizen
+is sufficient to 'identify' that person in a sense, but does not provide any
+way to perform operations on the deceased.
+
+Again, it would be helpful if the apparent contradiction could be explained.
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030422">22 Apr 2003</date>
+  <where>issues list</where>
+<pre>
+I explained rfc2396's usage of "identity" in
+   <a href="http://lists.w3.org/Archives/Public/www-tag/2002Jul/0128.html">
+   http://lists.w3.org/Archives/Public/www-tag/2002Jul/0128.html</a>
+</pre>
+ </action>
+ <report>
+  <author email="tbray_AT_textuality.com">Tim Bray</author>
+  <date sort="20030422">22 Apr 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I have a suggested wording change, because while I have been largely
+unimpressed by the philosophical jargon being thrown around here recently,
+I do agree that the current definition "A resource can be anything that has
+identity" offers significant room for improvement; among other things it
+deserves to be called out and not sequestered in a &lt;dd&gt;.
+
+Here you go:
+
+Resources and URIs
+
+Many different abstract, informational, and physical things may be resources.
+URIs exist to identify resources, but this "identity" relationship has both
+social and technical dimensions.
+
+For example, it is incontrovertible that the URI http://www.tbray.org/A0.png
+identifies a resource which is a particular bitmapped graphic (I assert this, I
+control tbray.org, and the assertion is verifiable via technical means) and
+that the URI http://www.w3.org/1999/xhtml identifies a resource which is a
+well-known markup vocabulary (established by social convention).  It is
+possible for ambiguity to enter this relationship; for example, does
+http://www.w3.org/Consortium identify an organization or a particular HTML page
+on its website?
+
+A few principles apply:
+
+- While the definitions of URI and Resource are somewhat circular, the
+  existence of a URI does not imply the existence of a resource.  For example,
+  the URI http://example.com/386751531 identifies no resource.
+
+- Formally, resources could exist without URIs - for example, there is a
+  picture of my cat somewhere on http://www.tbray.org but I'm not publishing a
+  URI.  However, such resources have no practical import or utility.
+
+- URI schemes may impose constraints on the types of resource they identify;
+  for example, ftp: URIs identify files and directories accessible using the
+  FTP protocol.
+
+- Ambiguity in the characterization of what resource a URI identifies is always
+  undesirable and reduces the utility of both the resource and the URI.
+</pre>
+ </report>
 </issue>
 
 <issue>
