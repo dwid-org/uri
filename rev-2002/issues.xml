@@ -602,7 +602,7 @@ draft-00:
  <type>terminology</type>
  <name>008-URIvsURIref</name>
  <title>URI versus URI Reference</title>
- <status>pending</status>
+ <status>accepted</status>
  <report>
   <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="20000526">26 May 2000</date>
@@ -2611,7 +2611,7 @@ How about this one:
  <type>query</type>
  <name>031-query-def</name>
  <title>query definition</title>
- <status>pending</status>
+ <status>accepted</status>
  <report>
   <author email="hrvoje.simic_AT_zg.hinet.hr">Hrvoje Simic</author>
   <date sort="20021113">13 Nov 2002</date>
@@ -3170,7 +3170,7 @@ of escaping and unreserved to be (hopefully) clearer.
  <type>hostname</type>
  <name>038-qualified</name>
  <title>qualified production in hostname is ambiguous</title>
- <status>reopened</status>
+ <status>fixed 02</status>
  <report>
   <author email="GK_AT_ninebynine.org">Graham Klyne</author>
   <date sort="20030226">02 Feb 2003</date>
@@ -3299,13 +3299,25 @@ Reopened.  It would be best to have a syntax that was both unambiguous
 and easy for LALR parsers to process, but that may require too many changes.
 </pre>
  </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030514">14 May 2003</date>
+  <where>draft 02</where>
+<pre>
+Fixed as suggested:
+
+  qualified = *( "." domainlabel ) [ "." ]
+
+with additional text added for disambiguation of host.
+</pre>
+ </action>
 </issue>
 
 <issue>
  <type>bnf</type>
  <name>039-LALR-BNF</name>
  <title>BNF should be more LALR-parser friendly</title>
- <status>pending</status>
+ <status>accepted</status>
  <report>
   <author email="GK_AT_ninebynine.org">Graham Klyne</author>
   <date sort="20030227">27 Feb 2002</date>

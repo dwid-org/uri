@@ -41,31 +41,28 @@
 <th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>terminology</td><td nowrap="nowrap">accepted</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#017-rdf-fragment">017-rdf-fragment</a></td><td>RDF does not believe in same-document references</td><td>fragment</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#031-query-def">031-query-def</a></td><td>query definition</td><td>query</td><td nowrap="nowrap">accepted</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#033-dot-segments">033-dot-segments</a></td><td>relativising an absolute reference should be invertible</td><td>relative</td><td nowrap="nowrap">accepted</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#039-LALR-BNF">039-LALR-BNF</a></td><td>BNF should be more LALR-parser friendly</td><td>bnf</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#042-fragment-when">042-fragment-when</a></td><td>fragment identifiers applied before entire content is retrieved</td><td>fragment</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>terminology</td><td nowrap="nowrap">pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#031-query-def">031-query-def</a></td><td>query definition</td><td>query</td><td nowrap="nowrap">pending</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#032-component-examples">032-component-examples</a></td><td>add more examples for generic syntax components</td><td>examples</td><td nowrap="nowrap">pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#039-LALR-BNF">039-LALR-BNF</a></td><td>BNF should be more LALR-parser friendly</td><td>bnf</td><td nowrap="nowrap">pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#038-qualified">038-qualified</a></td><td>qualified production in hostname is ambiguous</td><td>hostname</td><td nowrap="nowrap">reopened</td>
 </tr>
 </table>
 <br>
@@ -141,6 +138,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>terminology</td><td nowrap="nowrap">fixed 02</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#038-qualified">038-qualified</a></td><td>qualified production in hostname is ambiguous</td><td>hostname</td><td nowrap="nowrap">fixed 02</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#040-reg-name">040-reg-name</a></td><td>Remove registry-based name syntax from authority</td><td>authority</td><td nowrap="nowrap">fixed 02</td>
@@ -797,7 +797,7 @@ draft-00:
 <th bgcolor="#FFFFCC"><font size="+2"><a name="008-URIvsURIref">008-URIvsURIref</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">URI versus URI Reference</font></th>
 </tr>
 <tr>
-<th>pending</th><th align="left">terminology</th>
+<th>accepted</th><th align="left">terminology</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -3004,7 +3004,7 @@ How about this one:
 <th bgcolor="#FFFFCC"><font size="+2"><a name="031-query-def">031-query-def</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">query definition</font></th>
 </tr>
 <tr>
-<th>pending</th><th align="left">query</th>
+<th>accepted</th><th align="left">query</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -3625,7 +3625,7 @@ of escaping and unreserved to be (hopefully) clearer.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="038-qualified">038-qualified</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">qualified production in hostname is ambiguous</font></th>
 </tr>
 <tr>
-<th>reopened</th><th align="left">hostname</th>
+<th bgcolor="lightgreen">fixed 02</th><th align="left">hostname</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -3765,6 +3765,20 @@ and easy for LALR parsers to process, but that may require too many changes.
 </pre>
 </td>
 </tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  14 May 2003,
+  draft 02:
+  <pre>
+Fixed as suggested:
+
+  qualified = *( "." domainlabel ) [ "." ]
+
+with additional text added for disambiguation of host.
+</pre>
+</td>
+</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -3772,7 +3786,7 @@ and easy for LALR parsers to process, but that may require too many changes.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="039-LALR-BNF">039-LALR-BNF</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">BNF should be more LALR-parser friendly</font></th>
 </tr>
 <tr>
-<th>pending</th><th align="left">bnf</th>
+<th>accepted</th><th align="left">bnf</th>
 </tr>
 <tr>
 <td colspan="2">report:
