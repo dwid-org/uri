@@ -2,12 +2,12 @@
 
 Network Working Group                                     T. Berners-Lee
 INTERNET-DRAFT                                                   MIT/LCS
-<draft-fielding-uri-url-00d>                                 R. Fielding
+<draft-fielding-uri-url-00e>                                 R. Fielding
 Expires six months after publication date.                   U.C. Irvine
                                                              L. Masinter
                                                        Xerox Corporation
 
-                                                        09 November 1996
+                                                        10 November 1996
 
 
                     Uniform Resource Locators (URL)
@@ -235,26 +235,26 @@ Abstract
    The set of characters allowed for use within URLs can be described in
    three categories: reserved, unreserved, and escaped.
 
-      urlchar     = reserved | unreserved | escape
+      urlchar     = reserved | unreserved | escaped
 
-      uchar       = unreserved | escape
+      uchar       = unreserved | escaped
       pchar       = uchar | ":" | "@" | "&" | "=" | "+"
 
 2.1. Reserved Characters
 
-   Many URL schemes include components consisting of, or delimited by,
-   certain special characters.  These characters are called "reserved",
-   since their usage within the URL component is limited to their
-   reserved purpose.  If the data characters for a URL component would
-   conflict with the reserved purpose, then the conflicting characters
-   must be escaped before forming the URL.
+   Many URLs include components consisting of, or delimited by, certain
+   special characters.  These characters are called "reserved", since
+   their usage within the URL component is limited to their reserved
+   purpose.  If the data characters for a URL component would conflict
+   with the reserved purpose, then the conflicting characters must be
+   escaped before forming the URL.
    
       reserved    = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+"
 
    This specification uses the "reserved" set to refer to those
    characters which are allowed within a URL, but which may not be
    allowed within a particular component of the generic URL syntax; they
-   are used as delimiters of the components described in Section 3.3.
+   are used as delimiters of the components described in Section 4.
 
    Characters in the "reserved" set are not always reserved.  The set of
    characters actually reserved within any given URL component are
@@ -263,78 +263,117 @@ Abstract
 
 2.2. Unreserved Characters
 
-   All characters not included in the above categories are considered
-   unreserved (i.e., normal data characters).
+   Data characters which are allowed in a URL but do not have a reserved
+   purpose are called unreserved.  These include upper and lower case
+   letters, decimal digits, and a subset of the punctuation marks and
+   symbols found in US-ASCII.
 
-      safe        = "$" | "-" | "_" | "."
-      extra       = "!" | "*" | "'" | "(" | ")" | ","
+      unreserved  = alpha | digit | mark
 
-      unreserved  = alpha | digit | safe | extra
+      mark        = "$" | "-" | "_" | "." | "!" | "~" |
+                    "*" | "'" | "(" | ")" | ","
+
+   Unreserved characters can be escaped without changing the semantics
+   of the URL, but this should not be done unless the URL is being used
+   in a context which does not allow the unescaped character to appear.
 
 2.3. Escaped Characters
 
-   In most URL schemes, the sequences of characters in different parts
-   of a URL are used to represent sequences of octets used in Internet
-   protocols.  For example, in the ftp scheme, the host name, directory
-   name and file names are such sequences of octets, represented by
-   parts of the URL.  Within those parts, an octet may be represented by
-   the character which has that octet as its code within the US-ASCII
-   [10] coded character set.
+   A character needs to be escaped if it is non-printable, if it is
+   often used to delimit a URL from its context, if it is not found in
+   the US-ASCII coded character set, if it is known to cause problems
+   when passed through some e-mail gateways, or if it is being used as
+   normal data within a component in which it is reserved.
+   
+2.3.1. Escaped Encoding
 
-   In addition, octets may be encoded by a character triplet consisting
-   of the character "%" followed by the two hexadecimal digits (from
-   "0123456789ABCDEF") which form the hexadecimal value of the octet.
-   (The characters "abcdef" may also be used in hexadecimal encodings.)
-
-      escape      = "%" hex hex
+   An escaped character is encoded as a character triplet, consisting of
+   the percent character "%" followed by the two hexadecimal digits
+   representing the character's octet code in an 8-bit coded character
+   set.  For example, "%20" is the escaped encoding for the space
+   character.
+   
+      escaped     = "%" hex hex
       hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
                             "a" | "b" | "c" | "d" | "e" | "f"
 
-   Octets must be encoded if they have no corresponding graphic
-   character within the US-ASCII coded character set, if the use of the
-   corresponding character is unsafe, or if the corresponding character
-   is reserved for some other interpretation within the particular URL
-   scheme.
+   The 8-bit coded character set of the octet must be a superset of the
+   US-ASCII coded character set, such that the US-ASCII characters have
+   the same escaped encoding regardless of the larger octet character
+   set.  The coded character set chosen must correspond to the character
+   set of the mechanism that will interpret the URL component in which
+   the escaped character is used.
+   
+2.3.2. When to Escape and Unescape
 
-2.4. Excluded Characters
+   A URL is always in an escaped form, since escaping or unescaping a
+   completed URL might change its semantics.  The only time that
+   characters within a URL can be safely escaped is when the URL is
+   being created from its component parts.  Each component may have its
+   own set of characters which are reserved, so only the mechanism
+   responsible for generating or interpreting that component can
+   determine whether or not escaping a character will change its
+   semantics.  Likewise, a URL must be separated into its components
+   before the escaped characters within those components can be
+   safely unescaped.
 
-   Characters are excluded from those allowed in URLs if they are not
-   printable, are unsafe to use where URLs occur, or are used to delimit
-   URL references.
+   Because the percent "%" character always has the reserved purpose of
+   being the escape indicator, it must be escaped as "%25" in order to
+   be used as data within a URL.  Implementers should be careful not to
+   escape or unescape the same string more than once, since unescaping
+   an already unescaped string might lead to misinterpreting a percent
+   data character as another escaped character, or vice versa in the
+   case of escaping an already escaped string.
 
-   URLs are written only with the graphic printable characters of the
-   US-ASCII coded character set.  Any character which cannot be
-   represented by a printable US-ASCII coded character, including
-   non-7bit (octets 80-FF hexadecimal) and control (octets 00-1F and 7F
-   hexadecimal) characters, are excluded.
+2.3.3. Excluded Characters
+
+   Although they are not used within the URL syntax, we include here a
+   description of those characters which have been excluded and the
+   reasons for their exclusion.
+
+      excluded    = control | space | delims | unwise | national
+
+   All characters corresponding to the control characters in the
+   US-ASCII coded character set are unsafe to use within a URL, both
+   because they are non-printable and because they are likely to be
+   misinterpreted by some control mechanisms.
+
+      control     = <US-ASCII coded characters 00-1F and 7F hexadecimal>
 
    The space character is excluded because significant spaces may
    disappear and insignificant spaces may be introduced when URLs are
    transcribed or typeset or subjected to the treatment of
-   word-processing programs.  The angle-bracket "<" and ">" and
-   double-quote (`"') characters are excluded because they are often
-   used as the delimiters around URLs in text documents and protocol
-   fields.  The character "#" is excluded because it is used to delimit
-   a URL from a fragment identifier in URL references.  The character
-   "%" is excluded because it is used for the encoding of escaped
-   characters.
-
-      excluded    = "<" | ">" | "#" | "%" | <">
+   word-processing programs.  Whitespace is also used to delimit URLs in
+   many contexts.
    
- # [NOTE: This following bit was in RFC 1738, but seems wrong.
- #        Perhaps we need a section for Unwise Characters.     ...Roy]
- #
- # Other characters are unsafe because gateways and other transport
- # agents are known to sometimes modify such characters.  These
- # characters are "{", "}", "|", "\", "^", "~", "[", "]", and "`".
+      space       = <US-ASCII coded character 20 hexadecimal>
 
-      national    = "{" | "}" | "|" | "\" | "^" | "~" | "[" | "]" | "`"
+   The angle-bracket "<" and ">" and double-quote (`"') characters are
+   excluded because they are often used as the delimiters around URLs in
+   text documents and protocol fields.  The character "#" is excluded
+   because it is used to delimit a URL from a fragment identifier in URL
+   references.  The percent character "%" is excluded because it is used
+   for the encoding of escaped characters.
 
-   Excluded characters must be escaped in order to be represented within
-   a URL.  For example, the character "#" must be escaped within URLs
-   even in systems that do not normally deal with fragment identifiers,
-   so that if the URL is copied into another system that does use them,
-   it will not be necessary to change the URL.
+      delims      = "<" | ">" | "#" | "%" | <">
+   
+   Other characters are excluded because gateways and other transport
+   agents are known to sometimes modify such characters.
+
+      unwise      = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
+
+   Finally, all other characters besides those mentioned in the above
+   sections are excluded because they are often difficult or impossible
+   to transcribe using traditional computer keyboards and software.
+
+      national    = <Any character not in the reserved, unreserved,
+                     control, space, delims, or unwise sets>
+
+   Excluded characters must be escaped in order to be properly
+   represented within a URL.  However, there do exist some systems that
+   allow characters from the "unwise" and "national" sets to be used in
+   URL references; a robust implementation should be prepared to handle
+   those characters when it is possible to do so.
 
 
 3. URL References
@@ -453,6 +492,12 @@ Abstract
    has demonstrated that the ability to perform relative referencing
    is necessary for the long-term usability of embedded URLs.
 
+      relativeURL = net_path | abs_path | rel_path
+
+      net_path    = "//" server [ abs_path ]
+      abs_path    = "/"  rel_path
+      rel_path    = [ path ] [ ";" parameters ] [ "?" query ]
+
    It is not necessary for all URLs within a given scheme to be
    restricted to the generic-URL syntax, since the hierarchical
    properties of that syntax are only necessary when relative URLs are
@@ -481,12 +526,6 @@ Abstract
       <scheme>://<server>/<path>;<parameters>?<query>
 
    each of which, except <scheme>, may be absent from a particular URL.
-
-      relativeURL = net_path | abs_path | rel_path
-
-      net_path    = "//" server [ abs_path ]
-      abs_path    = "/"  rel_path
-      rel_path    = [ path ] [ ";" parameters ] [ "?" query ]
 
    The order of the components is important.  If both <parameters> and
    <query> are present, the <query> information must occur after the
@@ -537,8 +576,8 @@ Abstract
         address as a set of four decimal digit groups separated by
         ".".  Fully qualified domain names take the form as described
         in Section 3.5 of RFC 1034 [9] and Section 2.1 of RFC 1123 [5]:
-	a sequence of domain labels separated by ".", each domain label
-	starting and ending with an alphanumerical character and
+        a sequence of domain labels separated by ".", each domain label
+        starting and ending with an alphanumerical character and
         possibly also containing "-" characters.  The rightmost domain
         label will never start with a digit, though, which
         syntactically distinguishes all domain names from the IP
@@ -765,9 +804,9 @@ Abstract
    Step 2: Both the base and URL reference are parsed into their
            component parts as described in Section 4.
 
-           a) If the URL reference is entirely empty, it inherits the
-              entire base URL (i.e., is set equal to the base URL)
-              and we are done.
+           a) If the URL reference is entirely empty, or consists only
+              of a fragment identifier, it is interpreted as a reference
+              to the current document and we are done.
 
            b) If the URL reference starts with a scheme name, it is
               interpreted as an absolute URL and we are done.
@@ -787,8 +826,8 @@ Abstract
            and
 
            a) if the URL reference's <parameters> is non-empty, we skip
-	      to step 7; otherwise, it inherits the <parameters> of the
-	      base URL (if any) and
+              to step 7; otherwise, it inherits the <parameters> of the
+              base URL (if any) and
 
            b) if the URL reference's <query> is non-empty, we skip to
               step 7; otherwise, it inherits the <query> of the base
@@ -831,6 +870,7 @@ Abstract
    algorithm itself is not required.  For example, some systems may find
    it more efficient to implement Step 6 as a pair of segment stacks
    being merged, rather than as a series of string pattern matches.
+   Further examples are provided in Appendix C.
 
 
 7. Registration of New Schemes
@@ -883,20 +923,20 @@ Abstract
    typically constructed by specifying a port number other than that
    reserved for the network protocol in question.  The client
    unwittingly contacts a server which is in fact running a different
-   protocol.  The content of the URL contains instructions which when
-   interpreted according to this other protocol cause an unexpected
+   protocol.  The content of the URL contains instructions which, when
+   interpreted according to this other protocol, cause an unexpected
    operation.  An example has been the use of gopher URLs to cause a rude
    message to be sent via a SMTP server.  Caution should be used when
    using any URL which specifies a port number other than the default
    for the protocol, especially when it is a number within the reserved
    space.
 
-   Care should be taken when URLs contain embedded encoded delimiters
-   for a given protocol (for example, CR and LF characters for telnet
-   protocols) that these are not unencoded before transmission.  This
-   would violate the protocol but could be used to simulate an extra
-   operation or parameter, again causing an unexpected and possible
-   harmful remote operation to be performed.
+   Care should be taken when URLs contain escaped delimiters for a given
+   protocol (for example, CR and LF characters for telnet protocols)
+   that these are not unencoded before transmission.  This would violate
+   the protocol but could be used to simulate an extra operation or
+   parameter, again causing an unexpected and possible harmful remote
+   operation to be performed.
 
    The use of URLs containing passwords that should be secret is clearly
    unwise.
@@ -947,7 +987,7 @@ Abstract
        for Information Interchange", ANSI X3.4-1986.
 
 
-11. Editors' Addresses
+11. Authors' Addresses
 
    Tim Berners-Lee
    World Wide Web Consortium
@@ -1041,30 +1081,30 @@ C. Examples of Resolving Relative URLs
 
 C.1.  Normal Examples
 
-      g:h        =  g:h
-      g          =  http://a/b/c/g
-      ./g        =  http://a/b/c/g
-      g/         =  http://a/b/c/g/
-      /g         =  http://a/g
-      //g        =  http://g
-      ?y         =  http://a/b/c/d;p?y
-      g?y        =  http://a/b/c/g?y
-      g?y/./x    =  http://a/b/c/g?y/./x
-      #s         =  http://a/b/c/d;p?q#s
-      g#s        =  http://a/b/c/g#s
-      g#s/./x    =  http://a/b/c/g#s/./x
-      g?y#s      =  http://a/b/c/g?y#s
-      ;x         =  http://a/b/c/d;x
-      g;x        =  http://a/b/c/g;x
-      g;x?y#s    =  http://a/b/c/g;x?y#s
-      .          =  http://a/b/c/
-      ./         =  http://a/b/c/
-      ..         =  http://a/b/
-      ../        =  http://a/b/
-      ../g       =  http://a/b/g
-      ../..      =  http://a/
-      ../../     =  http://a/
-      ../../g    =  http://a/g
+      g:h           =  g:h
+      g             =  http://a/b/c/g
+      ./g           =  http://a/b/c/g
+      g/            =  http://a/b/c/g/
+      /g            =  http://a/g
+      //g           =  http://g
+      ?y            =  http://a/b/c/d;p?y
+      g?y           =  http://a/b/c/g?y
+      g?y/./x       =  http://a/b/c/g?y/./x
+      #s            =  http://a/b/c/d;p?q#s
+      g#s           =  http://a/b/c/g#s
+      g#s/./x       =  http://a/b/c/g#s/./x
+      g?y#s         =  http://a/b/c/g?y#s
+      ;x            =  http://a/b/c/d;x
+      g;x           =  http://a/b/c/g;x
+      g;x?y#s       =  http://a/b/c/g;x?y#s
+      .             =  http://a/b/c/
+      ./            =  http://a/b/c/
+      ..            =  http://a/b/
+      ../           =  http://a/b/
+      ../g          =  http://a/b/g
+      ../..         =  http://a/
+      ../../        =  http://a/
+      ../../g       =  http://a/g
 
 C.2.  Abnormal Examples
 
@@ -1161,7 +1201,18 @@ E.1. Additions
    previously attempted to redefine the URL syntax in order to account
    for the presence of fragment identifiers in URL references.
 
+   Section 2.3.2 (When to Escape and Unescape) was added in response to
+   many (mis)implementation questions on the subject.
+
 E.2. Modifications from both RFC 1738 and RFC 1808
+
+   Confusion regarding the terms "character encoding", the URL
+   "character set", and the escaping of characters with %<hex><hex>
+   equivalents has (hopefully) been reduced.  Many of the BNF rule names
+   regarding the character sets have been changed to more accurately
+   describe their purpose and to encompass all "characters" rather than
+   just US-ASCII octets.  Unless otherwise noted here, these
+   modifications do not affect the URL syntax.
 
    Both RFC 1738 and RFC 1808 refer to the "reserved" set of characters
    as if URL-interpreting servers were limited to a single set of
@@ -1174,20 +1225,17 @@ E.2. Modifications from both RFC 1738 and RFC 1808
    URL scheme.  The description of reserved characters has been changed
    accordingly.
 
-   The "+" character was added to those in the "reserved" set, since it
-   is treated as reserved within some URL components.
+   The plus "+" character was added to those in the "reserved" set,
+   since it is treated as reserved within some URL components.
+
+   The tilde "~" character was added to those in the "unreserved" set,
+   since it is extensively used on the Internet in spite of the
+   difficulty to transcribe it with some keyboards.
 
 E.3. Modifications from RFC 1738
 
    The definition of specific URL schemes and their scheme-specific
    syntax and semantics has been moved to separate documents.
-
-   Confusion regarding the terms "character encoding", the URL
-   "character set", and the escaping of characters with %<hex><hex>
-   equivalents has (hopefully) been reduced.  Many of the BNF rule names
-   regarding the character sets have been changed to more accurately
-   describe their purpose.  Unless otherwise noted here, these
-   modifications do not affect the URL syntax.
 
    The URL port is now *digit instead of 1*digit, since systems are
    expected to handle the case where the ":" separator between host and
@@ -1205,9 +1253,9 @@ E.4. Modifications from RFC 1808
    make an additional request of the resource, a description of how to
    correctly interpret an empty reference has been added in Section 2.
 
-   The description of the Base header field has been replaced with the
-   Content-Base and Content-Location header fields defined by
-   HTTP/1.1 [4].
+   The description of the mythical Base header field has been replaced
+   with the Content-Base and Content-Location header fields defined by
+   HTTP/1.1 and MHTML.
 
    RFC 1808 described various schemes as either having or not having the
    properties of the generic-URL syntax.  However, the only requirement
