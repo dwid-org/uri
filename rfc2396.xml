@@ -335,7 +335,7 @@ telnet://melvyl.ucop.edu/
    of the order of components and component separators, as in
 </t>
 <figure><artwork>
-    &lt;first>/&lt;second>;&lt;third>?&lt;fourth>
+    &lt;first&gt;/&lt;second&gt;;&lt;third&gt;?&lt;fourth&gt;
 </artwork></figure>
 <t>
    The component names are enclosed in angle-brackets and any characters
@@ -351,7 +351,7 @@ telnet://melvyl.ucop.edu/
    definition over more than one line, literals are quoted with "",
    parentheses "(" and ")" are used to group elements, optional elements
    are enclosed in "[" and "]" brackets, and elements may be preceded
-   with &lt;n>* to designate n or more repetitions of the following
+   with &lt;n&gt;* to designate n or more repetitions of the following
    element; n defaults to 0.
 </t>
 <t>
@@ -412,8 +412,8 @@ uric          = reserved | unreserved | escaped
 <t>
    Within a URI, characters are either used as delimiters, or to
    represent strings of data (octets) within the delimited portions.
-   Octets are either represented directly by a character (using the US-
-   ASCII character for that octet <xref target="ASCII"/>) or by an escape encoding.
+   Octets are either represented directly by a character (using the US-ASCII
+   character for that octet <xref target="ASCII"/>) or by an escape encoding.
    This representation is elaborated below.
 </t>
 
@@ -601,22 +601,22 @@ hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
 <figure>
 <iref item="control" primary="yes"/><iref item="URI grammar" subitem="control" primary="yes"/>
 <artwork>
-control     = &lt;US-ASCII coded characters 00-1F and 7F hexadecimal>
+control     = &lt;US-ASCII coded characters 00-1F and 7F hexadecimal&gt;
 </artwork></figure>
 <t>
    The space character is excluded because significant spaces may
    disappear and insignificant spaces may be introduced when URI are
-   transcribed or typeset or subjected to the treatment of word-
-   processing programs.  Whitespace is also used to delimit URI in many
+   transcribed or typeset or subjected to the treatment of word-processing
+   programs.  Whitespace is also used to delimit URI in many
    contexts.
 </t>
 <figure>
 <iref item="space" primary="yes"/><iref item="URI grammar" subitem="space" primary="yes"/>
 <artwork>
-space       = &lt;US-ASCII coded character 20 hexadecimal>
+space       = &lt;US-ASCII coded character 20 hexadecimal&gt;
 </artwork></figure>
 <t>
-   The angle-bracket "&lt;" and ">" and double-quote (") characters are
+   The angle-bracket "&lt;" and "&gt;" and double-quote (") characters are
    excluded because they are often used as the delimiters around URI in
    text documents and protocol fields.  The character "#" is excluded
    because it is used to delimit a URI from a fragment identifier in URI
@@ -626,7 +626,7 @@ space       = &lt;US-ASCII coded character 20 hexadecimal>
 <figure>
 <iref item="delims" primary="yes"/><iref item="URI grammar" subitem="delims" primary="yes"/>
 <artwork>
-delims      = "&lt;" | ">" | "#" | "%" | &lt;">
+delims      = "&lt;" | "&gt;" | "#" | "%" | &lt;"&gt;
 </artwork></figure>
 <t>
    Other characters are excluded because gateways and other transport
@@ -652,12 +652,12 @@ unwise      = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
    URI are written as follows:
 </t>
 <figure><artwork>
-&lt;scheme>:&lt;scheme-specific-part>
+&lt;scheme&gt;:&lt;scheme-specific-part&gt;
 </artwork></figure>
 <t>
-   An absolute URI contains the name of the scheme being used (&lt;scheme>)
-   followed by a colon (":") and then a string (the &lt;scheme-specific-
-   part>) whose interpretation depends on the scheme.
+   An absolute URI contains the name of the scheme being used (&lt;scheme&gt;)
+   followed by a colon (":") and then a string (the &lt;scheme-specific-part&gt;)
+   whose interpretation depends on the scheme.
 </t>
 <t>
    The URI syntax does not require that the scheme-specific-part have
@@ -667,12 +667,12 @@ unwise      = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
    "generic URI" syntax consists of a sequence of four main components:
 </t>
 <figure><artwork>
-&lt;scheme>://&lt;authority>&lt;path>?&lt;query>
+&lt;scheme&gt;://&lt;authority&gt;&lt;path&gt;?&lt;query&gt;
 </artwork></figure>
 <t>
-   each of which, except &lt;scheme>, may be absent from a particular URI.
-   For example, some URI schemes do not allow an &lt;authority> component,
-   and others do not use a &lt;query> component.
+   each of which, except &lt;scheme&gt;, may be absent from a particular URI.
+   For example, some URI schemes do not allow an &lt;authority&gt; component,
+   and others do not use a &lt;query&gt; component.
 </t>
 <figure>
 <iref item="absoluteURI" primary="yes"/><iref item="URI grammar" subitem="absoluteURI" primary="yes"/>
@@ -714,8 +714,8 @@ uric_no_slash = unreserved | escaped | ";" | "?" | ":" | "@" |
                 "&amp;" | "=" | "+" | "$" | ","
 </artwork></figure>
 <t>
-   We use the term &lt;path> to refer to both the &lt;abs_path> and
-   &lt;opaque_part> constructs, since they are mutually exclusive for any
+   We use the term &lt;path&gt; to refer to both the &lt;abs_path&gt; and
+   &lt;opaque_part&gt; constructs, since they are mutually exclusive for any
    given URI and can be parsed as a single component.
 </t>
 
@@ -794,12 +794,12 @@ reg_name      = 1*( unreserved | escaped | "$" | "," |
    component of the URI's scheme-specific data:
 </t>
 <figure><artwork>
-&lt;userinfo>@&lt;host>:&lt;port>
+&lt;userinfo&gt;@&lt;host&gt;:&lt;port&gt;
 </artwork></figure>
 <t>
-   where &lt;userinfo> may consist of a user name and, optionally, scheme-
-   specific information about how to gain authorization to access the
-   server.  The parts "&lt;userinfo>@" and ":&lt;port>" may be omitted.
+   where &lt;userinfo&gt; may consist of a user name and, optionally,
+   scheme-specific information about how to gain authorization to access the
+   server.  The parts "&lt;userinfo&gt;@" and ":&lt;port&gt;" may be omitted.
 </t>
 <figure>
 <iref item="server" primary="yes"/><iref item="URI grammar" subitem="server" primary="yes"/>
@@ -1042,8 +1042,8 @@ fragment      = *uric
    necessary for the long-term usability of embedded URI.
 </t>
 <t>
-   The syntax for relative URI takes advantage of the &lt;hier_part> syntax
-   of &lt;absoluteURI> (Section 3) in order to express a reference that is
+   The syntax for relative URI takes advantage of the &lt;hier_part&gt; syntax
+   of &lt;absoluteURI&gt; (Section 3) in order to express a reference that is
    relative to the namespace of another hierarchical URI.
 </t>
 <figure>
@@ -1053,12 +1053,12 @@ relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
 </artwork></figure>
 <t>
    A relative reference beginning with two slash characters is termed a
-   network-path reference, as defined by &lt;net_path> in Section 3.  Such
+   network-path reference, as defined by &lt;net_path&gt; in Section 3.  Such
    references are rarely used.
 </t>
 <t>
    A relative reference beginning with a single slash character is
-   termed an absolute-path reference, as defined by &lt;abs_path> in
+   termed an absolute-path reference, as defined by &lt;abs_path&gt; in
    Section 3.
 </t>
 <t>
@@ -1093,10 +1093,10 @@ rel_segment   = 1*( unreserved | escaped |
 </t>
 <t>
    It is not necessary for all URI within a given scheme to be
-   restricted to the &lt;hier_part> syntax, since the hierarchical
+   restricted to the &lt;hier_part&gt; syntax, since the hierarchical
    properties of that syntax are only necessary when relative URI are
    used within a particular document.  Documents can only make use of
-   relative URI when their base URI fits within the &lt;hier_part> syntax.
+   relative URI when their base URI fits within the &lt;hier_part&gt; syntax.
    It is assumed that any document which contains a relative reference
    will also have a base URI that obeys the syntax.  In other words,
    relative URI cannot be used within a document that has an unsuitable
@@ -1104,7 +1104,7 @@ rel_segment   = 1*( unreserved | escaped |
 </t>
 <t>
    Some URI schemes do not allow a hierarchical syntax matching the
-   &lt;hier_part> syntax, and thus cannot use relative references.
+   &lt;hier_part&gt; syntax, and thus cannot use relative references.
 </t>
 
 <section title="Establishing a Base URI">
@@ -1128,7 +1128,7 @@ rel_segment   = 1*( unreserved | escaped |
 |  |  .----------------------------------------------.  |  |
 |  |  |  .----------------------------------------.  |  |  |
 |  |  |  |  .----------------------------------.  |  |  |  |
-|  |  |  |  |       &lt;relative_reference>       |  |  |  |  |
+|  |  |  |  |       &lt;relative_reference&gt;       |  |  |  |  |
 |  |  |  |  `----------------------------------'  |  |  |  |
 |  |  |  | (5.1.1) Base URI embedded in the       |  |  |  |
 |  |  |  |         document's content             |  |  |  |
@@ -1252,7 +1252,7 @@ rel_segment   = 1*( unreserved | escaped |
       with the correct parsing of non-hierarchical URI.  For backwards
       compatibility, an implementation may work around such references
       by removing the scheme if it matches that of the base URI and the
-      scheme is known to always use the &lt;hier_part> syntax.  The parser
+      scheme is known to always use the &lt;hier_part&gt; syntax.  The parser
       can then continue with the steps below for the remainder of the
       reference components.  Validating parsers should mark such a
       misformed relative reference as an error.
@@ -1292,16 +1292,16 @@ rel_segment   = 1*( unreserved | escaped |
          that "." is removed.
         </t>
         <t>
-         All occurrences of "&lt;segment>/../", where &lt;segment> is a
+         All occurrences of "&lt;segment&gt;/../", where &lt;segment&gt; is a
          complete path segment not equal to "..", are removed from the
          buffer string.  Removal of these path segments is performed
          iteratively, removing the leftmost matching pattern on each
          iteration, until no matching pattern remains.
         </t>
         <t>
-         If the buffer string ends with "&lt;segment>/..", where &lt;segment>
+         If the buffer string ends with "&lt;segment&gt;/..", where &lt;segment&gt;
          is a complete path segment not equal to "..", that
-         "&lt;segment>/.." is removed.
+         "&lt;segment&gt;/.." is removed.
         </t>
         <t>
          If the resulting buffer string still begins with one or more
@@ -1387,8 +1387,8 @@ return result
 <t>
    In many cases, different URI strings may actually identify the
    identical resource. For example, the host names used in URL are
-   actually case insensitive, and the URL &lt;http://www.XEROX.com> is
-   equivalent to &lt;http://www.xerox.com>. In general, the rules for
+   actually case insensitive, and the URL &lt;http://www.XEROX.com&gt; is
+   equivalent to &lt;http://www.xerox.com&gt;. In general, the rules for
    equivalence and definition of a normal form, if any, are scheme
    dependent. When a scheme uses elements of the common syntax, it will
    also use the common syntax equivalence rules, namely that the scheme
@@ -1916,7 +1916,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    The numbers in the second line above are only to assist readability;
    they indicate the reference points for each subexpression (i.e., each
    paired parenthesis).  We refer to the value matched for subexpression
-   &lt;n> as $&lt;n>.  For example, matching the above expression to
+   &lt;n&gt; as $&lt;n&gt;.  For example, matching the above expression to
 </t>
 <figure><artwork>
 http://www.ics.uci.edu/pub/ietf/uri/#Related
@@ -1930,13 +1930,13 @@ $2 = http
 $3 = //www.ics.uci.edu
 $4 = www.ics.uci.edu
 $5 = /pub/ietf/uri/
-$6 = &lt;undefined>
-$7 = &lt;undefined>
+$6 = &lt;undefined&gt;
+$7 = &lt;undefined&gt;
 $8 = #Related
 $9 = Related
 </artwork></figure>
 <t>
-   where &lt;undefined> indicates that the component is not present, as is
+   where &lt;undefined&gt; indicates that the component is not present, as is
    the case for the query component in the above example.  Therefore, we
    can determine the value of the four components and fragment as
 </t>
@@ -2001,7 +2001,7 @@ g;x?y#s       =  http://a/b/c/g;x?y#s
    An empty reference refers to the start of the current document.
 </t>
 <figure><artwork>
-&lt;>            =  (current document)
+&lt;&gt;            =  (current document)
 </artwork></figure>
 <t>
    Parsers must be careful in handling the case where there are more
@@ -2091,20 +2091,20 @@ http:g        =  http:g           ; for validating parsers
    example:
 </t>
 <figure><artwork>
-&lt;!doctype html public "-//IETF//DTD HTML//EN">
-&lt;HTML>&lt;HEAD>
-&lt;TITLE>An example HTML document&lt;/TITLE>
-&lt;BASE href="http://www.ics.uci.edu/Test/a/b/c">
-&lt;/HEAD>&lt;BODY>
-... &lt;A href="../x">a hypertext anchor&lt;/A> ...
-&lt;/BODY>&lt;/HTML>
+&lt;!doctype html public "-//IETF//DTD HTML//EN"&gt;
+&lt;HTML&gt;&lt;HEAD&gt;
+&lt;TITLE&gt;An example HTML document&lt;/TITLE&gt;
+&lt;BASE href="http://www.ics.uci.edu/Test/a/b/c"&gt;
+&lt;/HEAD&gt;&lt;BODY&gt;
+... &lt;A href="../x"&gt;a hypertext anchor&lt;/A&gt; ...
+&lt;/BODY&gt;&lt;/HTML&gt;
 </artwork></figure>
 <t>
    A parser reading the example document should interpret the given
    relative URI "../x" as representing the absolute URI
 </t>
 <figure><artwork>
-&lt;http://www.ics.uci.edu/Test/a/x>
+&lt;http://www.ics.uci.edu/Test/a/x&gt;
 </artwork></figure>
 <t>
    regardless of the context in which the example document was obtained.
@@ -2124,7 +2124,7 @@ http:g        =  http:g           ; for validating parsers
 <t>
    In practice, URI are delimited in a variety of ways, but usually
    within double-quotes "http://test.com/", angle brackets
-   &lt;http://test.com/>, or just using whitespace
+   &lt;http://test.com/&gt;, or just using whitespace
 </t>
 <figure><artwork>
 http://test.com/
@@ -2151,7 +2151,7 @@ http://test.com/
    that the hyphen may or may not actually be part of the URI.
 </t>
 <t>
-   Using &lt;> angle brackets around each URI is especially recommended as
+   Using &lt;&gt; angle brackets around each URI is especially recommended as
    a delimiting style for URI that contain whitespace.
 </t>
 <t>
@@ -2168,8 +2168,8 @@ http://test.com/
   <list><t>
       Yes, Jim, I found it under "http://www.w3.org/Addressing/",
       but you can probably pick it up from &lt;ftp://ds.internic.
-      net/rfc/>.  Note the warning in &lt;http://www.ics.uci.edu/pub/
-      ietf/uri/historical.html#WARNING>.
+      net/rfc/&gt;.  Note the warning in &lt;http://www.ics.uci.edu/pub/
+      ietf/uri/historical.html#WARNING&gt;.
   </t></list>
 </t>
 <t>
@@ -2245,7 +2245,7 @@ www.w3.org/Addressing/
 </t>
 <t>
    Confusion regarding the terms "character encoding", the URI
-   "character set", and the escaping of characters with %&lt;hex>&lt;hex>
+   "character set", and the escaping of characters with %&lt;hex&gt;&lt;hex&gt;
    equivalents has (hopefully) been reduced.  Many of the BNF rule names
    regarding the character sets have been changed to more accurately
    describe their purpose and to encompass all "characters" rather than
@@ -2304,7 +2304,7 @@ www.w3.org/Addressing/
    since it considered the slash to be part of the path.  In writing
    this specification, it was found to be impossible to accurately
    describe and retain the difference between the two URI
-      &lt;foo:/bar>   and   &lt;foo:bar>
+      &lt;foo:/bar&gt;   and   &lt;foo:bar&gt;
    without either considering the slash to be part of the path (as
    corresponds to actual practice) or creating a separate component just
    to hold that slash.  We chose the former.
@@ -2359,7 +2359,7 @@ www.w3.org/Addressing/
    reflect that.
 </t>
 <t>
-   The BNF term &lt;net_loc> has been replaced with &lt;authority>, since the
+   The BNF term &lt;net_loc&gt; has been replaced with &lt;authority&gt;, since the
    latter more accurately describes its use and purpose.  Likewise, the
    authority is no longer restricted to the IP server syntax.
 </t>
@@ -2377,7 +2377,7 @@ www.w3.org/Addressing/
 <t>
    Implementations are now allowed to work around misformed relative
    references that are prefixed by the same scheme as the base URI, but
-   only for schemes known to use the &lt;hier_part> syntax.
+   only for schemes known to use the &lt;hier_part&gt; syntax.
 </t>
 </section>
 </section>
