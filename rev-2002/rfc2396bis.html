@@ -284,10 +284,8 @@ is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 
 
 <b>&nbsp;1.2&nbsp;
-            <a href="#rfc.section.1.2">URI, URL, and URN</a></b>
+            <a href="#rfc.section.1.2">Separating Identification from Interaction</a></b>
 <br>
-
-
 
 
 
@@ -295,32 +293,43 @@ is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 
 
 <b>&nbsp;1.3&nbsp;
-            <a href="#rfc.section.1.3">Example URIs</a></b>
+            <a href="#rfc.section.1.3">URI, URL, and URN</a></b>
 <br>
+
+
+
+
 
 
 
 
 <b>&nbsp;1.4&nbsp;
-            <a href="#rfc.section.1.4">Hierarchical URIs and Relative Forms</a></b>
+            <a href="#rfc.section.1.4">Example URIs</a></b>
 <br>
-
 
 
 
 
 <b>&nbsp;1.5&nbsp;
-            <a href="#rfc.section.1.5">URI Transcribability</a></b>
+            <a href="#rfc.section.1.5">Hierarchical URIs and Relative Forms</a></b>
 <br>
-
-
 
 
 
 
 
 <b>&nbsp;1.6&nbsp;
-            <a href="#rfc.section.1.6">Syntax Notation and Common Elements</a></b>
+            <a href="#rfc.section.1.6">URI Transcribability</a></b>
+<br>
+
+
+
+
+
+
+
+<b>&nbsp;1.7&nbsp;
+            <a href="#rfc.section.1.7">Syntax Notation and Common Elements</a></b>
 <br>
 
 
@@ -880,7 +889,7 @@ All significant changes from RFC 2396 are noted in Appendix G.
     Overview of URIs</h2>
 <p>
 <a name="rfc.section.1.1.p.1"></a>
-URIs are characterized by the following definitions:
+URIs are characterized as follows:
 </p>
 <p>
 <a name="rfc.section.1.1.p.2"></a>Uniform
@@ -908,43 +917,16 @@ set of resource identifiers.
   <blockquote>
     
 <p>
-A resource is a source of supply or support within the context of a
-given system.  In general, a resource could be anything.  In practice,
-however, the nature of a system's resources is defined by actions
-that might be applied to them in the future.  For example, if a system
-is performing an information retrieval action, then things that can
-provide information to that system are considered resources.
-This specification does not place any limits on the nature of a resource
-or the nature of systems that might use resources.  Familiar examples of
-a resource include an electronic document, an image, a service
-(e.g., "today's weather report for Los Angeles"), and a collection of
-other resources.  Not all resources are network "retrievable"; e.g.,
-human beings, corporations, and bound books in a library can also be
-considered resources.
-    </p>
-    
-<p>
-A common misunderstanding of resources, particularly in information
-systems, is to equate the resource with one representation of that
-resource as observed at a particular instance in time.  A resource is
-defined not by its current representation, but rather by the sameness of
-characteristics that should be observed in any future representation.
-This conceptual mapping of resource to representations is what the
-system identifies as a resource.  Thus, a resource remains constant
-even when its representation---what it supplies to the system---changes
-over time, provided that the conceptual mapping remains constant.
-    </p>
-    
-<p>
-For example, a resource that is defined to be "a live camera view from
-my window" is distinctly different from a resource defined as
-"a camera view from my window on May 3rd, 2003", even if the set of
-representations for both resources are identical during that day.
-The characteristics of a resource as they are observed over time,
-perhaps elucidated by additional comments or assertions made by the
-resource provider, create an expectation of sameness that differentiates
-one resource from another even if they are impossible to distinguish
-from individual observations.
+Anything that can be named or described can be a resource.
+Familiar examples include an electronic document, an image,
+a service (e.g., "today's weather report for Los Angeles"),
+and a collection of other resources.
+A resource does not need to be accessible via the Internet;
+e.g., human beings, corporations, and bound books in a library
+can also be resources.
+Likewise, abstract concepts can be resources, such as the operators and
+operands of a mathematical equation or the types of a relationship
+(e.g., "parent" or "employee").
     </p>
   
 </blockquote>
@@ -955,12 +937,8 @@ from individual observations.
   <blockquote>
     
 <p>
-An identifier is an object that carries identifying data.  It is not
-necessary for the identifier to define what is being identified; it is
-only necessary for the identifier to provide sufficient data to distinguish
-what is being identified from all other things within the scope of its use.
-A URI is an identifier object consisting of a sequence of characters
-that matches the restricted syntax defined by this specification.
+An identifier embodies the information required to distinguish what is
+being identified from all other things within its scope of identification.
     </p>
   
 </blockquote>
@@ -968,15 +946,58 @@ that matches the restricted syntax defined by this specification.
 </p>
 <p>
 <a name="rfc.section.1.1.p.5"></a>
-Given an identifier for a resource, a system could perform a variety of
-operations on the resource, as might be characterized by such words
-as `denote', `access', `update', `replace', or `find attributes'.
+A URI is an identifier that consists of a sequence of characters
+matching the restricted syntax defined by this specification.  A URI
+can be used to denote a resource; this specification does not place any
+limits on the nature of a resource or on what types of resources a
+conformant implementation might denote.  URIs have a global scope
+and should be interpreted consistently regardless of context, but
+that interpretation may be defined in relation to the user's context
+(e.g., "http://localhost/" denotes a resource that is relative to
+the user's network interface and yet not specific to any one user).
 </p>
 <h2>
 <a name="rfc.section.1.2">1.2</a>&nbsp;
-    URI, URL, and URN</h2>
+    Separating Identification from Interaction</h2>
 <p>
 <a name="rfc.section.1.2.p.1"></a>
+A common misunderstanding of URIs is that they are only used to
+denote accessible resources.  In fact, the URI alone only provides
+identification: access to the resource is neither guaranteed nor
+implied by the presence of a URI.  Instead, an action (if any)
+associated with a URI reference is defined by the protocol or
+data format elements within which the URI appears, with the only
+exception being URIs that appear in plain text.
+</p>
+<p>
+<a name="rfc.section.1.2.p.2"></a>
+Given a URI, a system may attempt to perform a variety of operations
+on the resource it denotes, as might be characterized by such words
+as `access', `update', `replace', or `find attributes'.  Such operations
+are defined by the protocols that make use of URIs, not by this
+specification.
+</p>
+<p>
+<a name="rfc.section.1.2.p.3"></a>
+Another misunderstanding that is common in information systems is to
+equate the resource with the result of accessing that resource at a
+particular instance in time.  URI references in information systems
+are usually designed to be late-binding: the result of an access is
+determined at the time it is accessed and may vary over time or due
+to other aspects of the interaction.  When an author creates a reference
+to such a resource, they usually do so with the intention that the
+reference be used in the future.  What is being identified is not
+some specific result that was obtained in the past, but rather some
+characteristic of that result which is expected to be true for all
+future results.  Therefore, the resource denoted by a URI is actually
+a sameness of character as observed over time, perhaps elucidated
+by additional comments or assertions made by the resource provider.
+</p>
+<h2>
+<a name="rfc.section.1.3">1.3</a>&nbsp;
+    URI, URL, and URN</h2>
+<p>
+<a name="rfc.section.1.3.p.1"></a>
    A URI can be further classified as a locator, a name, or both.  The
    term "Uniform Resource Locator" (URL) refers to the subset of URIs
    that, in addition to identifying the resource, provide a means of
@@ -986,7 +1007,7 @@ as `denote', `access', `update', `replace', or `find attributes'.
    persistent even when the resource ceases to exist or becomes unavailable.
 </p>
 <p>
-<a name="rfc.section.1.2.p.2"></a>
+<a name="rfc.section.1.3.p.2"></a>
    An individual scheme does not need to be cast into one of a discrete
    set of URI types such as "URL", "URN", "URC", etc.  Any given URI
    scheme may define subspaces that have the characteristics of a name,
@@ -997,7 +1018,7 @@ as `denote', `access', `update', `replace', or `find attributes'.
    schemes, instead using the term URI throughout.
 </p>
 <p>
-<a name="rfc.section.1.2.p.3"></a>
+<a name="rfc.section.1.3.p.3"></a>
    Each URI scheme (Section 3.1) defines the namespace of the URI, and
    thus may further restrict the syntax and semantics of identifiers
    using that scheme.  This specification defines those elements of the
@@ -1008,7 +1029,7 @@ as `denote', `access', `update', `replace', or `find attributes'.
    be postponed until the scheme-dependent semantics are needed.
 </p>
 <p>
-<a name="rfc.section.1.2.p.4"></a>
+<a name="rfc.section.1.3.p.4"></a>
    Although many URI schemes are named after protocols, this does not
    imply that use of such a URI will result in access to the resource
    via the named protocol.  URIs are often used in contexts that are
@@ -1021,7 +1042,7 @@ as `denote', `access', `update', `replace', or `find attributes'.
    "http" URI's resource when it can't be found in a local cache).
 </p>
 <p>
-<a name="rfc.section.1.2.p.5"></a>
+<a name="rfc.section.1.3.p.5"></a>
    A parser of the generic URI syntax is capable of parsing any URI
    reference into its major components; once the scheme is determined,
    further scheme-specific parsing can be performed on the components.
@@ -1029,7 +1050,7 @@ as `denote', `access', `update', `replace', or `find attributes'.
    of all URI schemes.
 </p>
 <h2>
-<a name="rfc.section.1.3">1.3</a>&nbsp;
+<a name="rfc.section.1.4">1.4</a>&nbsp;
     Example URIs</h2>
 <a name="rfc.figure.u.1"></a>
 <p>
@@ -1054,10 +1075,10 @@ The following examples illustrate URIs that are in common use.
       -- telnet scheme for interactive TELNET services
 </pre>
 <h2>
-<a name="rfc.section.1.4">1.4</a>&nbsp;
+<a name="rfc.section.1.5">1.5</a>&nbsp;
     Hierarchical URIs and Relative Forms</h2>
 <p>
-<a name="rfc.section.1.4.p.1"></a>
+<a name="rfc.section.1.5.p.1"></a>
    An absolute identifier refers to a resource independent of the
    context in which the identifier is used.  In contrast, a relative
    identifier refers to a resource by describing the difference within a
@@ -1065,7 +1086,7 @@ The following examples illustrate URIs that are in common use.
    identifier of the resource.
 </p>
 <p>
-<a name="rfc.section.1.4.p.2"></a>
+<a name="rfc.section.1.5.p.2"></a>
    Some URI schemes support a hierarchical naming system, where the
    hierarchy of the name is denoted by a "/" delimiter separating the
    components in the scheme. This document defines a scheme-independent
@@ -1075,10 +1096,10 @@ The following examples illustrate URIs that are in common use.
    in Section 3; the relative URI calculation is described in Section 5.
 </p>
 <h2>
-<a name="rfc.section.1.5">1.5</a>&nbsp;
+<a name="rfc.section.1.6">1.6</a>&nbsp;
     URI Transcribability</h2>
 <p>
-<a name="rfc.section.1.5.p.1"></a>
+<a name="rfc.section.1.6.p.1"></a>
    The URI syntax was designed with global transcribability as one of
    its main concerns. A URI is a sequence of characters from a very
    limited set, i.e. the letters of the basic Latin alphabet, digits,
@@ -1089,7 +1110,7 @@ The following examples illustrate URIs that are in common use.
    represented in a network protocol.
 </p>
 <p>
-<a name="rfc.section.1.5.p.2"></a>
+<a name="rfc.section.1.6.p.2"></a>
    The goal of transcribability can be described by a simple scenario.
    Imagine two colleagues, Sam and Kim, sitting in a pub at an
    international conference and exchanging research ideas.  Sam asks Kim
@@ -1099,7 +1120,7 @@ The following examples illustrate URIs that are in common use.
    information to which Kim referred.
 </p>
 <p>
-<a name="rfc.section.1.5.p.3"></a>
+<a name="rfc.section.1.6.p.3"></a>
    There are several design concerns revealed by the scenario:
   <ul class="text">
     
@@ -1126,7 +1147,7 @@ The following examples illustrate URIs that are in common use.
 
 </p>
 <p>
-<a name="rfc.section.1.5.p.4"></a>
+<a name="rfc.section.1.6.p.4"></a>
    These design concerns are not always in alignment.  For example, it
    is often the case that the most meaningful name for a URI component
    would require characters that cannot be typed into some systems.  The
@@ -1138,10 +1159,10 @@ The following examples illustrate URIs that are in common use.
    document.
 </p>
 <h2>
-<a name="rfc.section.1.6">1.6</a>&nbsp;
+<a name="rfc.section.1.7">1.7</a>&nbsp;
     Syntax Notation and Common Elements</h2>
 <p>
-<a name="rfc.section.1.6.p.1"></a>
+<a name="rfc.section.1.7.p.1"></a>
    This document uses two conventions to describe and define the syntax
    for URI.  The first, called the layout form, is a general description
    of the order of components and component separators, as in
@@ -1150,14 +1171,14 @@ The following examples illustrate URIs that are in common use.
 <pre>    &lt;first&gt;/&lt;second&gt;;&lt;third&gt;?&lt;fourth&gt;
 </pre>
 <p>
-<a name="rfc.section.1.6.p.3"></a>
+<a name="rfc.section.1.7.p.3"></a>
    The component names are enclosed in angle-brackets and any characters
    outside angle-brackets are literal separators.  Whitespace should be
    ignored.  These descriptions are used informally and do not define
    the syntax requirements.
 </p>
 <p>
-<a name="rfc.section.1.6.p.4"></a>
+<a name="rfc.section.1.7.p.4"></a>
    The second convention is a formal grammar defined using the
    Augmented Backus-Naur Form (ABNF) notation of <a href="#RFC2234" title="Augmented BNF for Syntax Specifications: ABNF">[RFC2234]</a>.
    Although the ABNF defines syntax in terms of the ASCII character
@@ -1169,7 +1190,7 @@ The following examples illustrate URIs that are in common use.
    charset of the document that contains it.
 </p>
 <p>
-<a name="rfc.section.1.6.p.5"></a>
+<a name="rfc.section.1.7.p.5"></a>
    The complete URI syntax is collected in Appendix A.
 </p>
 

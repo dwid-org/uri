@@ -123,7 +123,7 @@ All significant changes from RFC 2396 are noted in Appendix G.
 
 <section title="Overview of URIs">
 <t>
-URIs are characterized by the following definitions:
+URIs are characterized as follows:
 </t>
 <t>Uniform
   <list>
@@ -145,60 +145,71 @@ set of resource identifiers.
 <t>Resource
   <list>
     <t>
-A resource is a source of supply or support within the context of a
-given system.  In general, a resource could be anything.  In practice,
-however, the nature of a system's resources is defined by actions
-that might be applied to them in the future.  For example, if a system
-is performing an information retrieval action, then things that can
-provide information to that system are considered resources.
-This specification does not place any limits on the nature of a resource
-or the nature of systems that might use resources.  Familiar examples of
-a resource include an electronic document, an image, a service
-(e.g., "today's weather report for Los Angeles"), and a collection of
-other resources.  Not all resources are network "retrievable"; e.g.,
-human beings, corporations, and bound books in a library can also be
-considered resources.
-    </t>
-    <t>
-A common misunderstanding of resources, particularly in information
-systems, is to equate the resource with one representation of that
-resource as observed at a particular instance in time.  A resource is
-defined not by its current representation, but rather by the sameness of
-characteristics that should be observed in any future representation.
-This conceptual mapping of resource to representations is what the
-system identifies as a resource.  Thus, a resource remains constant
-even when its representation---what it supplies to the system---changes
-over time, provided that the conceptual mapping remains constant.
-    </t>
-    <t>
-For example, a resource that is defined to be "a live camera view from
-my window" is distinctly different from a resource defined as
-"a camera view from my window on May 3rd, 2003", even if the set of
-representations for both resources are identical during that day.
-The characteristics of a resource as they are observed over time,
-perhaps elucidated by additional comments or assertions made by the
-resource provider, create an expectation of sameness that differentiates
-one resource from another even if they are impossible to distinguish
-from individual observations.
+Anything that can be named or described can be a resource.
+Familiar examples include an electronic document, an image,
+a service (e.g., "today's weather report for Los Angeles"),
+and a collection of other resources.
+A resource does not need to be accessible via the Internet;
+e.g., human beings, corporations, and bound books in a library
+can also be resources.
+Likewise, abstract concepts can be resources, such as the operators and
+operands of a mathematical equation or the types of a relationship
+(e.g., "parent" or "employee").
     </t>
   </list>
 </t>        
 <t>Identifier
   <list>
     <t>
-An identifier is an object that carries identifying data.  It is not
-necessary for the identifier to define what is being identified; it is
-only necessary for the identifier to provide sufficient data to distinguish
-what is being identified from all other things within the scope of its use.
-A URI is an identifier object consisting of a sequence of characters
-that matches the restricted syntax defined by this specification.
+An identifier embodies the information required to distinguish what is
+being identified from all other things within its scope of identification.
     </t>
   </list>
 </t>
 <t>
-Given an identifier for a resource, a system could perform a variety of
-operations on the resource, as might be characterized by such words
-as `denote', `access', `update', `replace', or `find attributes'.
+A URI is an identifier that consists of a sequence of characters
+matching the restricted syntax defined by this specification.  A URI
+can be used to denote a resource; this specification does not place any
+limits on the nature of a resource or on what types of resources a
+conformant implementation might denote.  URIs have a global scope
+and should be interpreted consistently regardless of context, but
+that interpretation may be defined in relation to the user's context
+(e.g., "http://localhost/" denotes a resource that is relative to
+the user's network interface and yet not specific to any one user).
+</t>
+</section>
+
+<section title="Separating Identification from Interaction">
+<t>
+A common misunderstanding of URIs is that they are only used to
+denote accessible resources.  In fact, the URI alone only provides
+identification: access to the resource is neither guaranteed nor
+implied by the presence of a URI.  Instead, an action (if any)
+associated with a URI reference is defined by the protocol or
+data format elements within which the URI appears, with the only
+exception being URIs that appear in plain text.
+</t>
+<t>
+Given a URI, a system may attempt to perform a variety of operations
+on the resource it denotes, as might be characterized by such words
+as `access', `update', `replace', or `find attributes'.  Such operations
+are defined by the protocols that make use of URIs, not by this
+specification.
+</t>
+<t>
+Another misunderstanding that is common in information systems is to
+equate the resource with the result of accessing that resource at a
+particular instance in time.  URI references in information systems
+are usually designed to be late-binding: the result of an access is
+determined at the time it is accessed and may vary over time or due
+to other aspects of the interaction.  When an author creates a reference
+to such a resource, they usually do so with the intention that the
+reference be used in the future.  What is being identified is not
+some specific result that was obtained in the past, but rather some
+characteristic of that result which is expected to be true for all
+future results.  Therefore, the resource denoted by a URI is actually
+a sameness of character as observed over time, perhaps elucidated
+by additional comments or assertions made by the resource provider.
 </t>
 </section>
 
