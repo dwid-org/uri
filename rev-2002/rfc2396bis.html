@@ -2660,8 +2660,8 @@ reliably in situations where the base URI is well-defined.
 <a name="rfc.section.5.2.p.1"></a>
 </div>
 <p>
-This section describes an example algorithm for transforming URI
-references that might be relative to a given base URI.  The algorithm
+This section describes an algorithm for obtaining the target URI
+of a URI reference that might be relative to a given base URI.  The algorithm
 is intended to provide a definitive result that can be used to test
 the output of other implementations.  Implementation of the algorithm
 itself is not required, but the result given by an implementation must
@@ -2683,8 +2683,7 @@ never undefined, though it may be empty.
 <a name="rfc.section.5.2.p.3"></a>
 </div>
 <p>
-The algorithm assumes that the base URI is well-formed and does not contain
-dot-segments in its path.  Normalization of the base URI, as described in
+Normalization of the base URI, as described in
 <a href="#normalize-syntax">section&nbsp;6.2.2</a> and <a href="#normalize-scheme">section&nbsp;6.2.3</a>,
 is optional.  A URI reference must be transformed to its target URI before
 it can be normalized.
@@ -2753,20 +2752,16 @@ accomplished as follows:
 <ul>
 
 <li>
-If the base URI's path is empty, then return a string consisting of "/"
-concatenated with the reference's path component; otherwise,
-</li>
-
-<li>
-If the base URI's path is non-hierarchical, as indicated by not beginning
-with a slash, then return a string consisting of the reference's path
-component; otherwise,
+If the base URI has a defined authority component and an empty path,
+then return a string consisting of "/" concatenated with the reference's
+path; otherwise,
 </li>
 
 <li>
 Return a string consisting of the reference's path component appended to
 all but the last segment of the base URI's path (i.e., any characters
-after the right-most "/" in the base URI path are excluded).
+after the right-most "/" in the base URI path are excluded or the entire
+base URI path is excluded if it does not contain any "/" characters).
 </li>
 
 </ul>
@@ -2784,44 +2779,49 @@ path is extracted from a reference, whether or not the path
 was relative, in order to remove any invalid or extraneous
 dot-segments prior to forming the target URI.  Although there
 are many ways to accomplish this removal process, we describe a
-simple method using a separate string buffer:
+simple method using a two string buffers.  Note that the use of
+&lt;segment&gt; below refers to a complete path segment, bounded
+by "/" or the beginning or end of the buffer, that may be empty.
 </p>
 <ol>
 
 <li>
-The buffer is initialized with the unprocessed path component.
+The input buffer is initialized with the now-appended path components
+and the outbut buffer is initialized to the empty string.
 </li>
 
 <li>
-If the buffer begins with "./" or "../", the "." or ".." segment is removed.
+Replace any prefix of "./" or "../" at the beginning of the input buffer
+with "/".
 </li>
 
 <li>
-All occurrences of "/./" in the buffer are replaced with "/".
+While the input buffer is not empty, loop:
+<ol style="list-style-type: lower-alpha">
+
+<li>
+If the input buffer begins with a prefix of "/./" or "/.", where "." is
+a complete path segment, then replace that prefix with "/"; otherwise
 </li>
 
 <li>
-If the buffer ends with "/.", the "." is removed.
+If the input buffer begins with a prefix of "/../" or "/..", where ".." is
+a complete path segment, then replace that prefix with "/" and
+remove the last segment and its preceding "/" (if any) from the
+output buffer; otherwise
 </li>
 
 <li>
-All occurrences of "/&lt;segment&gt;/../" in the buffer, where ".."
-and &lt;segment&gt; are complete path segments, are iteratively replaced
-with "/" in order from left to right until no matching pattern remains.
-If the buffer ends with "/&lt;segment&gt;/..", that is also replaced with "/".
-Note that &lt;segment&gt; may be empty.
+Remove the first segment and its preceding "/" (if any) from the
+input buffer and append them to the output buffer.
+</li>
+
+</ol>
+
 </li>
 
 <li>
-All prefixes of "&lt;segment&gt;/../" in the buffer, where ".."
-and &lt;segment&gt; are complete path segments, are iteratively replaced
-with "/" in order from left to right until no matching pattern remains.
-If the buffer ends with "&lt;segment&gt;/..", that is also replaced with "/".
-Note that &lt;segment&gt; may be empty.
-</li>
-
-<li>
-The remaining buffer is returned as the result of remove_dot_segments.
+Finally, the output buffer is returned as the result of remove_dot_segments.
 </li>
 
 </ol>
@@ -2829,19 +2829,41 @@ The remaining buffer is returned as the result of remove_dot_segments.
 
 </p>
 <div>
-<a name="rfc.section.5.2.p.7"></a>
+<a name="rfc.figure.u.25"></a>
 </div>
 <p>
-Some systems may find it more efficient to implement the remove_dot_segments
-algorithm as a stack of path segments being compressed, rather than as a
-series of string pattern replacements.
+The following illustrates how the above steps are applied for two example
+merged paths, showing the state of the two buffers after each step.
+</p>
+<pre>   STEP   OUTPUT BUFFER         INPUT BUFFER
+
+    1 :                         /a/b/c/./../../g
+    3c:   /a                    /b/c/./../../g
+    3c:   /a/b                  /c/./../../g
+    3c:   /a/b/c                /./../../g
+    3a:   /a/b/c                /../../g
+    3b:   /a/b                  /../g
+    3b:   /a                    /g
+    3c:   /a/g
+
+   STEP   OUTPUT BUFFER         INPUT BUFFER
+
+    1 :                         mid/content=5/../6
+    3c:   mid                   /content=5/../6
+    3c:   mid/content=5         /../6
+    3b:   mid                   /6
+    3c:   mid/6
+</pre>
+<p>
+Some applications may find it more efficient to implement the
+remove_dot_segments algorithm using two segment stacks rather than strings.
 </p>
 <h2>
 <a name="rfc.section.5.3">5.3</a>&nbsp;
     <a name="recomposition">Recomposition of a Parsed URI</a>
 </h2>
 <div>
-<a name="rfc.figure.u.25"></a>
+<a name="rfc.figure.u.26"></a>
 </div>
 <p>
 Parsed URI components can be recomposed to obtain the corresponding
@@ -2891,7 +2913,7 @@ next component separator or the end of the reference.
 Within a representation with a well-defined base URI of
 </p>
 <div>
-<a name="rfc.figure.u.26"></a>
+<a name="rfc.figure.u.27"></a>
 </div>
 <pre>   http://a/b/c/d;p?q
 </pre>
@@ -2906,7 +2928,7 @@ a relative URI reference is transformed to its target URI as follows.
     <a name="relative-normal">Normal Examples</a>
 </h3>
 <div>
-<a name="rfc.figure.u.27"></a>
+<a name="rfc.figure.u.28"></a>
 </div>
 <pre>   "g:h"           =  "g:h"
    "g"             =  "http://a/b/c/g"
@@ -2950,7 +2972,7 @@ consistently.  Each example uses the same base as above.
 An empty reference refers to the current base URI.
 </p>
 <div>
-<a name="rfc.figure.u.28"></a>
+<a name="rfc.figure.u.29"></a>
 </div>
 <pre>   ""              =  "http://a/b/c/d;p?q"
 </pre>
@@ -2964,7 +2986,7 @@ base URI's path.  Note that the ".." syntax cannot be used to change
 the authority component of a URI.
 </p>
 <div>
-<a name="rfc.figure.u.29"></a>
+<a name="rfc.figure.u.30"></a>
 </div>
 <pre>   "../../../g"    =  "http://a/g"
    "../../../../g" =  "http://a/g"
@@ -2978,7 +3000,7 @@ they are complete components of a path, but not when they are only
 part of a segment.
 </p>
 <div>
-<a name="rfc.figure.u.30"></a>
+<a name="rfc.figure.u.31"></a>
 </div>
 <pre>   "/./g"          =  "http://a/g"
    "/../g"         =  "http://a/g"
@@ -2995,7 +3017,7 @@ Less likely are cases where the relative URI uses unnecessary or
 nonsensical forms of the "." and ".." complete path segments.
 </p>
 <div>
-<a name="rfc.figure.u.31"></a>
+<a name="rfc.figure.u.32"></a>
 </div>
 <pre>   "./../g"        =  "http://a/b/g"
    "./g/."         =  "http://a/b/c/g/"
@@ -3016,7 +3038,7 @@ character, and the query component is not normally used within
 relative references.
 </p>
 <div>
-<a name="rfc.figure.u.32"></a>
+<a name="rfc.figure.u.33"></a>
 </div>
 <pre>   "g?y/./x"       =  "http://a/b/c/g?y/./x"
    "g?y/../x"      =  "http://a/b/c/g?y/../x"
@@ -3033,7 +3055,7 @@ loophole in prior specifications of partial URI <a href="#RFC1630" title="Univer
 Its use should be avoided, but is allowed for backward compatibility.
 </p>
 <div>
-<a name="rfc.figure.u.33"></a>
+<a name="rfc.figure.u.34"></a>
 </div>
 <pre>   "http:g"        =  "http:g"         ; for strict parsers
                    /  "http://a/b/c/g" ; for backward compatibility
@@ -3193,7 +3215,7 @@ codepoint-by-codepoint.
     <a name="normalize-syntax">Syntax-based Normalization</a>
 </h3>
 <div>
-<a name="rfc.figure.u.34"></a>
+<a name="rfc.figure.u.35"></a>
 </div>
 <p>
 Software may use logic based on the definitions provided by this
@@ -3257,7 +3279,7 @@ character, as described in <a href="#unreserved">section&nbsp;2.3</a>.
     <a name="normalize-empty">Empty-component Normalization</a>
 </h3>
 <div>
-<a name="rfc.figure.u.35"></a>
+<a name="rfc.figure.u.36"></a>
 </div>
 <p>
 Components of the generic URI syntax are delimited from other components
@@ -3300,7 +3322,7 @@ remove_dot_segments algorithm to the path, as described in
     <a name="normalize-scheme">Scheme-based Normalization</a>
 </h3>
 <div>
-<a name="rfc.figure.u.36"></a>
+<a name="rfc.figure.u.37"></a>
 </div>
 <p>
 The syntax and semantics of URIs vary from scheme to scheme, as described
@@ -3341,7 +3363,7 @@ string "localhost" instead of an empty authority.
     <a name="normalize-protocol">Protocol-based Normalization</a>
 </h3>
 <div>
-<a name="rfc.figure.u.37"></a>
+<a name="rfc.figure.u.38"></a>
 </div>
 <p>
 Web spiders, for which substantial effort to reduce the incidence
@@ -3352,7 +3374,7 @@ observe that a URI such as
 <pre>   http://example.com/data
 </pre>
 <div>
-<a name="rfc.figure.u.38"></a>
+<a name="rfc.figure.u.39"></a>
 </div>
 <p>
 redirects to a URI differing only in the trailing slash
@@ -3563,7 +3585,7 @@ rare cases where the 'password' parameter is intended to be public.
     <a name="security-semantic">Semantic Attacks</a>
 </h2>
 <div>
-<a name="rfc.figure.u.39"></a>
+<a name="rfc.figure.u.40"></a>
 </div>
 <p>
 Because the userinfo sub-component is rarely used and appears before the
@@ -3614,11 +3636,12 @@ the acknowledgments in those documents still apply.
 It also incorporates the update (with corrections) for IPv6 literals
 in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
 and Larry Masinter in <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>.
-In addition, contributions by Reese Anschultz, Daniel Barclay, Tim Bray,
-Mike Brown, Rob Cameron, Jeremy Carroll, John C. Klensin, Dan Connolly,
-Adam M. Costello, John Cowan, Jason Diamond, Martin Duerst, Stefan Eissing,
-Clive D.W. Feather, Tony Hammond, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
-Graham Klyne, Dan Kohn, Bruce Lilly,
+In addition, contributions by Gisle Aas, Reese Anschultz,
+Daniel Barclay, Tim Bray, Mike Brown,
+Rob Cameron, Jeremy Carroll, Dan Connolly, Adam M. Costello, John Cowan,
+Jason Diamond, Martin Duerst, Stefan Eissing, Clive D.W. Feather,
+Tony Hammond, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
+John C. Klensin, Graham Klyne, Dan Kohn, Bruce Lilly,
 Andrew Main, Ira McDonald, Michael Mealling, Stephen Pollei,
 Julian Reschke, Tomas Rokicki, Miles Sabin, Mark Thomson, Ronald Tschalaer,
 Norm Walsh, Marc Warne, Stuart Williams, and Henry Zongaro
@@ -3888,7 +3911,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
     <a name="collected-abnf">Collected ABNF for URI</a>
 </h1>
 <div>
-<a name="rfc.figure.u.40"></a>
+<a name="rfc.figure.u.41"></a>
 </div>
 <pre> URI = scheme ":" ["//" authority] path ["?" query] ["#" fragment]
 
@@ -3976,7 +3999,7 @@ The following line is the regular expression for breaking-down a
 well-formed URI reference into its components.
 </p>
 <div>
-<a name="rfc.figure.u.41"></a>
+<a name="rfc.figure.u.42"></a>
 </div>
 <pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
     12            3  4          5       6  7        8 9
@@ -3991,7 +4014,7 @@ paired parenthesis).  We refer to the value matched for subexpression
 &lt;n&gt; as $&lt;n&gt;.  For example, matching the above expression to
 </p>
 <div>
-<a name="rfc.figure.u.42"></a>
+<a name="rfc.figure.u.43"></a>
 </div>
 <pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
 </pre>
@@ -4002,7 +4025,7 @@ paired parenthesis).  We refer to the value matched for subexpression
 results in the following subexpression matches:
 </p>
 <div>
-<a name="rfc.figure.u.43"></a>
+<a name="rfc.figure.u.44"></a>
 </div>
 <pre>   $1 = http:
    $2 = http
@@ -4023,7 +4046,7 @@ the case for the query component in the above example.  Therefore, we
 can determine the value of the four components and fragment as
 </p>
 <div>
-<a name="rfc.figure.u.44"></a>
+<a name="rfc.figure.u.45"></a>
 </div>
 <pre>   scheme    = $2
    authority = $4
@@ -4069,7 +4092,7 @@ within double-quotes "http://example.com/", angle brackets
 &lt;http://example.com/&gt;, or just using whitespace
 </p>
 <div>
-<a name="rfc.figure.u.45"></a>
+<a name="rfc.figure.u.46"></a>
 </div>
 <pre>   http://example.com/
 </pre>
@@ -4122,7 +4145,7 @@ For robustness, software that accepts user-typed URI should attempt
 to recognize and strip both delimiters and embedded whitespace.
 </p>
 <div>
-<a name="rfc.figure.u.46"></a>
+<a name="rfc.figure.u.47"></a>
 </div>
 <p>
 For example, the text:
@@ -4139,7 +4162,7 @@ For example, the text:
 contains the URI references
 </p>
 <div>
-<a name="rfc.figure.u.47"></a>
+<a name="rfc.figure.u.48"></a>
 </div>
 <pre>   http://www.w3.org/Addressing/
    ftp://foo.example.com/rfc/

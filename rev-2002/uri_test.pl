@@ -20,7 +20,7 @@
 # and Day Software, Inc., for use as a test oracle by anyone that
 # is testing or implementing a Uniform Resource Identifier parser.
 #
-# More info: http://www.apache.org/~fielding/uri/rev-2002/issues.html
+# More info: http://gbiv.com/protocols/uri/rev-2002/issues.html
 #
 ###############
 
@@ -147,51 +147,44 @@ sub path_merge
     if ($bpath eq "") {          # base path is empty
         return "/$rpath";
     }
-    if ($bpath !~ /^\//) {       # base path is non-hierarchical
-        return $rpath;
-    }
-
     $bpath =~ s/[^\/]*$//;       # remove last base path segment
 
     return ($bpath . $rpath);    # and return with ref path appended
 }
 
-# Remove "." and ".." segments from a reference's path
+# Remove "." and ".." segments from a reference's path.
+#
+# Note that the use of <segment> below refers to a complete path segment,
+# bounded by "/" or the beginning or end of the buffer, that may be empty.
 #
 sub remove_dot_segments
 {
-    local($buf) = @_;
-    local($buzz);
+    local($_) = @_;
+    local($buf) = "";
 
-    $buzz = 0;
+    # replace any prefix of "../" or "./" with "/"
+    #
+    s/^\.\.?\//\//;
 
-    # If the buffer begins with "./" or "../", the "." or ".." is removed.
+    while ($_) {
 
-    $buf =~ s/^\.\.?\//\//;
+        # replace any prefix segment of "/./" or "/." with "/"
+        #
+        next if s/^\/\.(\/|$)/\//;
 
-    # All occurrences of "/./" in the buffer are replaced with "/"
+        # replace any prefix segment of "/../" or "/.." with "/"
+        #         and remove the last segment added to buffer (if any)
+        #
+        if (s/^\/\.\.(\/|$)/\//) {
+            $buf =~ s/\/?[^\/]*$//;
+            next;
+        }
 
-    while ($buf =~ s/\/\.\//\//) {}
-
-    # If the buffer ends with "/.", the "." is removed.
-
-    $buf =~ s/\/\.$/\//;
-
-    # All occurrences of "/<segment>/../" in the buffer, where ".."
-    # and <segment> are complete path segments, are iteratively replaced
-    # with "/" in order from left to right until no matching pattern remains.
-    # If the buffer ends with "/<segment>/..", that is also replaced
-    # with "/".  Note that <segment> may be empty.
-
-    while ($buf =~ s/\/[^\/]*\/\.\.(\/|$)/\//) {}
-
-    # All prefixes of "<segment>/../" in the buffer, where ".."
-    # and <segment> are complete path segments, are iteratively replaced
-    # with "/" in order from left to right until no matching pattern remains.
-    # If the buffer ends with "<segment>/..", that is also replaced
-    # with "/".  Note that <segment> may be empty.
-
-    while ($buf =~ s/[^\/]*\/\.\.(\/|$)/\//) {}
+        # otherwise, remove the first segment and append it to buffer
+        #
+        s/^(\/?[^\/]*)//;
+        $buf .= $1;
+    }
 
     return $buf;
 }

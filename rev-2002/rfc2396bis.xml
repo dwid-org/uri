@@ -1398,8 +1398,8 @@ reliably in situations where the base URI is well-defined.
 
 <section title="Obtaining the Referenced URI" anchor="absolutize">
 <t>
-This section describes an example algorithm for transforming URI
-references that might be relative to a given base URI.  The algorithm
+This section describes an algorithm for obtaining the target URI
+of a URI reference that might be relative to a given base URI.  The algorithm
 is intended to provide a definitive result that can be used to test
 the output of other implementations.  Implementation of the algorithm
 itself is not required, but the result given by an implementation must
@@ -1415,8 +1415,7 @@ delimiter does not appear in the URI reference; the path component is
 never undefined, though it may be empty.
 </t>
 <t>
-The algorithm assumes that the base URI is well-formed and does not contain
-dot-segments in its path.  Normalization of the base URI, as described in
+Normalization of the base URI, as described in
 <xref target="normalize-syntax"/> and <xref target="normalize-scheme"/>,
 is optional.  A URI reference must be transformed to its target URI before
 it can be normalized.
@@ -1478,18 +1477,15 @@ relative-path reference with the path of the base URI.  This is
 accomplished as follows:
 <list style="symbols">
 <t>
-If the base URI's path is empty, then return a string consisting of "/"
-concatenated with the reference's path component; otherwise,
-</t>
-<t>
-If the base URI's path is non-hierarchical, as indicated by not beginning
-with a slash, then return a string consisting of the reference's path
-component; otherwise,
+If the base URI has a defined authority component and an empty path,
+then return a string consisting of "/" concatenated with the reference's
+path; otherwise,
 </t>
 <t>
 Return a string consisting of the reference's path component appended to
 all but the last segment of the base URI's path (i.e., any characters
-after the right-most "/" in the base URI path are excluded).
+after the right-most "/" in the base URI path are excluded or the entire
+base URI path is excluded if it does not contain any "/" characters).
 </t>
 </list>
 </t>
@@ -1502,44 +1498,68 @@ path is extracted from a reference, whether or not the path
 was relative, in order to remove any invalid or extraneous
 dot-segments prior to forming the target URI.  Although there
 are many ways to accomplish this removal process, we describe a
-simple method using a separate string buffer:
+simple method using a two string buffers.  Note that the use of
+&lt;segment&gt; below refers to a complete path segment, bounded
+by "/" or the beginning or end of the buffer, that may be empty.
 <list style="numbers">
 <t>
-The buffer is initialized with the unprocessed path component.
+The input buffer is initialized with the now-appended path components
+and the outbut buffer is initialized to the empty string.
 </t>
 <t>
-If the buffer begins with "./" or "../", the "." or ".." segment is removed.
+Replace any prefix of "./" or "../" at the beginning of the input buffer
+with "/".
 </t>
 <t>
-All occurrences of "/./" in the buffer are replaced with "/".
+While the input buffer is not empty, loop:
+<list style="numbers">
+<t>
+If the input buffer begins with a prefix of "/./" or "/.", where "." is
+a complete path segment, then replace that prefix with "/"; otherwise
 </t>
 <t>
-If the buffer ends with "/.", the "." is removed.
+If the input buffer begins with a prefix of "/../" or "/..", where ".." is
+a complete path segment, then replace that prefix with "/" and
+remove the last segment and its preceding "/" (if any) from the
+output buffer; otherwise
 </t>
 <t>
-All occurrences of "/&lt;segment&gt;/../" in the buffer, where ".."
-and &lt;segment&gt; are complete path segments, are iteratively replaced
-with "/" in order from left to right until no matching pattern remains.
-If the buffer ends with "/&lt;segment&gt;/..", that is also replaced with "/".
-Note that &lt;segment&gt; may be empty.
-</t>
-<t>
-All prefixes of "&lt;segment&gt;/../" in the buffer, where ".."
-and &lt;segment&gt; are complete path segments, are iteratively replaced
-with "/" in order from left to right until no matching pattern remains.
-If the buffer ends with "&lt;segment&gt;/..", that is also replaced with "/".
-Note that &lt;segment&gt; may be empty.
-</t>
-<t>
-The remaining buffer is returned as the result of remove_dot_segments.
+Remove the first segment and its preceding "/" (if any) from the
+input buffer and append them to the output buffer.
 </t>
 </list>
 </t>
 <t>
-Some systems may find it more efficient to implement the remove_dot_segments
-algorithm as a stack of path segments being compressed, rather than as a
-series of string pattern replacements.
+Finally, the output buffer is returned as the result of remove_dot_segments.
 </t>
+</list>
+</t>
+<figure><preamble>
+The following illustrates how the above steps are applied for two example
+merged paths, showing the state of the two buffers after each step.
+</preamble><artwork>
+   STEP   OUTPUT BUFFER         INPUT BUFFER
+
+    1 :                         /a/b/c/./../../g
+    3c:   /a                    /b/c/./../../g
+    3c:   /a/b                  /c/./../../g
+    3c:   /a/b/c                /./../../g
+    3a:   /a/b/c                /../../g
+    3b:   /a/b                  /../g
+    3b:   /a                    /g
+    3c:   /a/g
+
+   STEP   OUTPUT BUFFER         INPUT BUFFER
+
+    1 :                         mid/content=5/../6
+    3c:   mid                   /content=5/../6
+    3c:   mid/content=5         /../6
+    3b:   mid                   /6
+    3c:   mid/6
+</artwork><postamble>
+Some applications may find it more efficient to implement the
+remove_dot_segments algorithm using two segment stacks rather than strings.
+</postamble></figure>
 </section>
 
 <section title="Recomposition of a Parsed URI" anchor="recomposition">
@@ -2102,11 +2122,12 @@ the acknowledgments in those documents still apply.
 It also incorporates the update (with corrections) for IPv6 literals
 in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
 and Larry Masinter in <xref target="RFC2732"/>.
-In addition, contributions by Reese Anschultz, Daniel Barclay, Tim Bray,
-Mike Brown, Rob Cameron, Jeremy Carroll, John C. Klensin, Dan Connolly,
-Adam M. Costello, John Cowan, Jason Diamond, Martin Duerst, Stefan Eissing,
-Clive D.W. Feather, Tony Hammond, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
-Graham Klyne, Dan Kohn, Bruce Lilly,
+In addition, contributions by Gisle Aas, Reese Anschultz,
+Daniel Barclay, Tim Bray, Mike Brown,
+Rob Cameron, Jeremy Carroll, Dan Connolly, Adam M. Costello, John Cowan,
+Jason Diamond, Martin Duerst, Stefan Eissing, Clive D.W. Feather,
+Tony Hammond, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
+John C. Klensin, Graham Klyne, Dan Kohn, Bruce Lilly,
 Andrew Main, Ira McDonald, Michael Mealling, Stephen Pollei,
 Julian Reschke, Tomas Rokicki, Miles Sabin, Mark Thomson, Ronald Tschalaer,
 Norm Walsh, Marc Warne, Stuart Williams, and Henry Zongaro
