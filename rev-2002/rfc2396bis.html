@@ -303,9 +303,9 @@ table.closedissue {
       <link rel="Appendix" title="A Collected ABNF for URI" href="#rfc.section.A">
       <link rel="Appendix" title="B Parsing a URI Reference with a Regular Expression" href="#rfc.section.B">
       <link rel="Appendix" title="C Delimiting a URI in Context" href="#rfc.section.C">
-      <link rel="Appendix" title="D Summary of Non-editorial Changes" href="#rfc.section.D">
+      <link rel="Appendix" title="D Changes from RFC 2396" href="#rfc.section.D">
       <link rel="Appendix" title="E Instructions to RFC Editor" href="#rfc.section.E">
-      <meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.17, 2004/09/25 05:04:27, XSLT vendor: SAXON 7.8 from Michael Kay http://saxon.sf.net/">
+      <meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.18, 2004/09/25 05:35:31, XSLT vendor: SAXON 7.8 from Michael Kay http://saxon.sf.net/">
       <meta name="keywords" content="uniform resource identifier, URI, URL, URN, WWW, resource">
       <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
       <meta name="DC.Creator" content="Berners-Lee, T.">
@@ -986,7 +986,7 @@ table.closedissue {
          
          
          <b>D&nbsp;
-            <a href="#changes">Summary of Non-editorial Changes</a></b><br>
+            <a href="#changes">Changes from RFC 2396</a></b><br>
          
          <b>&nbsp;D.1&nbsp;
             <a href="#additions">Additions</a></b><br>
@@ -997,7 +997,7 @@ table.closedissue {
          
          
          <b>&nbsp;D.2&nbsp;
-            <a href="#modifications">Modifications from RFC 2396</a></b><br>
+            <a href="#modifications">Modifications</a></b><br>
          
          
          
@@ -1051,7 +1051,7 @@ table.closedissue {
       </p>
       <div class="noprint" title="rfc.section.1.p.3"><a name="rfc.section.1.p.3"></a></div>
       <p>
-         All significant changes from RFC 2396 are noted in <a href="#changes" title="Summary of Non-editorial Changes">Appendix&nbsp;D</a>.
+         All significant changes from RFC 2396 are noted in <a href="#changes" title="Changes from RFC 2396">Appendix&nbsp;D</a>.
          
       </p>
       <div class="noprint" title="rfc.section.1.p.4"><a name="rfc.section.1.p.4"></a></div>
@@ -1470,15 +1470,30 @@ table.closedissue {
          are compelling reasons to forbid relative referencing within that scheme.
          
       </p>
+      <dl>
+         
+         <dd style="margin-top: .5em">
+            NOTE: Previous specifications used the terms "partial URI" and "relative URI"
+            to denote a relative reference to a URI.  Since some readers misunderstood
+            those terms to mean that relative URIs are a subset of URIs, rather than a
+            method of referencing URIs, this specification simply refers to them as
+            relative references.
+            
+         </dd>
+         
+      </dl>
+      <p>
+         
+      </p>
       <div class="noprint" title="rfc.section.1.2.3.p.5"><a name="rfc.section.1.2.3.p.5"></a></div>
       <p>
-         All URIs are parsed by generic syntax parsers when used. A URI scheme that
-         wishes to remain opaque to hierarchical processing must disallow the use
-         of slash and question mark characters.  However, since a URI reference is
-         only modified by the generic parser if it contains a dot-segment (a complete
-         path segment of "." or "..", as described in <a href="#path" title="Path">Section&nbsp;3.3</a>),
-         URI schemes may safely use "/" for other purposes if they do not allow
-         dot-segments.
+         All URI references are parsed by generic syntax parsers when used.
+         However, since hierarchical processing has no effect on an absolute URI
+         used in a reference unless it contains one or more dot-segments (complete
+         path segments of "." or "..", as described in <a href="#path" title="Path">Section&nbsp;3.3</a>),
+         URI scheme specifications can define opaque identifiers by disallowing
+         use of slash characters, question mark characters, and the URIs
+         "scheme:." and "scheme:..".
          
       </p>
       <h2><a name="rfc.iref.21"></a><a name="rfc.iref.22"></a><a name="rfc.iref.23"></a><a name="rfc.iref.24"></a><a name="rfc.iref.25"></a><a name="rfc.iref.26"></a><a name="rfc.iref.27"></a><a name="rfc.iref.28"></a><a name="rfc.iref.29"></a><a name="rfc.section.1.3" href="#rfc.section.1.3">1.3</a>&nbsp;<a name="notation" href="#notation">Syntax Notation</a></h2>
@@ -1854,6 +1869,8 @@ table.closedissue {
          the mapping between scheme names and their specifications.
          Advice for designers of new URI schemes can be found in
          <a href="#RFC2718" title="Guidelines for new URL Schemes">[RFC2718]</a>.
+         URI scheme specifications must define their own syntax as a subset of the
+         &lt;absolute-URI&gt; grammar, as described in <a href="#absolute-uri" title="Absolute URI">Section&nbsp;4.3</a>.
          
       </p>
       <div class="noprint" title="rfc.section.3.1.p.3"><a name="rfc.section.3.1.p.3"></a></div>
@@ -2265,8 +2282,8 @@ table.closedissue {
       <p>
          The characters slash ("/") and question mark ("?") may represent data
          within the query component.  Beware that some older, erroneous
-         implementations do not handle such URIs correctly when they
-         are used as the base for relative references (<a href="#base-uri" title="Establishing a Base URI">Section&nbsp;5.1</a>),
+         implementations may not handle such data correctly when
+         used as the base URI for relative references (<a href="#base-uri" title="Establishing a Base URI">Section&nbsp;5.1</a>),
          apparently because they fail to to distinguish query data from path data
          when looking for hierarchical separators.
          However, since query components are often used to carry identifying information
@@ -2353,8 +2370,8 @@ table.closedissue {
       <p>
          The characters slash ("/") and question mark ("?") are allowed to
          represent data within the fragment identifier.  Beware that some older,
-         erroneous implementations do not handle such URIs correctly when they
-         are used as the base for relative references (<a href="#base-uri" title="Establishing a Base URI">Section&nbsp;5.1</a>).
+         erroneous implementations may not handle such data correctly when
+         used as the base URI for relative references (<a href="#base-uri" title="Establishing a Base URI">Section&nbsp;5.1</a>).
          
       </p>
       
@@ -2463,7 +2480,18 @@ table.closedissue {
          <a name="rfc.iref.139"></a>
          
       </p><pre>   absolute-URI  = scheme ":" hier-part [ "?" query ]
-</pre><h2><a name="rfc.iref.140"></a><a name="rfc.section.4.4" href="#rfc.section.4.4">4.4</a>&nbsp;<a name="same-document" href="#same-document">Same-document Reference</a></h2>
+</pre><p>
+         URI scheme specifications must define their own syntax as a subset of the
+         &lt;absolute-URI&gt; grammar.  Scheme specifications are not responsible
+         for defining fragment identifier syntax or usage, regardless of its
+         applicability to resources identifiable via that scheme, since fragment
+         identification is orthogonal to scheme definition.  However, scheme
+         specifications are encouraged to include a wide range of examples,
+         including examples that show use of the scheme's URIs with fragment
+         identifiers when such usage is appropriate.
+         
+      </p>
+      <h2><a name="rfc.iref.140"></a><a name="rfc.section.4.4" href="#rfc.section.4.4">4.4</a>&nbsp;<a name="same-document" href="#same-document">Same-document Reference</a></h2>
       <div class="noprint" title="rfc.section.4.4.p.1"><a name="rfc.section.4.4.p.1"></a></div>
       <p>
          When a URI reference refers to a URI that is, aside from its fragment
@@ -4175,23 +4203,28 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.section.D" href="#rfc.section.D">D</a>&nbsp;<a name="changes" href="#changes">Summary of Non-editorial Changes</a></h1>
+      <h1><a name="rfc.section.D" href="#rfc.section.D">D</a>&nbsp;<a name="changes" href="#changes">Changes from RFC 2396</a></h1>
       <h2><a name="rfc.section.D.1" href="#rfc.section.D.1">D.1</a>&nbsp;<a name="additions" href="#additions">Additions</a></h2>
       <div class="noprint" title="rfc.section.D.1.p.1"><a name="rfc.section.D.1.p.1"></a></div>
       <p>
+         An ABNF rule for URI has been introduced to correspond to one
+         common usage of the term: an absolute URI with optional fragment.
+         
+      </p>
+      <div class="noprint" title="rfc.section.D.1.p.2"><a name="rfc.section.D.1.p.2"></a></div>
+      <p>
          IPv6 (and later) literals have been added to the list of possible identifiers
-         for the host portion of a authority component, as described by
+         for the host portion of an authority component, as described by
          <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>, with the addition of "[" and "]" to
          the reserved set and a version flag to anticipate future versions of
          IP literals.  Square brackets are now specified as reserved within the
          authority component and not allowed outside their use as delimiters for
          an IP literal within host.  In order to make this change without changing
          the technical definition of the path, query, and fragment components,
-         those rules were redefined to directly specify the characters allowed
-         rather than be defined in terms of uric.
+         those rules were redefined to directly specify the characters allowed.
          
       </p>
-      <div class="noprint" title="rfc.section.D.1.p.2"><a name="rfc.section.D.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.D.1.p.3"><a name="rfc.section.D.1.p.3"></a></div>
       <p>
          Since <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a> defers to <a href="#RFC3513" title="Internet Protocol Version 6 (IPv6) Addressing Architecture">[RFC3513]</a>
          for definition of an IPv6 literal address, which unfortunately lacks
@@ -4202,28 +4235,240 @@ table.closedissue {
          octet to the range 0-255.
          
       </p>
-      <div class="noprint" title="rfc.section.D.1.p.3"><a name="rfc.section.D.1.p.3"></a></div>
+      <div class="noprint" title="rfc.section.D.1.p.4"><a name="rfc.section.D.1.p.4"></a></div>
       <p>
          <a href="#comparison">Section 6</a> on URI normalization and comparison
          has been completely rewritten and extended using input from Tim Bray
          and discussion within the W3C Technical Architecture Group.
          
       </p>
-      <div class="noprint" title="rfc.section.D.1.p.4"><a name="rfc.section.D.1.p.4"></a></div>
+      <h2><a name="rfc.section.D.2" href="#rfc.section.D.2">D.2</a>&nbsp;<a name="modifications" href="#modifications">Modifications</a></h2>
       <p>
-         An ABNF rule for URI has been introduced to correspond to one
-         common usage of the term: an absolute URI with optional fragment.
-         
-      </p>
-      <h2><a name="rfc.section.D.2" href="#rfc.section.D.2">D.2</a>&nbsp;<a name="modifications" href="#modifications">Modifications from RFC 2396</a></h2>
-      <div class="noprint" title="rfc.section.D.2.p.1"><a name="rfc.section.D.2.p.1"></a></div>
-      <p>
-         The ad-hoc BNF syntax has been replaced with the ABNF of
+         The ad-hoc BNF syntax of RFC 2396 has been replaced with the ABNF of
          <a href="#RFC2234" title="Augmented BNF for Syntax Specifications: ABNF">[RFC2234]</a>.  This change required all rule names that
          formerly included underscore characters to be renamed with a dash instead.
+         In addition, a number of syntax rules have been eliminated or simplified
+         to make the overall grammar more comprehensible.  Specifications that
+         refer to the obsolete grammar rules may be understood by replacing those
+         rules according to the following table:
          
       </p>
-      <div class="noprint" title="rfc.section.D.2.p.2"><a name="rfc.section.D.2.p.2"></a></div>
+      <table summary="&#xA;The ad-hoc BNF syntax of RFC 2396 has been replaced with the ABNF of&#xA;.  This change required all rule names that&#xA;formerly included underscore characters to be renamed with a dash instead.&#xA;In addition, a number of syntax rules have been eliminated or simplified&#xA;to make the overall grammar more comprehensible.  Specifications that&#xA;refer to the obsolete grammar rules may be understood by replacing those&#xA;rules according to the following table:&#xA;" border="1" cellpadding="3" cellspacing="0">
+         <thead>
+            <tr>
+               <th valign="top" style="text-align: left;">obsolete rule</th>
+               <th valign="top" style="text-align: left;">translation</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td class="top" style="text-align: left;">absoluteURI
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">absolute-URI
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">relativeURI
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">relative-part [ "?" query ]
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">hier_part
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">( "//" authority path-abempty / path-absolute ) [ "?" query ]
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">opaque_part
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">path-rootless [ "?" query ]
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">net_path
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">"//" authority path-abempty
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">abs_path
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">path-absolute
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">rel_path
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">path-rootless
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">rel_segment
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">segment-nz-nc
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">reg_name
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">reg-name
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">server
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">authority
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">hostport
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">host [ ":" port ]
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">hostname
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">reg-name
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">path_segments
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">path-abempty
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">param
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">*&lt;pchar excluding ";"&gt;
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">uric
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">unreserved / pct-encoded / ";" / "?" / ":" / "@" / "&amp;" / "=" / "+" / "$" / "," / "/"
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">uric_no_slash
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">unreserved / pct-encoded / ";" / "?" / ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">mark
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">"-" / "_" / "." / "!" / "~" / "*" / "'" / "(" / ")"
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">escaped
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">pct-encoded
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">hex
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">HEXDIG
+                  &nbsp;
+                  
+               </td>
+            </tr>
+            <tr>
+               <td class="top" style="text-align: left;">alphanum
+                  &nbsp;
+                  
+               </td>
+               <td class="top" style="text-align: left;">ALPHA / DIGIT
+                  &nbsp;
+                  
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <p>
+         Use of the above obsolete rules for the definition of scheme-specific
+         syntax is deprecated.
+         
+      </p>
+      <div class="noprint" title="rfc.section.D.2.p.1"><a name="rfc.section.D.2.p.1"></a></div>
       <p>
          Section 2 on characters has been rewritten to explain what characters
          are reserved, when they are reserved, and why they are reserved even
@@ -4240,7 +4485,7 @@ table.closedissue {
          respectively, to reduce confusion with other forms of escape mechanisms.
          
       </p>
-      <div class="noprint" title="rfc.section.D.2.p.3"><a name="rfc.section.D.2.p.3"></a></div>
+      <div class="noprint" title="rfc.section.D.2.p.2"><a name="rfc.section.D.2.p.2"></a></div>
       <p>
          The ABNF for URI and URI-reference has been redesigned to make them
          more friendly to LALR parsers and reduce complexity.
@@ -4256,7 +4501,7 @@ table.closedissue {
          through the use of five separate path matching rules.
          
       </p>
-      <div class="noprint" title="rfc.section.D.2.p.4"><a name="rfc.section.D.2.p.4"></a></div>
+      <div class="noprint" title="rfc.section.D.2.p.3"><a name="rfc.section.D.2.p.3"></a></div>
       <p>
          The fragment identifier has been moved back into the section on
          generic syntax components and within the URI and relative-ref
@@ -4265,7 +4510,7 @@ table.closedissue {
          as a result of reintegrating the fragment syntax.
          
       </p>
-      <div class="noprint" title="rfc.section.D.2.p.5"><a name="rfc.section.D.2.p.5"></a></div>
+      <div class="noprint" title="rfc.section.D.2.p.4"><a name="rfc.section.D.2.p.4"></a></div>
       <p>
          The ABNF has been corrected to allow the path component to be empty.
          This also allows an absolute-URI to consist of nothing after the "scheme:",
@@ -4275,7 +4520,7 @@ table.closedissue {
          eliminated through the use of five separate path matching rules.
          
       </p>
-      <div class="noprint" title="rfc.section.D.2.p.6"><a name="rfc.section.D.2.p.6"></a></div>
+      <div class="noprint" title="rfc.section.D.2.p.5"><a name="rfc.section.D.2.p.5"></a></div>
       <p>
          Registry-based naming authorities that use the generic syntax are now
          defined within the host rule.
@@ -4291,7 +4536,7 @@ table.closedissue {
          rules have been removed.
          
       </p>
-      <div class="noprint" title="rfc.section.D.2.p.7"><a name="rfc.section.D.2.p.7"></a></div>
+      <div class="noprint" title="rfc.section.D.2.p.6"><a name="rfc.section.D.2.p.6"></a></div>
       <p>
          The resolving relative references algorithm of <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>
          has been rewritten using pseudocode for this revision to improve clarity

@@ -493,15 +493,24 @@ Since relative references can only be used within the context of a
 hierarchical URI, designers of new URI schemes should use a syntax
 consistent with the generic syntax's hierarchical components unless there
 are compelling reasons to forbid relative referencing within that scheme.
+<list>
+<t>
+NOTE: Previous specifications used the terms "partial URI" and "relative URI"
+to denote a relative reference to a URI.  Since some readers misunderstood
+those terms to mean that relative URIs are a subset of URIs, rather than a
+method of referencing URIs, this specification simply refers to them as
+relative references.
+</t>
+</list>
 </t>
 <t>
-All URIs are parsed by generic syntax parsers when used. A URI scheme that
-wishes to remain opaque to hierarchical processing must disallow the use
-of slash and question mark characters.  However, since a URI reference is
-only modified by the generic parser if it contains a dot-segment (a complete
-path segment of "." or "..", as described in <xref target="path"/>),
-URI schemes may safely use "/" for other purposes if they do not allow
-dot-segments.
+All URI references are parsed by generic syntax parsers when used.
+However, since hierarchical processing has no effect on an absolute URI
+used in a reference unless it contains one or more dot-segments (complete
+path segments of "." or "..", as described in <xref target="path"/>),
+URI scheme specifications can define opaque identifiers by disallowing
+use of slash characters, question mark characters, and the URIs
+"scheme:." and "scheme:..".
 </t>
 </section>
 
@@ -857,6 +866,8 @@ by <xref target="BCP35"/>.  The scheme registry maintains
 the mapping between scheme names and their specifications.
 Advice for designers of new URI schemes can be found in
 <xref target="RFC2718"/>.
+URI scheme specifications must define their own syntax as a subset of the
+&lt;absolute-URI&gt; grammar, as described in <xref target="absolute-uri"/>.
 </postamble></figure>
 <t>
 When presented with a URI that violates one or more scheme-specific
@@ -1250,8 +1261,8 @@ and terminated by a number sign ("#") character or by the end of the URI.
 <t>
 The characters slash ("/") and question mark ("?") may represent data
 within the query component.  Beware that some older, erroneous
-implementations do not handle such URIs correctly when they
-are used as the base for relative references (<xref target="base-uri"/>),
+implementations may not handle such data correctly when
+used as the base URI for relative references (<xref target="base-uri"/>),
 apparently because they fail to to distinguish query data from path data
 when looking for hierarchical separators.
 However, since query components are often used to carry identifying information
@@ -1329,8 +1340,8 @@ new schemes of identification.
 <t>
 The characters slash ("/") and question mark ("?") are allowed to
 represent data within the fragment identifier.  Beware that some older,
-erroneous implementations do not handle such URIs correctly when they
-are used as the base for relative references (<xref target="base-uri"/>).
+erroneous implementations may not handle such data correctly when
+used as the base URI for relative references (<xref target="base-uri"/>).
 </t>
 </section>
 
@@ -1430,7 +1441,16 @@ does not allow a fragment.
 <iref item="URI grammar" subitem="query" primary="false"/>
 </preamble><artwork type="abnf">
    absolute-URI  = scheme ":" hier-part [ "?" query ]
-</artwork></figure>
+</artwork><postamble>
+URI scheme specifications must define their own syntax as a subset of the
+&lt;absolute-URI&gt; grammar.  Scheme specifications are not responsible
+for defining fragment identifier syntax or usage, regardless of its
+applicability to resources identifiable via that scheme, since fragment
+identification is orthogonal to scheme definition.  However, scheme
+specifications are encouraged to include a wide range of examples,
+including examples that show use of the scheme's URIs with fragment
+identifiers when such usage is appropriate.
+</postamble></figure>
 </section>
 
 <section title="Same-document Reference" anchor="same-document">
@@ -3303,20 +3323,23 @@ contains the URI references
 </section>
 
 
-<section title="Summary of Non-editorial Changes" anchor="changes">
+<section title="Changes from RFC 2396" anchor="changes">
 
 <section title="Additions" anchor="additions">
 <t>
+An ABNF rule for URI has been introduced to correspond to one
+common usage of the term: an absolute URI with optional fragment.
+</t>
+<t>
 IPv6 (and later) literals have been added to the list of possible identifiers
-for the host portion of a authority component, as described by
+for the host portion of an authority component, as described by
 <xref target="RFC2732"/>, with the addition of "[" and "]" to
 the reserved set and a version flag to anticipate future versions of
 IP literals.  Square brackets are now specified as reserved within the
 authority component and not allowed outside their use as delimiters for
 an IP literal within host.  In order to make this change without changing
 the technical definition of the path, query, and fragment components,
-those rules were redefined to directly specify the characters allowed
-rather than be defined in terms of uric.
+those rules were redefined to directly specify the characters allowed.
 </t>
 <t>
 Since <xref target="RFC2732"/> defers to <xref target="RFC3513"/>
@@ -3332,18 +3355,44 @@ octet to the range 0-255.
 has been completely rewritten and extended using input from Tim Bray
 and discussion within the W3C Technical Architecture Group.
 </t>
-<t>
-An ABNF rule for URI has been introduced to correspond to one
-common usage of the term: an absolute URI with optional fragment.
-</t>
 </section>
 
-<section title="Modifications from RFC 2396" anchor="modifications">
-<t>
-The ad-hoc BNF syntax has been replaced with the ABNF of
+<section title="Modifications" anchor="modifications">
+<texttable anchor="oldbnf"><preamble>
+The ad-hoc BNF syntax of RFC 2396 has been replaced with the ABNF of
 <xref target="RFC2234"/>.  This change required all rule names that
 formerly included underscore characters to be renamed with a dash instead.
-</t>
+In addition, a number of syntax rules have been eliminated or simplified
+to make the overall grammar more comprehensible.  Specifications that
+refer to the obsolete grammar rules may be understood by replacing those
+rules according to the following table:
+</preamble>
+<ttcol>obsolete rule</ttcol><ttcol>translation</ttcol>
+<c>absoluteURI</c><c>absolute-URI</c>
+<c>relativeURI</c><c>relative-part [ "?" query ]</c>
+<c>hier_part</c><c>( "//" authority path-abempty / path-absolute ) [ "?" query ]</c>
+<c>opaque_part</c><c>path-rootless [ "?" query ]</c>
+<c>net_path</c><c>"//" authority path-abempty</c>
+<c>abs_path</c><c>path-absolute</c>
+<c>rel_path</c><c>path-rootless</c>
+<c>rel_segment</c><c>segment-nz-nc</c>
+<c>reg_name</c><c>reg-name</c>
+<c>server</c><c>authority</c>
+<c>hostport</c><c>host [ ":" port ]</c>
+<c>hostname</c><c>reg-name</c>
+<c>path_segments</c><c>path-abempty</c>
+<c>param</c><c>*&lt;pchar excluding ";"&gt;</c>
+<c>uric</c><c>unreserved / pct-encoded / ";" / "?" / ":" / "@" / "&amp;" / "=" / "+" / "$" / "," / "/"</c>
+<c>uric_no_slash</c><c>unreserved / pct-encoded / ";" / "?" / ":" / "@" / "&amp;" / "=" / "+" / "$" / ","</c>
+<c>mark</c><c>"-" / "_" / "." / "!" / "~" / "*" / "'" / "(" / ")"</c>
+<c>escaped</c><c>pct-encoded</c>
+<c>hex</c><c>HEXDIG</c>
+<c>alphanum</c><c>ALPHA / DIGIT</c>
+<postamble>
+Use of the above obsolete rules for the definition of scheme-specific
+syntax is deprecated.
+</postamble>
+</texttable>
 <t>
 Section 2 on characters has been rewritten to explain what characters
 are reserved, when they are reserved, and why they are reserved even
