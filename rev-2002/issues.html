@@ -33,9 +33,6 @@
 <td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#029-decimal-IP">029-decimal-IP</a></td><td>add security considerations for misleading use of decimal IP</td><td>security</td><td nowrap="nowrap">accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#033-dot-segments">033-dot-segments</a></td><td>relative path segments should be removed from absolute URIs</td><td>relative</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
@@ -43,9 +40,6 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>terminology</td><td nowrap="nowrap">pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#010-gethostbyname">010-gethostbyname</a></td><td>gethostbyname allows much more than hostname BNF</td><td>hostname</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#017-rdf-fragment">017-rdf-fragment</a></td><td>RDF does not believe in same-document references</td><td>fragment</td><td nowrap="nowrap">pending</td>
@@ -136,6 +130,12 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#038-qualified">038-qualified</a></td><td>qualified production in hostname is ambiguous</td><td>hostname</td><td nowrap="nowrap">fixed 01</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#010-gethostbyname">010-gethostbyname</a></td><td>gethostbyname allows much more than hostname BNF</td><td>hostname</td><td nowrap="nowrap">added 01</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#029-decimal-IP">029-decimal-IP</a></td><td>add security considerations for misleading use of decimal IP</td><td>security</td><td nowrap="nowrap">added 01</td>
 </tr>
 </table>
 <br>
@@ -990,7 +990,7 @@ So "//" does parse as net_path, and the regex in appendix B is fine.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="010-gethostbyname">010-gethostbyname</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">gethostbyname allows much more than hostname BNF</font></th>
 </tr>
 <tr>
-<th>pending</th><th align="left">hostname</th>
+<th bgcolor="lightgreen">added 01</th><th align="left">hostname</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1030,6 +1030,16 @@ implied semantics of the BNF given above for a four-dot representation
 is a decimal interpretation, where the implementations use octal of any
 component of the IP address begins with a leading zero (unlike what happens
 for the port, where http://63.197.151.31:0000000080/ accesses port 80).
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  01 Mar 2002,
+  draft 01:
+  <pre>
+Added to the Security Considerations for draft 01.
 </pre>
 </td>
 </tr>
@@ -1509,7 +1519,7 @@ or equivalently but more compactly as:
 Changed to reflect all of the suggestions:
 
    hostname      = domainlabel [ qualified ]
-   qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
+   qualified     = *( "." domainlabel ) [ "." toplabel "." ]
    domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
    toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
@@ -2478,7 +2488,7 @@ I have fixed this in draft 01.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="029-decimal-IP">029-decimal-IP</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">add security considerations for misleading use of decimal IP</font></th>
 </tr>
 <tr>
-<th>accepted</th><th align="left">security</th>
+<th bgcolor="lightgreen">added 01</th><th align="left">security</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2508,6 +2518,16 @@ because regular users don't understand the URI spec (and never will).
   issues list:
   <pre>
 This is tied to the gethostbyname issue as well.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  01 Mar 2002,
+  draft 01:
+  <pre>
+Added to the Security Considerations for draft 01.
 </pre>
 </td>
 </tr>

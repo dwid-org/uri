@@ -788,7 +788,7 @@ So "//" does parse as net_path, and the regex in appendix B is fine.
  <type>hostname</type>
  <name>010-gethostbyname</name>
  <title>gethostbyname allows much more than hostname BNF</title>
- <status>pending</status>
+ <status>added 01</status>
  <report>
   <author email="rokicki_AT_instantis.com">Tomas Rokicki</author>
   <date sort="20010602">02 Jun 2001</date>
@@ -828,6 +828,14 @@ component of the IP address begins with a leading zero (unlike what happens
 for the port, where http://63.197.151.31:0000000080/ accesses port 80).
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030301">01 Mar 2002</date>
+  <where>draft 01</where>
+<pre>
+Added to the Security Considerations for draft 01.
+</pre>
+ </action>
 </issue>
 
 <issue>
@@ -1259,7 +1267,7 @@ or equivalently but more compactly as:
 Changed to reflect all of the suggestions:
 
    hostname      = domainlabel [ qualified ]
-   qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
+   qualified     = *( "." domainlabel ) [ "." toplabel "." ]
    domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
    toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
@@ -2138,7 +2146,7 @@ I have fixed this in draft 01.
  <type>security</type>
  <name>029-decimal-IP</name>
  <title>add security considerations for misleading use of decimal IP</title>
- <status>accepted</status>
+ <status>added 01</status>
  <report>
   <author email="dan@dankohn.com">Dan Kohn</author>
   <date sort="20021109">09 Nov 2002</date>
@@ -2164,6 +2172,14 @@ because regular users don't understand the URI spec (and never will).
   <where>issues list</where>
 <pre>
 This is tied to the gethostbyname issue as well.
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030301">01 Mar 2002</date>
+  <where>draft 01</where>
+<pre>
+Added to the Security Considerations for draft 01.
 </pre>
  </action>
 </issue>

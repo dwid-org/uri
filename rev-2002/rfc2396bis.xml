@@ -768,6 +768,9 @@ URI character sequence->octet sequence->original character sequence
    field. This practice is NOT RECOMMENDED, because the passing of
    authentication information in clear text has proven to
    be a security risk in almost every case where it has been used.
+   Note also that userinfo which is crafted to look like a trusted
+   domain name might be used to mislead users, as described in
+   Section 7.5.
 </t>
 <figure><preamble>
 <iref item="hostport" primary="true"/>
@@ -824,7 +827,10 @@ URI character sequence->octet sequence->original character sequence
    A host identified by an IPv4 literal address is represented in
    dotted-decimal notation (a sequence of four decimal numbers in the
    range 0 to 255, separated by "."), as described in <xref target="RFC1123"/>
-   by reference to <xref target="RFC0952"/>.
+   by reference to <xref target="RFC0952"/>.  Note that other forms of
+   dotted notation may be interpreted on some platforms, as described in
+   Section 7.3, but only the dotted-decimal form of four octets is
+   allowed by this grammar.
 <iref item="URI grammar" subitem="IPv4address" primary="true"/>
 <iref item="URI grammar" subitem="dec-octet" primary="true"/>
 </preamble><artwork>
@@ -1404,51 +1410,121 @@ next component separator or the end of the reference.
 
 <section title="Security Considerations">
 <t>
-   A URI does not in itself pose a security threat.  Users should beware
-   that there is no general guarantee that a URI, which at one time
-   located a given resource, will continue to do so.  Nor is there any
-   guarantee that a URI will not locate a different resource at some
-   later point in time, due to the lack of any constraint on how a given
-   authority apportions its namespace.  Such a guarantee can only be
-   obtained from the person(s) controlling that namespace and the
-   resource in question.  A specific URI scheme may include additional
-   semantics, such as name persistence, if those semantics are required
-   of all naming authorities for that scheme.
+A URI does not in itself pose a security threat.  However, since URIs
+are often used to provide a compact set of instructions for access to
+network resources, care must be taken to properly interpret the data
+within a URI, to prevent that data from causing unintended access, and
+to avoid including data that should not be revealed in plain text.
+</t>
+<section title="Reliability and Consistency">
+<t>
+There is no guarantee that, having once used a given URI to retrieve
+some information, that the same information will be retievable by
+that URI in the future. Nor is there any guarantee that the information
+retrievable via that URI in the future will be observably similar to 
+that retrieved in the past.  The URI syntax does not constrain how a
+given scheme or authority apportions its namespace or maintains it
+over time.  Such a guarantee can only be obtained from the person(s)
+controlling that namespace and the resource in question.  A specific
+URI scheme may define additional semantics, such as name persistence,
+if those semantics are required of all naming authorities for that scheme.
+</t>
+</section>
+<section title="Malicious Construction">
+<t>
+It is sometimes possible to construct a URI such that an attempt to
+perform a seemingly harmless, idempotent operation, such as the
+retrieval of a representation associated with a resource, will in fact
+cause a possibly damaging remote operation to occur.  The unsafe URI
+is typically constructed by specifying a port number other than that
+reserved for the network protocol in question.  The client
+unwittingly contacts a site that is in fact running a different
+protocol.  The content of the URI contains instructions that, when
+interpreted according to this other protocol, cause an unexpected
+operation.  An example has been the use of a gopher URI to cause an
+unintended or impersonating message to be sent via a SMTP server.
 </t>
 <t>
-   It is sometimes possible to construct a URI such that an attempt to
-   perform a seemingly harmless, idempotent operation, such as the
-   retrieval of an entity associated with the resource, will in fact
-   cause a possibly damaging remote operation to occur.  The unsafe URI
-   is typically constructed by specifying a port number other than that
-   reserved for the network protocol in question.  The client
-   unwittingly contacts a site that is in fact running a different
-   protocol.  The content of the URI contains instructions that, when
-   interpreted according to this other protocol, cause an unexpected
-   operation.  An example has been the use of a gopher URI to cause an
-   unintended or impersonating message to be sent via a SMTP server.
+Caution should be used when using any URI that specifies a TCP port
+number other than the default for the protocol, especially when it is
+a number within the reserved space.
 </t>
 <t>
-   Caution should be used when using any URI that specifies a port
-   number other than the default for the protocol, especially when it is
-   a number within the reserved space.
+Care should be taken when a URI contains escaped delimiters for a
+given protocol (for example, CR and LF characters for telnet
+protocols) that these are not unescaped before transmission.  This
+might violate the protocol, but avoids the potential for such
+characters to be used to simulate an extra operation or parameter in
+that protocol, which might lead to an unexpected and possibly harmful
+remote operation being performed.
+</t>
+</section>
+<section title="Rare IP Address Formats">
+<t>
+Although the URI syntax for IPv4address only allows the common,
+dotted-decimal form of IPv4 address literal, many implementations that
+process URIs make use of platform-dependent system routines, such as
+gethostbyname() and inet_aton(), to translate the string literal to an
+actual IP address.  Unfortunately, such system routines often allow and
+process a much larger set of formats than those described in Section 3.2.2.
 </t>
 <t>
-   Care should be taken when a URI contains escaped delimiters for a
-   given protocol (for example, CR and LF characters for telnet
-   protocols) that these are not unescaped before transmission.  This
-   might violate the protocol, but avoids the potential for such
-   characters to be used to simulate an extra operation or parameter in
-   that protocol, which might lead to an unexpected and possibly harmful
-   remote operation to be performed.
+For example, many implementations allow dotted forms of three numbers,
+wherein the last part is interpreted as a 16-bit quantity and placed in
+the right-most two bytes of the network address (e.g., a Class B network).
+Likewise, a dotted form of two numbers means the last part is interpreted
+as a 24-bit quantity and placed in the right most three bytes of the network
+address (Class A), and a single number (without dots) is interpreted as
+a 32-bit quantity and stored directly in the network address.  Adding
+further to the confusion, some implementations allow each dotted part
+to be interpreted as decimal, octal, or hexadecimal, as specified in
+the C language (i.e., a leading 0x or 0X implies hexadecimal; otherwise,
+a leading 0 implies octal; otherwise, the number is interpreted as decimal).
 </t>
 <t>
-   It is clearly unwise to use a URI that contains a password which is
-   intended to be secret. In particular, the use of a password within
-   the 'userinfo' component of a URI is strongly discouraged except
-   in those rare cases where the 'password' parameter is intended to be
-   public.
+These additional IP address formats are not allowed in the URI syntax
+due to differences between platform implementations.  However, they
+can become a security concern if an application attempts to filter
+access to resources based on the IP address in string literal format.
+If such filtering is performed, it is recommended that literals
+be converted to numeric form and filtered based on the numeric value,
+rather than a prefix or suffix of the string form.
 </t>
+</section>
+<section title="Sensitive Information">
+<t>
+It is clearly unwise to use a URI that contains a password which is
+intended to be secret. In particular, the use of a password within
+the userinfo component of a URI is strongly discouraged except
+in those rare cases where the 'password' parameter is intended to be
+public.
+</t>
+</section>
+<section title="Semantic Attacks">
+<figure><preamble>
+Because the userinfo component is rarely used and appears before the
+hostname in the authority component, it can be used to construct a URI
+that is intended to mislead a human user by appearing to identify one
+(trusted) naming authority while actually identifying a different
+authority hidden behind the noise.  For example
+</preamble><artwork>
+   http://www.example.com&amp;story=breaking_news@10.0.0.1/top_story.htm
+</artwork><postamble>
+might lead a human user to assume that the authority is
+'www.example.com', whereas it is actually '10.0.0.1'.  Note that the
+misleading userinfo could be much longer than the example above.
+</postamble></figure>
+<t>
+A misleading URI, such as the one above, is an attack on the user's
+preconceived notions about the meaning of a URI, rather than an attack
+on the software itself.  User agents may be able to reduce the impact
+of such attacks by visually distinguishing the various components of
+the URI when rendered, such as by using a different color or tone to
+render userinfo if any is present, though there is no general panacea.
+More information on URI-based semantic attacks can be found in 
+<xref target="Siedzik"/>.
+</t>
+</section>
 </section>
 <section title="Acknowledgements">
 <t>
@@ -1460,8 +1536,8 @@ next component separator or the end of the reference.
    and Larry Masinter in <xref target="RFC2732"/>.
    In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
    Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman,
-   Graham Klyne, Dan Kohn, Bruce Lilly,
-   Michael Mealling, Julian Reschke, Miles Sabin, Ronald Tschalaer,
+   Graham Klyne, Dan Kohn, Bruce Lilly, Michael Mealling, Julian Reschke,
+   Tomas Rokicki, Miles Sabin, Ronald Tschalaer,
    Marc Warne, Henry Zongaro, and Zefram are gratefully acknowledged.
 </t>
 </section>
@@ -1974,6 +2050,17 @@ Science, University of California, Irvine</organization>
 <date month='December' year='1999'></date>
 </front>
 <format type='HTML' target='http://www.w3.org/TR/html401/' />
+</reference>
+
+<reference anchor='Siedzik'>
+<front>
+<title>Semantic Attacks: What's in a URL?</title>
+<author initials='R.' surname='Siedzik' fullname='Richard Siedzik'>
+<organization>SANS Institute</organization>
+</author>
+<date day='6' month='April' year='2001'></date>
+</front>
+<format type='HTML' target='http://www.sans.org/rr/threats/semantic.php' />
 </reference>
 
 <reference anchor='UTF-8'>
