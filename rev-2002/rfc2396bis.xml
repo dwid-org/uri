@@ -1002,6 +1002,14 @@ URI character sequence->octet sequence->original character sequence
 </preamble><artwork>
    URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
 </artwork></figure>
+<figure><preamble>
+<iref item="URIwf" primary="true"/>
+   Many protocol elements allow only the absolute form of a URI with
+   an optional fragment identifier.
+<iref item="URI grammar" subitem="URIwf" primary="true"/>
+</preamble><artwork>
+   URIwf = absoluteURI [ "#" fragment ]
+</artwork></figure>
 <t>
    The syntax for a relative URI is a shortened form of that for an absolute
    URI, where some prefix of the URI is missing and certain path

@@ -506,6 +506,7 @@ ins
 
 
 
+
 <b>&nbsp;4.1&nbsp;
             <a href="#rfc.section.4.1">Fragment Identifier</a></b>
 <br>
@@ -1819,8 +1820,19 @@ ins
 </p>
 <pre>   URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
 </pre>
+<a name="rfc.figure.u.36"></a>
 <p>
-<a name="rfc.section.4.p.2"></a>
+
+<a name="rfc.iref.91"></a>
+   Many protocol elements allow only the absolute form of a URI with
+   an optional fragment identifier.
+<a name="rfc.iref.92"></a>
+
+</p>
+<pre>   URIwf = absoluteURI [ "#" fragment ]
+</pre>
+<p>
+<a name="rfc.section.4.p.3"></a>
    The syntax for a relative URI is a shortened form of that for an absolute
    URI, where some prefix of the URI is missing and certain path
    components ("." and "..") have a special meaning when, and only when,
@@ -1830,17 +1842,17 @@ ins
 <h2>
 <a name="rfc.section.4.1">4.1</a>&nbsp;
     Fragment Identifier</h2>
-<a name="rfc.figure.u.36"></a>
+<a name="rfc.figure.u.37"></a>
 <p>
 
-<a name="rfc.iref.91"></a>
+<a name="rfc.iref.93"></a>
    When a URI reference is used to perform a retrieval action on the
    identified resource, the optional fragment identifier, separated from
    the URI by a crosshatch ("#") character, consists of additional
    reference information to be interpreted by the user agent after the
    retrieval action has been successfully completed.  As such, it is not
    part of a URI, but is often used in conjunction with a URI.
-<a name="rfc.iref.92"></a>
+<a name="rfc.iref.94"></a>
 
 </p>
 <pre>   fragment      = unreserved | escaped | ";" | "/" | "?" |
@@ -1916,7 +1928,7 @@ ins
 </tr>
 </table>
 <h1>
-<a name="rfc.iref.93"></a><a name="rfc.section.5">5</a>&nbsp;
+<a name="rfc.iref.95"></a><a name="rfc.section.5">5</a>&nbsp;
     Relative URI References</h1>
 <p>
 <a name="rfc.section.5.p.1"></a>
@@ -1939,12 +1951,12 @@ ins
    has demonstrated that the ability to perform relative referencing is
    necessary for the long-term usability of embedded URIs.
 </p>
-<a name="rfc.figure.u.37"></a>
+<a name="rfc.figure.u.38"></a>
 <p>
    The relative URI syntax takes advantage of the &lt;hier_part&gt; syntax
    of &lt;absoluteURI&gt; (Section 3) in order to express a reference that is
    relative to the namespace of another hierarchical URI.
-<a name="rfc.iref.94"></a>
+<a name="rfc.iref.96"></a>
 
 </p>
 <pre>   relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
@@ -1961,15 +1973,15 @@ ins
    termed an absolute-path reference, as defined by &lt;abs_path&gt; in
    Section 3.
 </p>
-<a name="rfc.figure.u.38"></a>
+<a name="rfc.figure.u.39"></a>
 <p>
 
-<a name="rfc.iref.95"></a>
-<a name="rfc.iref.96"></a>
-   A relative reference that does not begin with a scheme name or a
-   slash character is termed a relative-path reference.
 <a name="rfc.iref.97"></a>
 <a name="rfc.iref.98"></a>
+   A relative reference that does not begin with a scheme name or a
+   slash character is termed a relative-path reference.
+<a name="rfc.iref.99"></a>
+<a name="rfc.iref.100"></a>
 
 </p>
 <pre>   rel_path      = rel_segment [ abs_path ]
@@ -2032,7 +2044,7 @@ ins
    thought of in terms of layers, where the innermost defined base URI
    has the highest precedence.  This can be visualized graphically as:
 </p>
-<a name="rfc.figure.u.39"></a>
+<a name="rfc.figure.u.40"></a>
 <pre>.----------------------------------------------------------.
 |  .----------------------------------------------------.  |
 |  |  .----------------------------------------------.  |  |
@@ -2148,7 +2160,7 @@ ins
    empty.  The base URI's query component is not used by the resolution
    algorithm and may be discarded.
 </p>
-<a name="rfc.figure.u.40"></a>
+<a name="rfc.figure.u.41"></a>
 <p>
    For each URI reference (R), the following pseudocode describes an
    algorithm for transforming R into its target (T), which is either
@@ -2280,7 +2292,7 @@ The remaining buffer string is the target URI's path component.
 </blockquote>
 
 </p>
-<a name="rfc.figure.u.41"></a>
+<a name="rfc.figure.u.42"></a>
 <p>
 The resulting target URI components and fragment can be
 recombined to provide the absolute form of the URI reference.
@@ -2681,7 +2693,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <h1>
 <a name="rfc.section.A">A</a>&nbsp;
     Collected BNF for URI</h1>
-<a name="rfc.figure.u.42"></a>
+<a name="rfc.figure.u.43"></a>
 <pre>URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
 absoluteURI   = scheme ":" ( hier_part | opaque_part )
 relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
@@ -2801,7 +2813,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    The following line is the regular expression for breaking-down a URI
    reference into its components.
 </p>
-<a name="rfc.figure.u.43"></a>
+<a name="rfc.figure.u.44"></a>
 <pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
     12            3  4          5       6  7        8 9
 </pre>
@@ -2812,14 +2824,14 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    paired parenthesis).  We refer to the value matched for subexpression
    &lt;n&gt; as $&lt;n&gt;.  For example, matching the above expression to
 </p>
-<a name="rfc.figure.u.44"></a>
+<a name="rfc.figure.u.45"></a>
 <pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
 </pre>
 <p>
 <a name="rfc.section.B.p.6"></a>
    results in the following subexpression matches:
 </p>
-<a name="rfc.figure.u.45"></a>
+<a name="rfc.figure.u.46"></a>
 <pre>   $1 = http:
    $2 = http
    $3 = //www.ics.uci.edu
@@ -2836,7 +2848,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    the case for the query component in the above example.  Therefore, we
    can determine the value of the four components and fragment as
 </p>
-<a name="rfc.figure.u.46"></a>
+<a name="rfc.figure.u.47"></a>
 <pre>   scheme    = $2
    authority = $4
    path      = $5
@@ -2861,7 +2873,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
 <a name="rfc.section.C.p.1"></a>
    Within an object with a well-defined base URI of
 </p>
-<a name="rfc.figure.u.47"></a>
+<a name="rfc.figure.u.48"></a>
 <pre>   http://a/b/c/d;p?q
 </pre>
 <p>
@@ -2871,7 +2883,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
 <h2>
 <a name="rfc.section.C.1">C.1</a>&nbsp;
     Normal Examples</h2>
-<a name="rfc.figure.u.48"></a>
+<a name="rfc.figure.u.49"></a>
 <pre>   g:h           =  g:h
    g             =  http://a/b/c/g
    ./g           =  http://a/b/c/g
@@ -2908,7 +2920,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
 <a name="rfc.section.C.2.p.2"></a>
    An empty reference refers to the start of the current document.
 </p>
-<a name="rfc.figure.u.49"></a>
+<a name="rfc.figure.u.50"></a>
 <pre>   &lt;&gt;            =  (current document)
 </pre>
 <p>
@@ -2918,7 +2930,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    base URI's path.  Note that the ".." syntax cannot be used to change
    the authority component of a URI.
 </p>
-<a name="rfc.figure.u.50"></a>
+<a name="rfc.figure.u.51"></a>
 <pre>   ../../../g    =  http://a/../g
    ../../../../g =  http://a/../../g
 </pre>
@@ -2935,7 +2947,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    Similarly, parsers must avoid treating "." and ".." as special when
    they are not complete components of a relative path.
 </p>
-<a name="rfc.figure.u.51"></a>
+<a name="rfc.figure.u.52"></a>
 <pre>   /./g          =  http://a/./g
    /../g         =  http://a/../g
    g.            =  http://a/b/c/g.
@@ -2948,7 +2960,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    Less likely are cases where the relative URI uses unnecessary or
    nonsensical forms of the "." and ".." complete path segments.
 </p>
-<a name="rfc.figure.u.52"></a>
+<a name="rfc.figure.u.53"></a>
 <pre>   ./../g        =  http://a/b/g
    ./g/.         =  http://a/b/c/g/
    g/./h         =  http://a/b/c/g/h
@@ -2964,7 +2976,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    of a fragment never includes the hierarchy ("/") character, and the
    query component is not normally used within relative references.
 </p>
-<a name="rfc.figure.u.53"></a>
+<a name="rfc.figure.u.54"></a>
 <pre>   g?y/./x       =  http://a/b/c/g?y/./x
    g?y/../x      =  http://a/b/c/g?y/../x
    g#s/./x       =  http://a/b/c/g#s/./x
@@ -2977,7 +2989,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    loophole in prior specifications of partial URI <a href="#RFC1630" title="Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web">[RFC1630]</a>.
    Its use should be avoided, but is allowed for backwards compatibility.
 </p>
-<a name="rfc.figure.u.54"></a>
+<a name="rfc.figure.u.55"></a>
 <pre>   http:g        =  http:g           ; for validating parsers
                  |  http://a/b/c/g   ; for backwards compatibility
 </pre>
@@ -3008,7 +3020,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    that, in HTML, element and attribute names are case-insensitive.  For
    example:
 </p>
-<a name="rfc.figure.u.55"></a>
+<a name="rfc.figure.u.56"></a>
 <pre>   &lt;!doctype html public "-//IETF//DTD HTML//EN"&gt;
    &lt;HTML&gt;&lt;HEAD&gt;
    &lt;TITLE&gt;An example HTML document&lt;/TITLE&gt;
@@ -3022,7 +3034,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    A parser reading the example document should interpret the given
    relative URI "../x" as representing the absolute URI
 </p>
-<a name="rfc.figure.u.56"></a>
+<a name="rfc.figure.u.57"></a>
 <pre>   &lt;http://www.ics.uci.edu/Test/a/x&gt;
 </pre>
 <p>
@@ -3054,7 +3066,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    within double-quotes "http://test.com/", angle brackets
    &lt;http://test.com/&gt;, or just using whitespace
 </p>
-<a name="rfc.figure.u.57"></a>
+<a name="rfc.figure.u.58"></a>
 <pre>   http://test.com/
 </pre>
 <p>
@@ -3115,7 +3127,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
 <a name="rfc.section.E.p.12"></a>
    contains the URI references
 </p>
-<a name="rfc.figure.u.58"></a>
+<a name="rfc.figure.u.59"></a>
 <pre>   http://www.w3.org/Addressing/
    ftp://ds.internic.net/rfc/
    http://www.ics.uci.edu/pub/ietf/uri/historical.html#WARNING
@@ -3139,7 +3151,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    only the authority and path portions of the identified resource, such
    as
 </p>
-<a name="rfc.figure.u.59"></a>
+<a name="rfc.figure.u.60"></a>
 <pre>   www.w3.org/Addressing/
 </pre>
 <p>
@@ -3395,7 +3407,7 @@ and fix the following issues:
               &nbsp;&nbsp;fragment&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.91"><b>4.1</b></a></td>
+  &nbsp;<a href="#rfc.iref.93"><b>4.1</b></a></td>
 </tr>
 <tr>
 <td><b>H</b></td>
@@ -3725,7 +3737,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;fragment&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.92"><b>4.1</b></a></td>
+  &nbsp;<a href="#rfc.iref.94"><b>4.1</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3872,21 +3884,21 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;rel_path&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.97"><b>5</b></a></td>
+  &nbsp;<a href="#rfc.iref.99"><b>5</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;rel_segment&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.98"><b>5</b></a></td>
+  &nbsp;<a href="#rfc.iref.100"><b>5</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;relativeURI&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.94"><b>5</b></a></td>
+  &nbsp;<a href="#rfc.iref.96"><b>5</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3974,6 +3986,13 @@ and fix the following issues:
 </tr>
 <tr>
 <td>
+                &nbsp;&nbsp;&nbsp;&nbsp;URIwf&nbsp;
+                  
+                
+  &nbsp;<a href="#rfc.iref.92"><b>4</b></a></td>
+</tr>
+<tr>
+<td>
                 &nbsp;&nbsp;&nbsp;&nbsp;userinfo&nbsp;
                   
                 
@@ -3985,6 +4004,13 @@ and fix the following issues:
                 
               
   &nbsp;<a href="#rfc.iref.89"><b>4</b></a></td>
+</tr>
+<tr>
+<td>
+              &nbsp;&nbsp;URIwf&nbsp;
+                
+              
+  &nbsp;<a href="#rfc.iref.91"><b>4</b></a></td>
 </tr>
 <tr>
 <td>

@@ -12,9 +12,6 @@
 <th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#006-absoluteURIref">006-absoluteURIref</a></td><td>need BNF term for absolute URI with optional fragment</td><td>syntax</td><td>accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#016-hostname-toplabel">016-hostname-toplabel</a></td><td>hostname toplabel syntax could be improved</td><td>syntax: hostname</td><td>accepted</td>
 </tr>
 <tr>
@@ -61,6 +58,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#005-ftp">005-ftp</a></td><td>background on ftp extensions</td><td>scheme: ftp</td><td>postponed</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#006-absoluteURIref">006-absoluteURIref</a></td><td>need BNF term for absolute URI with optional fragment</td><td>syntax</td><td>fixed 00</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#007-empty-rel_path">007-empty-rel_path</a></td><td>relative URI syntax does not allow empty path</td><td>syntax: relative</td><td>fixed 00</td>
@@ -493,7 +493,7 @@ submission.
       need BNF term for absolute URI with optional fragment</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax</th><th>accepted</th>
+<th width="40%">syntax</th><th>fixed 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -562,10 +562,10 @@ I used absoluteURI and URI_reference with their rfc2396 meanings.
 <tr>
 <td colspan="2">action:
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
-  27 Aug 2002,
-  private mail:
+  27 Oct 2002,
+  draft 00:
   <pre>
-Something like absoluteURIref will be added to the BNF.
+URIwf has been added to the section on URI reference and the BNF.
 </pre>
 </td>
 </tr>

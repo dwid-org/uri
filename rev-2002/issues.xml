@@ -377,7 +377,7 @@ submission.
  <type>syntax</type>
  <name>006-absoluteURIref</name>
  <title>need BNF term for absolute URI with optional fragment</title>
- <status>accepted</status>
+ <status>fixed 00</status>
  <report>
   <author email="connolly_AT_w3.org">Dan Connolly</author>
   <date sort="20000110">10 Jan 2000</date>
@@ -442,10 +442,10 @@ I used absoluteURI and URI_reference with their rfc2396 meanings.
  </report>
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
-  <date sort="20020827">27 Aug 2002</date>
-  <where>private mail</where>
+  <date sort="20021027">27 Oct 2002</date>
+  <where>draft 00</where>
 <pre>
-Something like absoluteURIref will be added to the BNF.
+URIwf has been added to the section on URI reference and the BNF.
 </pre>
  </action>
 </issue>
