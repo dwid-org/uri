@@ -1,7 +1,7 @@
 Network Working Group                            T. Berners-Lee, MIT/LCS
 INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
-draft-fielding-uri-syntax-03a             L. Masinter, Xerox Corporation
-Expires six months after publication date                   June 2, 1998
+draft-fielding-uri-syntax-03b             L. Masinter, Xerox Corporation
+Expires six months after publication date                   June 3, 1998
 
 
           Uniform Resource Identifiers (URI): Generic Syntax
@@ -142,7 +142,7 @@ Abstract
    imply that the only way to access the URL's resource is via the named
    protocol.  Gateways, proxies, caches, and name resolution services
    might be used to access some resources, independent of the protocol
-   of their origin, and the resolution of some URLs may require the use
+   of their origin, and the resolution of some URL may require the use
    of more than one protocol (e.g., both DNS and HTTP are typically used
    to access an "http" URL's resource when it can't be found in a local
    cache).
@@ -155,7 +155,7 @@ Abstract
    namespace, as defined in "URN Syntax" [RFC2141] and its related
    specifications.
 
-   Most of the examples in this specification demonstrate URLs, since
+   Most of the examples in this specification demonstrate URL, since
    they allow the most varied use of the syntax and often have a
    hierarchical namespace.  A parser of the URI syntax is capable of
    parsing both URL and URN references as a generic URI; once the scheme
@@ -192,7 +192,7 @@ Abstract
    identifier refers to a resource by describing the difference within a
    hierarchical namespace between the current context and an absolute
    identifier of the resource.
-         
+
    Some URI schemes support a hierarchical naming system, where the
    hierarchy of the name is denoted by a "/" delimiter separating the
    components in the scheme. This document defines a scheme-independent
@@ -306,13 +306,15 @@ Abstract
    were chosen from those common to most of the character encodings
    and input facilities available to Internet users.
 
+      uric          = reserved | unreserved | escaped
+
    Within a URI, characters are either used as delimiters, or to
    represent strings of data (octets) within the delimited portions.
    Octets are either represented directly by a character (using the
    US-ASCII character for that octet [ASCII]) or by an escape encoding.
    This representation is elaborated below.
 
-2.1 URI and non-ASCII characters   
+2.1 URI and non-ASCII characters
 
    The relationship between URI and characters has been a source of
    confusion for characters that are not part of US-ASCII. To describe
@@ -503,7 +505,7 @@ Abstract
    any general structure or set of semantics which is common among all
    URI.  However, a subset of URI do share a common syntax for
    representing hierarchical relationships within the namespace.  This
-   "generic-URI" syntax consists of a sequence of four main components:
+   "generic URI" syntax consists of a sequence of four main components:
 
       <scheme>://<authority><path>?<query>
 
@@ -511,18 +513,7 @@ Abstract
    For example, some URI schemes do not allow an <authority> component,
    and others do not use a <query> component.
 
-      absoluteURI   = generic-URI | opaque-URI
-
-      opaque-URI    = scheme ":" *uric
-
-      generic-URI   = scheme ":" relativeURI
-
-   The separation of the URI grammar into <generic-URI> and <opaque-URI>
-   is redundant, since both rules will successfully parse any string of
-   <uric> characters.  The distinction is simply to clarify that a
-   parser of relative URI references (Section 5) will view a URI as a
-   generic-URI, whereas a handler of absolute references need only view
-   it as an opaque-URI.
+      absoluteURI   = scheme ":" ( hier_part | opaque_part )
 
    URI that are hierarchical in nature use the slash "/" character for
    separating hierarchical components.  For some file systems, a "/"
@@ -531,6 +522,25 @@ Abstract
    path will look similar to a file pathname.  This does NOT imply that
    the resource is a file or that the URI maps to an actual filesystem
    pathname.
+
+      hier_part     = ( net_path | abs_path ) [ "?" query ]
+
+      net_path      = "//" authority [ abs_path ]
+
+      abs_path      = "/"  path_segments
+
+   URI that do not make use of the slash "/" character for separating
+   hierarchical components are considered opaque by the generic URI
+   parser.
+
+      opaque_part   = uric_no_slash *uric
+
+      uric_no_slash = unreserved | escaped | ";" | "?" | ":" | "@" |
+                      "&" | "=" | "+" | "$" | ","
+
+   We use the term <path> to refer to both the <abs_path> and
+   <opaque_part> constructs, since they are mutually exclusive for any
+   given URI and can be parsed as a single component.
 
 3.1. Scheme Component
 
@@ -647,7 +657,7 @@ Abstract
    scheme if there is no authority component), identifying the resource
    within the scope of that scheme and authority.
 
-      path          = [ "/" ] path_segments
+      path          = [ abs_path | opaque_part ]
 
       path_segments = segment *( "/" segment )
       segment       = *pchar *( ";" param )
@@ -739,9 +749,7 @@ Abstract
    components and fragment identifier in order to determine what
    components are present and whether the reference is relative or
    absolute.  The individual components are then parsed for their
-   subparts and to verify their validity.  A reference is parsed as if
-   it is a generic-URI, even though it might be considered opaque by
-   later processes.
+   subparts and, if not opaque, to verify their validity.
 
    Although the BNF defines what is allowed in each component, it is
    ambiguous in terms of differentiating between an authority component
@@ -762,7 +770,7 @@ Abstract
    are much more likely to refer to other resources at that site than
    to resources at remote sites.
 
-   Relative addressing of URLs allows document trees to be partially
+   Relative addressing of URI allows document trees to be partially
    independent of their location and access scheme.  For instance, it is
    possible for a single set of hypertext documents to be simultaneously
    accessible and traversable via each of the "file", "http", and "ftp"
@@ -770,24 +778,29 @@ Abstract
    Furthermore, such document trees can be moved, as a whole, without
    changing any of the relative references.  Experience within the WWW
    has demonstrated that the ability to perform relative referencing
-   is necessary for the long-term usability of embedded URLs.
+   is necessary for the long-term usability of embedded URI.
 
-      relativeURI   = net_path | abs_path | rel_path
+   The syntax for relative URI takes advantage of the <hier_part> syntax
+   of <absoluteURI> (Section 3) in order to express a reference that is
+   relative to the namespace of another hierarchical URI.
+
+      relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
 
    A relative reference beginning with two slash characters is termed a
-   network-path reference.  Such references are rarely used.
-
-      net_path      = "//" authority [ abs_path ]
+   network-path reference, as defined by <net_path> in Section 3.  Such
+   references are rarely used.
 
    A relative reference beginning with a single slash character is
-   termed an absolute-path reference.
-
-      abs_path      = "/"  rel_path
+   termed an absolute-path reference, as defined by <abs_path> in
+   Section 3.
 
    A relative reference that does not begin with a scheme name or a
    slash character is termed a relative-path reference.
 
-      rel_path      = [ path_segments ] [ "?" query ]
+      rel_path      = rel_segment [ abs_path ]
+
+      rel_segment   = 1*( unreserved | escaped |
+                          ";" | "@" | "&" | "=" | "+" | "$" | "," )
 
    Within a relative-path reference, the complete path segments "." and
    ".." have special meanings: "the current hierarchy level" and "the
@@ -805,17 +818,17 @@ Abstract
    a relative path.
 
    It is not necessary for all URI within a given scheme to be
-   restricted to the generic-URI syntax, since the hierarchical
+   restricted to the <hier_part> syntax, since the hierarchical
    properties of that syntax are only necessary when relative URI are
    used within a particular document.  Documents can only make use of
-   relative URI when their base URI fits within the generic-URI syntax.
+   relative URI when their base URI fits within the <hier_part> syntax.
    It is assumed that any document which contains a relative reference
    will also have a base URI that obeys the syntax.  In other words,
    relative URI cannot be used within a document that has an unsuitable
    base URI.
 
    Some URI schemes do not allow a hierarchical syntax matching the
-   generic-URI syntax, and thus cannot use relative references.
+   <hier_part> syntax, and thus cannot use relative references.
 
 5.1. Establishing a Base URI
 
@@ -935,6 +948,17 @@ Abstract
       absolute URI and we are done.  Otherwise, the reference URI's
       scheme is inherited from the base URI's scheme component.
 
+      Due to a loophole in prior specifications [RFC1630], some parsers
+      allow the scheme name to be present in a relative URI if it is the
+      same as the base URI scheme.  Unfortunately, this can conflict
+      with the correct parsing of non-hierarchical URI.  For backwards
+      compatibility, an implementation may work around such references
+      by removing the scheme if it matches that of the base URI and the
+      scheme is known to always use the <hier_part> syntax.  The parser
+      can then continue with the steps below for the remainder of the
+      reference components.  Validating parsers should mark such a
+      misformed relative reference as an error.
+
    4) If the authority component is defined, then the reference is a
       network-path and we skip to step 7.  Otherwise, the reference
       URI's authority is inherited from the base URI's authority
@@ -1032,7 +1056,7 @@ Abstract
 6. URI Normalization and Equivalence
 
    In many cases, different URI strings may actually identify the
-   identical resource. For example, the host names used in URLs are
+   identical resource. For example, the host names used in URL are
    actually case insensitive, and the URL <http://www.XEROX.com> is
    equivalent to <http://www.xerox.com>. In general, the rules for
    equivalence and definition of a normal form, if any, are scheme
@@ -1064,14 +1088,14 @@ Abstract
    unwittingly contacts a site that is in fact running a different
    protocol.  The content of the URL contains instructions that, when
    interpreted according to this other protocol, cause an unexpected
-   operation.  An example has been the use of gopher URLs to cause an
+   operation.  An example has been the use of a gopher URL to cause an
    unintended or impersonating message to be sent via a SMTP server.
 
    Caution should be used when using any URL that specifies a port
    number other than the default for the protocol, especially when it
    is a number within the reserved space.
 
-   Care should be taken when URLs contain escaped delimiters for a
+   Care should be taken when a URL contains escaped delimiters for a
    given protocol (for example, CR and LF characters for telnet
    protocols) that these are not unescaped before transmission.  This
    might violate the protocol, but avoids the potential for such
@@ -1132,7 +1156,7 @@ Abstract
 [RFC1034] Mockapetris, P. "Domain Names - Concepts and Facilities",
    STD 13, RFC 1034, USC/Information Sciences Institute, November 1987.
 
-[RFC2110] Palme, J., and A. Hopmann. "MIME E-mail Encapsulation of 
+[RFC2110] Palme, J., and A. Hopmann. "MIME E-mail Encapsulation of
    Aggregate Documents, such as HTML (MHTML)", RFC 2110, Stockholm
    University/KTH, Microsoft Corporation, March 1997.
 
@@ -1163,7 +1187,7 @@ Abstract
    University of California, Irvine
    Irvine, CA  92697-3425
 
-   Fax: +1(714)824-1715
+   Fax: +1(949)824-1715
    EMail: fielding@ics.uci.edu
 
 
@@ -1181,14 +1205,21 @@ Appendices
 A. Collected BNF for URI
 
       URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
-      absoluteURI   = generic-URI | opaque-URI
-      opaque-URI    = scheme ":" *uric
-      generic-URI   = scheme ":" relativeURI
+      absoluteURI   = scheme ":" ( hier_part | opaque_part )
+      relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
 
-      relativeURI   = net_path | abs_path | rel_path
+      hier_part     = ( net_path | abs_path ) [ "?" query ]
+      opaque_part   = uric_no_slash *uric
+
+      uric_no_slash = unreserved | escaped | ";" | "?" | ":" | "@" |
+                      "&" | "=" | "+" | "$" | ","
+
       net_path      = "//" authority [ abs_path ]
-      abs_path      = "/"  rel_path
-      rel_path      = [ path_segments ] [ "?" query ]
+      abs_path      = "/"  path_segments
+      rel_path      = rel_segment [ abs_path ]
+
+      rel_segment   = 1*( unreserved | escaped |
+                          ";" | "@" | "&" | "=" | "+" | "$" | "," )
 
       scheme        = alpha *( alpha | digit | "+" | "-" | "." )
 
@@ -1209,7 +1240,7 @@ A. Collected BNF for URI
       IPv4address   = 1*digit "." 1*digit "." 1*digit "." 1*digit
       port          = *digit
 
-      path          = [ "/" ] path_segments
+      path          = [ abs_path | opaque_part ]
       path_segments = segment *( "/" segment )
       segment       = *pchar *( ";" param )
       param         = *pchar
@@ -1246,7 +1277,7 @@ A. Collected BNF for URI
 
 B. Parsing a URI Reference with a Regular Expression
 
-   As described in Section 4.3, the generic-URI syntax is not sufficient
+   As described in Section 4.3, the generic URI syntax is not sufficient
    to disambiguate the components of some forms of URI.  Since the
    "greedy algorithm" described in that section is identical to the
    disambiguation method used by POSIX regular expressions, it is
@@ -1387,9 +1418,8 @@ C.2.  Abnormal Examples
    a loophole in prior specifications of partial URI [RFC1630]. Its
    use should be avoided.
 
-      http:g        =  http:g
-      http:         =  http:
-
+      http:g        =  http:g           ; for validating parsers
+                    |  http://a/b/c/g   ; for backwards compatibility
 
 D. Embedding the Base URI in HTML documents
 
@@ -1563,6 +1593,9 @@ G.2. Modifications from both RFC 1738 and RFC 1808
    since it is extensively used on the Internet in spite of the
    difficulty to transcribe it with some keyboards.
 
+   The syntax for URI scheme has been changed to require that all
+   schemes begin with an alpha character.
+
    The "user:password" form in the previous BNF was changed to
    a "userinfo" token, and the possibility that it might be
    "user:password" made scheme specific. In particular, the use
@@ -1624,9 +1657,9 @@ G.4. Modifications from RFC 1808
    MHTML [RFC2110].
 
    RFC 1808 described various schemes as either having or not having the
-   properties of the generic-URI syntax.  However, the only requirement
+   properties of the generic URI syntax.  However, the only requirement
    is that the particular document containing the relative references
-   have a base URI that abides by the generic-URI syntax, regardless of
+   have a base URI that abides by the generic URI syntax, regardless of
    the URI scheme, so the associated description has been updated to
    reflect that.
 
@@ -1643,6 +1676,10 @@ G.4. Modifications from RFC 1808
    has been removed from the algorithm for resolving a relative URI
    reference.  The resolution examples in Appendix C have been modified
    to reflect this change.
+
+   Implementations are now allowed to work around misformed relative
+   references that are prefixed by the same scheme as the base URI,
+   but only for schemes known to use the <hier_part> syntax.
 
 
 H. Full Copyright Statement
