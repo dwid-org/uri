@@ -367,11 +367,11 @@ telnet://melvyl.ucop.edu/
 <figure><preamble>
    The following definitions are common to many elements:
 </preamble>
-<iref item="alpha" primary="yes"/><iref item="URI grammar" subitem="alpha" primary="yes"/>
-<iref item="lowalpha" primary="yes"/><iref item="URI grammar" subitem="lowalpha" primary="yes"/>
-<iref item="upalpha" primary="yes"/><iref item="URI grammar" subitem="upalpha" primary="yes"/>
-<iref item="digit" primary="yes"/><iref item="URI grammar" subitem="digit" primary="yes"/>
-<iref item="alphanum" primary="yes"/><iref item="URI grammar" subitem="alphanum" primary="yes"/>
+<iref item="alpha" primary="true"/><iref item="URI grammar" subitem="alpha" primary="true"/>
+<iref item="lowalpha" primary="true"/><iref item="URI grammar" subitem="lowalpha" primary="true"/>
+<iref item="upalpha" primary="true"/><iref item="URI grammar" subitem="upalpha" primary="true"/>
+<iref item="digit" primary="true"/><iref item="URI grammar" subitem="digit" primary="true"/>
+<iref item="alphanum" primary="true"/><iref item="URI grammar" subitem="alphanum" primary="true"/>
 <artwork>
     alpha    = lowalpha | upalpha
 
@@ -405,7 +405,7 @@ telnet://melvyl.ucop.edu/
    input facilities available to Internet users.
 </t>
 <figure>
-<iref item="uric" primary="yes"/><iref item="URI grammar" subitem="uric" primary="yes"/>
+<iref item="uric" primary="true"/><iref item="URI grammar" subitem="uric" primary="true"/>
 <artwork>
 uric          = reserved | unreserved | escaped
 </artwork></figure>
@@ -487,7 +487,7 @@ URI character sequence->octet sequence->original character sequence
    forming the URI.
 </t>
 <figure>
-<iref item="reserved" primary="yes"/><iref item="URI grammar" subitem="reserved" primary="yes"/>
+<iref item="reserved" primary="true"/><iref item="URI grammar" subitem="reserved" primary="true"/>
 <artwork>
 reserved    = ";" | "/" | "?" | ":" | "@" | "&amp;" | "=" | "+" |
               "$" | ","
@@ -515,8 +515,8 @@ reserved    = ";" | "/" | "?" | ":" | "@" | "&amp;" | "=" | "+" |
    symbols.
 </t>
 <figure>
-<iref item="unreserved" primary="yes"/><iref item="URI grammar" subitem="unreserved" primary="yes"/>
-<iref item="mark" primary="yes"/><iref item="URI grammar" subitem="mark" primary="yes"/>
+<iref item="unreserved" primary="true"/><iref item="URI grammar" subitem="unreserved" primary="true"/>
+<iref item="mark" primary="true"/><iref item="URI grammar" subitem="mark" primary="true"/>
 <artwork>
 unreserved  = alphanum | mark
 
@@ -546,8 +546,8 @@ mark        = "-" | "_" | "." | "!" | "~" | "*" | "'" | "(" | ")"
    encoding for the US-ASCII space character.
 </t>
 <figure>
-<iref item="escaped" primary="yes"/><iref item="URI grammar" subitem="escaped" primary="yes"/>
-<iref item="hex" primary="yes"/><iref item="URI grammar" subitem="hex" primary="yes"/>
+<iref item="escaped" primary="true"/><iref item="URI grammar" subitem="escaped" primary="true"/>
+<iref item="hex" primary="true"/><iref item="URI grammar" subitem="hex" primary="true"/>
 <artwork>
 escaped     = "%" hex hex
 hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
@@ -599,7 +599,7 @@ hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
    they are likely to be misinterpreted by some control mechanisms.
 </t>
 <figure>
-<iref item="control" primary="yes"/><iref item="URI grammar" subitem="control" primary="yes"/>
+<iref item="control" primary="true"/><iref item="URI grammar" subitem="control" primary="true"/>
 <artwork>
 control     = &lt;US-ASCII coded characters 00-1F and 7F hexadecimal&gt;
 </artwork></figure>
@@ -611,7 +611,7 @@ control     = &lt;US-ASCII coded characters 00-1F and 7F hexadecimal&gt;
    contexts.
 </t>
 <figure>
-<iref item="space" primary="yes"/><iref item="URI grammar" subitem="space" primary="yes"/>
+<iref item="space" primary="true"/><iref item="URI grammar" subitem="space" primary="true"/>
 <artwork>
 space       = &lt;US-ASCII coded character 20 hexadecimal&gt;
 </artwork></figure>
@@ -624,7 +624,7 @@ space       = &lt;US-ASCII coded character 20 hexadecimal&gt;
    it is used for the encoding of escaped characters.
 </t>
 <figure>
-<iref item="delims" primary="yes"/><iref item="URI grammar" subitem="delims" primary="yes"/>
+<iref item="delims" primary="true"/><iref item="URI grammar" subitem="delims" primary="true"/>
 <artwork>
 delims      = "&lt;" | "&gt;" | "#" | "%" | &lt;"&gt;
 </artwork></figure>
@@ -634,7 +634,7 @@ delims      = "&lt;" | "&gt;" | "#" | "%" | &lt;"&gt;
    used as delimiters.
 </t>
 <figure>
-<iref item="unwise" primary="yes"/><iref item="URI grammar" subitem="unwise" primary="yes"/>
+<iref item="unwise" primary="true"/><iref item="URI grammar" subitem="unwise" primary="true"/>
 <artwork>
 unwise      = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
 </artwork></figure>
@@ -675,7 +675,7 @@ unwise      = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
    and others do not use a &lt;query&gt; component.
 </t>
 <figure>
-<iref item="absoluteURI" primary="yes"/><iref item="URI grammar" subitem="absoluteURI" primary="yes"/>
+<iref item="absoluteURI" primary="true"/><iref item="URI grammar" subitem="absoluteURI" primary="true"/>
 <artwork>
 absoluteURI   = scheme ":" ( hier_part | opaque_part )
 </artwork></figure>
@@ -689,9 +689,9 @@ absoluteURI   = scheme ":" ( hier_part | opaque_part )
    pathname.
 </t>
 <figure>
-<iref item="hier_part" primary="yes"/><iref item="URI grammar" subitem="hier_part" primary="yes"/>
-<iref item="net_path" primary="yes"/><iref item="URI grammar" subitem="net_path" primary="yes"/>
-<iref item="abs_path" primary="yes"/><iref item="URI grammar" subitem="abs_path" primary="yes"/>
+<iref item="hier_part" primary="true"/><iref item="URI grammar" subitem="hier_part" primary="true"/>
+<iref item="net_path" primary="true"/><iref item="URI grammar" subitem="net_path" primary="true"/>
+<iref item="abs_path" primary="true"/><iref item="URI grammar" subitem="abs_path" primary="true"/>
 <artwork>
 hier_part     = ( net_path | abs_path ) [ "?" query ]
 
@@ -705,8 +705,8 @@ abs_path      = "/"  path_segments
    parser.
 </t>
 <figure>
-<iref item="opaque_part" primary="yes"/><iref item="URI grammar" subitem="opaque_part" primary="yes"/>
-<iref item="uric_no_slash" primary="yes"/><iref item="URI grammar" subitem="uric_no_slash" primary="yes"/>
+<iref item="opaque_part" primary="true"/><iref item="URI grammar" subitem="opaque_part" primary="true"/>
+<iref item="uric_no_slash" primary="true"/><iref item="URI grammar" subitem="uric_no_slash" primary="true"/>
 <artwork>
 opaque_part   = uric_no_slash *uric
 
@@ -736,7 +736,7 @@ uric_no_slash = unreserved | escaped | ";" | "?" | ":" | "@" |
    well as "http").
 </t>
 <figure>
-<iref item="scheme" primary="yes"/><iref item="URI grammar" subitem="scheme" primary="yes"/>
+<iref item="scheme" primary="true"/><iref item="URI grammar" subitem="scheme" primary="true"/>
 <artwork>
 scheme        = alpha *( alpha | digit | "+" | "-" | "." )
 </artwork></figure>
@@ -756,7 +756,7 @@ scheme        = alpha *( alpha | digit | "+" | "-" | "." )
    registry of naming authorities.
 </t>
 <figure>
-<iref item="authority" primary="yes"/><iref item="URI grammar" subitem="authority" primary="yes"/>
+<iref item="authority" primary="true"/><iref item="URI grammar" subitem="authority" primary="true"/>
 <artwork>
 authority     = server | reg_name
 </artwork></figure>
@@ -780,7 +780,7 @@ authority     = server | reg_name
    authority component.
 </t>
 <figure>
-<iref item="reg_name" primary="yes"/><iref item="URI grammar" subitem="reg_name" primary="yes"/>
+<iref item="reg_name" primary="true"/><iref item="URI grammar" subitem="reg_name" primary="true"/>
 <artwork>
 reg_name      = 1*( unreserved | escaped | "$" | "," |
                     ";" | ":" | "@" | "&amp;" | "=" | "+" )
@@ -802,7 +802,7 @@ reg_name      = 1*( unreserved | escaped | "$" | "," |
    server.  The parts "&lt;userinfo&gt;@" and ":&lt;port&gt;" may be omitted.
 </t>
 <figure>
-<iref item="server" primary="yes"/><iref item="URI grammar" subitem="server" primary="yes"/>
+<iref item="server" primary="true"/><iref item="URI grammar" subitem="server" primary="true"/>
 <artwork>
 server        = [ [ userinfo "@" ] hostport ]
 </artwork></figure>
@@ -811,7 +811,7 @@ server        = [ [ userinfo "@" ] hostport ]
    "@".
 </t>
 <figure>
-<iref item="userinfo" primary="yes"/><iref item="URI grammar" subitem="userinfo" primary="yes"/>
+<iref item="userinfo" primary="true"/><iref item="URI grammar" subitem="userinfo" primary="true"/>
 <artwork>
 userinfo      = *( unreserved | escaped |
                    ";" | ":" | "&amp;" | "=" | "+" | "$" | "," )
@@ -828,13 +828,13 @@ userinfo      = *( unreserved | escaped |
    addresses are not supported.
 </t>
 <figure>
-<iref item="hostport" primary="yes"/><iref item="URI grammar" subitem="hostport" primary="yes"/>
-<iref item="host" primary="yes"/><iref item="URI grammar" subitem="host" primary="yes"/>
-<iref item="hostname" primary="yes"/><iref item="URI grammar" subitem="hostname" primary="yes"/>
-<iref item="domainlabel" primary="yes"/><iref item="URI grammar" subitem="domainlabel" primary="yes"/>
-<iref item="toplabel" primary="yes"/><iref item="URI grammar" subitem="toplabel" primary="yes"/>
-<iref item="IPv4address" primary="yes"/><iref item="URI grammar" subitem="IPv4address" primary="yes"/>
-<iref item="port" primary="yes"/><iref item="URI grammar" subitem="port" primary="yes"/>
+<iref item="hostport" primary="true"/><iref item="URI grammar" subitem="hostport" primary="true"/>
+<iref item="host" primary="true"/><iref item="URI grammar" subitem="host" primary="true"/>
+<iref item="hostname" primary="true"/><iref item="URI grammar" subitem="hostname" primary="true"/>
+<iref item="domainlabel" primary="true"/><iref item="URI grammar" subitem="domainlabel" primary="true"/>
+<iref item="toplabel" primary="true"/><iref item="URI grammar" subitem="toplabel" primary="true"/>
+<iref item="IPv4address" primary="true"/><iref item="URI grammar" subitem="IPv4address" primary="true"/>
+<iref item="port" primary="true"/><iref item="URI grammar" subitem="port" primary="true"/>
 <artwork>
 hostport      = host [ ":" port ]
 host          = hostname | IPv4address
@@ -881,11 +881,11 @@ port          = *digit
    within the scope of that scheme and authority.
 </t>
 <figure>
-<iref item="path" primary="yes"/><iref item="URI grammar" subitem="path" primary="yes"/>
-<iref item="path_segments" primary="yes"/><iref item="URI grammar" subitem="path_segments" primary="yes"/>
-<iref item="segment" primary="yes"/><iref item="URI grammar" subitem="segment" primary="yes"/>
-<iref item="param" primary="yes"/><iref item="URI grammar" subitem="param" primary="yes"/>
-<iref item="pchar" primary="yes"/><iref item="URI grammar" subitem="pchar" primary="yes"/>
+<iref item="path" primary="true"/><iref item="URI grammar" subitem="path" primary="true"/>
+<iref item="path_segments" primary="true"/><iref item="URI grammar" subitem="path_segments" primary="true"/>
+<iref item="segment" primary="true"/><iref item="URI grammar" subitem="segment" primary="true"/>
+<iref item="param" primary="true"/><iref item="URI grammar" subitem="param" primary="true"/>
+<iref item="pchar" primary="true"/><iref item="URI grammar" subitem="pchar" primary="true"/>
 <artwork>
 path          = [ abs_path | opaque_part ]
 
@@ -912,7 +912,7 @@ pchar         = unreserved | escaped |
    the resource.
 </t>
 <figure>
-<iref item="query" primary="yes"/><iref item="URI grammar" subitem="query" primary="yes"/>
+<iref item="query" primary="true"/><iref item="URI grammar" subitem="query" primary="true"/>
 <artwork>
 query         = *uric
 </artwork></figure>
@@ -938,7 +938,7 @@ query         = *uric
    parsing the fragment and resolving the relative form.
 </t>
 <figure>
-<iref item="URI-reference" primary="yes"/><iref item="URI grammar" subitem="URI-reference" primary="yes"/>
+<iref item="URI-reference" primary="true"/><iref item="URI grammar" subitem="URI-reference" primary="true"/>
 <artwork>
 URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
 </artwork></figure>
@@ -960,7 +960,7 @@ URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
    part of a URI, but is often used in conjunction with a URI.
 </t>
 <figure>
-<iref item="fragment" primary="yes"/><iref item="URI grammar" subitem="fragment" primary="yes"/>
+<iref item="fragment" primary="true"/><iref item="URI grammar" subitem="fragment" primary="true"/>
 <artwork>
 fragment      = *uric
 </artwork></figure>
@@ -1047,7 +1047,7 @@ fragment      = *uric
    relative to the namespace of another hierarchical URI.
 </t>
 <figure>
-<iref item="relativeURI" primary="yes"/><iref item="URI grammar" subitem="relativeURI" primary="yes"/>
+<iref item="relativeURI" primary="true"/><iref item="URI grammar" subitem="relativeURI" primary="true"/>
 <artwork>
 relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
 </artwork></figure>
@@ -1066,8 +1066,8 @@ relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
    slash character is termed a relative-path reference.
 </t>
 <figure>
-<iref item="rel_path" primary="yes"/><iref item="URI grammar" subitem="rel_path" primary="yes"/>
-<iref item="rel_segment" primary="yes"/><iref item="URI grammar" subitem="rel_segment" primary="yes"/>
+<iref item="rel_path" primary="true"/><iref item="URI grammar" subitem="rel_path" primary="true"/>
+<iref item="rel_segment" primary="true"/><iref item="URI grammar" subitem="rel_segment" primary="true"/>
 <artwork>
 rel_path      = rel_segment [ abs_path ]
 
