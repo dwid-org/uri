@@ -13,6 +13,8 @@
              <a href="example_uri_refs.txt">input</a> and
              <a href="example_uri_refs.out">output</a></li>
  <li>Published drafts:
+       <a href="draft-fielding-uri-rfc2396bis-05.txt">05.txt</a>,
+       <a href="draft-fielding-uri-rfc2396bis-05.html">05.html</a>,
        <a href="draft-fielding-uri-rfc2396bis-04.txt">04.txt</a>,
        <a href="draft-fielding-uri-rfc2396bis-04.html">04.html</a>,
        <a href="draft-fielding-uri-rfc2396bis-03.txt">03.txt</a>,
@@ -50,6 +52,8 @@
   <status>added 04</status>
   <status>fixed 05</status>
   <status>added 05</status>
+  <status>fixed 06</status>
+  <status>added 06</status>
  </section><section>
   <title>Issues that will not be incorporated</title>
   <status>closed</status>
