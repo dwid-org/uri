@@ -1730,7 +1730,7 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.iref.60"></a>
 <a name="rfc.iref.61"></a>
 <a name="rfc.iref.62"></a>
-   A host identified by an IPv6 literal address <a href="#RFC2373" title="IP Version 6 Addressing Architecture">[RFC2373]</a>
+   A host identified by an IPv6 literal address <a href="#RFC3513" title="Internet Protocol Version 6 (IPv6) Addressing Architecture">[RFC3513]</a>
    is distinguished by enclosing the IPv6 literal within square-brakets
    ("[" and "]").  This is the only place where square-bracket characters
    are allowed in the hierarchical URI syntax.
@@ -2791,10 +2791,11 @@ More information on URI-based semantic attacks can be found in
    in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
    and Larry Masinter in <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>.
    In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
-   Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman,
-   Graham Klyne, Dan Kohn, Bruce Lilly, Michael Mealling, Julian Reschke,
-   Tomas Rokicki, Miles Sabin, Ronald Tschalaer,
-   Marc Warne, Henry Zongaro, and Zefram are gratefully acknowledged.
+   Adam M. Costello, Jason Diamond, Martin Duerst, Stefan Eissing,
+   Clive D.W. Feather, Henry Holtzman, Graham Klyne, Dan Kohn, Bruce Lilly,
+   Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
+   Miles Sabin, Ronald Tschalaer, Marc Warne, and Henry Zongaro are
+   gratefully acknowledged.
 </p>
 
 <hr class="noprint">
@@ -2879,7 +2880,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2373">[RFC2373]</a></b></td><td valign="top"><a href="mailto:hinden@iprg.nokia.com" title="Nokia">Hinden, R.M.</a> and <a href="mailto:deering@cisco.com" title="Cisco Systems, Inc.">Deering, S.E.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2373.txt">IP Version 6 Addressing Architecture</a>", RFC&nbsp;2373, July&nbsp;1998.</td>
+<td nowrap="nowrap" valign="top"><b><a name="RFC3513">[RFC3513]</a></b></td><td valign="top"><a href="mailto:hinden@iprg.nokia.com" title="Nokia">Hinden, R.</a> and <a href="mailto:deering@cisco.com" title="Cisco Systems, Inc.">Deering, S.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc3513.txt">Internet Protocol Version 6 (IPv6) Addressing Architecture</a>", RFC&nbsp;3513, April&nbsp;2003.</td>
 </tr>
 
 
@@ -3452,11 +3453,11 @@ of uric.
 </p>
 <p>
 <a name="rfc.section.G.1.p.2"></a>
-Since <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a> defers to <a href="#RFC2373" title="IP Version 6 Addressing Architecture">[RFC2373]</a>
-for definition of an IPv6 literal address, which unfortunately has an
-incorrect ABNF description of IPv6address, we created a new ABNF rule
+Since <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a> defers to <a href="#RFC3513" title="Internet Protocol Version 6 (IPv6) Addressing Architecture">[RFC3513]</a>
+for definition of an IPv6 literal address, which unfortunately lacks
+an ABNF description of IPv6address, we created a new ABNF rule
 for IPv6address that matches the text representations defined by
-Section 2.2 of <a href="#RFC2373" title="IP Version 6 Addressing Architecture">[RFC2373]</a>.  Likewise, the definition
+Section 2.2 of <a href="#RFC3513" title="Internet Protocol Version 6 (IPv6) Addressing Architecture">[RFC3513]</a>.  Likewise, the definition
 of IPv4address has been improved in order to limit each decimal
 octet to the range 0-255, and the definition of hostname has been
 improved to better specify length limitations and partially-qualified

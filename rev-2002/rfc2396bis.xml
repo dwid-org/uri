@@ -851,7 +851,7 @@ URI character sequence->octet sequence->original character sequence
 <iref item="IPv6address" primary="true"/>
 <iref item="ls32" primary="true"/>
 <iref item="h4" primary="true"/>
-   A host identified by an IPv6 literal address <xref target="RFC2373"/>
+   A host identified by an IPv6 literal address <xref target="RFC3513"/>
    is distinguished by enclosing the IPv6 literal within square-brakets
    ("[" and "]").  This is the only place where square-bracket characters
    are allowed in the hierarchical URI syntax.
@@ -1745,10 +1745,11 @@ More information on URI-based semantic attacks can be found in
    in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
    and Larry Masinter in <xref target="RFC2732"/>.
    In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
-   Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman,
-   Graham Klyne, Dan Kohn, Bruce Lilly, Michael Mealling, Julian Reschke,
-   Tomas Rokicki, Miles Sabin, Ronald Tschalaer,
-   Marc Warne, Henry Zongaro, and Zefram are gratefully acknowledged.
+   Adam M. Costello, Jason Diamond, Martin Duerst, Stefan Eissing,
+   Clive D.W. Feather, Henry Holtzman, Graham Klyne, Dan Kohn, Bruce Lilly,
+   Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
+   Miles Sabin, Ronald Tschalaer, Marc Warne, and Henry Zongaro are
+   gratefully acknowledged.
 </t>
 </section>
 </middle>
@@ -2040,21 +2041,20 @@ Science, University of California, Irvine</organization>
 <format type='TXT' octets='12388' target='ftp://ftp.isi.edu/in-notes/rfc952.txt' />
 </reference>
 
-<reference anchor='RFC2373'>
+<reference anchor='RFC3513'>
 <front>
-<title abbrev='IPv6 Addressing'>IP Version 6 Addressing Architecture</title>
-<author initials='R.M.' surname='Hinden' fullname='Robert M. Hinden'>
+<title abbrev='IPv6 Addressing'>Internet Protocol Version 6 (IPv6) Addressing Architecture</title>
+<author initials='R.' surname='Hinden' fullname='Robert M. Hinden'>
 <organization>Nokia</organization>
 <address>
 <postal>
-<street>232 Java Drive</street>
-<street>Sunnyvale</street>
-<street>CA 94089</street>
+<street>313 Fairchild Drive</street>
+<street>Mountainview</street>
+<street>CA 94043</street>
 <country>USA</country></postal>
-<phone>+1 408 990-2004</phone>
-<facsimile>+1 408 743-5677</facsimile>
+<phone>+1 650-625-2004</phone>
 <email>hinden@iprg.nokia.com</email></address></author>
-<author initials='S.E.' surname='Deering' fullname='Stephen E. Deering'>
+<author initials='S.' surname='Deering' fullname='Stephen E. Deering'>
 <organization>Cisco Systems, Inc.</organization>
 <address>
 <postal>
@@ -2063,19 +2063,15 @@ Science, University of California, Irvine</organization>
 <street>CA 95134-1706</street>
 <country>USA</country></postal>
 <phone>+1 408 527-8213</phone>
-<facsimile>+1 408 527-8254</facsimile>
 <email>deering@cisco.com</email></address></author>
-<date month='July' year='1998' />
+<date month='April' year='2003' />
 <area>Internet</area>
 <keyword>internet protocol version 6</keyword>
 <keyword>IPv6</keyword>
 <keyword>addressing</keyword>
-<keyword>multicast</keyword>
 </front>
-<seriesInfo name='RFC' value='2373' />
-<format type='TXT' octets='52526' target='ftp://ftp.isi.edu/in-notes/rfc2373.txt' />
-<format type='HTML' octets='70216' target='http://xml.resource.org/public/rfc/html/rfc2373.html' />
-<format type='XML' octets='54927' target='http://xml.resource.org/public/rfc/xml/rfc2373.xml' />
+<seriesInfo name='RFC' value='3513' />
+<format type='TXT' octets='53920' target='ftp://ftp.isi.edu/in-notes/rfc3513.txt' />
 </reference>
 
 <reference anchor='RFC2732'>
@@ -2639,11 +2635,11 @@ characters allowed rather than continuing to be defined in terms
 of uric.
 </t>
 <t>
-Since <xref target="RFC2732"/> defers to <xref target="RFC2373"/>
-for definition of an IPv6 literal address, which unfortunately has an
-incorrect ABNF description of IPv6address, we created a new ABNF rule
+Since <xref target="RFC2732"/> defers to <xref target="RFC3513"/>
+for definition of an IPv6 literal address, which unfortunately lacks
+an ABNF description of IPv6address, we created a new ABNF rule
 for IPv6address that matches the text representations defined by
-Section 2.2 of <xref target="RFC2373"/>.  Likewise, the definition
+Section 2.2 of <xref target="RFC3513"/>.  Likewise, the definition
 of IPv4address has been improved in order to limit each decimal
 octet to the range 0-255, and the definition of hostname has been
 improved to better specify length limitations and partially-qualified
