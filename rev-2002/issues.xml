@@ -1571,7 +1571,7 @@ limit each decimal octet to the range 0-255.
  <type>intro</type>
  <name>019-URI-URL-URN</name>
  <title>URI/URL/URN contemporary view</title>
- <status>accepted</status>
+ <status>fixed 00</status>
  <report>
   <author email="michael_AT_neonym.net">Michael Mealling</author>
   <date sort="20020501">01 May 2002</date>
@@ -1609,6 +1609,15 @@ View":
    refer to some subclass of URI schemes which exclude URNs.
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021027">27 Oct 2002</date>
+  <where>draft 00</where>
+<pre>
+Fixed by rewriting the section on URI, URL, and URN, and changing
+all use of the term URL in the specification to URI.
+</pre>
+ </action>
 </issue>
 
 <issue>

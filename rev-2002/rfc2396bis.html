@@ -717,7 +717,7 @@ ins
 
 
 <b>F&nbsp;
-            <a href="#rfc.section.F">Abbreviated URLs</a></b>
+            <a href="#rfc.section.F">Abbreviated URIs</a></b>
 <br>
 
 
@@ -781,7 +781,7 @@ ins
    "Relative Uniform Resource Locators" <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a> in order
    to define a single, generic syntax for all URIs.  It excludes those
    portions of RFC 1738 that defined the specific syntax of individual
-   URL schemes; those portions will be updated as separate documents.
+   URI schemes; those portions will be updated as separate documents.
    The process for registration of new URI schemes is defined separately
    by <a href="#RFC2717" title="Registration Procedures for URL Scheme Names">[RFC2717]</a>.
 </p>
@@ -868,56 +868,55 @@ ins
 <a name="rfc.section.1.2.p.1"></a>
    A URI can be further classified as a locator, a name, or both.  The
    term "Uniform Resource Locator" (URL) refers to the subset of URIs
-   that identify resources via a representation of their primary access
-   mechanism (e.g., their network "location"), rather than identifying
-   the resource by name or by some other attribute(s) of that resource.
-   The term "Uniform Resource Name" (URN) refers to the subset of URIs
-   that are required to remain globally unique and persistent even when
-   the resource ceases to exist or becomes unavailable.
+   that, in addition to identifying the resource, provide a means of
+   locating the resource by describing its primary access mechanism
+   (e.g., its network "location"), rather than by some other attributes
+   it may have.  The term "Uniform Resource Name" (URN) refers to the
+   subset of URIs that are required to remain globally unique and
+   persistent even when the resource ceases to exist or becomes unavailable.
 </p>
 <p>
 <a name="rfc.section.1.2.p.2"></a>
-   The URI scheme (Section 3.1) defines the namespace of the URI, and
+   An individual scheme does not need to be cast into one of a discrete
+   set of URI types such as "URL", "URN", "URC", etc.  Any given URI
+   scheme may define subspaces that have the characteristics of a name,
+   a locator, or both, often depending on the persistence and care in
+   the assignment of identifiers by the naming authority, rather than on
+   any quality of the URI scheme.  For that reason, this specification
+   deprecates use of the terms URL or URN to distinguish between
+   schemes, instead using the term URI throughout.
+</p>
+<p>
+<a name="rfc.section.1.2.p.3"></a>
+   Each URI scheme (Section 3.1) defines the namespace of the URI, and
    thus may further restrict the syntax and semantics of identifiers
    using that scheme.  This specification defines those elements of the
    URI syntax that are either required of all URI schemes or are common
    to many URI schemes.  It thus defines the syntax and semantics that
    are needed to implement a scheme-independent parsing mechanism for
    URI references, such that the scheme-dependent handling of a URI can
-   be postponed until the scheme-dependent semantics are needed.  We use
-   the term URL below when describing syntax or semantics that only
-   apply to locators.
-</p>
-<p>
-<a name="rfc.section.1.2.p.3"></a>
-   Although many URL schemes are named after protocols, this does not
-   imply that the only way to access the URL's resource is via the named
-   protocol.  Gateways, proxies, caches, and name resolution services
-   might be used to access some resources, independent of the protocol
-   of their origin, and the resolution of some URL may require the use
-   of more than one protocol (e.g., both DNS and HTTP are typically used
-   to access an "http" URL's resource when it can't be found in a local
-   cache).
+   be postponed until the scheme-dependent semantics are needed.
 </p>
 <p>
 <a name="rfc.section.1.2.p.4"></a>
-   A URN differs from a URL in that its primary purpose is persistent
-   labeling of a resource with an identifier.  That identifier is drawn
-   from one of a set of defined namespaces, each of which has its own
-   set name structure and assignment procedures.  The "urn" scheme has
-   been reserved to establish the requirements for a standardized URN
-   namespace, as defined in "URN Syntax" <a href="#RFC2141" title="URN Syntax">[RFC2141]</a> and
-   its related specifications.
+   Although many URI schemes are named after protocols, this does not
+   imply that use of such a URI will result in access to the resource
+   via the named protocol.  URIs are often used in contexts that are
+   purely for identification, just like any other identifier.  Even when
+   a URI is used to obtain a representation of a resource, that access
+   might be through gateways, proxies, caches, and name resolution
+   services that are independent of the protocol of the resource origin,
+   and the resolution of some URIs may require the use of more than one
+   protocol (e.g., both DNS and HTTP are typically used to access an
+   "http" URI's resource when it can't be found in a local cache).
 </p>
 <p>
 <a name="rfc.section.1.2.p.5"></a>
-   Most of the examples in this specification demonstrate URL, since
-   they allow the most varied use of the syntax and often have a
-   hierarchical namespace.  A parser of the URI syntax is capable of
-   parsing both URL and URN references as a generic URI; once the scheme
-   is determined, the scheme-specific parsing can be performed on the
-   generic URI components.  In other words, the URI syntax is a superset
-   of the syntax of all URI schemes.
+   A parser of the generic URI syntax is capable of parsing any URI
+   reference into its major components; once the scheme is determined,
+   further scheme-specific parsing can be performed on the components.
+   In other words, the URI generic syntax is a superset of the syntax
+   of all URI schemes.
 </p>
 <h2>
 <a name="rfc.section.1.3">1.3</a>&nbsp;
@@ -1336,8 +1335,8 @@ ins
    "mark" characters are automatically escaped by some systems.  If the
    given URI scheme defines a canonicalization algorithm, then
    unreserved characters may be unescaped according to that algorithm.
-   For example, "%7e" is sometimes used instead of "~" in an http URL
-   path, but the two are equivalent for an http URL.
+   For example, "%7e" is sometimes used instead of "~" in an http URI
+   path, but the two are equivalent for an http URI.
 </p>
 <p>
 <a name="rfc.section.2.4.2.p.3"></a>
@@ -1591,7 +1590,7 @@ ins
     Server-based Naming Authority</h3>
 <p>
 <a name="rfc.section.3.2.2.p.1"></a>
-   URL schemes that involve the direct use of an IP-based protocol to a
+   URI schemes that involve the direct use of an IP-based protocol to a
    specified server on the Internet use a common syntax for the server
    component of the URI's scheme-specific data:
 </p>
@@ -1623,7 +1622,7 @@ ins
 </pre>
 <p>
 <a name="rfc.section.3.2.2.p.6"></a>
-   Some URL schemes use the format "user:password" in the userinfo
+   Some URI schemes use the format "user:password" in the userinfo
    field. This practice is NOT RECOMMENDED, because the passing of
    authentication information in clear text has proven to
    be a security risk in almost every case where it has been used.
@@ -2349,13 +2348,13 @@ next component separator or the end of the reference.
 <p>
 <a name="rfc.section.6.p.1"></a>
    In many cases, different URI strings may actually identify the
-   identical resource. For example, the host names used in URL are
-   actually case insensitive, and the URL &lt;http://www.XEROX.com&gt; is
+   identical resource. For example, the host names used in URI are
+   actually case insensitive, and the URI &lt;http://www.XEROX.com&gt; is
    equivalent to &lt;http://www.xerox.com&gt;. In general, the rules for
    equivalence and definition of a normal form, if any, are scheme
    dependent. When a scheme uses elements of the common syntax, it will
    also use the common syntax equivalence rules, namely that the scheme
-   and hostname are case insensitive and a URL with an explicit ":port",
+   and hostname are case insensitive and a URI with an explicit ":port",
    where the port is the default for the scheme, is equivalent to one
    where the port is elided.
 </p>
@@ -2373,9 +2372,9 @@ next component separator or the end of the reference.
 <p>
 <a name="rfc.section.7.p.1"></a>
    A URI does not in itself pose a security threat.  Users should beware
-   that there is no general guarantee that a URL, which at one time
+   that there is no general guarantee that a URI, which at one time
    located a given resource, will continue to do so.  Nor is there any
-   guarantee that a URL will not locate a different resource at some
+   guarantee that a URI will not locate a different resource at some
    later point in time, due to the lack of any constraint on how a given
    authority apportions its namespace.  Such a guarantee can only be
    obtained from the person(s) controlling that namespace and the
@@ -2385,27 +2384,27 @@ next component separator or the end of the reference.
 </p>
 <p>
 <a name="rfc.section.7.p.2"></a>
-   It is sometimes possible to construct a URL such that an attempt to
+   It is sometimes possible to construct a URI such that an attempt to
    perform a seemingly harmless, idempotent operation, such as the
    retrieval of an entity associated with the resource, will in fact
-   cause a possibly damaging remote operation to occur.  The unsafe URL
+   cause a possibly damaging remote operation to occur.  The unsafe URI
    is typically constructed by specifying a port number other than that
    reserved for the network protocol in question.  The client
    unwittingly contacts a site that is in fact running a different
-   protocol.  The content of the URL contains instructions that, when
+   protocol.  The content of the URI contains instructions that, when
    interpreted according to this other protocol, cause an unexpected
-   operation.  An example has been the use of a gopher URL to cause an
+   operation.  An example has been the use of a gopher URI to cause an
    unintended or impersonating message to be sent via a SMTP server.
 </p>
 <p>
 <a name="rfc.section.7.p.3"></a>
-   Caution should be used when using any URL that specifies a port
+   Caution should be used when using any URI that specifies a port
    number other than the default for the protocol, especially when it is
    a number within the reserved space.
 </p>
 <p>
 <a name="rfc.section.7.p.4"></a>
-   Care should be taken when a URL contains escaped delimiters for a
+   Care should be taken when a URI contains escaped delimiters for a
    given protocol (for example, CR and LF characters for telnet
    protocols) that these are not unescaped before transmission.  This
    might violate the protocol, but avoids the potential for such
@@ -2415,9 +2414,9 @@ next component separator or the end of the reference.
 </p>
 <p>
 <a name="rfc.section.7.p.5"></a>
-   It is clearly unwise to use a URL that contains a password which is
+   It is clearly unwise to use a URI that contains a password which is
    intended to be secret. In particular, the use of a password within
-   the 'userinfo' component of a URL is strongly disrecommended except
+   the 'userinfo' component of a URI is strongly disrecommended except
    in those rare cases where the 'password' parameter is intended to be
    public.
 </p>
@@ -2564,12 +2563,6 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <tr>
 <td nowrap="nowrap" valign="top"><b><a name="RFC1737">[RFC1737]</a></b></td><td valign="top"><a href="mailto:masinter@parc.xerox.com" title="Xerox Palo Alto Research Center">Masinter, L.</a> and <a href="mailto:sollins@lcs.mit.edu" title="MIT Laboratory for Computer Science">Sollins, K.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1737.txt">Functional Requirements for Uniform Resource Names</a>", RFC&nbsp;1737, December&nbsp;1994.</td>
 </tr>
-
-
-<tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2141">[RFC2141]</a></b></td><td valign="top"><a href="mailto:jayhawk@ds.internic.net" title="AT&amp;T">Moats, R.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2141.txt">URN Syntax</a>", RFC&nbsp;2141, May&nbsp;1997.</td>
-</tr>
-
 
 
 <tr>
@@ -3101,9 +3094,10 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
 </p>
 <p>
 <a name="rfc.section.E.p.9"></a>
-   The prefix "URL:" (with or without a trailing space) was recommended
-   as a way to help distinguish a URL from other bracketed
-   designators, although this is not common in practice.
+   The prefix "URL:" (with or without a trailing space) was formerly
+   recommended as a way to help distinguish a URI from other bracketed
+   designators, though it is not commonly used in practice and is
+   no longer recommended.
 </p>
 <p>
 <a name="rfc.section.E.p.10"></a>
@@ -3140,14 +3134,14 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
 </table>
 <h1>
 <a name="rfc.section.F">F</a>&nbsp;
-    Abbreviated URLs</h1>
+    Abbreviated URIs</h1>
 <p>
 <a name="rfc.section.F.p.1"></a>
-   The URL syntax was designed for unambiguous reference to network
-   resources and extensibility via the URL scheme.  However, as URL
+   The URI syntax was designed for unambiguous reference to network
+   resources and extensibility via the URI scheme.  However, as URI
    identification and usage have become commonplace, traditional media
    (television, radio, newspapers, billboards, etc.) have increasingly
-   used abbreviated URL references.  That is, a reference consisting of
+   used abbreviated URI references.  That is, a reference consisting of
    only the authority and path portions of the identified resource, such
    as
 </p>
@@ -3159,19 +3153,19 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
    or simply the DNS hostname on its own.  Such references are primarily
    intended for human interpretation rather than machine, with the
    assumption that context-based heuristics are sufficient to complete
-   the URL (e.g., most hostnames beginning with "www" are likely to have
-   a URL prefix of "http://").  Although there is no standard set of
-   heuristics for disambiguating abbreviated URL references, many client
+   the URI (e.g., most hostnames beginning with "www" are likely to have
+   a URI prefix of "http://").  Although there is no standard set of
+   heuristics for disambiguating abbreviated URI references, many client
    implementations allow them to be entered by the user and
    heuristically resolved.  It should be noted that such heuristics may
-   change over time, particularly when new URL schemes are introduced.
+   change over time, particularly when new URI schemes are introduced.
 </p>
 <p>
 <a name="rfc.section.F.p.4"></a>
-   Since an abbreviated URL has the same syntax as a relative URL path,
-   abbreviated URL references cannot be used in contexts where relative
-   URLs are expected.  This limits the use of abbreviated URLs to places
-   where there is no defined base URL, such as dialog boxes and off-line
+   Since an abbreviated URI has the same syntax as a relative URI path,
+   abbreviated URI references cannot be used in contexts where relative
+   URIs are expected.  This limits the use of abbreviated URIs to places
+   where there is no defined base URI, such as dialog boxes and off-line
    advertisements.
 </p>
 <hr class="noprint">

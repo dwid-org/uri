@@ -15,9 +15,6 @@
 <td nowrap="nowrap"><a href="#016-hostname-toplabel">016-hostname-toplabel</a></td><td>hostname toplabel syntax could be improved</td><td>syntax: hostname</td><td>accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#019-URI-URL-URN">019-URI-URL-URN</a></td><td>URI/URL/URN contemporary view</td><td>intro</td><td>accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td>accepted</td>
 </tr>
 <tr>
@@ -85,6 +82,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>syntax: IPv6</td><td>added 00</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#019-URI-URL-URN">019-URI-URL-URN</a></td><td>URI/URL/URN contemporary view</td><td>intro</td><td>fixed 00</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#023-URI-plural">023-URI-plural</a></td><td>URI or URIs for plural</td><td>intro</td><td>fixed 00</td>
@@ -1787,7 +1787,7 @@ limit each decimal octet to the range 0-255.
       URI/URL/URN contemporary view</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">intro</th><th>accepted</th>
+<th width="40%">intro</th><th>fixed 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1825,6 +1825,17 @@ View":
    have.  Thus as we noted, "http:" is a URI scheme.  An http URI is a
    URL.  The phrase "URL scheme" is now used infrequently, usually to
    refer to some subclass of URI schemes which exclude URNs.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  27 Oct 2002,
+  draft 00:
+  <pre>
+Fixed by rewriting the section on URI, URL, and URN, and changing
+all use of the term URL in the specification to URI.
 </pre>
 </td>
 </tr>
