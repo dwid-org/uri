@@ -667,55 +667,26 @@ would be represented as "%E3%82%A2".
 
 <section title="Syntax Components" anchor="components">
 <iref item="URI" primary="true"/>
-<iref item="hier-part" primary="true"/>
-<iref item="net-path" primary="true"/>
-<iref item="abs-path" primary="true"/>
-<iref item="rel-path" primary="true"/>
 <iref item="authority" primary="false"/>
 <iref item="path" primary="false"/>
 <figure><preamble>
 The generic URI syntax consists of a hierarchical sequence of components
 referred to as the scheme, authority, path, query, and fragment.
 <iref item="URI grammar" subitem="URI" primary="true"/>
-<iref item="URI grammar" subitem="hier-part" primary="true"/>
-<iref item="URI grammar" subitem="net-path" primary="true"/>
-<iref item="URI grammar" subitem="abs-path" primary="true"/>
-<iref item="URI grammar" subitem="rel-path" primary="true"/>
-<iref item="URI grammar" subitem="path-segments" primary="false"/>
 <iref item="URI grammar" subitem="scheme" primary="false"/>
+<iref item="URI grammar" subitem="authority" primary="false"/>
+<iref item="URI grammar" subitem="path" primary="false"/>
 <iref item="URI grammar" subitem="query" primary="false"/>
 <iref item="URI grammar" subitem="fragment" primary="false"/>
-<iref item="URI grammar" subitem="authority" primary="false"/>
 </preamble><artwork type="abnf">
-   URI         = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-
-   hier-part   = net-path / abs-path / rel-path
-
-   net-path    = "//" authority [ abs-path ]
-   abs-path    = "/"  path-segments
-   rel-path    = path-segments
+   URI = scheme ":" ["//" authority] path ["?" query] ["#" fragment]
 </artwork><postamble>
 The scheme and path components are required, though path may be empty
-(no characters).  An ABNF-driven parser of hier-part will find
-that the three productions in the rule are ambiguous: they are
-disambiguated by the "first-match-wins" (a.k.a. "greedy") algorithm.
-In other words, if the string begins with two slash characters ("//"),
-then it is a net-path; if it begins with only one slash character,
-then it is an abs-path; otherwise, it is a rel-path.  Note that
-rel-path does not necessarily contain any slash ("/") characters; a
-non-hierarchical path will be treated as opaque data by a generic
-URI parser.
+(no characters).  An ABNF-driven parser will find that the border between
+authority and path is ambiguous; they are disambiguated by the
+"first-match-wins" (a.k.a. "greedy") algorithm.  In other words, if
+authority is present then the first segment of the path must be empty.
 </postamble></figure>
-<t>
-The authority component is only present when a string matches the
-net-path production.  Since the presence of an authority component
-restricts the remaining syntax for path, we have not included a
-specific "path" rule in the syntax.  Instead, what we refer to as
-the URI path is that part of the parsed URI string matching the
-abs-path or rel-path production in the syntax above, since they are
-mutually exclusive for any given URI and can be parsed as a single
-component.
-</t>
 <figure><preamble>
 The following are two example URIs and their component parts:
 </preamble><artwork>
@@ -766,7 +737,7 @@ Many URI schemes include a hierarchical element for a naming
 authority, such that governance of the name space defined by the
 remainder of the URI is delegated to that authority (which may,
 in turn, delegate it further).  The generic syntax provides a common
-means for distinguishing an authority based on a registered domain name
+means for distinguishing an authority based on a registered name
 or server address, along with optional port and user information.
 </t>
 <figure><preamble>
@@ -797,7 +768,7 @@ mislead the user (<xref target="security-semantic"/>).
 <figure><preamble>
 The userinfo sub-component may consist of a user name and, optionally,
 scheme-specific information about how to gain authorization to access
-the server.  The user information, if present, is followed by a
+the resource.  The user information, if present, is followed by a
 commercial at-sign ("@") that delimits it from the host.
 <iref item="URI grammar" subitem="userinfo" primary="true"/>
 </preamble><artwork type="abnf">
@@ -944,35 +915,34 @@ For example, the "http" URI scheme defines a default of TCP port 80.
 
 <section title="Path" anchor="path">
 <iref item="path" primary="true"/>
-<iref item="path-segments" primary="true"/>
 <iref item="segment" primary="true"/>
 <iref item="pchar" primary="true"/>
 <figure><preamble>
-The path component contains hierarchical data that, along with data
-in the optional <xref target="query">query</xref> component, serves
-to identify a resource within the scope of that URI's scheme and
-naming authority (if any).  There is no specific "path" syntax
-production in the generic URI syntax.  Instead, what we refer to as
-the URI path is that part of the parsed URI string matching either
-the abs-path or the rel-path production, since they are mutually
-exclusive for any given URI and can be parsed as a single component.
-The path is terminated by the first question-mark ("?") or
-number-sign ("#") character, or by the end of the URI.
+The path component contains data, usually organized in hierarchical form,
+that, along with data in the non-hierarchical <xref target="query">query</xref>
+component, serves to identify a resource within the scope of the URI's
+scheme and naming authority (if any).  If a URI contains an authority
+component, then the initial path segment must be empty (i.e., the path must
+begin with a slash ("/") character or be entirely empty).  The path is
+terminated by the first question-mark ("?") or number-sign ("#") character,
+or by the end of the URI.
 <iref item="URI grammar" subitem="path-segments" primary="true"/>
 <iref item="URI grammar" subitem="segment" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="true"/>
 </preamble><artwork type="abnf">
-   path-segments = segment *( "/" segment )
+   path          = segment *( "/" segment )
    segment       = *pchar
 
    pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 </artwork></figure>
 <t>
-The path consists of a sequence of path segments separated by a
+A path consists of a sequence of path segments separated by a
 slash ("/") character.  A path is always defined for a URI, though
-the defined path may be empty (zero length) or opaque (not containing
-any "/" delimiters).  For example, the URI &lt;mailto:fred@example.com&gt;
-has a path of "fred@example.com".
+the defined path may be empty (zero length).  Use of the slash character
+to indicate hierarchy is only required when a URI will be used as the
+context for relative references.  For example, the URI
+&lt;mailto:fred@example.com&gt; has a path of "fred@example.com", whereas
+the URI &lt;foo://info.example.com?fred&gt; has an empty path.
 </t>
 <iref item="dot-segments" primary="true"/>
 <t>
@@ -999,8 +969,8 @@ used for similar purposes.  For example, one URI generator might use
 a segment like "name;v=1.1" to indicate a reference to version 1.1 of "name",
 whereas another might use a segment like "name,1.1" to indicate the same.
 Parameter types may be defined by scheme-specific semantics, but in most
-cases the meaning of a parameter is specific to the implementation-specific
-syntax of a URI's dereferencing algorithm.
+cases the syntax of a parameter is specific to the implementation
+of the URI's dereferencing algorithm.
 </t>
 </section>
 
@@ -1009,7 +979,7 @@ syntax of a URI's dereferencing algorithm.
 <iref item="query" primary="true"/>
 The query component contains non-hierarchical data that, along with data
 in the <xref target="path">path</xref> component, serves to identify a
-resource within the scope of that URI's scheme and naming authority (if any).
+resource within the scope of the URI's scheme and naming authority (if any).
 The query component is indicated by the first question-mark ("?") character 
 and terminated by a number-sign ("#") character or by the end of the URI.
 <iref item="URI grammar" subitem="query" primary="true"/>
@@ -1066,14 +1036,14 @@ subsets, views, or external references that are identifiable as secondary
 resources by that media type.  If the primary resource is represented by
 multiple media types, as is often the case for resources whose representation
 is selected based on attributes of the retrieval request, then interpretation
-of the fragment identifier must be consistent across all of those
+of the fragment identifier should be consistent across all of those
 media types in order for it to be viable as an identifier.
 </t>
 <t>
 As with any URI, use of a fragment identifier component does not imply
 that a retrieval action will take place.  A URI with a fragment identifier
 may be used to refer to the secondary resource without any implication
-that the primary resource is accessible.  However, if that URI is used
+that the primary resource is accessible.  However, if a URI is used
 in a context that does call for retrieval and is not a same-document
 reference (<xref target="same-document"/>), the fragment identifier is
 only valid as a reference if a retrieval action on the primary resource
@@ -1154,11 +1124,10 @@ A relative URI reference takes advantage of the hier-part syntax
 (<xref target="components"/>) in order to express a reference that is
 relative to the name space of another hierarchical URI.
 <iref item="URI grammar" subitem="relative-URI" primary="true"/>
-<iref item="URI grammar" subitem="hier-part" primary="false"/>
 <iref item="URI grammar" subitem="query" primary="false"/>
 <iref item="URI grammar" subitem="fragment" primary="false"/>
 </preamble><artwork type="abnf">
-   relative-URI  = hier-part [ "?" query ] [ "#" fragment ]
+   relative-URI  = ["//" authority] path ["?" query] ["#" fragment]
 </artwork><postamble>
 The URI referred to by a relative reference is obtained by applying
 the reference resolution algorithm of <xref target="reference-resolution"/>.
@@ -1189,10 +1158,9 @@ use by relative references calls for an absolute-URI production that
 does not allow a fragment.
 <iref item="URI grammar" subitem="absolute-URI" primary="true"/>
 <iref item="URI grammar" subitem="scheme" primary="false"/>
-<iref item="URI grammar" subitem="hier-part" primary="false"/>
 <iref item="URI grammar" subitem="query" primary="false"/>
 </preamble><artwork type="abnf">
-   absolute-URI  = scheme ":" hier-part [ "?" query ]
+   absolute-URI  = scheme ":" ["//" authority] path ["?" query]
 </artwork></figure>
 </section>
 
@@ -2685,37 +2653,22 @@ Science, University of California, Irvine</organization>
 
 <section title="Collected ABNF for URI" anchor="collected-abnf">
 <figure><artwork>
- abs-path      = "/" path-segments
+ URI = scheme ":" ["//" authority] path ["?" query] ["#" fragment]
 
- absolute-URI  = scheme ":" hier-part [ "?" query ]
+ URI-reference = URI / relative-URI
 
- alphanum      = ALPHA / DIGIT
+ relative-URI  = ["//" authority] path ["?" query] ["#" fragment]
+
+ absolute-URI  = scheme ":" ["//" authority] path ["?" query]
+
+ scheme        = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
 
  authority     = [ userinfo "@" ] host [ ":" port ]
-
- dec-octet     = DIGIT                 ; 0-9
-               / %x31-39 DIGIT         ; 10-99
-               / "1" 2DIGIT            ; 100-199
-               / "2" %x30-34 DIGIT     ; 200-249
-               / "25" %x30-35          ; 250-255
-
- domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
-
- pct-encoded   = "%" HEXDIG HEXDIG
-
- fragment      = *( pchar / "/" / "?" )
-
- gen-delims    = ":" / "/" / "?" / "#" / "[" / "]" / "@"
-
- h4            = 1*4HEXDIG
-
- hier-part     = net-path / abs-path / rel-path
-
+ userinfo      = *( unreserved / pct-encoded / sub-delims )
  host          = [ IPv6reference / IPv4address / hostname ]
+ port          = *DIGIT
 
- hostname      = domainlabel qualified
-
- IPv4address   = dec-octet "." dec-octet "." dec-octet "." dec-octet
+ IPv6reference = "[" IPv6address "]"
 
  IPv6address   =                          6( h4 ":" ) ls32
                /                     "::" 5( h4 ":" ) ls32
@@ -2727,42 +2680,38 @@ Science, University of California, Irvine</organization>
                / [ *5( h4 ":" ) h4 ] "::"             h4
                / [ *6( h4 ":" ) h4 ] "::"
 
- IPv6reference = "[" IPv6address "]"
-
+ h4            = 1*4HEXDIG
  ls32          = ( h4 ":" h4 ) / IPv4address
 
- net-path      = "//" authority [ abs-path ]
+ IPv4address   = dec-octet "." dec-octet "." dec-octet "." dec-octet
 
- path-segments = segment *( "/" segment )
+ dec-octet     = DIGIT                 ; 0-9
+               / %x31-39 DIGIT         ; 10-99
+               / "1" 2DIGIT            ; 100-199
+               / "2" %x30-34 DIGIT     ; 200-249
+               / "25" %x30-35          ; 250-255
 
- pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
-
- port          = *DIGIT
-
+ hostname      = domainlabel qualified
+ domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
  qualified     = *( "." domainlabel ) [ "." ]
+
+ alphanum      = ALPHA / DIGIT
+
+ path          = segment *( "/" segment )
+ segment       = *pchar
+ pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 
  query         = *( pchar / "/" / "?" )
 
- rel-path      = path-segments
+ fragment      = *( pchar / "/" / "?" )
 
- relative-URI  = hier-part [ "?" query ] [ "#" fragment ]
-
- reserved      = gen-delims / sub-delims
-
- scheme        = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
-
- segment       = *pchar
-
- sub-delims    = "!" / "$" / "&amp;" / "'" / "(" / ")"
-               / "*" / "+" / "," / ":" / ";" / "="
+ pct-encoded   = "%" HEXDIG HEXDIG
 
  unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
-
- URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-
- URI-reference = URI / relative-URI
-
- userinfo      = *( unreserved / pct-encoded / sub-delims )
+ reserved      = gen-delims / sub-delims
+ gen-delims    = ":" / "/" / "?" / "#" / "[" / "]" / "@"
+ sub-delims    = "!" / "$" / "&amp;" / "'" / "(" / ")"
+               / "*" / "+" / "," / ":" / ";" / "="
 </artwork></figure>
 </section>
 
@@ -2951,28 +2900,27 @@ respectively, to reduce confusion with other forms of escape mechanisms.
 The ABNF for URI and URI-reference has been redesigned to make them
 more friendly to LALR parsers and significantly reduce complexity.
 As a result, the layout form of syntax description has been removed,
-along with the uric-no-slash, opaque-part, and rel-segment productions.
+along with the uric, uric_no_slash, hier_part, opaque_part, net_path,
+abs_path, rel_path, path_segments, rel_segment, and mark productions.
 All references to "opaque" URIs have been replaced with a better
 description of how the path component may be opaque to hierarchy.
-The fragment identifier has been moved back into the section on
-generic syntax components and within the URI and relative-URI
-productions, though it remains excluded from absolute-URI.
 The ambiguity regarding the parsing of URI-reference as a URI or a
 relative-URI with a colon in the first segment is now explained
 and disambiguated in the section defining relative-URI.
 </t>
 <t>
+The fragment identifier has been moved back into the section on
+generic syntax components and within the URI and relative-URI
+productions, though it remains excluded from absolute-URI.
 The number-sign ("#") character has been moved back to the reserved set
-as a result of reintegrating the fragment syntax.  The uric and mark
-productions have been removed.
+as a result of reintegrating the fragment syntax.
 </t>
 <t>
-The ABNF of hier-part and relative-URI has been corrected
-to allow a relative URI path to be empty.  This also allows an
-absolute-URI to consist of nothing after the "scheme:", as is present
-in practice with the "dav:" namespace <xref target="RFC2518"/> and
-the "about:" scheme used internally by many WWW browser implementations.
-The ambiguity regarding the parsing of net-path, abs-path, and rel-path
+The ABNF has been corrected to allow a relative URI path to be empty.
+This also allows an absolute-URI to consist of nothing after the "scheme:",
+as is present in practice with the "dav:" namespace <xref target="RFC2518"/>
+and the "about:" scheme used internally by many WWW browser implementations.
+The ambiguity regarding the boundary between authority and path
 is now explained and disambiguated in the same section.
 </t>
 <t>
@@ -3013,7 +2961,8 @@ same-document reference: when the resolved target URI and base URI,
 excluding fragments, match.  This change does not modify the behavior
 of existing same-document references as defined by RFC 2396
 (fragment-only references); it merely adds the same-document distinction
-to other references that refer to the base URI, as is consistent with
+to other references that refer to the base URI and simplifies the
+interface between applications and their URI parsers, as is consistent with
 the internal architecture of deployed URI processing implementations.
 </t>
 <t>

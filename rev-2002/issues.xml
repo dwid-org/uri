@@ -44,6 +44,8 @@
   <status>added 02</status>
   <status>fixed 03</status>
   <status>added 03</status>
+  <status>fixed 04</status>
+  <status>added 04</status>
  </section><section>
   <title>Issues that will not be incorporated</title>
   <status>closed</status>
@@ -4068,7 +4070,7 @@ Closed due to lack of interest.
  <type>bnf</type>
  <name>044-empty-path</name>
  <title>no path is defined for scheme://ABCD?query</title>
- <status>accepted</status>
+ <status>fixed 04</status>
  <report>
   <author email="marktt_AT_excite.com">Mark Thomson</author>
   <date sort="20030608">08 Jun 2003</date>
@@ -4171,6 +4173,22 @@ path            = abs-path / rel-path / net-path-suffix
 Of course, //ABCD+y in http://ABCD+y would still be parsed as a path.
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040209">09 Feb 2004</date>
+  <where>draft 04</where>
+<pre>
+I have followed Rob Cameron's suggestion for draft 04, since it greatly
+simplifies the grammar (and the associated text that had to explain it).
+
+   URI = scheme ":" ["//" authority] path ["?" query] ["#" fragment]
+   path          = segment *( "/" segment )
+
+As a result, almost all of the intermediate rules are no longer useful
+and have been removed, including hier-part, net-path, abs-path, rel-path,
+and path-segments.
+</pre>
+ </action>
 </issue>
 
 <issue>

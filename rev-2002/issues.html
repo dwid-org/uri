@@ -49,9 +49,6 @@
 <th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#044-empty-path">044-empty-path</a></td><td>no path is defined for scheme://ABCD?query</td><td>bnf</td><td nowrap="nowrap">accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#045-double-slash">045-double-slash</a></td><td>inconsistent handling of .//g relative references</td><td>relative</td><td nowrap="nowrap">pending</td>
 </tr>
 </table>
@@ -164,6 +161,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#032-component-examples">032-component-examples</a></td><td>add more examples for generic syntax components</td><td>examples</td><td nowrap="nowrap">added 03</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#044-empty-path">044-empty-path</a></td><td>no path is defined for scheme://ABCD?query</td><td>bnf</td><td nowrap="nowrap">fixed 04</td>
 </tr>
 </table>
 <br>
@@ -4616,7 +4616,7 @@ Closed due to lack of interest.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="044-empty-path">044-empty-path</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">no path is defined for scheme://ABCD?query</font></th>
 </tr>
 <tr>
-<th>accepted</th><th align="left">bnf</th>
+<th bgcolor="lightgreen">fixed 04</th><th align="left">bnf</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -4725,6 +4725,24 @@ net-path-suffix = ["/" path-segments]
 path            = abs-path / rel-path / net-path-suffix
 
 Of course, //ABCD+y in http://ABCD+y would still be parsed as a path.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  09 Feb 2004,
+  draft 04:
+  <pre>
+I have followed Rob Cameron's suggestion for draft 04, since it greatly
+simplifies the grammar (and the associated text that had to explain it).
+
+   URI = scheme ":" ["//" authority] path ["?" query] ["#" fragment]
+   path          = segment *( "/" segment )
+
+As a result, almost all of the intermediate rules are no longer useful
+and have been removed, including hier-part, net-path, abs-path, rel-path,
+and path-segments.
 </pre>
 </td>
 </tr>
