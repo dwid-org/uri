@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Issues List for the 
+             URI Test Cases and Implementation Reports</title>
+</head>
+<body>
+<h1>Issues List for the <br>URI Test Cases and Implementation Reports</h1>
+<ul>
+<li>
+<a href="../rev-2002/issues.html">URI Issues</a>
+</li>
+<li>URI draft:
+       <a href="../rev-2002/draft-fielding-uri-rfc2396bis-05.txt">05.txt</a>,
+       <a href="../rev-2002/draft-fielding-uri-rfc2396bis-05.html">05.html</a>
+</li>
+<li>
+<a href="../rfc/rfc2396.html">RFC 2396</a>
+</li>
+</ul>
+ 
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th align="left" bgcolor="#FFFFCC" colspan="4"><font size="+2">Test Cases</font></th>
+</tr>
+<tr>
+<th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#examples-in-spec">examples-in-spec</a></td><td>relative parsing examples in section 5.4 of URI</td><td>relative</td><td nowrap="nowrap">verified</td>
+</tr>
+</table>
+<br>
+ 
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th align="left" bgcolor="#FFFFCC" colspan="4"><font size="+2">Tested Implementations</font></th>
+</tr>
+<tr>
+<th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#uri_test.pl">uri_test.pl</a></td><td>Roy's example URI reference parser</td><td>implementation</td><td nowrap="nowrap">compliant</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#Apple Safari">Apple Safari</a></td><td>Apple Safari 1.0.2</td><td>implementation</td><td nowrap="nowrap">compliant</td>
+</tr>
+</table>
+<br>
+
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="examples-in-spec">examples-in-spec</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">relative parsing examples in section 5.4 of URI</font></th>
+</tr>
+<tr>
+<th>verified</th><th align="left">relative</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  19 Apr 2004,
+  <where>
+<a href="rel_examples1.html">rel_examples1</a>
+</where>:
+  <pre>
+The examples provided in the specification (section 5.4) use a base
+URI of "http://a/b/c/d;p?q" and should be consistent with almost all
+implementations.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="uri_test.pl">uri_test.pl</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Roy's example URI reference parser</font></th>
+</tr>
+<tr>
+<th>compliant</th><th align="left">implementation</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  19 Apr 2004,
+  <where>
+<a href="../rev-2002/uri_test.pl">uri_test.pl</a>
+</where>:
+  <pre>
+This simple perl script was used by Roy to test the algorithms described
+within the specification.  Usage:
+
+  cat list-of-URI-refs.txt | perl uri_test.pl "base-URI"
+
+Here are examples of its <a href="../rev-2002/example_uri_refs.txt">input</a> and <a href="../rev-2002/example_uri_refs.out">output</a> when given the
+base URI of "http://a/b/c/d;p?q".
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="Apple Safari">Apple Safari</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Apple Safari 1.0.2</font></th>
+</tr>
+<tr>
+<th>compliant</th><th align="left">implementation</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  19 Apr 2004,
+  <where>
+<a href="http://www.apple.com/safari/">Apple Safari site</a>
+</where>:
+  <pre>
+Roy tested the URI reference parser on Apple Safari 1.0.2 by simple
+observation of the test cases.  The results were consistent with
+those of rfc2396bis except in that Safari will add a default path
+of "/" to http URIs that have an empty path.  Since that is consistent
+with a scheme-specific optimization, Safari 1.0.2 is compliant.
+</pre>
+</td>
+</tr>
+</table>
+</body>
+</html>

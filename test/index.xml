@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml-stylesheet type='text/xsl' href='../rev-2002/issuelist.xslt' ?>
+<!-- anybody want to write a DTD?  go for it.
+<DOCTYPE issuelist SYSTEM "issuelist.dtd">
+ -->
+<issuelist>
+<title>URI Test Cases and Implementation Reports</title>
+
+<links>
+ <li><a href="../rev-2002/issues.html">URI Issues</a></li>
+ <li>URI draft:
+       <a href="../rev-2002/draft-fielding-uri-rfc2396bis-05.txt">05.txt</a>,
+       <a href="../rev-2002/draft-fielding-uri-rfc2396bis-05.html">05.html</a></li>
+ <li><a href="../rfc/rfc2396.html">RFC 2396</a></li>
+</links>
+<summary>
+ <section>
+  <title>Test Cases</title>
+  <status>verified</status>
+  <status>unverified</status>
+ </section>
+ <section>
+  <title>Tested Implementations</title>
+  <status>compliant</status>
+  <status>conditionally-compliant</status>
+  <status>non-compliant</status>
+ </section>
+</summary>
+
+<issue>
+ <type>relative</type>
+ <name>examples-in-spec</name>
+ <title>relative parsing examples in section 5.4 of URI</title>
+ <status>verified</status>
+ <report>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040419">19 Apr 2004</date>
+  <where><a href="rel_examples1.html">rel_examples1</a></where>
+<pre>
+The examples provided in the specification (section 5.4) use a base
+URI of "http://a/b/c/d;p?q" and should be consistent with almost all
+implementations.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>implementation</type>
+ <name>uri_test.pl</name>
+ <title>Roy's example URI reference parser</title>
+ <status>compliant</status>
+ <report>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040419">19 Apr 2004</date>
+  <where><a href="../rev-2002/uri_test.pl">uri_test.pl</a></where>
+<pre>
+This simple perl script was used by Roy to test the algorithms described
+within the specification.  Usage:
+
+  cat list-of-URI-refs.txt | perl uri_test.pl "base-URI"
+
+Here are examples of its <a href="../rev-2002/example_uri_refs.txt">input</a> and <a href="../rev-2002/example_uri_refs.out">output</a> when given the
+base URI of "http://a/b/c/d;p?q".
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>implementation</type>
+ <name>Apple Safari</name>
+ <title>Apple Safari 1.0.2</title>
+ <status>compliant</status>
+ <report>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040419">19 Apr 2004</date>
+  <where><a href="http://www.apple.com/safari/">Apple Safari site</a></where>
+<pre>
+Roy tested the URI reference parser on Apple Safari 1.0.2 by simple
+observation of the test cases.  The results were consistent with
+those of rfc2396bis except in that Safari will add a default path
+of "/" to http URIs that have an empty path.  Since that is consistent
+with a scheme-specific optimization, Safari 1.0.2 is compliant.
+</pre>
+ </report>
+</issue>
+
+</issuelist>
