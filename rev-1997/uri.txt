@@ -1,7 +1,7 @@
 Network Working Group                            T. Berners-Lee, MIT/LCS
 INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
 draft-fielding-uri-syntax-02              L. Masinter, Xerox Corporation
-Expires six months after publication date                  March 4, 1997
+Expires six months after publication date                  March 4, 1998
 
 
           Uniform Resource Identifiers (URI): Generic Syntax
