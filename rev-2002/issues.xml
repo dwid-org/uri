@@ -801,13 +801,26 @@ for the port, where http://63.197.151.31:0000000080/ accesses port 80).
 http://www.ietf.org/rfc/rfc2732.txt
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021022">22 Oct 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I've been trying to integrate the RFC 2732 update and have so far
+found it to be a complete time-sink.  That RFC doesn't define the
+actual IPv6 literal syntax, and the ABNF provided by RFC 2373 is
+not even remotely correct.
+
+Does anyone know of a correct BNF for the IPv6 literal?
+</pre>
+ </action>
 </issue>
 
 <issue>
  <type>syntax: IPv6</type>
  <name>012-simplify-IPv6</name>
  <title>change BNF to incorporate IPv6 better than RFC 2732</title>
- <status>pending</status>
+ <status>accepted</status>
  <report>
   <author email="jjc_AT_jclark.com">James Clark</author>
   <date sort="20010720">20 Jul 2001</date>
@@ -946,6 +959,20 @@ I agree that this is an error in RFC 2732, and should be
 folded in when we merge RFC 2732 with RFC 2396. We would
 need two independent interoperable implementations of
 RFC 2732 (with ipv6 addresses), though.
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021022">22 Oct 2002</date>
+  <where>issues list</where>
+<pre>
+Adding square brackets to uric_no_slash is fine, since it only affects
+the opaque URI syntax.  However, adding it to the other places that
+James Clark suggested would allow square brackets to be used anywhere,
+which is simply unwise (and why they were not allowed at all before).
+I can understand why IPv6 chose square brackets as delimiters, but
+allowing them in path, query, and fragment would cause too many
+interoperability issues with deployed systems.
 </pre>
  </action>
 </issue>
@@ -1869,4 +1896,23 @@ I'll find a better way to write it.
 </pre>
  </action>
 </issue>
+
+<issue>
+ <type>formalism</type>
+ <name>026-ABNF</name>
+ <title>replace existing BNF with standard ABNF of RFC 2234</title>
+ <status>accepted</status>
+ <report>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021022">22 Oct 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+It also looks like we'll have to switch to the formal ABNF of
+RFC 2234 in order to define IPv4 addresses correctly.  At least
+that will make the IESG happier, but it sure is a pain in the
+editorial fingers.
+</pre>
+ </report>
+</issue>
+
 </issuelist>

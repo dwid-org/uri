@@ -18,6 +18,9 @@
 <td nowrap="nowrap"><a href="#011-IPv6-literal">011-IPv6-literal</a></td><td>integrate IPv6 syntax of RFC 2732</td><td>syntax: IPv6</td><td>accepted</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#012-simplify-IPv6">012-simplify-IPv6</a></td><td>change BNF to incorporate IPv6 better than RFC 2732</td><td>syntax: IPv6</td><td>accepted</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>syntax: IPv6</td><td>accepted</td>
 </tr>
 <tr>
@@ -27,13 +30,13 @@
 <td nowrap="nowrap"><a href="#025-rel_segment">025-rel_segment</a></td><td>rel_segment is defined without distinguishing param</td><td>syntax</td><td>accepted</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#026-ABNF">026-ABNF</a></td><td>replace existing BNF with standard ABNF of RFC 2234</td><td>formalism</td><td>accepted</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td bgcolor="#FFFFCC">URI versus URI Reference</td><td>uri</td><td>pending</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#010-gethostbyname">010-gethostbyname</a></td><td bgcolor="#FFFFCC">gethostbyname allows much more than hostname BNF</td><td>syntax: hostname</td><td>pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#012-simplify-IPv6">012-simplify-IPv6</a></td><td bgcolor="#FFFFCC">change BNF to incorporate IPv6 better than RFC 2732</td><td>syntax: IPv6</td><td>pending</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#016-hostname-toplabel">016-hostname-toplabel</a></td><td bgcolor="#FFFFCC">hostname toplabel syntax could be improved</td><td>syntax: hostname</td><td>pending</td>
@@ -955,6 +958,21 @@ http://www.ietf.org/rfc/rfc2732.txt
 </pre>
 </td>
 </tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  22 Oct 2002,
+  URI-WG mailing list:
+  <pre>
+I've been trying to integrate the RFC 2732 update and have so far
+found it to be a complete time-sink.  That RFC doesn't define the
+actual IPv6 literal syntax, and the ABNF provided by RFC 2373 is
+not even remotely correct.
+
+Does anyone know of a correct BNF for the IPv6 literal?
+</pre>
+</td>
+</tr>
 </table>
 <br>
 <h2>
@@ -962,7 +980,7 @@ http://www.ietf.org/rfc/rfc2732.txt
       change BNF to incorporate IPv6 better than RFC 2732</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax: IPv6</th><th>pending</th>
+<th width="40%">syntax: IPv6</th><th>accepted</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1109,6 +1127,22 @@ I agree that this is an error in RFC 2732, and should be
 folded in when we merge RFC 2732 with RFC 2396. We would
 need two independent interoperable implementations of
 RFC 2732 (with ipv6 addresses), though.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  22 Oct 2002,
+  issues list:
+  <pre>
+Adding square brackets to uric_no_slash is fine, since it only affects
+the opaque URI syntax.  However, adding it to the other places that
+James Clark suggested would allow square brackets to be used anywhere,
+which is simply unwise (and why they were not allowed at all before).
+I can understand why IPv6 chose square brackets as delimiters, but
+allowing them in path, query, and fragment would cause too many
+interoperability issues with deployed systems.
 </pre>
 </td>
 </tr>
@@ -2115,6 +2149,28 @@ Is this an error in the syntax, or can somebody explain this?
 No, but I agree that it is confusing.  They are defined differently
 because rel_segment cannot be empty.  Syntactically they are equivalent.
 I'll find a better way to write it.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<h2>
+<a name="026-ABNF">026-ABNF</a>: 
+      replace existing BNF with standard ABNF of RFC 2234</h2>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th width="40%">formalism</th><th>accepted</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  22 Oct 2002,
+  URI-WG mailing list:
+  <pre>
+It also looks like we'll have to switch to the formal ABNF of
+RFC 2234 in order to define IPv4 addresses correctly.  At least
+that will make the IESG happier, but it sure is a pain in the
+editorial fingers.
 </pre>
 </td>
 </tr>
