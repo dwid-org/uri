@@ -1,7 +1,7 @@
 <!--
     XSLT transformation from RFC2629 XML format to HTML
 
-    Copyright (c) 2001 Julian F. Reschke (julian.reschke@greenbytes.de)
+    Copyright (c) 2001-2003 Julian F. Reschke (julian.reschke@greenbytes.de)
 
     placed into the public domain
 
@@ -139,10 +139,46 @@
     
     Support for tocdepth PI.
 
-    2003-05-02  fielding
-
-    Make mailto links optional (default = none)
+    2002-11-03  julian.reschke@greenbytes.de
     
+    Added temporariry workaround for Mozilla/Transformiix result tree fragment problem.
+    (search for 'http://bugzilla.mozilla.org/show_bug.cgi?id=143668')
+    
+    2002-12-25  julian.reschke@greenbytes.de
+    
+    xref code: attempt to uppercase "section" and "appendix" when at the start
+    of a sentence.
+    
+    2003-02-02  julian.reschke@greenbytes.de
+    
+    fixed code for vspace blankLines="0", enhanced display for list with "format" style,
+    got rid of HTML blockquote elements, added support for "hangIndent"
+    
+    2003-04-10  julian.reschke@greenbytes.de
+    
+    experimental support for appendix and spanx elements
+    
+    2003-04-19  julian.reschke@greenbytes.de
+    
+    fixed counting of list numbers in "format %" styles (one counter
+    per unique format string). Added more spanx styles.
+
+    2003-05-02  julian.reschke@greenbytes.de
+    
+    experimental texttable support
+    
+    2003-05-02  fielding 
+    
+    Make mailto links optional (default = none) (jre: default and PI name changed)
+
+    2003-05-04  julian.rechke@greenbytes.de
+    
+    experimental support for HTML link elements; fix default for table header
+    alignment default
+
+    2003-05-06  julian.rechke@greenbytes.de
+    
+    support for "background" PI.
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -225,6 +261,13 @@
         'private=')"
 />
 
+<!-- background image? -->
+
+<xsl:param name="background"
+  select="substring-after(
+      translate(/processing-instruction('rfc')[contains(.,'background=')], '&quot;', ''),
+        'background=')"
+/>
 
 <!-- extension for XML parsing in artwork -->
 
@@ -234,17 +277,18 @@
         'parse-xml-in-artwork=')"
 />
 
+<!-- choose whether or not to do mailto links --> 
+  
+ <xsl:param name="link-mailto" 
+   select="substring-after( 
+       translate(/processing-instruction('rfc')[contains(.,'linkmailto=')], '&quot;', ''), 
+         'linkmailto=')" 
+ /> 
+
+
 <!-- URL prefix for RFCs. -->
 
 <xsl:param name="rfcUrlPrefix" select="'http://www.ietf.org/rfc/rfc'" />
-
-<!-- choose whether or not to do mailto links -->
-
-<xsl:param name="linkMailto"
-  select="substring-after(
-      translate(/processing-instruction('rfc')[contains(.,'linkMailto=')], '&quot;', ''),
-        'linkMailto=')"
-/>
 
 
 <!-- build help keys for indices -->
@@ -361,7 +405,14 @@
   <xsl:if test="address/email">
     <tr>
       <td align="right"><b>EMail:&#0160;</b></td>
-      <td><xsl:call-template name="showEmail"><xsl:with-param name="email" select="address/email" /></xsl:call-template></td>
+      <td>
+        <a>
+          <xsl:if test="$link-mailto!='no'">
+            <xsl:attribute name="href">mailto:<xsl:value-of select="address/email" /></xsl:attribute>
+          </xsl:if>
+          <xsl:value-of select="address/email" />
+        </a>
+      </td>
     </tr>
   </xsl:if>
   <xsl:if test="address/uri">
@@ -512,8 +563,14 @@
       <xsl:when test="function-available('xalan:nodeset')">
         <xsl:apply-templates select="xalan:nodeset($preamble)" />
       </xsl:when>
-      <xsl:otherwise> <!--proceed with fingers crossed-->
-        <xsl:apply-templates select="$preamble" />
+      <xsl:when test="system-property('xsl:vendor')='Transformiix' and system-property('xsl:vendor-url')='http://www.mozilla.org/projects/xslt/'">
+        <!--special case for Transformiix as of Mozilla release 1.2b -->
+        <!--see http://bugzilla.mozilla.org/show_bug.cgi?id=143668 -->
+        <xsl:apply-templates select="$preamble/node()" />
+      </xsl:when>
+      <xsl:otherwise>
+        <!--proceed with fingers crossed-->
+        <xsl:apply-templates select="$preamble/node()" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:if>
@@ -536,9 +593,9 @@
 <!-- list templates depend on the list style -->
 
 <xsl:template match="list[@style='empty' or not(@style)]">
-  <blockquote>
+  <dl>
     <xsl:apply-templates />
-  </blockquote>
+  </dl>
 </xsl:template>
 
 <xsl:template match="list[starts-with(@style,'format ')]">
@@ -548,11 +605,9 @@
 </xsl:template>
 
 <xsl:template match="list[@style='hanging']">
-  <blockquote>
-    <dl>
-      <xsl:apply-templates />
-    </dl>
-  </blockquote>
+  <dl>
+    <xsl:apply-templates />
+  </dl>
 </xsl:template>
 
 <xsl:template match="list[@style='numbers']">
@@ -565,15 +620,13 @@
 
 <!-- numbered list inside numbered list -->
 <xsl:template match="list[@style='numbers']/t/list[@style='numbers']" priority="9">
-  <blockquote>
-    <ol style="list-style-type: lower-alpha">
-      <xsl:apply-templates />
-    </ol>
-  </blockquote>
+  <ol style="list-style-type: lower-alpha">
+    <xsl:apply-templates />
+  </ol>
 </xsl:template>
 
 <xsl:template match="list[@style='symbols']">
-  <ul class="text">
+  <ul>
     <xsl:apply-templates />
   </ul>
 </xsl:template>
@@ -581,9 +634,9 @@
 <!-- same for t(ext) elements -->
 
 <xsl:template match="list[@style='empty' or not(@style)]/t">
-  <p>
+  <dd style="margin-top: .5em">
     <xsl:apply-templates />
-  </p>
+  </dd>
 </xsl:template>
 
 <xsl:template match="list[@style='numbers' or @style='symbols']/t">
@@ -593,16 +646,46 @@
 </xsl:template>
 
 <xsl:template match="list[@style='hanging']/t">
-  <dt><xsl:value-of select="@hangText" /></dt>
-  <dd><xsl:apply-templates /></dd>
+  <dt style="margin-top: .5em">
+    <xsl:value-of select="@hangText" />
+  </dt>
+  <dd>
+    <!-- if hangIndent present, use 0.7 of the specified value (1em is the width of the "m" character -->
+    <xsl:if test="../@hangIndent">
+      <xsl:attribute name="style">margin-left: <xsl:value-of select="../@hangIndent * 0.7"/>em</xsl:attribute>
+    </xsl:if>
+    <xsl:apply-templates />
+  </dd>
 </xsl:template>
 
-<xsl:template match="list[starts-with(@style,'format ')]/t">
+<xsl:template match="list[starts-with(@style,'format ') and (contains(@style,'%c') or contains(@style,'%d'))]/t">
+  <xsl:variable name="list" select=".." />
   <xsl:variable name="format" select="substring-after(../@style,'format ')" />
-  <xsl:variable name="label" select="concat(substring-before($format,'%d'),position(),substring-after($format,'%d'),'&#0160;')" />
+  <xsl:variable name="pos">
+    <xsl:choose>
+      <xsl:when test="$list/@counter">
+        <xsl:number level="any" count="list[@counter=$list/@counter or (not(@counter) and @style=$list/@counter)]/t" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:number level="any" count="list[@counter=$list/@style or (not(@counter) and @style=$list/@style)]/t" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
   <tr>
-    <td><xsl:value-of select="$label" /></td>
-    <td><xsl:apply-templates /></td>
+    <td class="top">
+      <xsl:choose>
+        <xsl:when test="contains($format,'%c')">
+          <xsl:value-of select="substring-before($format,'%c')"/><xsl:number value="$pos" format="A" /><xsl:value-of select="substring-after($format,'%c')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="substring-before($format,'%d')"/><xsl:number value="$pos" format="1" /><xsl:value-of select="substring-after($format,'%d')"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      &#160;
+    </td>
+    <td class="top">
+      <xsl:apply-templates />
+    </td>
   </tr>
 </xsl:template>
 
@@ -660,11 +743,11 @@
         <xsl:choose>
           <xsl:when test="@surname and @surname!=''">
             <xsl:choose>
-              <xsl:when test="not($linkMailto)">
-                <xsl:value-of select="concat(@surname,', ',@initials)" />
-              </xsl:when>
-              <xsl:when test="address/email">
-                <a href="mailto:{address/email}">
+               <xsl:when test="address/email">
+                <a>
+                  <xsl:if test="$link-mailto!='no'">
+                    <xsl:attribute name="href">mailto:<xsl:value-of select="address/email" /></xsl:attribute>
+                  </xsl:if>
                   <xsl:if test="organization/text()">
                     <xsl:attribute name="title"><xsl:value-of select="organization/text()"/></xsl:attribute>
                   </xsl:if>
@@ -780,6 +863,21 @@
        <style type="text/css">
         <xsl:call-template name="insertCss" />
       </style>
+      <xsl:if test="$includeToc='yes'">
+        <link rel="Contents" href="#rfc.toc" />
+      </xsl:if>
+      <link rel="Author" href="#rfc.authors" />
+      <link rel="Copyright" href="#rfc.copyright" />
+      <xsl:if test="//iref">
+        <link rel="Index" href="#rfc.index" />
+      </xsl:if>
+      <xsl:apply-templates select="/" mode="links" />
+      <xsl:for-each select="/rfc/ed:link">
+        <link><xsl:copy-of select="@*" /></link>
+      </xsl:for-each>
+      <xsl:if test="/rfc/@number">
+        <link rel="Alternate" title="Authorative ASCII version" href="http://www.ietf.org/rfc/rfc{/rfc/@number}" />
+      </xsl:if>
     </head>
     <body>
       <!-- insert diagnostics -->
@@ -809,7 +907,7 @@
 </xsl:template>
                
                
-<xsl:template match="section">
+<xsl:template match="section|appendix">
 
   <xsl:variable name="sectionNumber">
     <xsl:choose>
@@ -850,11 +948,24 @@
   <xsl:apply-templates select="*[not(self::iref)]" />
 </xsl:template>
 
-<xsl:template match="vspace[not(@blankLines)]">
+<xsl:template match="spanx[@style='emph' or not(@style)]">
+  <em><xsl:apply-templates /></em>
+</xsl:template>
+
+<xsl:template match="spanx[@style='verb']">
+  <tt><xsl:apply-templates /></tt>
+</xsl:template>
+
+<xsl:template match="spanx[@style='strong']">
+  <strong><xsl:apply-templates /></strong>
+</xsl:template>
+
+
+<xsl:template match="vspace[not(@blankLines) or @blankLines=0]">
   <br />
 </xsl:template>
 
-<xsl:template match="vspace[@blankLines]">
+<xsl:template match="vspace[@blankLines &gt; 0]">
   <br/><xsl:for-each select="//*[position() &lt;= @blankLines]"> <br /></xsl:for-each>
 </xsl:template>
 
@@ -870,6 +981,7 @@
 </xsl:template>
                
 <xsl:template match="xref[not(node())]">
+  <xsl:variable name="context" select="." />
   <xsl:variable name="target" select="@target" />
   <xsl:variable name="node" select="//*[@anchor=$target]" />
   <!-- should check for undefined targets -->
@@ -877,7 +989,9 @@
     <xsl:choose>
       <xsl:when test="local-name($node)='section'">
         <xsl:for-each select="$node">
-          <xsl:call-template name="sectiontype" />
+          <xsl:call-template name="sectiontype">
+            <xsl:with-param name="prec" select="$context/preceding-sibling::node()[1]" />
+          </xsl:call-template>
           <xsl:call-template name="sectionnumber" />
         </xsl:for-each>
       </xsl:when>
@@ -1130,9 +1244,16 @@ a:active
 }
 body
 {
+  <xsl:if test="$background!=''">
+  background: url(<xsl:value-of select="$background" />) #ffffff left top;
+  </xsl:if>
   color: #000000;
   font-family: helvetica, arial, sans-serif;
   font-size: 13px;
+}
+dl
+{
+  margin-left: 2em;
 }
 h1
 {
@@ -1168,14 +1289,19 @@ pre
 }
 table
 {
-  font-size: 13px
+  margin-left: 2em;
+  font-size: 13px;  
+}
+td.top
+{
+  vertical-align: top;
 }
 td.header
 {
   color: #ffffff;
   font-size: 10px;
   font-family: arial, helvetica, sans-serif;
-  valign: top
+  vertical-align: top
 }
 .editingmark
 {
@@ -1678,14 +1804,6 @@ ins
 
 </xsl:template>
 
-<xsl:template name="showEmail">
-  <xsl:param name="email" />
-  <xsl:choose>
-    <xsl:when test="$linkMailto"><a href="mailto:$email"><xsl:value-of select="$email" /></a></xsl:when>
-    <xsl:otherwise><xsl:value-of select="$email" /></xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
 <xsl:template name="showArtworkLine">
   <xsl:param name="line" />
   <xsl:param name="mode" />
@@ -1799,16 +1917,39 @@ ins
     </xsl:when>
     <xsl:otherwise>
       <xsl:choose>
-        <xsl:when test="ancestor::back"><xsl:number count="ed:del|ed:ins|section" level="multiple" format="A.1.1.1.1.1.1.1" /></xsl:when>
+        <xsl:when test="ancestor::back"><xsl:number count="ed:del|ed:ins|section|appendix" level="multiple" format="A.1.1.1.1.1.1.1" /></xsl:when>
+        <xsl:when test="self::appendix"><xsl:number count="ed:del|ed:ins|appendix" level="multiple" format="A.1.1.1.1.1.1.1" /></xsl:when>
         <xsl:otherwise><xsl:number count="ed:del|ed:ins|section" level="multiple"/></xsl:otherwise>
       </xsl:choose>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
 
-<xsl:template name="sectiontype">
+<xsl:template name="endsWithDot">
+  <xsl:param name="str"/>
   <xsl:choose>
+    <xsl:when test="contains($str,'.') and substring-after($str,'.')=''" ><xsl:value-of select="true()"/></xsl:when>
+    <xsl:when test="not(contains($str,'.'))" ><xsl:value-of select="false()"/></xsl:when>
+    <xsl:otherwise>
+      <xsl:call-template name="endsWithDot">
+        <xsl:with-param name="str" select="substring-after($str,'.')" /> 
+      </xsl:call-template>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+
+<xsl:template name="sectiontype">
+  <xsl:param name="prec" />
+  <xsl:variable name="startOfSentence">
+    <xsl:call-template name="endsWithDot">
+      <xsl:with-param name="str" select="normalize-space($prec)"/>
+    </xsl:call-template>
+  </xsl:variable>
+  <xsl:choose>
+    <xsl:when test="ancestor::back and $startOfSentence='true'">Appendix </xsl:when>
     <xsl:when test="ancestor::back">appendix </xsl:when>
+    <xsl:when test="$startOfSentence='true'">Section </xsl:when>
     <xsl:otherwise>section </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
@@ -2028,6 +2169,71 @@ ins
       <xsl:for-each select=".."><xsl:call-template name="sectionnumberAndEdits" /></xsl:for-each>
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<!-- experimental table formatting -->
+
+<xsl:template match="texttable">
+  <xsl:apply-templates select="preamble" />
+  <table>
+    <thead>
+      <tr>
+        <xsl:apply-templates select="ttcol" />
+      </tr>
+    </thead>
+    <tbody>
+      <xsl:variable name="columns" select="count(ttcol)" />
+      <xsl:for-each select="c[(position() mod $columns) = 1]">
+        <tr>
+          <xsl:for-each select=". | following-sibling::c[position() &lt; $columns]">
+            <td>
+              <xsl:variable name="pos" select="position()" />
+              <xsl:variable name="col" select="../ttcol[position() = $pos]" />
+              <xsl:if test="$col/@align">
+                <xsl:attribute name="align"><xsl:value-of select="$col/@align" /></xsl:attribute>
+              </xsl:if>
+              <xsl:apply-templates select="node()" />
+              &#0160;
+            </td>
+          </xsl:for-each>
+        </tr>
+      </xsl:for-each>
+    </tbody>
+  </table>
+  <xsl:apply-templates select="postamble" />
+</xsl:template>
+
+<xsl:template match="ttcol">
+  <th>
+    <xsl:if test="@width">
+      <xsl:attribute name="width"><xsl:value-of select="@width" /></xsl:attribute>
+    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="@align">
+        <xsl:attribute name="align"><xsl:value-of select="@align" /></xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="align">left</xsl:attribute>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:apply-templates />
+  </th>
+</xsl:template>
+
+<!-- Chapter Link Generation -->
+
+<xsl:template match="node()" mode="links"><xsl:apply-templates mode="links"/></xsl:template>
+
+<xsl:template match="/*/middle//section[not(myns:unnumbered) and not(ancestor::section)]" mode="links">
+  <xsl:variable name="sectionNumber"><xsl:call-template name="sectionnumber" /></xsl:variable>
+  <link rel="Chapter" title="{$sectionNumber} {@title}" href="#rfc.section.{$sectionNumber}" />
+  <xsl:apply-templates mode="links" />
+</xsl:template>
+
+<xsl:template match="/*/back//section[not(myns:unnumbered) and not(ancestor::section)]" mode="links">
+  <xsl:variable name="sectionNumber"><xsl:call-template name="sectionnumber" /></xsl:variable>
+  <link rel="Appendix" title="{$sectionNumber} {@title}" href="#rfc.section.{$sectionNumber}" />
+  <xsl:apply-templates mode="links" />
 </xsl:template>
 
 </xsl:stylesheet>
