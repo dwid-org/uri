@@ -1770,8 +1770,8 @@ table.closedissue {
       <p>
          Use of the format "user:password" in the userinfo field is deprecated.
          Applications should not render as clear text any data after the first
-         colon (":") character found within a userinfo subcomponent unless
-         such data is the empty string (indicating no password) or "anonymous".
+         colon (":") character found within a userinfo subcomponent unless the
+         data after the colon is the empty string (indicating no password).
          Applications may choose to ignore or reject such data when received
          as part of a reference, and should reject the storage of such data
          in unencrypted form.  The passing of authentication information in
@@ -3387,7 +3387,8 @@ table.closedissue {
          Tony Hammond, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
          Michael Kay, John C. Klensin, Graham Klyne, Dan Kohn, Bruce Lilly,
          Andrew Main, Ira McDonald, Michael Mealling, Ray Merkert, Stephen Pollei,
-         Julian Reschke, Tomas Rokicki, Miles Sabin, Mark Thomson, Ronald Tschalaer,
+         Julian Reschke, Tomas Rokicki, Miles Sabin, Kai Schaetzl,
+         Mark Thomson, Ronald Tschalaer,
          Norm Walsh, Marc Warne, Stuart Williams, and Henry Zongaro
          are gratefully acknowledged.
          
