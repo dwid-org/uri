@@ -1582,7 +1582,7 @@ The following examples illustrate URIs that are in common use.
 
 </p>
 <pre>   hostname      = domainlabel [ qualified ]
-   qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
+   qualified     = *( "." domainlabel ) [ "." toplabel "." ]
    domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
    toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
@@ -2347,7 +2347,8 @@ next component separator or the end of the reference.
    in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
    and Larry Masinter in <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>.
    In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
-   Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman, Bruce Lilly,
+   Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman,
+   Graham Klyne, Bruce Lilly,
    Michael Mealling, Julian Reschke, Miles Sabin, Ronald Tschalaer,
    Marc Warne, Henry Zongaro, and Zefram are gratefully acknowledged.
 </p>

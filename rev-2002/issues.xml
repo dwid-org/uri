@@ -2901,7 +2901,7 @@ I will try to include this discussion in draft 01.
  <type>hostname</type>
  <name>038-qualified</name>
  <title>qualified production in hostname is ambiguous</title>
- <status>accepted</status>
+ <status>fixed 01</status>
  <report>
   <author email="GK_AT_ninebynine.org">Graham Klyne</author>
   <date sort="20030226">02 Feb 2003</date>
@@ -2935,10 +2935,10 @@ I think the production could be written thus:
  </report>
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
-  <date sort="20030226">26 Feb 2003</date>
+  <date sort="20030228">28 Feb 2003</date>
   <where>issues list</where>
 <pre>
-I will fix this for draft 01.
+Fixed in draft 01.
 </pre>
  </action>
 </issue>

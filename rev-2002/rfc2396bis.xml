@@ -812,7 +812,7 @@ URI character sequence->octet sequence->original character sequence
 <iref item="URI grammar" subitem="alphanum" primary="true"/>
 </preamble><artwork>
    hostname      = domainlabel [ qualified ]
-   qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
+   qualified     = *( "." domainlabel ) [ "." toplabel "." ]
    domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
    toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
@@ -1458,7 +1458,8 @@ next component separator or the end of the reference.
    in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
    and Larry Masinter in <xref target="RFC2732"/>.
    In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
-   Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman, Bruce Lilly,
+   Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman,
+   Graham Klyne, Bruce Lilly,
    Michael Mealling, Julian Reschke, Miles Sabin, Ronald Tschalaer,
    Marc Warne, Henry Zongaro, and Zefram are gratefully acknowledged.
 </t>
