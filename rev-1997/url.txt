@@ -2,12 +2,12 @@
 
 Network Working Group                                     T. Berners-Lee
 INTERNET-DRAFT                                                   MIT/LCS
-<draft-fielding-url-syntax-01>                               R. Fielding
+<draft-fielding-url-syntax-02a>                              R. Fielding
 Expires six months after publication date.                   U.C. Irvine
                                                              L. Masinter
                                                        Xerox Corporation
 
-                                                        26 November 1996
+                                                        04 December 1996
 
 
                     Uniform Resource Locators (URL)
@@ -109,7 +109,21 @@ Abstract
    `replace', or `find attributes'.  This specification is only
    concerned with the issue of identifying a resource by its location.
 
-1.1. Example URLs
+1.1. URL, URN, and URI
+
+   URLs are a subset of Uniform Resource Identifiers (URI), which also
+   includes the notion of Uniform Resource Names (URN).  A URN differs
+   from a URL in that it identifies a resource in a location-independent
+   fashion (see RFC 1737, [10]).  URNs are defined by a separate set of
+   specifications.
+
+   Although this specification restricts its discussion to URLs, the
+   syntax defined is that of URI in general.  Any requirements placed on
+   the URL syntax also apply to the URI syntax.  This uniform syntax for
+   all resource identifiers allows a URN to be used in any data field
+   that might otherwise hold a URL.
+
+1.2. Example URLs
 
    The following examples illustrate URLs which are in common use.
 
@@ -142,7 +156,7 @@ Abstract
    DNS and HTTP are typically used to access an "http" URL's resource
    when it can't be found in a local cache).
 
-1.2. URL Transcribability
+1.3. URL Transcribability
 
    The URL syntax has been designed to promote transcribability over all
    other concerns.  A URL is a sequence of characters, i.e., letters,
@@ -182,7 +196,7 @@ Abstract
    important than having its URL consist of the most meaningful of
    components.
 
-1.3. Syntax Notation and Common Elements
+1.4. Syntax Notation and Common Elements
 
    This document uses two conventions to describe and define the syntax
    for Uniform Resource Locators.  The first, called the layout form, is
@@ -241,7 +255,7 @@ Abstract
    maximize their transcribability and usability across varying computer
    systems, natural languages, and nationalities.  This restricted set
    corresponds to a subset of the graphic printable characters of the
-   US-ASCII coded character set [10].
+   US-ASCII coded character set [11].
 
    The set of characters allowed for use within URLs can be described in
    three categories: reserved, unreserved, and escaped.
@@ -287,11 +301,13 @@ Abstract
 
 2.3. Escaped Characters
 
-   A character needs to be escaped if it is non-printable, if it is
-   often used to delimit a URL from its context, if it is not found in
+   A character must be escaped if it is non-printable, if it is often
+   used to delimit a URL from its context, if it is not found in
    the US-ASCII coded character set, if it is known to cause problems
    when passed through some e-mail gateways, or if it is being used as
-   normal data within a component in which it is reserved.
+   normal data within a component in which it is reserved.  Other
+   characters should not be escaped unless the context of their use
+   requires it.
    
 2.3.1. Escaped Encoding
 
@@ -340,6 +356,15 @@ Abstract
    an already unescaped string might lead to misinterpreting a percent
    data character as another escaped character, or vice versa in the
    case of escaping an already escaped string.
+
+   An exception to the unescaping rules is allowed when it is known that
+   some older systems are escaping a character that does not need to be
+   escaped, and when it is possible to reliably discriminate between
+   such an escaped data character and any reserved use for that
+   character.  For example, it is generally safe to unescape "%7e" when
+   it occurs at the beginning of an http URL path, since many older
+   systems automatically escape the "~" character even though it is
+   unreserved.
 
 2.3.3. Excluded Characters
 
@@ -983,7 +1008,11 @@ Abstract
        STD 13, RFC 1034, USC/Information Sciences Institute,
        November 1987.
 
-  [10] US-ASCII. "Coded Character Set -- 7-bit American Standard Code
+  [10] Sollins, K., and L. Masinter, "Functional Requirements for
+       Uniform Resource Names", RFC 1737, MIT/LCS, Xerox Corporation,
+       December 1994.
+
+  [11] US-ASCII. "Coded Character Set -- 7-bit American Standard Code
        for Information Interchange", ANSI X3.4-1986.
 
 
