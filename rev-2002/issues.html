@@ -41,21 +41,6 @@
 <th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>terminology</td><td nowrap="nowrap">accepted</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#017-rdf-fragment">017-rdf-fragment</a></td><td>RDF does not believe in same-document references</td><td>fragment</td><td nowrap="nowrap">accepted</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td nowrap="nowrap">accepted</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#033-dot-segments">033-dot-segments</a></td><td>relativising an absolute reference should be invertible</td><td>relative</td><td nowrap="nowrap">accepted</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#039-LALR-BNF">039-LALR-BNF</a></td><td>BNF should be more LALR-parser friendly</td><td>bnf</td><td nowrap="nowrap">accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#032-component-examples">032-component-examples</a></td><td>add more examples for generic syntax components</td><td>examples</td><td nowrap="nowrap">pending</td>
 </tr>
 </table>
@@ -128,7 +113,16 @@
 <td nowrap="nowrap"><a href="#037-uri-comparison">037-uri-comparison</a></td><td>define how to compare URIs</td><td>characters</td><td nowrap="nowrap">added 01</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>terminology</td><td nowrap="nowrap">fixed 02</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#017-rdf-fragment">017-rdf-fragment</a></td><td>RDF does not believe in same-document references</td><td>fragment</td><td nowrap="nowrap">fixed 02</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#019-URI-URL-URN">019-URI-URL-URN</a></td><td>URI/URL/URN contemporary view</td><td>terminology</td><td nowrap="nowrap">fixed 02</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td nowrap="nowrap">fixed 02</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>terminology</td><td nowrap="nowrap">fixed 02</td>
@@ -137,7 +131,13 @@
 <td nowrap="nowrap"><a href="#031-query-def">031-query-def</a></td><td>query definition</td><td>query</td><td nowrap="nowrap">fixed 02</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#033-dot-segments">033-dot-segments</a></td><td>relativising an absolute reference should be invertible</td><td>relative</td><td nowrap="nowrap">fixed 02</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#038-qualified">038-qualified</a></td><td>qualified production in hostname is ambiguous</td><td>hostname</td><td nowrap="nowrap">fixed 02</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#039-LALR-BNF">039-LALR-BNF</a></td><td>BNF should be more LALR-parser friendly</td><td>bnf</td><td nowrap="nowrap">fixed 02</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#040-reg-name">040-reg-name</a></td><td>Remove registry-based name syntax from authority</td><td>authority</td><td nowrap="nowrap">fixed 02</td>
@@ -797,7 +797,7 @@ draft-00:
 <th bgcolor="#FFFFCC"><font size="+2"><a name="008-URIvsURIref">008-URIvsURIref</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">URI versus URI Reference</font></th>
 </tr>
 <tr>
-<th>accepted</th><th align="left">terminology</th>
+<th bgcolor="lightgreen">fixed 02</th><th align="left">terminology</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -897,6 +897,21 @@ URI reference - a string used in a language to specify a URI, for which
 relative form may be used where a base exists. ((This is not the only way of
 specifying the value of a URI - one can use various
 character sets, namespace prefixes, etc))
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  23 May 2003,
+  draft 02:
+  <pre>
+An ABNF production for URI has been introduced to correspond to the
+common usage of the term: an absolute URI with optional fragment. 
+The fragment identifier has been moved back into the section on
+generic syntax components and within the URI and relative-URI productions,
+though it remains excluded from absolute-URI. The entire text of the 
+specification has been revised accordingly.
 </pre>
 </td>
 </tr>
@@ -1556,7 +1571,7 @@ Changed to reflect all of the suggestions:
 <th bgcolor="#FFFFCC"><font size="+2"><a name="017-rdf-fragment">017-rdf-fragment</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">RDF does not believe in same-document references</font></th>
 </tr>
 <tr>
-<th>accepted</th><th align="left">fragment</th>
+<th bgcolor="lightgreen">fixed 02</th><th align="left">fragment</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1939,6 +1954,18 @@ gives a clean, well-behaved algorithm.
 </pre>
 </td>
 </tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  23 May 2003,
+  draft 02:
+  <pre>
+Removed the special-case treatment of same-document references in favor of a
+section that explains that a new retrieval action should not be made if the
+target URI and base URI, excluding fragments, match.
+</pre>
+</td>
+</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -2191,7 +2218,7 @@ More UTF-8 examples are given in draft 01.  That's all for now.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="021-relative-examples">021-relative-examples</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">relative URI examples could be improved</font></th>
 </tr>
 <tr>
-<th>accepted</th><th align="left">examples</th>
+<th bgcolor="lightgreen">fixed 02</th><th align="left">examples</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2256,6 +2283,20 @@ parser, thus identifying places where changes are needed.
 I'd like to expand the tests, particularly with other example base URI,
 since there is one errata that would have been discovered that way.
 More annotation is welcome.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  23 May 2003,
+  draft 02:
+  <pre>
+The examples have been updated for the new treatment of dot-segments
+and double-quotes have been added as delimiters to prevent the RFC
+editing process from losing them during nroff processing.  The examples
+have been moved to the end of the section on relative resolution,
+since that is where the process is described.
 </pre>
 </td>
 </tr>
@@ -3290,7 +3331,7 @@ ignoring the actual syntax specification.]
 <th bgcolor="#FFFFCC"><font size="+2"><a name="033-dot-segments">033-dot-segments</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">relativising an absolute reference should be invertible</font></th>
 </tr>
 <tr>
-<th>accepted</th><th align="left">relative</th>
+<th bgcolor="lightgreen">fixed 02</th><th align="left">relative</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -3424,6 +3465,22 @@ is safe to remove them based on the theory that "/" is reserved for
 the hierarchical syntax.  I can't think of a real mailto example that
 would break, since even distinguished-name-based addresses are not
 going to have ".." or "." as a DN.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  23 May 2003,
+  draft 02:
+  <pre>
+Defined "." and ".." path segments as being applicable to all URI and
+should be removed by resolvers and normalizers.  Clearly defined that
+a path segment including a colon cannot be used as the first segment
+in a relative-path reference.  The relative resolution process is
+invertible, though I have not included a single process for doing so
+because there is no agreed upon standard for converting absolute
+references to a relative form.
 </pre>
 </td>
 </tr>
@@ -3805,7 +3862,7 @@ with additional text added for disambiguation of host.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="039-LALR-BNF">039-LALR-BNF</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">BNF should be more LALR-parser friendly</font></th>
 </tr>
 <tr>
-<th>accepted</th><th align="left">bnf</th>
+<th bgcolor="lightgreen">fixed 02</th><th align="left">bnf</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -3853,6 +3910,26 @@ The production rule for path is a bit problematic.
 
   - the production does not include rel-path, but rel-path needs
     to be processed as a path for the algorithms in 5.2
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  23 May 2003,
+  draft 02:
+  <pre>
+The ABNF for URI and URI-reference has been redesigned to make them more
+friendly to LALR parsers and significantly reduce complexity. As a result,
+the layout form of syntax description has been removed, along with the
+uric-no-slash, opaque-part, and rel-segment productions. All references to
+"opaque" URIs have been replaced with a better description of how the path
+component may be opaque to hierarchy. The fragment identifier has been moved
+back into the section on generic syntax components and within the URI and
+relative-URI productions, though it remains excluded from absolute-URI. The
+ambiguity regarding the parsing of URI-reference as a URI or a relative-URI
+with a colon in the first segment is now explained and disambiguated in the
+section defining relative-URI.
 </pre>
 </td>
 </tr>
