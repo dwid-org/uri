@@ -476,7 +476,7 @@ characters consists of digits, letters, and a few graphic symbols
 chosen from those common to most of the character encodings and
 input facilities available to Internet users.
 <iref item="URI grammar" subitem="uric" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    uric          = reserved / unreserved / escaped
 </artwork></figure>
 <t>
@@ -526,7 +526,7 @@ purpose.  If data for a URI component would conflict with the
 reserved purpose, then the conflicting data must be escaped before
 forming the URI.
 <iref item="URI grammar" subitem="reserved" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    reserved    = "[" / "]" / ";" / "/" / "?" / 
                  ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 </artwork></figure>
@@ -555,7 +555,7 @@ letters, decimal digits, and a limited set of punctuation marks and
 symbols.
 <iref item="URI grammar" subitem="unreserved" primary="true"/>
 <iref item="URI grammar" subitem="mark" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    unreserved  = ALPHA / DIGIT / mark
 
    mark        = "-" / "_" / "." / "!" / "~" / "*" / "'" / "(" / ")"
@@ -589,7 +589,7 @@ that octet's numeric value.  For example, "%20" is the escaped encoding
 for the US-ASCII space character.  This is sometimes referred to as
 "percent-encoding" the octet.
 <iref item="URI grammar" subitem="escaped" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    escaped     = "%" HEXDIG HEXDIG
 </artwork><postamble>
 The uppercase hexadecimal digits 'A' through 'F' are equivalent to the
@@ -660,7 +660,7 @@ because it is used to delimit a URI from a fragment identifier in a URI
 reference (Section 4). The percent character "%" is excluded because
 it is used for the encoding of escaped characters.
 <iref item="URI grammar" subitem="delims" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    delims      = "&lt;" / "&gt;" / "#" / "%" / DQUOTE
 </artwork></figure>
 <figure><preamble>
@@ -669,7 +669,7 @@ Other characters are excluded because gateways and other transport
 agents are known to sometimes modify such characters, or they are
 used as delimiters.
 <iref item="URI grammar" subitem="unwise" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    unwise      = "{" / "}" / "|" / "\" / "^" / "`"
 </artwork></figure>
 <t>
@@ -709,7 +709,7 @@ be properly represented within a URI.
    and others do not use a &lt;query&gt; component.
 </t>
 <iref item="URI grammar" subitem="absolute-URI" primary="true"/>
-<figure><artwork>
+<figure><artwork type="abnf">
    absolute-URI  = scheme ":" ( hier-part / opaque-part )
 </artwork></figure>
 <figure><preamble>
@@ -726,7 +726,7 @@ be properly represented within a URI.
 <iref item="URI grammar" subitem="hier-part" primary="true"/>
 <iref item="URI grammar" subitem="net-path" primary="true"/>
 <iref item="URI grammar" subitem="abs-path" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    hier-part     = [ net-path / abs-path ] [ "?" query ]
 
    net-path      = "//" authority [ abs-path ]
@@ -741,7 +741,7 @@ be properly represented within a URI.
 <iref item="uric-no-slash" primary="true"/>
 <iref item="URI grammar" subitem="opaque-part" primary="true"/>
 <iref item="URI grammar" subitem="uric-no-slash" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    opaque-part   = uric-no-slash *uric
 
    uric-no-slash = unreserved / escaped / "[" / "]" / ";" / "?" /
@@ -770,7 +770,7 @@ be properly represented within a URI.
    as equivalent to lower case in scheme names (e.g., allow "HTTP" as
    well as "http").
 <iref item="URI grammar" subitem="scheme" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    scheme        = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
 </artwork></figure>
 <t>
@@ -802,7 +802,7 @@ terminated by the next slash "/", question-mark "?", or by the end of
 the URI.  Within the authority component, the characters ";", ":",
 "@", "?", "/", "[", and "]" are reserved.
 <iref item="URI grammar" subitem="authority" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    authority     = [ [ userinfo "@" ] host [ ":" port ] ]
 </artwork><postamble>
 The parts "&lt;userinfo&gt;@" and ":&lt;port&gt;" may be omitted.
@@ -819,7 +819,7 @@ does not allow host to be omitted).
 information about how to gain authorization to access the server.
 The user information, if present, is followed by a commercial at-sign "@".
 <iref item="URI grammar" subitem="userinfo" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    userinfo      = *( unreserved / escaped / ";" /
                       ":" / "&amp;" / "=" / "+" / "$" / "," )
 </artwork></figure>
@@ -848,7 +848,7 @@ designated by the URI (e.g., TCP, UDP, SCTP, etc.) is defined by the
 scheme-specific semantics of the URI scheme.
 <iref item="URI grammar" subitem="host" primary="true"/>
 <iref item="URI grammar" subitem="port" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    host          = IPv6reference / IPv4address / hostname
    port          = *DIGIT
 </artwork></figure>
@@ -871,7 +871,7 @@ distinguish between the complete domain name and any local domain.
 <iref item="URI grammar" subitem="domainlabel" primary="true"/>
 <iref item="URI grammar" subitem="toplabel" primary="true"/>
 <iref item="URI grammar" subitem="alphanum" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    hostname      = domainlabel qualified
    qualified     = *( "." domainlabel ) [ "." toplabel "." ]
    domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
@@ -891,7 +891,7 @@ Section 7.3, but only the dotted-decimal form of four octets is
 allowed by this grammar.
 <iref item="URI grammar" subitem="IPv4address" primary="true"/>
 <iref item="URI grammar" subitem="dec-octet" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
    dec-octet   = DIGIT /                         ; 0-9
                  ( %x31-39 DIGIT ) /             ; 10-99
@@ -913,7 +913,7 @@ are allowed in the hierarchical URI syntax.
 <iref item="URI grammar" subitem="IPv6address" primary="true"/>
 <iref item="URI grammar" subitem="ls32" primary="true"/>
 <iref item="URI grammar" subitem="h4" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    IPv6reference = "[" IPv6address "]"
 
    IPv6address   = (                          6( h4 ":" ) ls32 )
@@ -947,7 +947,7 @@ are allowed in the hierarchical URI syntax.
 <iref item="URI grammar" subitem="path-segments" primary="true"/>
 <iref item="URI grammar" subitem="segment" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    path          = [ abs-path / opaque-part ]
 
    path-segments = segment *( "/" segment )
@@ -972,7 +972,7 @@ are allowed in the hierarchical URI syntax.
    The query component is a string of information to be interpreted by
    the resource.
 <iref item="URI grammar" subitem="query" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    query         = *( pchar / "/" / "?" )
 </artwork></figure>
 <t>
@@ -997,7 +997,7 @@ are allowed in the hierarchical URI syntax.
    impossible to obtain the URI from such a reference without also
    parsing the fragment and resolving the relative form.
 <iref item="URI grammar" subitem="URI-reference" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    URI-reference = [ absolute-URI / relative-URI ] [ "#" fragment ]
 </artwork></figure>
 <figure><preamble>
@@ -1005,7 +1005,7 @@ are allowed in the hierarchical URI syntax.
    Many protocol elements allow only the absolute form of a URI with
    an optional fragment identifier.
 <iref item="URI grammar" subitem="absolute-URI-reference" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    absolute-URI-reference = absolute-URI [ "#" fragment ]
 </artwork></figure>
 <t>
@@ -1026,7 +1026,7 @@ are allowed in the hierarchical URI syntax.
    retrieval action has been successfully completed.  As such, it is not
    part of a URI, but is often used in conjunction with a URI.
 <iref item="URI grammar" subitem="fragment" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    fragment      = *( pchar / "/" / "?" )
 </artwork></figure>
 <t>
@@ -1113,7 +1113,7 @@ are allowed in the hierarchical URI syntax.
    of &lt;absolute-URI&gt; (Section 3) in order to express a reference that is
    relative to the namespace of another hierarchical URI.
 <iref item="URI grammar" subitem="relative-URI" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    relative-URI  = [ net-path / abs-path / rel-path ] [ "?" query ]
 </artwork></figure>
 <t>
@@ -1133,7 +1133,7 @@ are allowed in the hierarchical URI syntax.
    slash character is termed a relative-path reference.
 <iref item="URI grammar" subitem="rel-path" primary="true"/>
 <iref item="URI grammar" subitem="rel-segment" primary="true"/>
-</preamble><artwork>
+</preamble><artwork type="abnf">
    rel-path      = rel-segment [ abs-path ]
 
    rel-segment   = 1*( unreserved / escaped / ";" /
