@@ -10,8 +10,9 @@
 <xsl:template match="/">
   <html>
     <head>
-      <xsl:if test="/issuelist/title">
-      <title>Issue list: <xsl:value-of select="/issuelist/title" /></title>
+      <xsl:if test="issuelist/title">
+      <title>Issue List for the 
+             <xsl:value-of select="issuelist/title" /></title>
       </xsl:if>
     </head>
     <body>
@@ -21,60 +22,85 @@
 </xsl:template>
 
 <xsl:template match="issuelist">
-  <h1>Issue List</h1>
-  <h2><xsl:apply-templates select="title" /></h2>
+  <h1>Issue List for the <br />
+      <xsl:apply-templates select="title" /></h1>
+
+  <xsl:apply-templates select="links"/>
+  <xsl:apply-templates select="summary"/>
+  <xsl:apply-templates select="issue" mode="contents"/>
+</xsl:template>
+
+<xsl:template match="links">
+  <ul>
+  <xsl:for-each select="a">
+   <li><xsl:copy-of select="."/></li>
+  </xsl:for-each>
+  </ul>
+</xsl:template>
+
+<xsl:template match="summary">
+  <xsl:apply-templates/>
+</xsl:template>
+
+<xsl:template match="section">
   <table border="1" width="100%" cellpadding="4">
+    <tr>
+      <th colspan="4" bgcolor="#FFFFCC" align="left"><font size="+2"><xsl:apply-templates select="title"/></font></th>
+    </tr> 
     <tr>
       <th nowrap="nowrap">name</th>
       <th>title</th>
       <th>type</th>
       <th>status</th>
     </tr>
-   <xsl:for-each select="issue">
-     <xsl:if test="status='accepted'">
-    <tr>
-      <td nowrap="nowrap"><a href="#{name}"><xsl:value-of select="name"/></a></td>
-      <td><xsl:value-of select="title"/></td>
-      <td><xsl:value-of select="type"/></td>
-      <td><xsl:value-of select="status"/></td>
-    </tr>
-     </xsl:if>
-   </xsl:for-each>
-   <xsl:for-each select="issue">
-     <xsl:if test="status='pending'">
-    <tr>
-      <td nowrap="nowrap"><a href="#{name}"><xsl:value-of select="name"/></a></td>
-      <td bgcolor="#FFFFCC"><xsl:value-of select="title"/></td>
-      <td><xsl:value-of select="type"/></td>
-      <td><xsl:value-of select="status"/></td>
-    </tr>
-     </xsl:if>
-   </xsl:for-each>
-   <xsl:for-each select="issue">
-     <xsl:if test="status!='pending' and status!='accepted'">
-    <tr>
-      <td nowrap="nowrap"><a href="#{name}"><xsl:value-of select="name"/></a></td>
-      <td><xsl:value-of select="title"/></td>
-      <td><xsl:value-of select="type"/></td>
-      <td><xsl:value-of select="status"/></td>
-    </tr>
-     </xsl:if>
-   </xsl:for-each>
+    <xsl:apply-templates select="status" mode="summary" />
   </table>
-  <xsl:apply-templates select="issue" />
+  <br />
 </xsl:template>
 
-<xsl:template match="issue">
+<xsl:template match="status" mode="summary">
+  <xsl:variable name="me"><xsl:value-of select="."/></xsl:variable>
+  <xsl:apply-templates
+       select="/issuelist/issue[status=$me]"
+       mode="summary" />
+</xsl:template>
+
+<xsl:template match="/issuelist/issue[*]" mode="summary">
+    <tr>
+      <td nowrap="nowrap"><a href="#{name}"><xsl:apply-templates select="name" mode="summary"/></a></td>
+      <td><xsl:apply-templates select="title" mode="summary"/></td>
+      <td><xsl:value-of select="type"/></td>
+      <td nowrap="nowrap"><xsl:value-of select="status"/></td>
+    </tr>
+</xsl:template>
+
+<xsl:template match="issue" mode="contents">
   <br />
-  <h2><a name="{name}"><xsl:apply-templates select="name"/></a>: 
-      <xsl:apply-templates select="title"/></h2>
   <table border="1" width="100%" cellpadding="4">
   <tr>
-   <th width="40%"><xsl:apply-templates select="type"/></th>
-   <th><xsl:apply-templates select="status"/></th>
+   <th bgcolor="#FFFFCC"><font size="+2"><a name="{name}"><xsl:apply-templates select="name" mode="contents"/></a></font></th>
+   <th bgcolor="#FFFFCC" align="left"><font size="+1"><xsl:apply-templates select="title" mode="contents"/></font></th>
+  </tr>
+  <tr>
+   <xsl:apply-templates select="status" mode="contents"/>
+   <th align="left"><xsl:apply-templates select="type" mode="contents"/></th>
   </tr>
   <xsl:apply-templates select="action|report"/>
   </table>
+</xsl:template>
+
+<xsl:template match="status" mode="contents">
+  <xsl:choose>
+    <xsl:when test="starts-with(.,'fixed') or starts-with(.,'added')">
+    <th bgcolor="lightgreen"><xsl:value-of select="."/></th>
+    </xsl:when>
+    <xsl:when test="starts-with(.,'closed') or starts-with(.,'postponed')">
+    <th bgcolor="lightgrey"><xsl:value-of select="."/></th>
+    </xsl:when>
+    <xsl:otherwise>
+    <th><xsl:value-of select="."/></th>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <xsl:template match="action|report">

@@ -4,7 +4,31 @@
 <DOCTYPE issuelist SYSTEM "issuelist.dtd">
  -->
 <issuelist>
-<title>Proposed changes to RFC 2396</title>
+<title>URI specification (RFC 2396 revision)</title>
+
+<links>
+ <a href="rfc2396bis.html">Draft in-progress</a>
+ <a href="draft-fielding-uri-rfc2396bis-00.txt">Draft 00</a>
+ <a href="../rfc/rfc2396.html">RFC 2396</a>
+ <a href="http://cvs.apache.org/viewcvs.cgi/ietf-uri/rev-2002/">CVS web view of editor revisions</a>
+</links>
+<summary>
+ <section>
+  <title>Proposed changes for the next draft</title>
+  <status>accepted</status>
+  <status>pending</status>
+ </section><section>
+  <title>Issues already incorporated within the draft</title>
+  <status>fixed 00</status>
+  <status>added 00</status>
+  <status>fixed 01</status>
+  <status>added 01</status>
+ </section><section>
+  <title>Issues that will not be incorporated</title>
+  <status>closed</status>
+  <status>postponed</status>
+ </section>
+</summary>
 
 <issue>
  <type>scheme: file</type>
