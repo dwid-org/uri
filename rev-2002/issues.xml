@@ -4606,7 +4606,7 @@ has been committed to the author's draft.
  <type>editorial</type>
  <name>047-lc-edit-canonical</name>
  <title>Canonical form seems to be less baked</title>
- <status>pending</status>
+ <status>accepted</status>
  <report>
   <author>various</author>
   <date sort="20040806">06 Aug 2004</date>
@@ -4675,6 +4675,15 @@ I personally am quite OK with the removal of section 6.3, but I'm hoping
 that these questions get clarified some place in the text.
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040908">08 Sep 2004</date>
+  <where>issues list</where>
+<pre>
+Section 6.3 has been removed and replaced by clarification within
+the sections that actually describe normalization.
+</pre>
+ </action>
 </issue>
 
 <issue>

@@ -799,6 +799,7 @@ table.closedissue {
          
          
          
+         
          <b>&nbsp;&nbsp;6.2.2&nbsp;
             <a href="#normalize-syntax">Syntax-based Normalization</a></b><br>
          
@@ -827,16 +828,13 @@ table.closedissue {
          
          
          
+         
+         
+         
          <b>&nbsp;&nbsp;6.2.4&nbsp;
             <a href="#normalize-protocol">Protocol-based Normalization</a></b><br>
          
          
-         
-         
-         
-         
-         <b>&nbsp;6.3&nbsp;
-            <a href="#canonical-form">Canonical Form</a></b><br>
          
          
          
@@ -1601,7 +1599,7 @@ table.closedissue {
          component delimiters.  The only exception is for percent-encoded octets
          corresponding to characters in the unreserved set, which can be decoded
          at any time.  For example, the octet corresponding to the tilde ("~")
-         character is often encoded as "%7E" by older URI processing software;
+         character is often encoded as "%7E" by older URI processing implementations;
          the "%7E" can be replaced by "~" without changing its interpretation.
          
       </p>
@@ -2983,13 +2981,11 @@ table.closedissue {
       <div><a name="rfc.section.6.p.2"></a></div>
       <p>
          URI comparison is performed in respect to some particular purpose,
-         and software with differing purposes will often be subject to differing
+         and implementations with differing purposes will often be subject to differing
          design trade-offs in regards to how much effort should be spent in
-         reducing duplicate identifiers.  This section describes a variety of
+         reducing aliased identifiers.  This section describes a variety of
          methods that may be used to compare URIs, the trade-offs between them,
-         and the types of applications that might use them.  A canonical form
-         for URI references is defined to reduce the occurrence of false negative
-         comparisons.
+         and the types of applications that might use them.
          
       </p>
       <h2><a name="rfc.section.6.1">6.1</a>&nbsp;<a name="equivalence">Equivalence</a></h2>
@@ -2998,11 +2994,11 @@ table.closedissue {
          Since URIs exist to identify resources, presumably they should be
          considered equivalent when they identify the same resource.  However,
          such a definition of equivalence is not of much practical use, since
-         there is no way for software to compare two resources without knowledge
-         of the implementation-specific syntax of each URI's dereferencing algorithm.
-         For this reason, determination of equivalence or
-         difference of URIs is based on string comparison, perhaps augmented by
-         reference to additional rules provided by URI scheme definitions.
+         there is no way for an implementation to compare two resources that
+         are not under its own control.  For this reason, determination of
+         equivalence or difference of URIs is based on string comparison,
+         perhaps augmented by reference to additional rules provided by URI
+         scheme definitions.
          We use the terms "different" and "equivalent" to describe
          the possible outcomes of such comparisons, but there
          are many application-dependent versions of equivalence.
@@ -3011,7 +3007,7 @@ table.closedissue {
       <div><a name="rfc.section.6.1.p.2"></a></div>
       <p>
          Even though it is possible to determine that two URIs are equivalent,
-         it is never possible to be sure that two URIs identify different
+         URI comparison is not sufficient to determine if two URIs identify different
          resources. For example, an owner of two different domain names could
          decide to serve the same resource from both, resulting in two different
          URIs.  Therefore, comparison methods are designed to minimize
@@ -3022,9 +3018,9 @@ table.closedissue {
       <p>
          In testing for equivalence, applications should not directly compare
          relative references; the references should be converted to their
-         target URI forms before comparison.  When URIs are being compared
+         respective target URIs before comparison.  When URIs are being compared
          for the purpose of selecting (or avoiding) a network action, such as
-         retrieval of a representation, the fragment components (if any) should
+         retrieval of a representation, fragment components (if any) should
          be excluded from the comparison.
          
       </p>
@@ -3034,8 +3030,8 @@ table.closedissue {
          A variety of methods are used in practice to test URI equivalence.
          These methods fall into a range, distinguished by the amount of
          processing required and the degree to which the probability of false
-         negatives is reduced.  As noted above, false negatives cannot in
-         principle be eliminated.  In practice, their probability can be reduced,
+         negatives is reduced.  As noted above, false negatives cannot
+         be eliminated.  In practice, their probability can be reduced,
          but this reduction requires more processing and is not cost-effective
          for all applications.
          
@@ -3082,10 +3078,23 @@ table.closedissue {
          codepoint-by-codepoint after conversion to a common character encoding.
          
       </p>
+      <div><a name="rfc.section.6.2.1.p.4"></a></div>
+      <p>
+         False negatives are caused by the production and use of URI aliases.
+         Unnecessary aliases can be reduced, regardless of the comparison method,
+         by consistently providing URI references in an already-normalized form
+         (i.e., a form identical to what would be produced after normalization
+         is applied, as described below).  Protocols and data formats often
+         choose to limit some URI comparisons to simple string comparison, based
+         on the theory that people and implementations will, in their own best interest,
+         be consistent in providing URI references, or at least consistent enough
+         to negate any efficiency that might be obtained from further normalization.
+         
+      </p>
       <h3><a name="rfc.section.6.2.2">6.2.2</a>&nbsp;<a name="normalize-syntax">Syntax-based Normalization</a></h3>
       <div><a name="rfc.figure.u.34"></a></div>
       <p>
-         Software may use logic based on the definitions provided by this
+         Implementations may use logic based on the definitions provided by this
          specification to reduce the probability of false negatives.  Such
          processing is moderately higher in cost than character-for-character
          string comparison.  For example, an application using this approach
@@ -3103,20 +3112,21 @@ table.closedissue {
       <h3><a name="rfc.section.6.2.2.1">6.2.2.1</a>&nbsp;<a name="normalize-case">Case Normalization</a></h3>
       <div><a name="rfc.section.6.2.2.1.p.1"></a></div>
       <p>
-         When a URI scheme uses components of the generic syntax, it will
-         also use the common syntax equivalence rules, namely that the scheme
-         and host are case-insensitive and therefore should be normalized
-         to lowercase.  For example, the URI &lt;HTTP://www.EXAMPLE.com/&gt; is
-         equivalent to &lt;http://www.example.com/&gt;.  Applications should not
-         assume anything about the case sensitivity of other URI components,
-         since that is dependent on the implementation used to handle a dereference.
+         For all URIs, the hexadecimal digits within a percent-encoding triplet
+         (e.g., "%3a" versus "%3A") are case-insensitive and therefore should be
+         normalized to use uppercase letters for the digits A-F.
          
       </p>
       <div><a name="rfc.section.6.2.2.1.p.2"></a></div>
       <p>
-         The hexadecimal digits within a percent-encoding triplet (e.g., "%3a"
-         versus "%3A") are case-insensitive and therefore should be normalized
-         to use uppercase letters for the digits A-F.
+         When a URI uses components of the generic syntax, the component syntax
+         equivalence rules always apply; namely, that the scheme and host are
+         case-insensitive and therefore should be normalized to lowercase.
+         For example, the URI &lt;HTTP://www.EXAMPLE.com/&gt; is
+         equivalent to &lt;http://www.example.com/&gt;.
+         The other generic syntax components are assumed to be case-sensitive
+         unless specifically defined otherwise by the scheme
+         (see <a href="#normalize-scheme" title="Scheme-based Normalization">Section&nbsp;6.2.3</a>).
          
       </p>
       <h3><a name="rfc.section.6.2.2.2">6.2.2.2</a>&nbsp;<a name="normalize-encoding">Percent-Encoding Normalization</a></h3>
@@ -3124,7 +3134,7 @@ table.closedissue {
       <p>
          The percent-encoding mechanism (<a href="#percent-encoding" title="Percent-Encoding">Section&nbsp;2.1</a>)
          is a frequent source of variance among otherwise identical URIs.
-         In addition to the case-insensitivity issue noted above, some URI
+         In addition to the case normalization issue noted above, some URI
          producers percent-encode octets that do not require percent-encoding,
          resulting in URIs that are equivalent to their non-encoded counterparts.
          Such URIs should be normalized by decoding any percent-encoded octet
@@ -3135,18 +3145,23 @@ table.closedissue {
       <h3><a name="rfc.section.6.2.2.3">6.2.2.3</a>&nbsp;<a name="normalize-path">Path Segment Normalization</a></h3>
       <div><a name="rfc.section.6.2.2.3.p.1"></a></div>
       <p>
-         The complete path segments "." and ".." have a special meaning within
-         hierarchical URI schemes.  As such, they should not appear in absolute
-         paths; if they are found, they can be removed by applying the
-         remove_dot_segments algorithm to the path, as described in
-         <a href="#absolutize" title="Relative Resolution">Section&nbsp;5.2</a>.
+         The complete path segments "." and ".." are intended only for use
+         within relative references (<a href="#uri-reference" title="URI Reference">Section&nbsp;4.1</a>) and are
+         removed as part of the reference resolution process
+         (<a href="#absolutize" title="Relative Resolution">Section&nbsp;5.2</a>).
+         However, some deployed implementations incorrectly assume that reference
+         resolution is not necessary when the reference is already a URI, and thus
+         fail to remove dot-segments when they occur in non-relative paths.
+         URI normalizers should remove dot-segments by applying the
+         remove_dot_segments algorithm to the path, as described in 
+         <a href="#relative-dot-segments" title="Remove Dot Segments">Section&nbsp;5.2.4</a>.
          
       </p>
       <h3><a name="rfc.section.6.2.3">6.2.3</a>&nbsp;<a name="normalize-scheme">Scheme-based Normalization</a></h3>
       <div><a name="rfc.figure.u.35"></a></div>
       <p>
          The syntax and semantics of URIs vary from scheme to scheme, as described
-         by the defining specification for each scheme.  Software may use
+         by the defining specification for each scheme.  Implementations may use
          scheme-specific rules, at further processing cost, to reduce the
          probability of false negatives.  For example, since the "http" scheme
          makes use of an authority component, has a default port of "80", and
@@ -3161,9 +3176,9 @@ table.closedissue {
          In general, a URI that uses the generic syntax for authority with an
          empty path should be normalized to a path of "/"; likewise, an explicit
          ":port", where the port is empty or the default for the scheme, is
-         equivalent to one where the port and its ":" delimiter are elided.
-         In other words, the second of the above URI examples is the normal form
-         for the "http" scheme.
+         equivalent to one where the port and its ":" delimiter are elided, and
+         thus should be removed by scheme-based normalization.  For example, the
+         second URI above is the normal form for the "http" scheme.
          
       </p>
       <div><a name="rfc.section.6.2.3.p.2"></a></div>
@@ -3173,10 +3188,37 @@ table.closedissue {
          scheme specifications, an empty authority or host is considered an error;
          for others, it is considered equivalent to "localhost" or the end-user's host.
          When a scheme defines a default for authority and a URI reference to
-         that default is desired, the reference should have an empty authority
-         for the sake of uniformity, brevity, and internationalization.
+         that default is desired, the reference should be normalized to an empty
+         authority for the sake of uniformity, brevity, and internationalization.
          If, however, either the userinfo or port subcomponent is non-empty,
          then the host should be given explicitly even if it matches the default.
+         
+      </p>
+      <div><a name="rfc.section.6.2.3.p.3"></a></div>
+      <p>
+         Normalization should not remove delimiters when their associated
+         component is empty unless licensed to do so by the scheme specification.
+         For example, the URI "http://example.com/?" cannot be assumed to be
+         equivalent to any of the examples above.  Likewise, the presence or
+         absence of delimiters within a userinfo subcomponent is usually
+         significant to its interpretation.  The fragment component is not
+         subject to any scheme-based normalization; thus, two URIs that differ only
+         by the suffix "#" are considered different regardless of the scheme.
+         
+      </p>
+      <div><a name="rfc.section.6.2.3.p.4"></a></div>
+      <p>
+         Some schemes define additional subcomponents that consist of
+         case-insensitive data, giving an implicit license to normalizers
+         to convert such data to a common case (e.g., all lowercase).
+         For example, the "mailto" URI contains mailbox address data that is
+         defined to be case-insensitive, and therefore "mailto:Joe@Example.com"
+         is required to be equivalent to "mailto:joe@example.com".
+         
+      </p>
+      <div><a name="rfc.section.6.2.3.p.5"></a></div>
+      <p>
+         Other scheme-specific normalizations are possible.  
          
       </p>
       <h3><a name="rfc.section.6.2.4">6.2.4</a>&nbsp;<a name="normalize-protocol">Protocol-based Normalization</a></h3>
@@ -3200,41 +3242,6 @@ table.closedissue {
          conventions of their scheme's dereference algorithm (in this case,
          use of redirection by HTTP origin servers to avoid problems with
          relative references).
-         
-      </p>
-      <h2><a name="rfc.section.6.3">6.3</a>&nbsp;<a name="canonical-form">Canonical Form</a></h2>
-      <div><a name="rfc.section.6.3.p.1"></a></div>
-      <p>
-         It is in the best interests of everyone concerned to avoid false-negatives in
-         comparing URIs and to minimize the amount of software processing for
-         such comparisons.  Those who produce and make reference to URIs can
-         reduce the cost of processing and the risk of false negatives by
-         consistently providing them in a form that is reasonably canonical
-         with respect to their scheme.  Specifically:
-         
-      </p>
-      <ul>
-         
-         <li>Always provide the URI scheme in lowercase characters.</li>
-         
-         <li>Always provide the host, if any, in lowercase characters.</li>
-         
-         <li>Only perform percent-encoding where it is essential.</li>
-         
-         <li>Always use uppercase A-through-F characters when percent-encoding.</li>
-         
-         <li>Prevent dot-segments from appearing in paths.</li>
-         
-         <li>For schemes that define a default authority, use an empty authority
-            if the default is desired.
-         </li>
-         
-         <li>For schemes that define an empty path to be equivalent to a path
-            of "/", use "/".
-         </li>
-         
-      </ul>
-      <p>
          
       </p>
       
