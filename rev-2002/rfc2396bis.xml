@@ -10,8 +10,8 @@
 <?rfc linkmailto="no"?>
 <?rfc editing="no"?>
 <?rfc-ext parse-xml-in-artwork="yes" ?>
-<rfc obsoletes="2732, 2396, 1808" updates="1738" category="std"
-     ipr="full3667" docName="draft-fielding-uri-rfc2396bis-07">
+<rfc number="9999" category="std" seriesNo="99" 
+     obsoletes="2732, 2396, 1808" updates="1738" ipr="full3667">
 
 <front>
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifier (URI): Generic Syntax</title>
@@ -65,7 +65,7 @@
     </address>
   </author>
 
-  <date month='September' year='2004'></date>
+  <date month='December' year='2004'></date>
 
   <area>Applications</area>
   <keyword>uniform resource identifier</keyword>
@@ -89,14 +89,8 @@ possible identifier.  This specification does not define a generative
 grammar for URIs; that task is performed by the individual
 specifications of each URI scheme.
 </t></abstract>
-<note title='Editorial Note'>
-<t>
-Discussion of this draft and comments to the editors should be sent
-to the uri@w3.org mailing list.  An issues list and version history
-is available at
-<eref target="http://gbiv.com/protocols/uri/rev-2002/issues.html">&lt;http://gbiv.com/protocols/uri/rev-2002/issues.html&gt;</eref>.
-</t></note>
 </front>
+
 <middle>
 <section title="Introduction" anchor="intro">
 <t>
@@ -232,7 +226,7 @@ globally unique thing must use a URI that distinguishes that resource
 from all other things.  URIs that identify in relation to the end-user's
 local context should only be used when the context itself is a defining
 aspect of the resource, such as when an on-line help manual refers to a
-file on the end-user's filesystem (e.g., "file:///etc/hosts").
+file on the end-user's file system (e.g., "file:///etc/hosts").
 </t>
 
 <section title="Generic Syntax" anchor="generic-syntax">
@@ -644,10 +638,11 @@ a URI's dereferencing algorithm, provided that such subcomponents are
 delimited by characters in the reserved set allowed within that component.
 </t>
 <t>
-URI producing applications should percent-encode data octets that
-correspond to characters in the reserved set.  However, if a
-reserved character is found in a URI component and no delimiting role
-is known for that character, then it should be interpreted as representing
+URI producing applications should percent-encode data octets that correspond
+to characters in the reserved set unless said characters are specifically
+allowed by the URI scheme to represent data in that component.
+If a reserved character is found in a URI component and no delimiting role
+is known for that character, then it must be interpreted as representing
 the data octet corresponding to that character's encoding in US-ASCII.
 </t>
 </section>
@@ -749,9 +744,9 @@ the original octets.
 </t>
 <t>
 For example, consider an information service that provides data,
-stored locally using an EBCDIC-based filesystem, to clients on the
+stored locally using an EBCDIC-based file system, to clients on the
 Internet through an HTTP server.  When an author creates a file on that
-filesystem with the name "Laguna Beach", their expectation is that
+file system with the name "Laguna Beach", their expectation is that
 the "http" URI corresponding to that resource would also contain the
 meaningful string "Laguna%20Beach".  If, however, that server produces
 URIs using an overly-simplistic raw octet mapping, then the result would
@@ -773,7 +768,7 @@ producing the URI.
 </t>
 <t>
 When a new URI scheme defines a component that represents textual data
-consisting of characters from the Unicode character set <xref target="UCS"/>,
+consisting of characters from the Universal Character Set <xref target="UCS"/>,
 the data should be encoded first as octets according to the
 UTF-8 character encoding <xref target="STD63"/>, and then only those
 octets that do not correspond to characters in the unreserved set
@@ -1002,17 +997,21 @@ explicitly rather than relying on heuristic determination.
 </artwork><postamble>
 The version flag does not indicate the IP version; rather, it indicates
 future versions of the literal format.  As such, implementations must
-not provide the version flag for existing IPv4 and IPv6 literal addresses.
+not provide the version flag for the existing IPv4 and IPv6 literal
+address forms described below.
 If a URI containing an IP-literal that starts with "v" (case-insensitive),
 indicating that the version flag is present, is dereferenced by an application
 that does not know the meaning of that version flag, then the application
 should return an appropriate error for "address mechanism not supported".
 </postamble></figure>
-<figure><preamble>
+<t>
 A host identified by an IPv6 literal address is represented inside
 the square brackets without a preceding version flag.  The ABNF provided
 here is a translation of the text definition of an IPv6 literal address
-provided in <xref target="RFC3513"/>.
+provided in <xref target="RFC3513"/>.  This syntax does not support IPv6
+scoped addressing zone identifiers.
+</t>
+<figure><preamble>
 A 128-bit IPv6 address is divided into eight 16-bit pieces.
 Each piece is represented numerically in case-insensitive hexadecimal,
 using one to four hexadecimal digits (leading zeroes are permitted).
@@ -1996,12 +1995,13 @@ by spiders and indexing engines to prune a search space or
 reduce duplication of request actions and response storage.
 </t>
 <t>
-URI comparison is performed in respect to some particular purpose,
-and implementations with differing purposes will often be subject to differing
-design trade-offs in regards to how much effort should be spent in
-reducing aliased identifiers.  This section describes a variety of
-methods that may be used to compare URIs, the trade-offs between them,
-and the types of applications that might use them.
+URI comparison is performed in respect to some particular purpose.
+Protocols or implementations that compare URIs for different purposes
+will often be subject to differing design trade-offs in regards to
+how much effort should be spent in reducing aliased identifiers.
+This section describes a variety of methods that may be used to
+compare URIs, the trade-offs between them, and the types of
+applications that might use them.
 </t>
 
 <section title="Equivalence" anchor="equivalence">
@@ -2009,8 +2009,8 @@ and the types of applications that might use them.
 Since URIs exist to identify resources, presumably they should be
 considered equivalent when they identify the same resource.  However,
 such a definition of equivalence is not of much practical use, since
-there is no way for an implementation to compare two resources that
-are not under its own control.  For this reason, determination of
+there is no way for an implementation to compare two resources unless
+it has full knowledge or control of them.  For this reason, determination of
 equivalence or difference of URIs is based on string comparison,
 perhaps augmented by reference to additional rules provided by URI
 scheme definitions.
@@ -2325,8 +2325,8 @@ to receive raw data within a component.
 </t>
 <t>
 Special care should be taken when the URI path interpretation process
-involves the use of a back-end filesystem or related system functions.
-Filesystems typically assign an operational meaning to special characters,
+involves the use of a back-end file system or related system functions.
+File systems typically assign an operational meaning to special characters,
 such as the "/", "\", ":", "[", and "]" characters, and
 special device names like ".", "..", "...", "aux", "lpt", etc.
 In some cases, merely testing for the existence of such a name will
@@ -3496,16 +3496,5 @@ the base URI has a non-hierarchical path.
 </section>
 </section>
 
-<section title="Instructions to RFC Editor" anchor="RFC-editor">
-<t>
-Prior to publication as an RFC, please remove this section and
-the "Editorial Note" that appears after the Abstract.  If
-<xref target="BCP35"/> or any of the normative references are
-updated prior to publication, the associated reference in this
-document can be safely updated as well.  This document has been
-produced using the xml2rfc tool set; the XML version can be obtained
-via the URI listed in the editorial note.
-</t>
-</section>
 </back>
 </rfc>
