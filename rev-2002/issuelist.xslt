@@ -11,7 +11,7 @@
   <html>
     <head>
       <xsl:if test="issuelist/title">
-      <title>Issue List for the 
+      <title>Issues List for the 
              <xsl:value-of select="issuelist/title" /></title>
       </xsl:if>
     </head>
@@ -22,7 +22,7 @@
 </xsl:template>
 
 <xsl:template match="issuelist">
-  <h1>Issue List for the <br />
+  <h1>Issues List for the <br />
       <xsl:apply-templates select="title" /></h1>
 
   <xsl:apply-templates select="links"/>
@@ -32,8 +32,8 @@
 
 <xsl:template match="links">
   <ul>
-  <xsl:for-each select="a">
-   <li><xsl:copy-of select="."/></li>
+  <xsl:for-each select="li">
+    <xsl:copy-of select="."/>
   </xsl:for-each>
   </ul>
 </xsl:template>
