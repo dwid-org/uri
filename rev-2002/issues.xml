@@ -3743,7 +3743,7 @@ clarifying the appropriate sections below it.
  <type>fragment</type>
  <name>042-fragment-when</name>
  <title>fragment identifiers applied before entire content is retrieved</title>
- <status>accepted</status>
+ <status>fixed 02</status>
  <report>
   <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="20030417">17 Apr 2003</date>
@@ -3785,10 +3785,10 @@ representation is determined.
  </report>
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
-  <date sort="20030417">17 Apr 2003</date>
-  <where>issues list</where>
+  <date sort="20030515">15 May 2003</date>
+  <where>draft 02</where>
 <pre>
-This will be addressed as part of the rewrite for issue 017-rdf-fragment.
+This has been fixed in the rewrite for draft 02.
 </pre>
  </action>
 </issue>

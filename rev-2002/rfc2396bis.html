@@ -569,8 +569,10 @@ is available at
 
 
 <b>&nbsp;3.5&nbsp;
-            <a href="#fragment">Fragment Identifier</a></b>
+            <a href="#fragment">Fragment</a></b>
 <br>
+
+
 
 
 
@@ -1979,18 +1981,20 @@ include those characters unescaped.
 </p>
 <h2>
 <a name="rfc.section.3.5">3.5</a>&nbsp;
-    <a name="fragment">Fragment Identifier</a>
+    <a name="fragment">Fragment</a>
 </h2>
 <a name="rfc.figure.u.19"></a>
 <p>
 
 <a name="rfc.iref.104"></a>
-   When a URI reference is used to perform a retrieval action on the
-   identified resource, the optional fragment identifier, separated from
-   the URI by a crosshatch ("#") character, consists of additional
-   reference information to be interpreted by the user agent after the
-   retrieval action has been successfully completed.  As such, it is not
-   part of a URI, but is often used in conjunction with a URI.
+The fragment identifier component allows indirect identification of a
+secondary resource by reference to a primary resource and additional
+identifying information that is selective within that resource.
+The identified secondary resource may be some portion or subset of
+the primary resource, some view on representations of the primary
+resource, or some other resource that is merely named within the primary
+resource.  A fragment identifier component is indicated by the presence of
+a crosshatch ("#") character and terminated by the end of the URI string.
 <a name="rfc.iref.105"></a>
 
 </p>
@@ -1998,23 +2002,50 @@ include those characters unescaped.
 </pre>
 <p>
 <a name="rfc.section.3.5.p.2"></a>
-   The semantics of a fragment identifier is a property of the data
-   resulting from a retrieval action, regardless of the type of URI used
-   in the reference.  Therefore, the format and interpretation of
-   fragment identifiers is dependent on the media type
-   <a href="#RFC2046" title="Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types">[RFC2046]</a> of the
-   retrieval result.  The character restrictions described in
-<a href="#characters">section 2</a>
-   for a URI also apply to the fragment in a URI-reference.  Individual
-   media types may define additional restrictions or structure within
-   the fragment for specifying different types of "partial views" that
-   can be identified within that media type.
+The semantics of a fragment identifier are defined by the set of
+representations that might result from a retrieval action on the primary
+resource.  Therefore, the format and interpretation of a fragment identifier
+component is dependent on the media type <a href="#RFC2046" title="Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types">[RFC2046]</a> of a
+potential retrieval result.  Individual media types may define their own
+restrictions on, or structure within, the fragment identifier syntax
+for specifying different types of subsets, views, or external references
+that are identifiable as fragments by that media type.  If the primary
+resource is represented by multiple media types, as is often the case
+for resources whose representation is selected based on attributes of
+the retrieval request, then interpretation of the given fragment identifier
+must be consistent across all of those media types in order for it to be
+viable as an identifier.
 </p>
 <p>
 <a name="rfc.section.3.5.p.3"></a>
-   A fragment identifier is only meaningful when a URI reference is
-   intended for retrieval and the result of that retrieval is a document
-   for which the identified fragment is consistently defined.
+As with any URI, use of a fragment identifier component does not imply
+that a retrieval action will take place.  A URI with a fragment identifier
+may be used to refer to the secondary resource without any implication
+that the primary resource is accessible.  However, if that URI is used
+in a context that does call for retrieval, the fragment identifier is
+only valid as a reference if a retrieval action on the primary resource
+succeeds and results in a representation that defines the fragment.
+</p>
+<p>
+<a name="rfc.section.3.5.p.4"></a>
+Fragment identifiers have a special role in information systems as
+the primary form of client-side indirect referencing, allowing
+an author to specifically identify those aspects of an existing
+resource that are only indirectly provided by the resource owner.
+As such, interpretation of the fragment identifier during a retrieval
+action is performed solely by the user agent; the fragment identifier
+is not passed to other systems during the process of retrieval.
+Although this is often perceived to be a loss of information,
+particularly in regards to accurate redirection of references as
+content moves over time, it also serves to prevent information
+providers from denying reference authors the right to selectively
+refer to information within a resource.
+</p>
+<p>
+<a name="rfc.section.3.5.p.5"></a>
+The characters slash ("/") and question-mark ("?") are allowed to
+represent data within the fragment identifier, but such use is
+discouraged for the same reasons as described above for query.
 </p>
 
 
