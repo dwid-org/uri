@@ -39,7 +39,9 @@
 <pre>
 The examples provided in the specification (section 5.4) use a base
 URI of "http://a/b/c/d;p?q" and should be consistent with almost all
-implementations.
+implementations.  A <a href="rel_examples1.html">rel_examples1</a>
+test page is provided for visual testing.  Note that this is only
+a test of the URI reference parser and conversion to absolute form.
 </pre>
  </report>
 </issue>
@@ -67,7 +69,7 @@ base URI of "http://a/b/c/d;p?q".
 
 <issue>
  <type>implementation</type>
- <name>Apple Safari</name>
+ <name>Safari</name>
  <title>Apple Safari 1.0.2</title>
  <status>compliant</status>
  <report>
@@ -80,6 +82,60 @@ observation of the test cases.  The results were consistent with
 those of rfc2396bis except in that Safari will add a default path
 of "/" to http URIs that have an empty path.  Since that is consistent
 with a scheme-specific optimization, Safari 1.0.2 is compliant.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>implementation</type>
+ <name>Amaya</name>
+ <title>W3C Amaya (current CVS)</title>
+ <status>non-compliant</status>
+ <report>
+  <author email="duerst_AT_w3.org">Martin Duerst</author>
+  <date sort="20040420">20 Apr 2004</date>
+  <where><a href="http://www.w3.org/Amaya/">W3C Amaya</a></where>
+<pre>
+All tests are passed, except the following:
+
+#       rel             correct                 Amaya
+
+6       //g             http://g                http://g/ (additional slash)
+7       ?y              http://a/b/c/d;p?y      http://a/b/c/?y (d;p removed)
+9       #s              http://a/b/c/d;p?q#s    {testpage URI}#s
+15                      http://a/b/c/d;p?q      not tested
+43      g.              http://a/b/c/g.         http://a/b/c/g (dot removed)
+51      ./../g          http://a/b/g            http://a/b/c/g (/c not removed)
+55      g;x=1/./y       http://a/b/c/g;x=1/y    http://a/b/c/g;x=1/./y
+                                                        (precedence of ; over /)
+56      g;x=1/../y      http://a/b/c/y          http://a/b/c/g;x=1/../y
+                                                        (precedence of ; over /)
+
+For test 71, Amaya uses strict parsing.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>implementation</type>
+ <name>Opera</name>
+ <title>Opera (V7.23, build 3227, Win2000)</title>
+ <status>non-compliant</status>
+ <report>
+  <author email="duerst_AT_w3.org">Martin Duerst</author>
+  <date sort="20040420">20 Apr 2004</date>
+  <where><a href="http://www.w3.org/Amaya/">W3C Amaya</a></where>
+<pre>
+All tests are passed, except the following:
+
+#       rel             correct                 Amaya
+
+6       //g             http://g                http://g/ (additional slash)
+9       #s              http://a/b/c/d;p?q#s    {testpage URI}#s
+15                      http://a/b/c/d;p?q      not tested
+51      ./../g          http://a/b/g            http://a/b/c/g (/c not removed)
+
+For test 71, Opera uses backwards-compatible parsing.
 </pre>
  </report>
 </issue>
