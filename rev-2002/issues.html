@@ -42,9 +42,6 @@
 <td nowrap="nowrap"><a href="#017-rdf-fragment">017-rdf-fragment</a></td><td>RDF does not believe in same-document references</td><td>fragment</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#020-utf8-default">020-utf8-default</a></td><td>Defaulting to UTF-8 for unknown encoding</td><td>characters</td><td nowrap="nowrap">pending</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#022-definitions">022-definitions</a></td><td>definitions for operations on URIs</td><td>examples</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
@@ -58,9 +55,6 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#034-identifier">034-identifier</a></td><td>identifier is not just a sequence of characters</td><td>terminology</td><td nowrap="nowrap">pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#035-scheme-escaping">035-scheme-escaping</a></td><td>%HH escaping should not be scheme-dependent</td><td>characters</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#036-host-escaping">036-host-escaping</a></td><td>%HH escaping should be allowed on hostname</td><td>characters</td><td nowrap="nowrap">pending</td>
@@ -126,6 +120,9 @@
 <td nowrap="nowrap"><a href="#030-IPv6-bnf">030-IPv6-bnf</a></td><td>draft 00 errors in IPv6 syntax</td><td>IPv6</td><td nowrap="nowrap">fixed 01</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#035-scheme-escaping">035-scheme-escaping</a></td><td>%HH escaping should not be scheme-dependent</td><td>characters</td><td nowrap="nowrap">fixed 01</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#038-qualified">038-qualified</a></td><td>qualified production in hostname is ambiguous</td><td>hostname</td><td nowrap="nowrap">fixed 01</td>
 </tr>
 <tr>
@@ -151,6 +148,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#013-query-slash">013-query-slash</a></td><td>slash character should be forbidden in query</td><td>query</td><td nowrap="nowrap">closed</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#020-utf8-default">020-utf8-default</a></td><td>Defaulting to UTF-8 for unknown encoding</td><td>characters</td><td nowrap="nowrap">closed</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#001-file">001-file</a></td><td>file scheme implementations vary on use of authority component</td><td>scheme</td><td nowrap="nowrap">postponed</td>
@@ -2019,7 +2019,7 @@ Sec 1.2, fourth para; the phrase "just like any identifier" is superfluous.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="020-utf8-default">020-utf8-default</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Defaulting to UTF-8 for unknown encoding</font></th>
 </tr>
 <tr>
-<th>pending</th><th align="left">characters</th>
+<th bgcolor="lightgrey">closed</th><th align="left">characters</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2064,6 +2064,16 @@ rather than just the current
 
 "For example, UTF-8 [UTF-8] defines a mapping from sequences
 of octets to sequences of characters in the repertoire of ISO 10646."
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  02 Mar 2003,
+  URI-WG mailing list:
+  <pre>
+More UTF-8 examples are given in draft 01.  That's all for now.
 </pre>
 </td>
 </tr>
@@ -3046,7 +3056,7 @@ I'm not sure what to do with this yet.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="035-scheme-escaping">035-scheme-escaping</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">%HH escaping should not be scheme-dependent</font></th>
 </tr>
 <tr>
-<th>pending</th><th align="left">characters</th>
+<th bgcolor="lightgreen">fixed 01</th><th align="left">characters</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -3081,11 +3091,11 @@ even in a data: URI, I should still be able to replace "A" by
 <tr>
 <td colspan="2">action:
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
-  26 Feb 2003,
-  issues list:
+  02 Mar 2003,
+  draft 01:
   <pre>
-Actually, what it is saying is that a URI scheme can, for example,
-define that %hh escaping must be utf-8 for URIs in that scheme.
+I removed the misleading first sentence and replaced it with a later
+example of a scheme defined as requiring UTF-8.
 </pre>
 </td>
 </tr>
@@ -3326,11 +3336,11 @@ an as another octet if the octet is not escaped.
 <td colspan="2">action:
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   02 Mar 2003,
-  issues list:
+  draft 01:
   <pre>
 I have added most of the URI comparison document to section 6, with
-appropriate rewrites where necessary.  More work will be needed to
-improve the escaping rules and rewrite section 2 accordingly.
+appropriate rewrites where necessary.  I also modified the descriptions
+of escaping and unreserved to be (hopefully) clearer.
 </pre>
 </td>
 </tr>

@@ -1737,7 +1737,7 @@ Sec 1.2, fourth para; the phrase "just like any identifier" is superfluous.
  <type>characters</type>
  <name>020-utf8-default</name>
  <title>Defaulting to UTF-8 for unknown encoding</title>
- <status>pending</status>
+ <status>closed</status>
  <report>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20020501">01 May 2002</date>
@@ -1778,6 +1778,14 @@ rather than just the current
 of octets to sequences of characters in the repertoire of ISO 10646."
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030302">02 Mar 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+More UTF-8 examples are given in draft 01.  That's all for now.
+</pre>
+ </action>
 </issue>
 
 <issue>
@@ -2654,7 +2662,7 @@ I'm not sure what to do with this yet.
  <type>characters</type>
  <name>035-scheme-escaping</name>
  <title>%HH escaping should not be scheme-dependent</title>
- <status>pending</status>
+ <status>fixed 01</status>
  <report>
   <author email="duerst_AT_w3.org">Martin Duerst</author>
   <date sort="20030130">30 Jan 2003</date>
@@ -2685,11 +2693,11 @@ even in a data: URI, I should still be able to replace "A" by
  </report>
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
-  <date sort="20030226">26 Feb 2003</date>
-  <where>issues list</where>
+  <date sort="20030302">02 Mar 2003</date>
+  <where>draft 01</where>
 <pre>
-Actually, what it is saying is that a URI scheme can, for example,
-define that %hh escaping must be utf-8 for URIs in that scheme.
+I removed the misleading first sentence and replaced it with a later
+example of a scheme defined as requiring UTF-8.
 </pre>
  </action>
 </issue>
@@ -2910,11 +2918,11 @@ an as another octet if the octet is not escaped.
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20030302">02 Mar 2003</date>
-  <where>issues list</where>
+  <where>draft 01</where>
 <pre>
 I have added most of the URI comparison document to section 6, with
-appropriate rewrites where necessary.  More work will be needed to
-improve the escaping rules and rewrite section 2 accordingly.
+appropriate rewrites where necessary.  I also modified the descriptions
+of escaping and unreserved to be (hopefully) clearer.
 </pre>
  </action>
 </issue>

@@ -634,9 +634,12 @@ is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 <br>
       
       
+      
+      
 <b>&nbsp;&nbsp;&nbsp;6.2.2.3&nbsp;
             <a href="#rfc.section.6.2.2.3">Path Segment Normalization</a></b>
 <br>
+      
       
     
     
@@ -1205,10 +1208,8 @@ The following examples illustrate URIs that are in common use.
 </p>
 <p>
 <a name="rfc.section.2.1.p.4"></a>
-   A URI scheme may define a mapping from URI characters to octets;
-   whether this is done depends on the scheme. Commonly, within a
-   delimited component of a URI, a sequence of characters may be used to
-   represent a sequence of octets. For example, the character "a"
+   Within a delimited component of a URI, a sequence of characters is
+   used to represent a sequence of octets. For example, the character "a"
    represents the octet 97 (decimal), while the character sequence "%",
    "0", "a" represents the octet 10 (decimal).
 </p>
@@ -1240,7 +1241,9 @@ The following examples illustrate URIs that are in common use.
    no provision within the generic URI syntax to accomplish this
    identification. An individual URI scheme may require a single
    charset, define a default charset, or provide a way to indicate the
-   charset used.
+   charset used.  For example, a new scheme "foo" might be defined such
+   that any escaped octet is keyed to the UTF-8 encoding in order to
+   determine the corresponding Unicode character.
 </p>
 <p>
 <a name="rfc.section.2.1.p.8"></a>
@@ -1307,6 +1310,10 @@ The following examples illustrate URIs that are in common use.
    Unreserved characters can be escaped without changing the semantics
    of the URI, but this should not be done unless the URI is being used
    in a context that does not allow the unescaped character to appear.
+   URI normalization processes may unescape sequences in the ranges of
+   ALPHA (%41-%5A and %61-%7A), DIGIT (%30-%39), underscore (%5F), or
+   tilde (%7E) without fear of creating a conflict, but unescaping the
+   other mark characters is usually counterproductive.
 </p>
 <h2>
 <a name="rfc.section.2.4">2.4</a>&nbsp;
@@ -1328,7 +1335,7 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.iref.9"></a>
    An escaped octet is encoded as a character triplet, consisting of the
    percent character "%" followed by the two hexadecimal digits
-   representing the octet code. For example, "%20" is the escaped
+   representing the octet code in . For example, "%20" is the escaped
    encoding for the US-ASCII space character.
 <a name="rfc.iref.10"></a>
 
@@ -1685,7 +1692,7 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.iref.52"></a>
 
 </p>
-<pre>   hostname      = domainlabel [ qualified ]
+<pre>   hostname      = domainlabel qualified
    qualified     = *( "." domainlabel ) [ "." toplabel "." ]
    domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
    toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
@@ -2389,8 +2396,8 @@ and the types of applications that might use them.
   Since URIs exist to identify resources, presumably they should be
   considered equivalent when they identify the same resource.  However,
   such a definition of equivalence is not of much practical use, since
-  there is no way for software to compare two resources without access
-  to their origin.  For this reason, determination of equivalence or
+  there is no way for software to compare two resources without knowledge
+  of their origin.  For this reason, determination of equivalence or
   difference of URIs is based on string comparison, perhaps augmented by
   reference to additional rules provided by URI scheme definitions.
   We use the terms "different" and "equivalent" to describe
@@ -2508,9 +2515,38 @@ relative path segments.
 <h3>
 <a name="rfc.section.6.2.2.2">6.2.2.2</a>&nbsp;
     Escape Normalization</h3>
+<p>
+<a name="rfc.section.6.2.2.2.p.1"></a>
+      The %-escape mechanism described in Section 2.4 is a frequent source
+      of variance among otherwise identical URIs.  One cause is the choice
+      of upper-case or lower-case letters for the hexadecimal digits
+      within the escape sequence (e.g., "%3a" versus "%3A").  Such
+      sequences are always equivalent; for the sake of uniformity, URI
+      generators and normalizers are strongly encouraged to use upper-case
+      letters for the hex digits A-F.
+      </p>
+<p>
+<a name="rfc.section.6.2.2.2.p.2"></a>
+      Only characters that are excluded from or reserved within the URI
+      syntax must be escaped when used as data.  However, some URI generators
+      go beyond that and escape characters that do not require escaping,
+      resulting in URIs that are equivalent to their unescaped counterparts.
+      Such URIs can be normalized by unescaping sequences that represent
+      the unreserved characters, as described in Section 2.3.
+      </p>
 <h3>
 <a name="rfc.section.6.2.2.3">6.2.2.3</a>&nbsp;
     Path Segment Normalization</h3>
+<p>
+<a name="rfc.section.6.2.2.3.p.1"></a>
+      The complete path segments "." and ".." have a special meaning within
+      hierarchical URI schemes.  As such, they should not appear in absolute
+      URI paths; if they are found, they can be removed by splitting the URI
+      just after the "/" that starts the path, using the left half as
+      the base URI and the right as a relative reference, and normalizing
+      the URI by merging the two in in accordance with the relative URI
+      processing algorithm (Section 5).
+      </p>
 <h3>
 <a name="rfc.section.6.2.3">6.2.3</a>&nbsp;
     Scheme-based Normalization</h3>
@@ -3428,7 +3464,7 @@ domain names.
 </p>
 <p>
 <a name="rfc.section.G.1.p.3"></a>
-Section 6 on URI comparison and normalization has been completely
+Section 6 on URI normalization and comparison has been completely
 rewritten and extended using input from Tim Bray and discussion within
 the W3C Technical Architecture Group.
 </p>
