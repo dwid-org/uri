@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en-US">
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Uniform Resource Identifier (URI): Generic Syntax</title>
@@ -48,6 +49,16 @@ h3
   font-family: helvetica, arial, sans-serif;
   page-break-after: avoid;
 }
+li
+{
+  margin-left: 2em;
+  margin-right: 2em;
+}
+ol
+{
+  margin-left: 2em;
+  margin-right: 2em;
+}
 p
 {
   margin-left: 2em;
@@ -67,9 +78,20 @@ td.top
 {
   vertical-align: top;
 }
+td.topnowrap
+{
+  vertical-align: top;
+  white-space: nowrap; 
+}
+td.right
+{
+  text-align: right;
+}
 td.header
 {
+  width: 33%;
   color: #ffffff;
+  background-color: #666666;
   font-size: 10px;
   font-family: arial, helvetica, sans-serif;
   vertical-align: top
@@ -120,7 +142,7 @@ td.header
 {
   font-weight: bold;
   text-align: center;
-  font-size: 9x;
+  font-size: 12px;
 }
 .filename
 {
@@ -129,6 +151,7 @@ td.header
   font-size: 16px;
   line-height: 24px;
   font-family: helvetica, arial, sans-serif;
+  text-align: right;
 }
 
 del
@@ -139,6 +162,16 @@ del
 ins
 {
   color: blue;
+}
+table.resolution
+{
+  background-color: khaki;
+  border-width: thin;
+  border-style: solid;
+  border-color: black;
+  margin-left: auto;
+  margin-right: 0;
+  float: right;
 }
 
 @media print {
@@ -164,93 +197,85 @@ ins
 <link href="#rfc.section.E" title="E Recommendations for Delimiting URI in Context" rel="Appendix">
 <link href="#rfc.section.F" title="F Abbreviated URIs" rel="Appendix">
 <link href="#rfc.section.G" title="G Summary of Non-editorial Changes" rel="Appendix">
+<link href="http://purl.org/dc" rel="schema.DC">
+<meta content="uniform resource identifier,URI,URL,URN,WWW,resource" name="keywords">
+<meta content="rfc2629.xslt $Id: rfc2396bis.html,v 1.42 2003/05/16 22:44:16 fielding Exp $" name="generator">
+<meta content="Berners-Lee et al." name="DC.Creator">
 </head>
 <body>
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="30" width="30" valign="center" align="center" bgcolor="#000000"><b><span class="RFC">&nbsp;RFC&nbsp;</span></b>
-<br>
-<span class="hotText"></span></td>
+<td style="background-color: #000000; text-align: center; vertical-align: middle; height: 2.5em;"><b><span class="RFC">&nbsp;RFC&nbsp;</span></b></td>
 </tr>
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
-<table cellspacing="1" cellpadding="1" border="0" width="66%">
+<table cellspacing="1" cellpadding="1" border="0" width="66%" summary="header information">
 <tr>
-<td class="header" bgcolor="#666666" width="33%">Network Working Group&nbsp;</td><td class="header" bgcolor="#666666" width="33%">T. Berners-Lee&nbsp;</td>
+<td class="header">Network Working Group&nbsp;</td><td class="header">T. Berners-Lee&nbsp;</td>
 </tr>
 <tr>
-<td class="header" bgcolor="#666666" width="33%">INTERNET DRAFT&nbsp;</td><td class="header" bgcolor="#666666" width="33%">MIT/LCS&nbsp;</td>
+<td class="header">INTERNET DRAFT&nbsp;</td><td class="header">MIT/LCS&nbsp;</td>
 </tr>
 <tr>
-<td class="header" bgcolor="#666666" width="33%">
+<td class="header">
         &lt;draft-fielding-uri-rfc2396bis-0x&gt;
-      &nbsp;</td><td class="header" bgcolor="#666666" width="33%">R. Fielding&nbsp;</td>
+      &nbsp;</td><td class="header">R. Fielding&nbsp;</td>
 </tr>
 <tr>
-<td class="header" bgcolor="#666666" width="33%">
-        Obsoletes: <a xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rcf2629.xslt" href="http://www.ietf.org/rfc/rfc2732.txt">2732</a>,
-          <a xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rcf2629.xslt" href="http://www.ietf.org/rfc/rfc2396.txt">2396</a>,
-          <a xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rcf2629.xslt" href="http://www.ietf.org/rfc/rfc1808.txt">1808</a>&nbsp;</td><td class="header" bgcolor="#666666" width="33%">Day Software&nbsp;</td>
+<td class="header">
+        Obsoletes: <a href="http://www.ietf.org/rfc/rfc2732.txt">2732</a>,
+      <a href="http://www.ietf.org/rfc/rfc2396.txt">2396</a>,
+      <a href="http://www.ietf.org/rfc/rfc1808.txt">1808</a>&nbsp;</td><td class="header">Day Software&nbsp;</td>
 </tr>
 <tr>
-<td class="header" bgcolor="#666666" width="33%">
-          Updates: <a xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rcf2629.xslt" href="http://www.ietf.org/rfc/rfc1738.txt">1738</a>&nbsp;</td><td class="header" bgcolor="#666666" width="33%">L. Masinter&nbsp;</td>
+<td class="header">
+          Updates: <a href="http://www.ietf.org/rfc/rfc1738.txt">1738</a>&nbsp;</td><td class="header">L. Masinter&nbsp;</td>
 </tr>
 <tr>
-<td class="header" bgcolor="#666666" width="33%">
+<td class="header">
          Category:
-        Standards Track&nbsp;</td><td class="header" bgcolor="#666666" width="33%">Adobe&nbsp;</td>
+        Standards Track&nbsp;</td><td class="header">Adobe&nbsp;</td>
 </tr>
 <tr>
-<td class="header" bgcolor="#666666" width="33%">Expires: November 2003&nbsp;</td><td class="header" bgcolor="#666666" width="33%">May 2003&nbsp;</td>
+<td class="header">Expires: November 2003&nbsp;</td><td class="header">May 2003&nbsp;</td>
 </tr>
 </table>
-<br>
-<div align="right">
-<span class="title">Uniform Resource Identifier (URI): Generic Syntax</span>
-</div>
-<div align="right">
+<p class="title">Uniform Resource Identifier (URI): Generic Syntax<br>
 <span class="filename">draft-fielding-uri-rfc2396bis-0x</span>
-</div>
+</p>
 <h1>Status of this Memo</h1>
 <p>
-<a name="rfc.section.1.p.1"></a>
         This document is an Internet-Draft and is 
         
             in full conformance with all provisions of Section 10 of RFC2026.    
-            
-
+            </p>
+<p>
         Internet-Drafts are working documents of the Internet Engineering
         Task Force (IETF), its areas, and its working groups.
         Note that other groups may also distribute working documents as
         Internet-Drafts.
       </p>
 <p>
-<a name="rfc.section.1.p.2"></a>
         Internet-Drafts are draft documents valid for a maximum of six months
         and may be updated, replaced, or obsoleted by other documents at any time.
         It is inappropriate to use Internet-Drafts as reference material or to cite
         them other than as "work in progress".
       </p>
 <p>
-<a name="rfc.section.1.p.3"></a>
         The list of current Internet-Drafts can be accessed at
         <a href="http://www.ietf.org/ietf/1id-abstracts.txt">http://www.ietf.org/ietf/1id-abstracts.txt</a>.
       </p>
 <p>
-<a name="rfc.section.1.p.4"></a>
         The list of Internet-Draft Shadow Directories can be accessed at
         <a href="http://www.ietf.org/shadow.html">http://www.ietf.org/shadow.html</a>.
       </p>
 <p>
-<a name="rfc.section.1.p.5"></a>
         This Internet-Draft will expire in November 2003.
       </p>
 <h1>Copyright Notice</h1>
 <p>
-<a name="rfc.section.2.p.1"></a>
     Copyright (C) The Internet Society (2003). All Rights Reserved.
   </p>
 <h1>Abstract</h1>
@@ -279,14 +304,12 @@ is available at
 <a href="http://www.apache.org/~fielding/uri/rev-2002/issues.html">&lt;http://www.apache.org/~fielding/uri/rev-2002/issues.html&gt;</a>.
 </p>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="30" width="30" valign="center" align="center" bgcolor="#000000"><b><span class="RFC">&nbsp;RFC&nbsp;</span></b>
-<br>
-<span class="hotText"></span></td>
+<td style="background-color: #000000; text-align: center; vertical-align: middle; height: 2.5em;"><b><span class="RFC">&nbsp;RFC&nbsp;</span></b></td>
 </tr>
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
@@ -930,7 +953,7 @@ is available at
 
 
 <b>&sect;&nbsp;
-            <a href="#rfc.copyright">Full Copyright Statement</a></b>
+            <a href="#rfc.ipr">Intellectual Property and Copyright Statements</a></b>
 <br>
 <b>&sect;&nbsp;
             <a href="#rfc.index">Index</a></b>
@@ -938,17 +961,19 @@ is available at
 </p>
 
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.section.1">1</a>&nbsp;
     <a name="intro">Introduction</a>
 </h1>
-<p>
+<div>
 <a name="rfc.section.1.p.1"></a>
+</div>
+<p>
 A Uniform Resource Identifier (URI) provides a simple and extensible
 means for identifying a resource.  This specification of URI syntax
 and semantics is derived from concepts introduced by the World Wide
@@ -959,8 +984,10 @@ recommendations laid out in "Functional Recommendations for Internet
 Resource Locators" <a href="#RFC1736" title="Functional Recommendations for Internet Resource Locators">[RFC1736]</a> and "Functional Requirements
 for Uniform Resource Names" <a href="#RFC1737" title="Functional Requirements for Uniform Resource Names">[RFC1737]</a>.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.p.2"></a>
+</div>
+<p>
 This document obsoletes <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>, which merged
 "Uniform Resource Locators" <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a> and
 "Relative Uniform Resource Locators" <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a> in order
@@ -970,21 +997,28 @@ URI schemes; those portions will be updated as separate documents.
 The process for registration of new URI schemes is defined separately
 by <a href="#RFC2717" title="Registration Procedures for URL Scheme Names">[RFC2717]</a>.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.p.3"></a>
+</div>
+<p>
 All significant changes from RFC 2396 are noted in Appendix G.
 </p>
 <h2>
 <a name="rfc.iref.1"></a><a name="rfc.iref.2"></a><a name="rfc.iref.3"></a><a name="rfc.section.1.1">1.1</a>&nbsp;
     <a name="overview">Overview of URIs</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.1.1.p.1"></a>
+</div>
+<p>
 URIs are characterized as follows:
 </p>
-<p>
-<a name="rfc.section.1.1.p.2"></a>Uniform
-  <dl>
+<div>
+<a name="rfc.section.1.1.p.2"></a>
+</div>
+<p>Uniform
+  </p>
+<dl>
     
 <dd style="margin-top: .5em">
 Uniformity provides several benefits: it allows different types
@@ -1001,11 +1035,15 @@ set of resource identifiers.
     </dd>
   
 </dl>
+<p>
 
 </p>
-<p>
-<a name="rfc.section.1.1.p.3"></a>Resource
-  <dl>
+<div>
+<a name="rfc.section.1.1.p.3"></a>
+</div>
+<p>Resource
+  </p>
+<dl>
     
 <dd style="margin-top: .5em">
 Anything that can be named or described can be a resource.
@@ -1021,11 +1059,15 @@ operands of a mathematical equation or the types of a relationship
     </dd>
   
 </dl>
+<p>
 
 </p>
-<p>
-<a name="rfc.section.1.1.p.4"></a>Identifier
-  <dl>
+<div>
+<a name="rfc.section.1.1.p.4"></a>
+</div>
+<p>Identifier
+  </p>
+<dl>
     
 <dd style="margin-top: .5em">
 An identifier embodies the information required to distinguish what is
@@ -1033,10 +1075,13 @@ being identified from all other things within its scope of identification.
     </dd>
   
 </dl>
+<p>
 
 </p>
-<p>
+<div>
 <a name="rfc.section.1.1.p.5"></a>
+</div>
+<p>
 A URI is an identifier that consists of a sequence of characters
 matching the restricted syntax defined by this specification.  A URI
 can be used to refer to a resource.  This specification does not place any
@@ -1051,8 +1096,10 @@ the user's network interface and yet not specific to any one user).
 <a name="rfc.iref.4"></a><a name="rfc.section.1.1.1">1.1.1</a>&nbsp;
     <a name="generic-syntax">Generic Syntax</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.1.1.1.p.1"></a>
+</div>
+<p>
 Each URI begins with a scheme name, as defined in
 <a href="#scheme">Section 3.1</a>, that refers to a specification
 for assigning identifiers within that scheme.  As such, the URI syntax
@@ -1060,8 +1107,10 @@ is a federated and extensible naming system wherein each scheme's
 specification may further restrict the syntax and semantics of identifiers
 using that scheme.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.1.1.p.2"></a>
+</div>
+<p>
 This specification defines those elements of the URI syntax that are
 required of all URI schemes or are common to many URI schemes.  It thus
 defines the syntax and semantics that are needed to implement a
@@ -1072,8 +1121,10 @@ formats that make use of URI references can refer to this specification
 as defining the range of syntax allowed for all URIs, including those
 schemes that have yet to be defined.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.1.1.p.3"></a>
+</div>
+<p>
 A parser of the generic URI syntax is capable of parsing any URI
 reference into its major components; once the scheme is determined,
 further scheme-specific parsing can be performed on the components.
@@ -1084,7 +1135,9 @@ of all URI schemes.
 <a name="rfc.section.1.1.2">1.1.2</a>&nbsp;
     <a name="examples">Examples</a>
 </h3>
+<div>
 <a name="rfc.figure.u.1"></a>
+</div>
 <p>
 The following examples illustrate URIs that are in common use.
 </p>
@@ -1110,8 +1163,10 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.iref.5"></a><a name="rfc.iref.6"></a><a name="rfc.iref.7"></a><a name="rfc.iref.8"></a><a name="rfc.section.1.1.3">1.1.3</a>&nbsp;
     <a name="URLvsURN">URI, URL, and URN</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.1.1.3.p.1"></a>
+</div>
+<p>
 A URI can be further classified as a locator, a name, or both.  The
 term "Uniform Resource Locator" (URL) refers to the subset of URIs
 that, in addition to identifying the resource, provide a means of
@@ -1120,8 +1175,10 @@ locating the resource by describing its primary access mechanism
 refers to the subset of URIs that are required to remain globally unique and
 persistent even when the resource ceases to exist or becomes unavailable.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.1.3.p.2"></a>
+</div>
+<p>
 An individual scheme does not need to be classified as being just one of
 "name" or "locator".  Instances of URIs from any given scheme may have
 the characteristics of names or locators or both, often depending on the
@@ -1138,8 +1195,10 @@ deprecates use of the term "URN" for anything but URIs in the "urn" scheme
 <a name="rfc.iref.9"></a><a name="rfc.section.1.2.1">1.2.1</a>&nbsp;
     <a name="transcribability">Transcribability</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.1.2.1.p.1"></a>
+</div>
+<p>
 The URI syntax has been designed with global transcribability as one of
 its main considerations.  A URI is a sequence of characters from a very
 limited set: the letters of the basic Latin alphabet, digits,
@@ -1149,8 +1208,10 @@ octets in a coded character set.  The interpretation of a URI depends
 only on the characters used and not how those characters are
 represented in a network protocol.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.2.1.p.2"></a>
+</div>
+<p>
 The goal of transcribability can be described by a simple scenario.
 Imagine two colleagues, Sam and Kim, sitting in a pub at an
 international conference and exchanging research ideas.  Sam asks Kim
@@ -1159,10 +1220,13 @@ research site on a napkin.  Upon returning home, Sam takes out the
 napkin and types the URI into a computer, which then retrieves the
 information to which Kim referred.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.2.1.p.3"></a>
+</div>
+<p>
 There are several design considerations revealed by the scenario:
-  <ul>
+  </p>
+<ul>
     
 <li>
 A URI is a sequence of characters that is not always
@@ -1183,10 +1247,13 @@ familiar components.
     </li>
   
 </ul>
+<p>
 
 </p>
-<p>
+<div>
 <a name="rfc.section.1.2.1.p.4"></a>
+</div>
+<p>
 These design considerations are not always in alignment.  For example, it
 is often the case that the most meaningful name for a URI component
 would require characters that cannot be typed into some systems.  The
@@ -1201,8 +1268,10 @@ document.
 <a name="rfc.iref.10"></a><a name="rfc.iref.11"></a><a name="rfc.iref.12"></a><a name="rfc.iref.13"></a><a name="rfc.iref.14"></a><a name="rfc.iref.15"></a><a name="rfc.section.1.2.2">1.2.2</a>&nbsp;
     <a name="identification">Separating Identification from Interaction</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.1.2.2.p.1"></a>
+</div>
+<p>
 A common misunderstanding of URIs is that they are only used to
 refer to accessible resources.  In fact, the URI alone only provides
 identification; access to the resource is neither guaranteed nor
@@ -1210,8 +1279,10 @@ implied by the presence of a URI.  Instead, an operation (if any)
 associated with a URI reference is defined by the protocol element,
 data format attribute, or natural language text in which it appears.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.2.2.p.2"></a>
+</div>
+<p>
 Given a URI, a system may attempt to perform a variety of operations
 on the resource, as might be characterized by such words as "denote",
 "access", "update", "replace", or "find attributes".  Such operations
@@ -1223,8 +1294,10 @@ a URI; such resolution may require several iterations.  Using that access
 mechanism to perform some action on the URI's resource is termed a
 "dereference" of the URI.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.2.2.p.3"></a>
+</div>
+<p>
 When URIs are used within information systems to identify sources
 of information, the most common form of URI dereference is "retrieval":
 making use of a URI in order to retrieve a representation of its associated
@@ -1236,8 +1309,10 @@ check for a locally cached representation, resolution of the URI to
 determine an appropriate access mechanism (if any), and dereference
 of the URI for the sake of applying a retrieval operation.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.2.2.p.4"></a>
+</div>
+<p>
 URI references in information systems are designed to be late-binding:
 the result of an access is generally determined at the time it is accessed
 and may vary over time or due to other aspects of the interaction.
@@ -1249,8 +1324,10 @@ results.  In such cases, the resource referred to by the URI is actually
 a sameness of characteristics as observed over time, perhaps elucidated
 by additional comments or assertions made by the resource provider.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.2.2.p.5"></a>
+</div>
+<p>
 Although many URI schemes are named after protocols, this does not
 imply that use of such a URI will result in access to the resource
 via the named protocol.  URIs are often used simply for the sake of
@@ -1266,8 +1343,10 @@ a representation isn't found in a local cache).
 <a name="rfc.iref.16"></a><a name="rfc.iref.17"></a><a name="rfc.iref.18"></a><a name="rfc.section.1.2.3">1.2.3</a>&nbsp;
     <a name="hierarchical">Hierarchical Identifiers</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.1.2.3.p.1"></a>
+</div>
+<p>
 The URI syntax is organized hierarchically, with components listed
 in decreasing order from left to right.  For some URI schemes, the
 visible hierarchy is limited to the scheme itself: everything after
@@ -1275,8 +1354,10 @@ the scheme component delimiter is considered opaque to URI processing.
 Other URI schemes make the hierarchy explicit and visible to
 generic parsing algorithms.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.2.3.p.2"></a>
+</div>
+<p>
 The URI syntax reserves the slash ("/"), question-mark ("?"), and
 crosshatch ("#") characters for the purpose of delimiting components
 that are significant to the generic parser's hierarchical interpretation
@@ -1285,8 +1366,10 @@ identifiers through the consistent use of familiar syntax, this
 uniform representation of hierarchy across naming schemes allows
 scheme-independent references to be made relative to that hierarchy.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.2.3.p.3"></a>
+</div>
+<p>
 An "absolute" URI refers to a resource independent of the naming
 hierarchy in which the identifier is used.  In contrast, a
 "relative" URI refers to a resource by describing the difference within
@@ -1300,8 +1383,10 @@ the absolute URI form of that reference.
 <a name="rfc.iref.19"></a><a name="rfc.iref.20"></a><a name="rfc.iref.21"></a><a name="rfc.iref.22"></a><a name="rfc.iref.23"></a><a name="rfc.iref.24"></a><a name="rfc.iref.25"></a><a name="rfc.iref.26"></a><a name="rfc.iref.27"></a><a name="rfc.iref.28"></a><a name="rfc.section.1.3">1.3</a>&nbsp;
     <a name="notation">Syntax Notation</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.1.3.p.1"></a>
+</div>
+<p>
 This document uses the Augmented Backus-Naur Form (ABNF) notation of
 <a href="#RFC2234" title="Augmented BNF for Syntax Specifications: ABNF">[RFC2234]</a> to define the URI syntax.
 Although the ABNF defines syntax in terms of the US-ASCII character
@@ -1312,8 +1397,10 @@ in terms of bits and bytes on the wire is dependent upon
 the character encoding of the protocol used to transport it, or the
 charset of the document that contains it.
 </p>
-<p>
+<div>
 <a name="rfc.section.1.3.p.2"></a>
+</div>
+<p>
 The following core ABNF productions are used by this specification
 as defined by Section 6.1 of <a href="#RFC2234" title="Augmented BNF for Syntax Specifications: ABNF">[RFC2234]</a>:
 ALPHA, CR, CTL, DIGIT, DQUOTE, HEXDIG, LF, OCTET, and SP.
@@ -1322,16 +1409,18 @@ The complete URI syntax is collected in Appendix A.
 
 
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.iref.29"></a><a name="rfc.section.2">2</a>&nbsp;
     <a name="characters">URI Characters</a>
 </h1>
+<div>
 <a name="rfc.figure.u.2"></a>
+</div>
 <p>
 A URI consists of a restricted set of characters, primarily chosen to
 aid transcribability and usability both in computer systems and in
@@ -1345,8 +1434,10 @@ input facilities available to Internet users.
 </p>
 <pre>   uric        = reserved / unreserved / escaped
 </pre>
-<p>
+<div>
 <a name="rfc.section.2.p.2"></a>
+</div>
+<p>
 Within a URI, reserved characters are used to delimit syntax components,
 unreserved characters are used to describe registered names, and
 unreserved, non-delimiting reserved, and escaped characters are used to
@@ -1356,8 +1447,10 @@ represent strings of data (1*OCTET) within the components.
 <a name="rfc.section.2.1">2.1</a>&nbsp;
     <a name="encoding">Encoding of Characters</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.2.1.p.1"></a>
+</div>
+<p>
 As described <a href="#notation">above</a>, the URI syntax
 is defined in terms of characters by reference to the
 <a href="#ASCII">US-ASCII</a> [ASCII] encoding of characters to octets.
@@ -1365,8 +1458,10 @@ This specification does not mandate the use of any particular mapping
 between its character set and the octets used to store or transmit
 those characters.
 </p>
-<p>
+<div>
 <a name="rfc.section.2.1.p.2"></a>
+</div>
+<p>
 URI characters representing strings of data within a component may, if
 allowed by the component production, represent an arbitrary sequence of
 octets.  For example, portions of a given URI might correspond to a filename
@@ -1375,10 +1470,12 @@ on a map, etc.  Some URI schemes define a specific encoding of raw data
 to US-ASCII characters as part of their scheme-specific requirements.
 Most URI schemes represent data octets by the US-ASCII character
 corresponding to that octet, either directly in the form of the
-character's glyph or by use of an escape triplet (<a href="#escaped">section 2.4</a>).
+character's glyph or by use of an escape triplet (<a href="#escaped">section&nbsp;2.4</a>).
 </p>
-<p>
+<div>
 <a name="rfc.section.2.1.p.3"></a>
+</div>
+<p>
 When a URI scheme defines a component that represents textual data
 consisting of characters from the Unicode (ISO 10646) character
 set, we recommend that the data be encoded first as octets according
@@ -1389,7 +1486,9 @@ escaping any octets that are not in the unreserved character set.
 <a name="rfc.section.2.2">2.2</a>&nbsp;
     <a name="reserved">Reserved Characters</a>
 </h2>
+<div>
 <a name="rfc.figure.u.3"></a>
+</div>
 <p>
 
 <a name="rfc.iref.31"></a>
@@ -1405,10 +1504,12 @@ conflict with the reserved purpose, then the conflicting data must be
 <pre>   reserved    = "/" / "?" / "#" / "[" / "]" / ";" /
                  ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 </pre>
-<p>
+<div>
 <a name="rfc.section.2.2.p.2"></a>
+</div>
+<p>
 Reserved characters are used as delimiters of the generic URI
-components described in <a href="#components">section 3</a>, as well as within
+components described in <a href="#components">section&nbsp;3</a>, as well as within
 those components for delimiting sub-components.  A component's ABNF
 syntax rule will not use the "reserved" production directly; instead,
 each rule lists those reserved characters that are allowed within
@@ -1423,8 +1524,10 @@ it will be interpreted; likewise, an escaped octet that corresponds
 to a reserved character cannot be unescaped outside the software
 that is responsible for interpreting it during URI resolution.
 </p>
-<p>
+<div>
 <a name="rfc.section.2.2.p.3"></a>
+</div>
+<p>
 The slash ("/"), question-mark ("?"), and crosshatch ("#") characters
 are reserved in all URI for the purpose of delimiting components
 that are significant to the generic parser's hierarchical interpretation
@@ -1433,8 +1536,8 @@ slash ("/") character signifies a hierarchy delimiter, extends from
 the <a href="#scheme">scheme</a> through to the first
 question-mark ("?"), crosshatch ("#"), or the end of the URI string.
 In other words, the slash ("/") character is not treated as a
-hierarchical separator within the query (<a href="#query">section 3.4</a>) and
-fragment (<a href="#fragment">section 3.5</a>) components of a URI, but is
+hierarchical separator within the query (<a href="#query">section&nbsp;3.4</a>) and
+fragment (<a href="#fragment">section&nbsp;3.5</a>) components of a URI, but is
 still considered reserved within those components for purposes
 outside the scope of this specification.
 </p>
@@ -1442,7 +1545,9 @@ outside the scope of this specification.
 <a name="rfc.section.2.3">2.3</a>&nbsp;
     <a name="unreserved">Unreserved Characters</a>
 </h2>
+<div>
 <a name="rfc.figure.u.4"></a>
+</div>
 <p>
 
 <a name="rfc.iref.33"></a>
@@ -1459,8 +1564,10 @@ symbols.
 
    mark        = "-" / "_" / "." / "!" / "~" / "*" / "'" / "(" / ")"
 </pre>
-<p>
+<div>
 <a name="rfc.section.2.3.p.2"></a>
+</div>
+<p>
 Unreserved characters can be escaped without changing the semantics
 of a URI, but this should not be done unless the URI is being used
 in a context that does not allow the unescaped character to appear.
@@ -1473,20 +1580,24 @@ but unescaping the other mark characters is usually counterproductive.
 <a name="rfc.section.2.4">2.4</a>&nbsp;
     <a name="escaped">Escaped Characters</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.2.4.p.1"></a>
+</div>
+<p>
 Data must be escaped if it does not have a representation using an
 unreserved character; this includes data that does not correspond to
 a printable character of the US-ASCII coded character set or corresponds
 to a US-ASCII character that delimits the component from others,
 is reserved in that component for delimiting sub-components, or is
-excluded from any use within a URI (<a href="#excluded">section 2.5</a>).
+excluded from any use within a URI (<a href="#excluded">section&nbsp;2.5</a>).
 </p>
 <h3>
 <a name="rfc.section.2.4.1">2.4.1</a>&nbsp;
     <a name="percent-encoding">Escaped Encoding</a>
 </h3>
+<div>
 <a name="rfc.figure.u.5"></a>
+</div>
 <p>
 
 <a name="rfc.iref.37"></a>
@@ -1511,8 +1622,10 @@ used by URI generators and normalizers.
 <a name="rfc.section.2.4.2">2.4.2</a>&nbsp;
     <a name="when-to-escape">When to Escape and Unescape</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.2.4.2.p.1"></a>
+</div>
+<p>
 Under normal circumstances, the only time that characters within a
 URI string are escaped is during the process of generating the URI from
 its component parts.  Each component may have its own set of characters
@@ -1523,15 +1636,19 @@ being used within a context where the unreserved "mark" characters
 might need to be escaped, such as when used for a command-line argument
 or within a single-quoted attribute.
 </p>
-<p>
+<div>
 <a name="rfc.section.2.4.2.p.2"></a>
+</div>
+<p>
 Once generated, a URI is always in an escaped form.  When a URI is
 resolved, the components significant to that scheme-specific
 resolution process (if any) must be parsed and separated before the
 escaped characters within those components can be safely unescaped.
 </p>
-<p>
+<div>
 <a name="rfc.section.2.4.2.p.3"></a>
+</div>
+<p>
 In some cases, data that could be represented by an unreserved
 character may appear escaped; for example, some of the unreserved
 "mark" characters are automatically escaped by some systems.  A URI
@@ -1540,8 +1657,10 @@ in the unreserved set.  For example, "%7E" is sometimes used instead
 of tilde ("~") in an "http" URI path and can be converted to "~"
 without changing the interpretation of the URI.
 </p>
-<p>
+<div>
 <a name="rfc.section.2.4.2.p.4"></a>
+</div>
+<p>
 Because the percent ("%") character serves as the escape indicator,
 it must be escaped as "%25" in order for that octet to be used as data
 within a URI.  Implementers should be careful not to escape or unescape
@@ -1554,26 +1673,34 @@ an already escaped string.
 <a name="rfc.section.2.5">2.5</a>&nbsp;
     <a name="excluded">Excluded US-ASCII Characters</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.2.5.p.1"></a>
+</div>
+<p>
 Although they are disallowed within the URI syntax, we include here a
 description of those US-ASCII characters that have been excluded and
 the reasons for their exclusion.
 </p>
-<p>
+<div>
 <a name="rfc.section.2.5.p.2"></a>
+</div>
+<p>
 The control characters (CTL) in the US-ASCII coded character set are not
 used within a URI, both because they are non-printable and because
 they are likely to be misinterpreted by some control mechanisms.
 </p>
-<p>
+<div>
 <a name="rfc.section.2.5.p.3"></a>
+</div>
+<p>
 The space character (SP) is excluded because significant spaces may
 disappear and insignificant spaces may be introduced when a URI is
 transcribed, typeset, or subjected to the treatment of word-processing
 programs.  Whitespace is also used to delimit a URI in many contexts.
 </p>
+<div>
 <a name="rfc.figure.u.6"></a>
+</div>
 <p>
 
 <a name="rfc.iref.39"></a>
@@ -1587,7 +1714,9 @@ is excluded because it is used for the encoding of
 </p>
 <pre>   delims      = "&lt;" / "&gt;" / "%" / DQUOTE
 </pre>
+<div>
 <a name="rfc.figure.u.7"></a>
+</div>
 <p>
 
 <a name="rfc.iref.41"></a>
@@ -1598,24 +1727,28 @@ agents are known to sometimes modify such characters.
 </p>
 <pre>   unwise      = "{" / "}" / "|" / "\" / "^" / "`"
 </pre>
-<p>
+<div>
 <a name="rfc.section.2.5.p.6"></a>
+</div>
+<p>
 Data octets corresponding to excluded characters must be escaped in order to
 be represented within a URI.
 </p>
 
 
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.iref.43"></a><a name="rfc.iref.44"></a><a name="rfc.iref.45"></a><a name="rfc.iref.46"></a><a name="rfc.iref.47"></a><a name="rfc.iref.48"></a><a name="rfc.iref.49"></a><a name="rfc.section.3">3</a>&nbsp;
     <a name="components">URI Syntactic Components</a>
 </h1>
+<div>
 <a name="rfc.figure.u.8"></a>
+</div>
 <p>
 The generic URI syntax consists of a hierarchical sequence of components
 referred to as the scheme, authority, path, query, and fragment.
@@ -1651,8 +1784,10 @@ rel-path does not necessarily contain any slash ("/") characters; a
 non-hierarchical path will be treated as opaque data by a generic
 URI parser.
 </p>
-<p>
+<div>
 <a name="rfc.section.3.p.2"></a>
+</div>
+<p>
 The authority component is only present when a string matches the
 net-path production.  Since the presence of an authority component
 restricts the remaining syntax for path, we have not included a
@@ -1666,15 +1801,19 @@ component.
 <a name="rfc.iref.60"></a><a name="rfc.section.3.1">3.1</a>&nbsp;
     <a name="scheme">Scheme</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.3.1.p.1"></a>
+</div>
+<p>
 Each URI begins with a scheme name that refers to a specification for
 assigning identifiers within that scheme. As such, the URI syntax is a
 federated and extensible naming system wherein each scheme's specification
 may further restrict the syntax and semantics of identifiers using that
 scheme. 
 </p>
+<div>
 <a name="rfc.figure.u.9"></a>
+</div>
 <p>
 Scheme names consist of a sequence of characters beginning with a
 letter and followed by any combination of letters, digits, plus ("+"),
@@ -1699,8 +1838,10 @@ between scheme names and their specifications.
 <a name="rfc.iref.62"></a><a name="rfc.section.3.2">3.2</a>&nbsp;
     <a name="authority">Authority</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.3.2.p.1"></a>
+</div>
+<p>
 Many URI schemes include a hierarchical element for a naming
 authority, such that governance of the name space defined by the
 remainder of the URI is delegated to that authority (which may,
@@ -1708,7 +1849,9 @@ in turn, delegate it further).  The generic syntax provides a common
 means for distinguishing an authority based on a registered domain name
 or server address, along with optional port and user information.
 </p>
+<div>
 <a name="rfc.figure.u.10"></a>
+</div>
 <p>
 The authority component is preceded by a double slash ("//") and is
 terminated by the next slash ("/"), question-mark ("?"), or
@@ -1724,21 +1867,25 @@ crosshatch ("#") character, or by the end of the URI.
 <p>
 The parts "&lt;userinfo&gt;@" and ":&lt;port&gt;" may be omitted.
 </p>
-<p>
+<div>
 <a name="rfc.section.3.2.p.3"></a>
+</div>
+<p>
 Some schemes do not allow the userinfo and/or port sub-components.
 When presented with a URI that violates one or more scheme-specific
 restrictions, the scheme-specifc URI resolution process should flag
 the reference as an error rather than ignore the unusued parts; doing so
 reduces the number of equivalent URIs and helps detect an abuse of the
 generic syntax that might indicate the URI has been constructed to
-mislead the user (<a href="#security-semantic">section 7.5</a>).
+mislead the user (<a href="#security-semantic">section&nbsp;7.5</a>).
 </p>
 <h3>
 <a name="rfc.iref.67"></a><a name="rfc.section.3.2.1">3.2.1</a>&nbsp;
     <a name="userinfo">User Information</a>
 </h3>
+<div>
 <a name="rfc.figure.u.11"></a>
+</div>
 <p>
 The userinfo sub-component may consist of a user name and, optionally,
 scheme-specific information about how to gain authorization to access
@@ -1750,21 +1897,25 @@ commercial at-sign ("@") that delimits it from the host.
 <pre>   userinfo    = *( unreserved / escaped / ";" /
                     ":" / "&amp;" / "=" / "+" / "$" / "," )
 </pre>
-<p>
+<div>
 <a name="rfc.section.3.2.1.p.2"></a>
+</div>
+<p>
 Some URI schemes use the format "user:password" in the userinfo
 field. This practice is NOT RECOMMENDED, because the passing of
 authentication information in clear text has proven to
 be a security risk in almost every case where it has been used.
 Note also that userinfo might be crafted to look like a trusted
 domain name in order to mislead users, as described in
-<a href="#security-semantic">section 7.5</a>.
+<a href="#security-semantic">section&nbsp;7.5</a>.
 </p>
 <h3>
 <a name="rfc.iref.69"></a><a name="rfc.section.3.2.2">3.2.2</a>&nbsp;
     <a name="host">Host</a>
 </h3>
+<div>
 <a name="rfc.figure.u.12"></a>
+</div>
 <p>
 The host sub-component of authority is identified by an IPv6 literal
 encapsulated within square brackets, an IPv4 address in dotted-decimal form,
@@ -1780,15 +1931,19 @@ semantics of the URI.  For example, the "file" URI scheme defaults to
 "localhost", whereas the "http" URI scheme does not allow host to be
 omitted.
 </p>
-<p>
+<div>
 <a name="rfc.section.3.2.2.p.2"></a>
+</div>
+<p>
 The production for host is ambiguous because it does not completely
 distinguish between an IPv4address and a hostname.  Again, the
 "first-match" algorithm applies: If host matches the production for
 IPv4address, then it should be considered an IPv4 address literal
 and not a hostname.
 </p>
+<div>
 <a name="rfc.figure.u.13"></a>
+</div>
 <p>
 
 <a name="rfc.iref.71"></a>
@@ -1813,7 +1968,9 @@ domain name and some local domain.
    domainlabel = alphanum [ 0*61( alphanum / "-" ) alphanum ]
    alphanum    = ALPHA / DIGIT
 </pre>
+<div>
 <a name="rfc.figure.u.14"></a>
+</div>
 <p>
 
 <a name="rfc.iref.79"></a>
@@ -1824,7 +1981,7 @@ dotted-decimal notation (a sequence of four decimal numbers in the
 range 0 to 255, separated by "."), as described in <a href="#RFC1123" title="Requirements for Internet Hosts - Application and Support">[RFC1123]</a>
 by reference to <a href="#RFC0952" title="DoD Internet host table specification">[RFC0952]</a>.  Note that other forms of
 dotted notation may be interpreted on some platforms, as described in
-<a href="#security-ipv4">section 7.3</a>, but only the dotted-decimal form of
+<a href="#security-ipv4">section&nbsp;7.3</a>, but only the dotted-decimal form of
 four octets is allowed by this grammar.
 <a name="rfc.iref.82"></a>
 <a name="rfc.iref.83"></a>
@@ -1837,7 +1994,9 @@ four octets is allowed by this grammar.
                / "2" %x30-34 DIGIT     ; 200-249
                / "25" %x30-35          ; 250-255
 </pre>
+<div>
 <a name="rfc.figure.u.15"></a>
+</div>
 <p>
 
 <a name="rfc.iref.84"></a>
@@ -1872,8 +2031,10 @@ are allowed in the URI syntax.
 
    h4          = 1*4HEXDIG
 </pre>
-<p>
+<div>
 <a name="rfc.section.3.2.2.p.6"></a>
+</div>
+<p>
 The presence of host within a URI does not imply that the scheme
 requires access to the given host on the Internet.  In many cases,
 the host syntax is used only for the sake of reusing the existing
@@ -1886,7 +2047,9 @@ may change over time for reasons not anticipated by the URI creator.
 <a name="rfc.iref.93"></a><a name="rfc.section.3.2.3">3.2.3</a>&nbsp;
     <a name="port">Port</a>
 </h3>
+<div>
 <a name="rfc.figure.u.16"></a>
+</div>
 <p>
 The port sub-component of authority is designated by an optional
 port number in decimal following the host and delimited from it by
@@ -1906,7 +2069,9 @@ For example, the "http" URI scheme defines a default of TCP port 80.
 <a name="rfc.iref.95"></a><a name="rfc.iref.96"></a><a name="rfc.iref.97"></a><a name="rfc.iref.98"></a><a name="rfc.section.3.3">3.3</a>&nbsp;
     <a name="path">Path</a>
 </h2>
+<div>
 <a name="rfc.figure.u.17"></a>
+</div>
 <p>
 The path component contains hierarchical data that, along with data
 in the optional <a href="#query">query</a> component, serves
@@ -1929,16 +2094,20 @@ crosshatch ("#") character, or by the end of the URI.
    pchar         = unreserved / escaped / ";" /
                    ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 </pre>
-<p>
+<div>
 <a name="rfc.section.3.3.p.2"></a>
+</div>
+<p>
 The path consists of a sequence of path segments separated by a
 slash ("/") character.  A path is always defined for a URI, though
 the defined path may be empty (zero length) or opaque (not containing
 any "/" delimiters).  For example, the URI &lt;mailto:fred@example.com&gt;
 has a path of "fred@example.com".
 </p>
-<p>
+<div>
 <a name="rfc.section.3.3.p.3"></a>
+</div>
+<p>
 Within a path segment, the semicolon (";") and equals ("=") reserved
 characters are often used for delimiting parameters and parameter values
 applicable to that segment.  The comma (",") reserved character is often
@@ -1953,7 +2122,9 @@ Parameters are not significant to the parsing of relative references.
 <a name="rfc.section.3.4">3.4</a>&nbsp;
     <a name="query">Query</a>
 </h2>
+<div>
 <a name="rfc.figure.u.18"></a>
+</div>
 <p>
 
 <a name="rfc.iref.102"></a>
@@ -1967,8 +2138,10 @@ and terminated by a crosshatch ("#") character or by the end of the URI.
 </p>
 <pre>   query       = *( pchar / "/" / "?" )
 </pre>
-<p>
+<div>
 <a name="rfc.section.3.4.p.2"></a>
+</div>
+<p>
 The characters slash ("/") and question-mark ("?") are allowed to
 represent data within the query component, but such use is discouraged;
 incorrect implementations of relative URI resolution often fail to
@@ -1983,7 +2156,9 @@ include those characters unescaped.
 <a name="rfc.section.3.5">3.5</a>&nbsp;
     <a name="fragment">Fragment</a>
 </h2>
+<div>
 <a name="rfc.figure.u.19"></a>
+</div>
 <p>
 
 <a name="rfc.iref.104"></a>
@@ -2000,8 +2175,10 @@ a crosshatch ("#") character and terminated by the end of the URI string.
 </p>
 <pre>   fragment    = *( pchar / "/" / "?" )
 </pre>
-<p>
+<div>
 <a name="rfc.section.3.5.p.2"></a>
+</div>
+<p>
 The semantics of a fragment identifier are defined by the set of
 representations that might result from a retrieval action on the primary
 resource.  Therefore, the format and interpretation of a fragment identifier
@@ -2016,8 +2193,10 @@ the retrieval request, then interpretation of the given fragment identifier
 must be consistent across all of those media types in order for it to be
 viable as an identifier.
 </p>
-<p>
+<div>
 <a name="rfc.section.3.5.p.3"></a>
+</div>
+<p>
 As with any URI, use of a fragment identifier component does not imply
 that a retrieval action will take place.  A URI with a fragment identifier
 may be used to refer to the secondary resource without any implication
@@ -2026,8 +2205,10 @@ in a context that does call for retrieval, the fragment identifier is
 only valid as a reference if a retrieval action on the primary resource
 succeeds and results in a representation that defines the fragment.
 </p>
-<p>
+<div>
 <a name="rfc.section.3.5.p.4"></a>
+</div>
+<p>
 Fragment identifiers have a special role in information systems as
 the primary form of client-side indirect referencing, allowing
 an author to specifically identify those aspects of an existing
@@ -2041,8 +2222,10 @@ content moves over time, it also serves to prevent information
 providers from denying reference authors the right to selectively
 refer to information within a resource.
 </p>
-<p>
+<div>
 <a name="rfc.section.3.5.p.5"></a>
+</div>
+<p>
 The characters slash ("/") and question-mark ("?") are allowed to
 represent data within the fragment identifier, but such use is
 discouraged for the same reasons as described above for query.
@@ -2050,16 +2233,18 @@ discouraged for the same reasons as described above for query.
 
 
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.iref.106"></a><a name="rfc.iref.107"></a><a name="rfc.section.4">4</a>&nbsp;
     <a name="uri-reference">URI References</a>
 </h1>
+<div>
 <a name="rfc.figure.u.20"></a>
+</div>
 <p>
    The term "URI-reference" is used here to denote the common usage of a
    resource identifier.  A URI reference may be absolute or relative,
@@ -2079,7 +2264,9 @@ discouraged for the same reasons as described above for query.
 <pre>   URI-reference = [ absolute-URI / relative-URI ] [ "#" fragment ]
    absolute-URI  = scheme ":" hier-part [ "?" query ]
 </pre>
+<div>
 <a name="rfc.figure.u.21"></a>
+</div>
 <p>
 
 <a name="rfc.iref.110"></a>
@@ -2090,20 +2277,24 @@ discouraged for the same reasons as described above for query.
 </p>
 <pre>   absolute-URI-reference = absolute-URI [ "#" fragment ]
 </pre>
-<p>
+<div>
 <a name="rfc.section.4.p.3"></a>
+</div>
+<p>
    The syntax for a relative URI is a shortened form of that for an absolute
    URI, where some prefix of the URI is missing and certain path
    components ("." and "..") have a special meaning when, and only when,
    interpreting a relative path.  The relative URI syntax is defined in
-<a href="#relative-URI">section 5</a>.
+<a href="#relative-URI">section&nbsp;5</a>.
 </p>
 <h2>
 <a name="rfc.section.4.1">4.1</a>&nbsp;
     <a name="same-document">Same-document References</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.4.1.p.1"></a>
+</div>
+<p>
    A URI reference that does not contain a URI is a reference to the
    current document.  In other words, an empty URI reference within a
    document is interpreted as a reference to the start of that document,
@@ -2120,16 +2311,20 @@ discouraged for the same reasons as described above for query.
 <a name="rfc.section.4.2">4.2</a>&nbsp;
     <a name="parsing">Parsing a URI Reference</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.4.2.p.1"></a>
+</div>
+<p>
    A URI reference is typically parsed according to the four main
    components and fragment identifier in order to determine what
    components are present and whether the reference is relative or
    absolute.  The individual components are then parsed for their
    subparts and, if not opaque, to verify their validity.
 </p>
-<p>
+<div>
 <a name="rfc.section.4.2.p.2"></a>
+</div>
+<p>
    Although the BNF defines what is allowed in each component, it is
    ambiguous in terms of differentiating between an authority component
    and a path component that begins with two slash characters.  The
@@ -2137,32 +2332,38 @@ discouraged for the same reasons as described above for query.
    rule soaks up as much of the URI reference string as it is capable of
    matching.  In other words, the authority component wins.
 </p>
-<p>
+<div>
 <a name="rfc.section.4.2.p.3"></a>
+</div>
+<p>
 An authority component is not required for a URI scheme to make use
 of relative references.  A base URI without an authority component
 implies that any relative reference will also be without an authority
 component.
 </p>
-<p>
+<div>
 <a name="rfc.section.4.2.p.4"></a>
+</div>
+<p>
    Readers familiar with regular expressions should see Appendix B for a
    concrete parsing example and test oracle.
 </p>
 
 
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.iref.112"></a><a name="rfc.section.5">5</a>&nbsp;
     <a name="relative-URI">Relative URI References</a>
 </h1>
-<p>
+<div>
 <a name="rfc.section.5.p.1"></a>
+</div>
+<p>
    It is often the case that a group or "tree" of documents has been
    constructed to serve a common purpose; the vast majority of URIs in
    these documents point to resources within the tree rather than
@@ -2170,8 +2371,10 @@ component.
    much more likely to refer to other resources at that site than to
    resources at remote sites.
 </p>
-<p>
+<div>
 <a name="rfc.section.5.p.2"></a>
+</div>
+<p>
    Relative addressing of URIs allows document trees to be partially
    independent of their location and access scheme.  For instance, it is
    possible for a single set of hypertext documents to be simultaneously
@@ -2182,29 +2385,37 @@ component.
    has demonstrated that the ability to perform relative referencing is
    necessary for the long-term usability of embedded URIs.
 </p>
+<div>
 <a name="rfc.figure.u.22"></a>
+</div>
 <p>
    The relative URI syntax takes advantage of the hier-part syntax
-   (<a href="#components">section 3</a>) in order to express a reference that is
+   (<a href="#components">section&nbsp;3</a>) in order to express a reference that is
    relative to the namespace of another hierarchical URI.
 <a name="rfc.iref.113"></a>
 
 </p>
 <pre>   relative-URI  = [ net-path / abs-path / rel-path ] [ "?" query ]
 </pre>
-<p>
+<div>
 <a name="rfc.section.5.p.4"></a>
+</div>
+<p>
    A relative reference beginning with two slash characters is termed a
-   network-path reference, as defined by net-path in <a href="#components">section 3</a>.
+   network-path reference, as defined by net-path in <a href="#components">section&nbsp;3</a>.
    Such references are rarely used.
 </p>
-<p>
+<div>
 <a name="rfc.section.5.p.5"></a>
+</div>
+<p>
    A relative reference beginning with a single slash character is
    termed an absolute-path reference, as defined by abs-path in
-   <a href="#components">section 3</a>.
+   <a href="#components">section&nbsp;3</a>.
 </p>
+<div>
 <a name="rfc.figure.u.23"></a>
+</div>
 <p>
 
 <a name="rfc.iref.114"></a>
@@ -2220,8 +2431,10 @@ component.
    rel-segment = 1*( unreserved / escaped / ";" /
                      "@" / "&amp;" / "=" / "+" / "$" / "," )
 </pre>
-<p>
+<div>
 <a name="rfc.section.5.p.7"></a>
+</div>
+<p>
    Within a relative-path reference, the complete path segments "." and
    ".." have special meanings: "the current hierarchy level" and "the
    level above this hierarchy level", respectively.  Although this is
@@ -2230,8 +2443,10 @@ component.
    when resolving a relative-path reference to its absolute form
    (Section 5.2).
 </p>
-<p>
+<div>
 <a name="rfc.section.5.p.8"></a>
+</div>
+<p>
    Authors should be aware that a path segment which contains a colon
    character cannot be used as the first segment of a relative URI path
    (e.g., "this:that"), because it would be mistaken for a scheme name.
@@ -2239,8 +2454,10 @@ component.
    segments (e.g., "./this:that") in order for them to be referenced as
    a relative path.
 </p>
-<p>
+<div>
 <a name="rfc.section.5.p.9"></a>
+</div>
+<p>
    It is not necessary for all URI within a given scheme to be
    restricted to the hier-part syntax, since the hierarchical
    properties of that syntax are only necessary when a relative URI is
@@ -2251,8 +2468,10 @@ component.
    relative URI cannot be used within a document that has an unsuitable
    base URI.
 </p>
-<p>
+<div>
 <a name="rfc.section.5.p.10"></a>
+</div>
+<p>
    Some URI schemes do not allow a hierarchical syntax matching the
    hier-part syntax, and thus cannot use relative references.
 </p>
@@ -2260,8 +2479,10 @@ component.
 <a name="rfc.section.5.1">5.1</a>&nbsp;
     <a name="base-URI">Establishing a Base URI</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.5.1.p.1"></a>
+</div>
+<p>
    The term "relative URI" implies that there exists some absolute "base
    URI" against which the relative reference is applied.  Indeed, the
    base URI is necessary to define the semantics of any relative URI
@@ -2269,14 +2490,18 @@ component.
    for relative URI to be usable within a document, the base URI of that
    document must be known to the parser.
 </p>
-<p>
+<div>
 <a name="rfc.section.5.1.p.2"></a>
+</div>
+<p>
    The base URI of a document can be established in one of four ways,
    listed below in order of precedence.  The order of precedence can be
    thought of in terms of layers, where the innermost defined base URI
    has the highest precedence.  This can be visualized graphically as:
 </p>
+<div>
 <a name="rfc.figure.u.24"></a>
+</div>
 <pre>   .----------------------------------------------------------.
    |  .----------------------------------------------------.  |
    |  |  .----------------------------------------------.  |  |
@@ -2299,8 +2524,10 @@ component.
 <a name="rfc.section.5.1.1">5.1.1</a>&nbsp;
     <a name="base-context">Base URI within Document Content</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.5.1.1.p.1"></a>
+</div>
+<p>
    Within certain document media types, the base URI of the document can
    be embedded within the content itself such that it can be readily
    obtained by a parser.  This can be useful for descriptive documents,
@@ -2308,8 +2535,10 @@ component.
    protocols other than their usual retrieval context (e.g., E-Mail or
    USENET news).
 </p>
-<p>
+<div>
 <a name="rfc.section.5.1.1.p.2"></a>
+</div>
+<p>
    It is beyond the scope of this document to specify how, for each
    media type, the base URI can be embedded.  It is assumed that user
    agents manipulating such media types will be able to obtain the
@@ -2317,8 +2546,10 @@ component.
    of how the base URI can be embedded in the Hypertext Markup Language
    (HTML) <a href="#HTML" title="Hypertext Markup Language (HTML 4.01) Specification">[HTML]</a> is provided in Appendix D.
 </p>
-<p>
+<div>
 <a name="rfc.section.5.1.1.p.3"></a>
+</div>
+<p>
    A mechanism for embedding the base URI within MIME container types
    (e.g., the message and multipart types) is defined by MHTML
    <a href="#RFC2110" title="MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)">[RFC2110]</a>.  Protocols that do not use the MIME message header syntax,
@@ -2330,8 +2561,10 @@ component.
 <a name="rfc.section.5.1.2">5.1.2</a>&nbsp;
     <a name="base-encapsulated">Base URI from the Encapsulating Entity</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.5.1.2.p.1"></a>
+</div>
+<p>
    If no base URI is embedded, the base URI of a document is defined by
    the document's retrieval context.  For a document that is enclosed
    within another entity (such as a message or another document), the
@@ -2343,8 +2576,10 @@ component.
 <a name="rfc.section.5.1.3">5.1.3</a>&nbsp;
     <a name="base-retrieval">Base URI from the Retrieval URI</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.5.1.3.p.1"></a>
+</div>
+<p>
    If no base URI is embedded and the document is not encapsulated
    within some other entity (e.g., the top level of a composite entity),
    then, if a URI was used to retrieve the base document, that URI shall
@@ -2356,8 +2591,10 @@ component.
 <a name="rfc.section.5.1.4">5.1.4</a>&nbsp;
     <a name="base-default">Default Base URI</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.5.1.4.p.1"></a>
+</div>
+<p>
    If none of the conditions described in above apply,
    then the base URI is defined by the context of the application.
    Since this definition is necessarily application-dependent, failing
@@ -2365,8 +2602,10 @@ component.
    the same content being interpreted differently by different types of
    application.
 </p>
-<p>
+<div>
 <a name="rfc.section.5.1.4.p.2"></a>
+</div>
+<p>
    It is the responsibility of the distributor(s) of a document
    containing a relative URI to ensure that the base URI for that document
    can be established.  It must be emphasized that a relative URI cannot
@@ -2377,8 +2616,10 @@ component.
 <a name="rfc.section.5.2">5.2</a>&nbsp;
     <a name="absolutize">Resolving Relative References to Absolute Form</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.5.2.p.1"></a>
+</div>
+<p>
    This section describes an example algorithm for resolving URI
    references that might be relative to a given base URI.  The algorithm
    is intended to provide a definitive result that can be used to test
@@ -2386,11 +2627,13 @@ component.
    itself is not required, but the result given by an implementation must
    match the result that would be given by this algorithm.
 </p>
-<p>
+<div>
 <a name="rfc.section.5.2.p.2"></a>
+</div>
+<p>
 The base URI is established according to the rules of
-<a href="#base-URI">section 5.1</a> and parsed into the four main components
-as described in <a href="#components">section 3</a>.  Note
+<a href="#base-URI">section&nbsp;5.1</a> and parsed into the four main components
+as described in <a href="#components">section&nbsp;3</a>.  Note
    that only the scheme component is required to be present in the base
    URI; the other components may be empty or undefined.  A component is
    undefined if its preceding separator does not appear in the URI
@@ -2398,7 +2641,9 @@ as described in <a href="#components">section 3</a>.  Note
    empty.  The base URI's query component is not used by the resolution
    algorithm and may be discarded.
 </p>
+<div>
 <a name="rfc.figure.u.25"></a>
+</div>
 <p>
    For each URI reference (R), the following pseudocode describes an
    algorithm for transforming R into its target (T), which is either
@@ -2449,13 +2694,15 @@ as described in <a href="#components">section 3</a>.  Note
 
    return (T, fragment);
 </pre>
-<p>
+<div>
 <a name="rfc.section.5.2.p.4"></a>
+</div>
+<p>
 The pseudocode above refers to a merge routine for merging a
 relative-path reference with the path of the base URI to obtain the
 target path.  Although there are many ways to do this, we will describe
 a simple method using a separate string buffer:
-<blockquote>
+</p>
 <ol>
 
 <li>
@@ -2510,15 +2757,18 @@ The remaining buffer string is the target URI's path component.
 </li>
   
 </ol>
-</blockquote>
+<p>
 
 </p>
-<p>
+<div>
 <a name="rfc.section.5.2.p.5"></a>
+</div>
+<p>
    Some systems may find it more efficient to implement the merge
    algorithm as a pair of path segment stacks being merged, rather
    than as a series of string pattern replacements.
-  <dl>
+  </p>
+<dl>
     
 <dd style="margin-top: .5em">
       Note: Some WWW client applications will fail to separate the
@@ -2528,9 +2778,12 @@ The remaining buffer string is the target URI's path component.
     </dd>
   
 </dl>
+<p>
 
 </p>
+<div>
 <a name="rfc.figure.u.26"></a>
+</div>
 <p>
 The resulting target URI components and fragment can be
 recombined to provide the absolute form of the URI reference.
@@ -2569,24 +2822,28 @@ present in the reference, and a component that is empty, meaning
 that the separator was present and was immediately followed by the
 next component separator or the end of the reference.
 </p>
-<p>
+<div>
 <a name="rfc.section.5.2.p.7"></a>
+</div>
+<p>
    Resolution examples are provided in Appendix C.
 </p>
 
 
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.section.6">6</a>&nbsp;
     <a name="comparison">URI Normalization and Comparison</a>
 </h1>
-<p>
+<div>
 <a name="rfc.section.6.p.1"></a>
+</div>
+<p>
 One of the most common operations on URIs is simple comparison:
 determining if two URIs are equivalent without using the URIs to
 access their respective resource(s).  A comparison is performed
@@ -2596,8 +2853,10 @@ Extensive normalization prior to comparison of URIs is often used
 by spiders and indexing engines to prune a search space or
 reduce duplication of request actions and response storage.
 </p>
-<p>
+<div>
 <a name="rfc.section.6.p.2"></a>
+</div>
+<p>
 URI comparison is performed in respect to some particular purpose,
 and software with differing purposes will often be subject to differing
 design trade-offs in regards to how much effort should be spent in
@@ -2609,8 +2868,10 @@ and the types of applications that might use them.
 <a name="rfc.section.6.1">6.1</a>&nbsp;
     <a name="equivalence">URI Equivalence</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.6.1.p.1"></a>
+</div>
+<p>
   Since URIs exist to identify resources, presumably they should be
   considered equivalent when they identify the same resource.  However,
   such a definition of equivalence is not of much practical use, since
@@ -2622,15 +2883,19 @@ and the types of applications that might use them.
   the possible outcomes of such comparisons, but there
   are many application-dependent versions of equivalence.
   </p>
-<p>
+<div>
 <a name="rfc.section.6.1.p.2"></a>
+</div>
+<p>
   Even though it is possible to determine that two URIs are equivalent,
   it is never possible to be sure that two URIs identify different
   resources. Therefore, comparison methods are designed to minimize
   false negatives while strictly avoiding false positives.
   </p>
-<p>
+<div>
 <a name="rfc.section.6.1.p.3"></a>
+</div>
+<p>
   In testing for equivalence, it is generally unwise to directly compare
   relative URI references; they should be converted to their absolute forms
   before comparison.  Furthermore, when URI references are being compared
@@ -2642,8 +2907,10 @@ and the types of applications that might use them.
 <a name="rfc.section.6.2">6.2</a>&nbsp;
     <a name="comparison-ladder">Comparison Ladder</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.6.2.p.1"></a>
+</div>
+<p>
   A variety of methods are used in practice to test URI equivalence.
   These methods fall into a range, distinguished by the amount of
   processing required and the degree to which the probability of false
@@ -2652,8 +2919,10 @@ and the types of applications that might use them.
   but this reduction requires more processing and is
   not cost-effective for all applications.
   </p>
-<p>
+<div>
 <a name="rfc.section.6.2.p.2"></a>
+</div>
+<p>
   If this range of comparison practices is considered as a ladder, the
   following discussion will climb the ladder, starting with those that
   are cheap but have a relatively higher chance of producing false negatives,
@@ -2664,15 +2933,19 @@ and the types of applications that might use them.
 <a name="rfc.section.6.2.1">6.2.1</a>&nbsp;
     <a name="comparison-string">Simple String Comparison</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.6.2.1.p.1"></a>
+</div>
+<p>
     If two URIs, considered as character strings, are identical, then it is
     safe to conclude that they are equivalent.  This type of equivalence test
     has very low computational cost and is in wide use in a variety of
     applications, particularly in the domain of parsing.
     </p>
-<p>
+<div>
 <a name="rfc.section.6.2.1.p.2"></a>
+</div>
+<p>
     Testing strings for equivalence requires some basic precautions.
     This procedure is often referred to as "bit-for-bit" or "byte-for-byte"
     comparison, which is potentially misleading.  Testing of strings for
@@ -2682,8 +2955,10 @@ and the types of applications that might use them.
     pair of characters compares unequal or one of the strings is exhausted
     before the other.
     </p>
-<p>
+<div>
 <a name="rfc.section.6.2.1.p.3"></a>
+</div>
+<p>
     Such character comparisons require that each pair of characters be put
     in comparable form.  For example, should one URI be stored in a byte
     array in EBCDIC encoding, and the second be in a Java String object,
@@ -2692,8 +2967,10 @@ and the types of applications that might use them.
     equality on a character-for-character rather than byte-for-byte or
     bit-for-bit basis.
     </p>
-<p>
+<div>
 <a name="rfc.section.6.2.1.p.4"></a>
+</div>
+<p>
     Unicode defines a character as being identified by number
     ("codepoint") with an associated bundle of visual and other semantics.
     At the software level, it is not practical to compare semantic bundles,
@@ -2704,7 +2981,9 @@ and the types of applications that might use them.
 <a name="rfc.section.6.2.2">6.2.2</a>&nbsp;
     <a name="normalize-syntax">Syntax-based Normalization</a>
 </h3>
+<div>
 <a name="rfc.figure.u.27"></a>
+</div>
 <p>
 Software may use logic based on the definitions provided by this
 specification to reduce the probability of false negatives.  Such
@@ -2726,8 +3005,10 @@ relative path segments.
 <a name="rfc.section.6.2.2.1">6.2.2.1</a>&nbsp;
     <a name="normalize-case">Case Normalization</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.6.2.2.1.p.1"></a>
+</div>
+<p>
       When a URI scheme uses elements of the common syntax, it will
       also use the common syntax equivalence rules, namely that the scheme
       and hostname are case insensitive and therefore can be normailized
@@ -2738,9 +3019,11 @@ relative path segments.
 <a name="rfc.section.6.2.2.2">6.2.2.2</a>&nbsp;
     <a name="normalize-escape">Escape Normalization</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.6.2.2.2.p.1"></a>
-      The percent-escape mechanism described in <a href="#escaped">section 2.4</a>
+</div>
+<p>
+      The percent-escape mechanism described in <a href="#escaped">section&nbsp;2.4</a>
       a frequent source
       of variance among otherwise identical URIs.  One cause is the choice
       of uppercase or lowercase letters for the hexadecimal digits
@@ -2749,34 +3032,40 @@ relative path segments.
       generators and normalizers are strongly encouraged to use uppercase
       letters for the hex digits A-F.
       </p>
-<p>
+<div>
 <a name="rfc.section.6.2.2.2.p.2"></a>
+</div>
+<p>
       Only characters that are excluded from or reserved within the URI
       syntax must be escaped when used as data.  However, some URI generators
       go beyond that and escape characters that do not require escaping,
       resulting in URIs that are equivalent to their unescaped counterparts.
       Such URIs can be normalized by unescaping sequences that represent
-      the unreserved characters, as described in <a href="#unreserved">section 2.3</a>.
+      the unreserved characters, as described in <a href="#unreserved">section&nbsp;2.3</a>.
       </p>
 <h3>
 <a name="rfc.section.6.2.2.3">6.2.2.3</a>&nbsp;
     <a name="normalize-path">Path Segment Normalization</a>
 </h3>
-<p>
+<div>
 <a name="rfc.section.6.2.2.3.p.1"></a>
+</div>
+<p>
       The complete path segments "." and ".." have a special meaning within
       hierarchical URI schemes.  As such, they should not appear in absolute
       URI paths; if they are found, they can be removed by splitting the URI
       just after the "/" that starts the path, using the left half as
       the base URI and the right as a relative reference, and normalizing
       the URI by merging the two in in accordance with the relative URI
-      processing algorithm (<a href="#relative-URI">section 5</a>).
+      processing algorithm (<a href="#relative-URI">section&nbsp;5</a>).
       </p>
 <h3>
 <a name="rfc.section.6.2.3">6.2.3</a>&nbsp;
     <a name="normalize-scheme">Scheme-based Normalization</a>
 </h3>
+<div>
 <a name="rfc.figure.u.28"></a>
+</div>
 <p>
 The syntax and semantics of URIs vary from scheme to scheme, as described
 by the defining specification for each scheme.  Software may use
@@ -2800,7 +3089,9 @@ scheme, is equivalent to one where the port is elided.
 <a name="rfc.section.6.2.4">6.2.4</a>&nbsp;
     <a name="normalize-protocol">Protocol-based Normalization</a>
 </h3>
+<div>
 <a name="rfc.figure.u.29"></a>
+</div>
 <p>
 Web spiders, for which substantial effort to reduce the incidence
 of false negatives is often cost-effective, are observed to implement
@@ -2809,7 +3100,9 @@ observe that a URI such as
 </p>
 <pre>   http://example.com/data
 </pre>
+<div>
 <a name="rfc.figure.u.30"></a>
+</div>
 <p>
 redirects to
 </p>
@@ -2824,15 +3117,18 @@ redirects to
 <a name="rfc.section.6.3">6.3</a>&nbsp;
     <a name="normalize-good-practice">Good Practice When Using URIs</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.6.3.p.1"></a>
+</div>
+<p>
   It is in the best interests of everyone to avoid false-negatives in
   comparing URIs, and to only require the minimum amount of
   software processing for such comparisons.  Those who generate and
   make reference to URIs can reduce the cost of processing and the risk
   of false negatives by consistently providing them in a form that is
   reasonably canonical with respect to their scheme.  Specifically:
-  <dl>
+  </p>
+<dl>
     
 <dd style="margin-top: .5em">Always provide the URI scheme in lowercase characters.</dd>
     
@@ -2847,10 +3143,13 @@ redirects to
 <dd style="margin-top: .5em">Prevent /./ and /../ from appearing in absolute URI paths.</dd>
   
 </dl>
+<p>
   
 </p>
-<p>
+<div>
 <a name="rfc.section.6.3.p.2"></a>
+</div>
+<p>
   The choices listed above are motivated by observations that a high
   proportion of deployed software already use these techniques in
   practice for the purposes of normalization.
@@ -2858,17 +3157,19 @@ redirects to
 
 
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.section.7">7</a>&nbsp;
     <a name="security">Security Considerations</a>
 </h1>
-<p>
+<div>
 <a name="rfc.section.7.p.1"></a>
+</div>
+<p>
 A URI does not in itself pose a security threat.  However, since URIs
 are often used to provide a compact set of instructions for access to
 network resources, care must be taken to properly interpret the data
@@ -2879,8 +3180,10 @@ to avoid including data that should not be revealed in plain text.
 <a name="rfc.section.7.1">7.1</a>&nbsp;
     <a name="security-reliability">Reliability and Consistency</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.7.1.p.1"></a>
+</div>
+<p>
 There is no guarantee that, having once used a given URI to retrieve
 some information, that the same information will be retievable by
 that URI in the future. Nor is there any guarantee that the information
@@ -2896,8 +3199,10 @@ if those semantics are required of all naming authorities for that scheme.
 <a name="rfc.section.7.2">7.2</a>&nbsp;
     <a name="security-malicious">Malicious Construction</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.7.2.p.1"></a>
+</div>
+<p>
 It is sometimes possible to construct a URI such that an attempt to
 perform a seemingly harmless, idempotent operation, such as the
 retrieval of a representation associated with a resource, will in fact
@@ -2910,14 +3215,18 @@ interpreted according to this other protocol, cause an unexpected
 operation.  An example has been the use of a gopher URI to cause an
 unintended or impersonating message to be sent via a SMTP server.
 </p>
-<p>
+<div>
 <a name="rfc.section.7.2.p.2"></a>
+</div>
+<p>
 Caution should be used when using any URI that specifies a TCP port
 number other than the default for the protocol, especially when it is
 a number within the reserved space.
 </p>
-<p>
+<div>
 <a name="rfc.section.7.2.p.3"></a>
+</div>
+<p>
 Care should be taken when a URI contains escaped delimiters for a
 given protocol (for example, CR and LF characters for telnet
 protocols) that these are not unescaped before transmission.  This
@@ -2930,18 +3239,22 @@ remote operation being performed.
 <a name="rfc.section.7.3">7.3</a>&nbsp;
     <a name="security-ipv4">Rare IP Address Formats</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.7.3.p.1"></a>
+</div>
+<p>
 Although the URI syntax for IPv4address only allows the common,
 dotted-decimal form of IPv4 address literal, many implementations that
 process URIs make use of platform-dependent system routines, such as
 gethostbyname() and inet_aton(), to translate the string literal to an
 actual IP address.  Unfortunately, such system routines often allow and
 process a much larger set of formats than those described in
-<a href="#host">section 3.2.2</a>.
+<a href="#host">section&nbsp;3.2.2</a>.
 </p>
-<p>
+<div>
 <a name="rfc.section.7.3.p.2"></a>
+</div>
+<p>
 For example, many implementations allow dotted forms of three numbers,
 wherein the last part is interpreted as a 16-bit quantity and placed in
 the right-most two bytes of the network address (e.g., a Class B network).
@@ -2954,8 +3267,10 @@ to be interpreted as decimal, octal, or hexadecimal, as specified in
 the C language (i.e., a leading 0x or 0X implies hexadecimal; otherwise,
 a leading 0 implies octal; otherwise, the number is interpreted as decimal).
 </p>
-<p>
+<div>
 <a name="rfc.section.7.3.p.3"></a>
+</div>
+<p>
 These additional IP address formats are not allowed in the URI syntax
 due to differences between platform implementations.  However, they
 can become a security concern if an application attempts to filter
@@ -2968,8 +3283,10 @@ rather than a prefix or suffix of the string form.
 <a name="rfc.section.7.4">7.4</a>&nbsp;
     <a name="security-sensitive">Sensitive Information</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.7.4.p.1"></a>
+</div>
+<p>
 It is clearly unwise to use a URI that contains a password which is
 intended to be secret. In particular, the use of a password within
 the userinfo component of a URI is strongly discouraged except
@@ -2980,7 +3297,9 @@ public.
 <a name="rfc.section.7.5">7.5</a>&nbsp;
     <a name="security-semantic">Semantic Attacks</a>
 </h2>
+<div>
 <a name="rfc.figure.u.31"></a>
+</div>
 <p>
 Because the userinfo component is rarely used and appears before the
 hostname in the authority component, it can be used to construct a URI
@@ -2995,8 +3314,10 @@ might lead a human user to assume that the authority is
 'www.example.com', whereas it is actually '10.0.0.1'.  Note that the
 misleading userinfo could be much longer than the example above.
 </p>
-<p>
+<div>
 <a name="rfc.section.7.5.p.2"></a>
+</div>
+<p>
 A misleading URI, such as the one above, is an attack on the user's
 preconceived notions about the meaning of a URI, rather than an attack
 on the software itself.  User agents may be able to reduce the impact
@@ -3009,17 +3330,19 @@ More information on URI-based semantic attacks can be found in
 
 
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.section.8">8</a>&nbsp;
     <a name="ack">Acknowledgements</a>
 </h1>
-<p>
+<div>
 <a name="rfc.section.8.p.1"></a>
+</div>
+<p>
 This document is derived from RFC 2396 <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>,
 RFC 1808 <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a>, and RFC 1738 <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a>;
 the acknowledgements in those specifications still apply.
@@ -3035,152 +3358,151 @@ are gratefully acknowledged.
 </p>
 
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.normative_references">Normative References</a>
 </h1>
-<table border="0">
+<table border="0" summary="Normative References">
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="ASCII">[ASCII]</a></b></td><td valign="top">American National Standards Institute,&nbsp;"Coded Character Set -- 7-bit American Standard Code for Information Interchange", ANSI&nbsp;X3.4, &nbsp;1986.</td>
+<td class="topnowrap"><b><a name="ASCII">[ASCII]</a></b></td><td class="top">American National Standards Institute,&nbsp;"Coded Character Set -- 7-bit American Standard Code for Information Interchange", ANSI&nbsp;X3.4, &nbsp;1986.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2234">[RFC2234]</a></b></td><td valign="top"><a title="Internet Mail Consortium">Crocker, D.H.</a> and <a title="Demon Internet Ltd">Overell, P.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2234.txt">Augmented BNF for Syntax Specifications: ABNF</a>", RFC&nbsp;2234, November&nbsp;1997.</td>
+<td class="topnowrap"><b><a name="RFC2234">[RFC2234]</a></b></td><td class="top"><a title="Internet Mail Consortium">Crocker, D.H.</a> and <a title="Demon Internet Ltd">Overell, P.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2234.txt">Augmented BNF for Syntax Specifications: ABNF</a>", RFC&nbsp;2234, November&nbsp;1997.</td>
 </tr>
 
   
 </table>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.informative_references">Informative References</a>
 </h1>
-<table border="0">
+<table border="0" summary="Informative References">
   
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2277">[RFC2277]</a></b></td><td valign="top"><a title="UNINETT">Alvestrand, H.T.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2277.txt">IETF Policy on Character Sets and Languages</a>", BCP&nbsp;18, RFC&nbsp;2277, January&nbsp;1998.</td>
+<td class="topnowrap"><b><a name="RFC2277">[RFC2277]</a></b></td><td class="top"><a title="UNINETT">Alvestrand, H.T.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2277.txt">IETF Policy on Character Sets and Languages</a>", BCP&nbsp;18, RFC&nbsp;2277, January&nbsp;1998.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC1630">[RFC1630]</a></b></td><td valign="top"><a title="CERN, World-Wide Web project">Berners-Lee, T.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1630.txt">Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web</a>", RFC&nbsp;1630, June&nbsp;1994.</td>
+<td class="topnowrap"><b><a name="RFC1630">[RFC1630]</a></b></td><td class="top"><a title="CERN, World-Wide Web project">Berners-Lee, T.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1630.txt">Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web</a>", RFC&nbsp;1630, June&nbsp;1994.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC1738">[RFC1738]</a></b></td><td valign="top"><a title="CERN, World-Wide Web project">Berners-Lee, T.</a>,&nbsp;<a title="Xerox PARC">Masinter, L.</a> and <a title="University of Minnesota, Computer and Information Services">McCahill, M.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1738.txt">Uniform Resource Locators (URL)</a>", RFC&nbsp;1738, December&nbsp;1994.</td>
+<td class="topnowrap"><b><a name="RFC1738">[RFC1738]</a></b></td><td class="top"><a title="CERN, World-Wide Web project">Berners-Lee, T.</a>,&nbsp;<a title="Xerox PARC">Masinter, L.</a> and <a title="University of Minnesota, Computer and Information Services">McCahill, M.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1738.txt">Uniform Resource Locators (URL)</a>", RFC&nbsp;1738, December&nbsp;1994.</td>
 </tr>
   
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2396">[RFC2396]</a></b></td><td valign="top"><a title="World Wide Web Consortium">Berners-Lee, T.</a>,&nbsp;<a title="University of California, Irvine">Fielding, R.T.</a> and <a title="Xerox PARC">Masinter, L.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2396.txt">Uniform Resource Identifiers (URI): Generic Syntax</a>", RFC&nbsp;2396, August&nbsp;1998.</td>
+<td class="topnowrap"><b><a name="RFC2396">[RFC2396]</a></b></td><td class="top"><a title="World Wide Web Consortium">Berners-Lee, T.</a>,&nbsp;<a title="University of California, Irvine">Fielding, R.T.</a> and <a title="Xerox PARC">Masinter, L.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2396.txt">Uniform Resource Identifiers (URI): Generic Syntax</a>", RFC&nbsp;2396, August&nbsp;1998.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC1123">[RFC1123]</a></b></td><td valign="top"><a title="University of Southern California (USC), Information Sciences Institute">Braden, R.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1123.txt">Requirements for Internet Hosts - Application and Support</a>", STD&nbsp;3, RFC&nbsp;1123, October&nbsp;1989.</td>
+<td class="topnowrap"><b><a name="RFC1123">[RFC1123]</a></b></td><td class="top"><a title="University of Southern California (USC), Information Sciences Institute">Braden, R.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1123.txt">Requirements for Internet Hosts - Application and Support</a>", STD&nbsp;3, RFC&nbsp;1123, October&nbsp;1989.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC1808">[RFC1808]</a></b></td><td valign="top"><a title="University of California Irvine, Department of Information and Computer Science">Fielding, R.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1808.txt">Relative Uniform Resource Locators</a>", RFC&nbsp;1808, June&nbsp;1995.</td>
+<td class="topnowrap"><b><a name="RFC1808">[RFC1808]</a></b></td><td class="top"><a title="University of California Irvine, Department of Information and Computer Science">Fielding, R.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1808.txt">Relative Uniform Resource Locators</a>", RFC&nbsp;1808, June&nbsp;1995.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2046">[RFC2046]</a></b></td><td valign="top"><a title="Innosoft International, Inc.">Freed, N.</a> and <a title="First Virtual Holdings">Borenstein, N.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2046.txt">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</a>", RFC&nbsp;2046, November&nbsp;1996.</td>
+<td class="topnowrap"><b><a name="RFC2046">[RFC2046]</a></b></td><td class="top"><a title="Innosoft International, Inc.">Freed, N.</a> and <a title="First Virtual Holdings">Borenstein, N.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2046.txt">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</a>", RFC&nbsp;2046, November&nbsp;1996.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2518">[RFC2518]</a></b></td><td valign="top"><a title="Microsoft Corporation">Goland, Y.</a>,&nbsp;<a title="Dept. Of Information and Computer
+<td class="topnowrap"><b><a name="RFC2518">[RFC2518]</a></b></td><td class="top"><a title="Microsoft Corporation">Goland, Y.</a>,&nbsp;<a title="Dept. Of Information and Computer
 Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Netscape">Faizi, A.</a>,&nbsp;<a title="Novell">Carter, S.R.</a> and <a title="Novell">Jensen, D.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2518.txt">HTTP Extensions for Distributed Authoring -- WEBDAV</a>", RFC&nbsp;2518, February&nbsp;1999.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC0952">[RFC0952]</a></b></td><td valign="top">Harrenstien, K.,&nbsp;Stahl, M. and Feinler, E.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc952.txt">DoD Internet host table specification</a>", RFC&nbsp;952, October&nbsp;1985.</td>
+<td class="topnowrap"><b><a name="RFC0952">[RFC0952]</a></b></td><td class="top">Harrenstien, K.,&nbsp;Stahl, M. and Feinler, E.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc952.txt">DoD Internet host table specification</a>", RFC&nbsp;952, October&nbsp;1985.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC3513">[RFC3513]</a></b></td><td valign="top"><a title="Nokia">Hinden, R.</a> and <a title="Cisco Systems, Inc.">Deering, S.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc3513.txt">Internet Protocol Version 6 (IPv6) Addressing Architecture</a>", RFC&nbsp;3513, April&nbsp;2003.</td>
+<td class="topnowrap"><b><a name="RFC3513">[RFC3513]</a></b></td><td class="top"><a title="Nokia">Hinden, R.</a> and <a title="Cisco Systems, Inc.">Deering, S.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc3513.txt">Internet Protocol Version 6 (IPv6) Addressing Architecture</a>", RFC&nbsp;3513, April&nbsp;2003.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2732">[RFC2732]</a></b></td><td valign="top"><a title="Nokia">Hinden, R.M.</a>,&nbsp;<a title="IBM, iCAIR">Carpenter, B.E.</a> and <a title="AT&amp;T Labs">Masinter, L.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2732.txt">Format for Literal IPv6 Addresses in URL's</a>", RFC&nbsp;2732, December&nbsp;1999.</td>
+<td class="topnowrap"><b><a name="RFC2732">[RFC2732]</a></b></td><td class="top"><a title="Nokia">Hinden, R.M.</a>,&nbsp;<a title="IBM, iCAIR">Carpenter, B.E.</a> and <a title="AT&amp;T Labs">Masinter, L.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2732.txt">Format for Literal IPv6 Addresses in URL's</a>", RFC&nbsp;2732, December&nbsp;1999.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC1736">[RFC1736]</a></b></td><td valign="top"><a title="Information Systems and Technology">Kunze, J.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1736.txt">Functional Recommendations for Internet Resource Locators</a>", RFC&nbsp;1736, February&nbsp;1995.</td>
+<td class="topnowrap"><b><a name="RFC1736">[RFC1736]</a></b></td><td class="top"><a title="Information Systems and Technology">Kunze, J.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1736.txt">Functional Recommendations for Internet Resource Locators</a>", RFC&nbsp;1736, February&nbsp;1995.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC1737">[RFC1737]</a></b></td><td valign="top"><a title="Xerox Palo Alto Research Center">Masinter, L.</a> and <a title="MIT Laboratory for Computer Science">Sollins, K.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1737.txt">Functional Requirements for Uniform Resource Names</a>", RFC&nbsp;1737, December&nbsp;1994.</td>
+<td class="topnowrap"><b><a name="RFC1737">[RFC1737]</a></b></td><td class="top"><a title="Xerox Palo Alto Research Center">Masinter, L.</a> and <a title="MIT Laboratory for Computer Science">Sollins, K.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1737.txt">Functional Requirements for Uniform Resource Names</a>", RFC&nbsp;1737, December&nbsp;1994.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2141">[RFC2141]</a></b></td><td valign="top"><a title="AT&amp;T">Moats, R.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2141.txt">URN Syntax</a>", RFC&nbsp;2141, May&nbsp;1997.</td>
+<td class="topnowrap"><b><a name="RFC2141">[RFC2141]</a></b></td><td class="top"><a title="AT&amp;T">Moats, R.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2141.txt">URN Syntax</a>", RFC&nbsp;2141, May&nbsp;1997.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC1034">[RFC1034]</a></b></td><td valign="top">Mockapetris, P.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1034.txt">Domain names - concepts and facilities</a>", STD&nbsp;13, RFC&nbsp;1034, November&nbsp;1987.</td>
+<td class="topnowrap"><b><a name="RFC1034">[RFC1034]</a></b></td><td class="top">Mockapetris, P.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1034.txt">Domain names - concepts and facilities</a>", STD&nbsp;13, RFC&nbsp;1034, November&nbsp;1987.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2110">[RFC2110]</a></b></td><td valign="top"><a title="Stockholm University and KTH">Palme, J.</a> and <a title="Microsoft Corporation">Hopmann, A.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2110.txt">MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)</a>", RFC&nbsp;2110, March&nbsp;1997.</td>
+<td class="topnowrap"><b><a name="RFC2110">[RFC2110]</a></b></td><td class="top"><a title="Stockholm University and KTH">Palme, J.</a> and <a title="Microsoft Corporation">Hopmann, A.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2110.txt">MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)</a>", RFC&nbsp;2110, March&nbsp;1997.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC2717">[RFC2717]</a></b></td><td valign="top"><a title="UUNET Technologies">Petke, R.</a> and <a title="Microsoft Corporation">King, I.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2717.txt">Registration Procedures for URL Scheme Names</a>", BCP&nbsp;35, RFC&nbsp;2717, November&nbsp;1999.</td>
+<td class="topnowrap"><b><a name="RFC2717">[RFC2717]</a></b></td><td class="top"><a title="UUNET Technologies">Petke, R.</a> and <a title="Microsoft Corporation">King, I.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2717.txt">Registration Procedures for URL Scheme Names</a>", BCP&nbsp;35, RFC&nbsp;2717, November&nbsp;1999.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="HTML">[HTML]</a></b></td><td valign="top">Raggett, D.,&nbsp;Le Hors, A. and Jacobs, I.,&nbsp;"Hypertext Markup Language (HTML 4.01) Specification", December&nbsp;1999.</td>
+<td class="topnowrap"><b><a name="HTML">[HTML]</a></b></td><td class="top">Raggett, D.,&nbsp;Le Hors, A. and Jacobs, I.,&nbsp;"Hypertext Markup Language (HTML 4.01) Specification", December&nbsp;1999.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="Siedzik">[Siedzik]</a></b></td><td valign="top">Siedzik, R.,&nbsp;"Semantic Attacks: What's in a URL?", April&nbsp;2001.</td>
+<td class="topnowrap"><b><a name="Siedzik">[Siedzik]</a></b></td><td class="top">Siedzik, R.,&nbsp;"Semantic Attacks: What's in a URL?", April&nbsp;2001.</td>
 </tr>
 
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="UTF-8">[UTF-8]</a></b></td><td valign="top"><a title="Alis Technologies">Yergeau, F.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2279.txt">UTF-8, a transformation format of ISO 10646</a>", RFC&nbsp;2279, January&nbsp;1998.</td>
+<td class="topnowrap"><b><a name="UTF-8">[UTF-8]</a></b></td><td class="top"><a title="Alis Technologies">Yergeau, F.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2279.txt">UTF-8, a transformation format of ISO 10646</a>", RFC&nbsp;2279, January&nbsp;1998.</td>
 </tr>
   
 
 </table>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
-<a name="rfc.authors">
-<h1>Author's Addresses</h1>
-</a>
-<table cellspacing="0" cellpadding="0" border="0" width="99%">
+<h1>
+<a name="rfc.authors"></a>Author's Addresses</h1>
+<table cellspacing="0" cellpadding="0" border="0" width="99%" summary="Authors">
 <tr>
 <td>&nbsp;</td><td>Tim Berners-Lee</td>
 </tr>
@@ -3198,16 +3520,16 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
 <td>&nbsp;</td><td>USA</td>
 </tr>
 <tr>
-<td align="right"><b>Phone:&nbsp;</b></td><td><a href="tel:+1-617-253-5702">+1-617-253-5702</a></td>
+<td class="right"><b>Phone:&nbsp;</b></td><td><a href="tel:+1-617-253-5702">+1-617-253-5702</a></td>
 </tr>
 <tr>
-<td align="right"><b>Fax:&nbsp;</b></td><td><a href="fax:+1-617-258-5999">+1-617-258-5999</a></td>
+<td class="right"><b>Fax:&nbsp;</b></td><td><a href="fax:+1-617-258-5999">+1-617-258-5999</a></td>
 </tr>
 <tr>
-<td align="right"><b>EMail:&nbsp;</b></td><td><a>timbl@w3.org</a></td>
+<td class="right"><b>EMail:&nbsp;</b></td><td><a>timbl@w3.org</a></td>
 </tr>
 <tr>
-<td align="right"><b>URI:&nbsp;</b></td><td><a href="http://www.w3.org/People/Berners-Lee/">http://www.w3.org/People/Berners-Lee/</a></td>
+<td class="right"><b>URI:&nbsp;</b></td><td><a href="http://www.w3.org/People/Berners-Lee/">http://www.w3.org/People/Berners-Lee/</a></td>
 </tr>
 <tr>
 <td>&nbsp;</td><td></td>
@@ -3229,16 +3551,16 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
 <td>&nbsp;</td><td>USA</td>
 </tr>
 <tr>
-<td align="right"><b>Phone:&nbsp;</b></td><td><a href="tel:+1-949-999-2523">+1-949-999-2523</a></td>
+<td class="right"><b>Phone:&nbsp;</b></td><td><a href="tel:+1-949-999-2523">+1-949-999-2523</a></td>
 </tr>
 <tr>
-<td align="right"><b>Fax:&nbsp;</b></td><td><a href="fax:+1-949-644-5064">+1-949-644-5064</a></td>
+<td class="right"><b>Fax:&nbsp;</b></td><td><a href="fax:+1-949-644-5064">+1-949-644-5064</a></td>
 </tr>
 <tr>
-<td align="right"><b>EMail:&nbsp;</b></td><td><a>roy.fielding@day.com</a></td>
+<td class="right"><b>EMail:&nbsp;</b></td><td><a>roy.fielding@day.com</a></td>
 </tr>
 <tr>
-<td align="right"><b>URI:&nbsp;</b></td><td><a href="http://www.apache.org/~fielding/">http://www.apache.org/~fielding/</a></td>
+<td class="right"><b>URI:&nbsp;</b></td><td><a href="http://www.apache.org/~fielding/">http://www.apache.org/~fielding/</a></td>
 </tr>
 <tr>
 <td>&nbsp;</td><td></td>
@@ -3260,43 +3582,47 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
 <td>&nbsp;</td><td>USA</td>
 </tr>
 <tr>
-<td align="right"><b>Phone:&nbsp;</b></td><td><a href="tel:+1-408-536-3024">+1-408-536-3024</a></td>
+<td class="right"><b>Phone:&nbsp;</b></td><td><a href="tel:+1-408-536-3024">+1-408-536-3024</a></td>
 </tr>
 <tr>
-<td align="right"><b>EMail:&nbsp;</b></td><td><a>LMM@acm.org</a></td>
+<td class="right"><b>EMail:&nbsp;</b></td><td><a>LMM@acm.org</a></td>
 </tr>
 <tr>
-<td align="right"><b>URI:&nbsp;</b></td><td><a href="http://larry.masinter.net/">http://larry.masinter.net/</a></td>
+<td class="right"><b>URI:&nbsp;</b></td><td><a href="http://larry.masinter.net/">http://larry.masinter.net/</a></td>
 </tr>
 <tr>
 <td>&nbsp;</td><td></td>
 </tr>
 </table>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.section.A">A</a>&nbsp;
     <a name="collected-abnf">Collected ABNF for URI</a>
 </h1>
+<div>
 <a name="rfc.figure.u.32"></a>
+</div>
 <pre>To be filled-in later.
 </pre>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.section.B">B</a>&nbsp;
     <a name="regexp">Parsing a URI Reference with a Regular Expression</a>
 </h1>
-<p>
+<div>
 <a name="rfc.section.B.p.1"></a>
+</div>
+<p>
    As described in Section 4.3, the generic URI syntax is not sufficient
    to disambiguate the components of some URIs.  Since the
    "greedy algorithm" described in that section is identical to the
@@ -3304,30 +3630,42 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
    natural and commonplace to use a regular expression for parsing the
    potential four components and fragment identifier of a URI reference.
 </p>
-<p>
+<div>
 <a name="rfc.section.B.p.2"></a>
+</div>
+<p>
    The following line is the regular expression for breaking-down a
    well-formed URI reference into its components.
 </p>
+<div>
 <a name="rfc.figure.u.33"></a>
+</div>
 <pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
     12            3  4          5       6  7        8 9
 </pre>
-<p>
+<div>
 <a name="rfc.section.B.p.4"></a>
+</div>
+<p>
    The numbers in the second line above are only to assist readability;
    they indicate the reference points for each subexpression (i.e., each
    paired parenthesis).  We refer to the value matched for subexpression
    &lt;n&gt; as $&lt;n&gt;.  For example, matching the above expression to
 </p>
+<div>
 <a name="rfc.figure.u.34"></a>
+</div>
 <pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
 </pre>
-<p>
+<div>
 <a name="rfc.section.B.p.6"></a>
+</div>
+<p>
    results in the following subexpression matches:
 </p>
+<div>
 <a name="rfc.figure.u.35"></a>
+</div>
 <pre>   $1 = http:
    $2 = http
    $3 = //www.ics.uci.edu
@@ -3338,50 +3676,64 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
    $8 = #Related
    $9 = Related
 </pre>
-<p>
+<div>
 <a name="rfc.section.B.p.8"></a>
+</div>
+<p>
    where &lt;undefined&gt; indicates that the component is not present, as is
    the case for the query component in the above example.  Therefore, we
    can determine the value of the four components and fragment as
 </p>
+<div>
 <a name="rfc.figure.u.36"></a>
+</div>
 <pre>   scheme    = $2
    authority = $4
    path      = $5
    query     = $7
    fragment  = $9
 </pre>
-<p>
+<div>
 <a name="rfc.section.B.p.10"></a>
+</div>
+<p>
    and, going in the opposite direction, we can recreate a URI reference
    from its components using the algorithm of Section 5.2.
 </p>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.section.C">C</a>&nbsp;
     <a name="relative-examples">Examples of Resolving Relative URI References</a>
 </h1>
-<p>
+<div>
 <a name="rfc.section.C.p.1"></a>
+</div>
+<p>
    Within an object with a well-defined base URI of
 </p>
+<div>
 <a name="rfc.figure.u.37"></a>
+</div>
 <pre>   http://a/b/c/d;p?q
 </pre>
-<p>
+<div>
 <a name="rfc.section.C.p.3"></a>
+</div>
+<p>
    the relative URI would be resolved as follows:
 </p>
 <h2>
 <a name="rfc.section.C.1">C.1</a>&nbsp;
     <a name="relative-normal">Normal Examples</a>
 </h2>
+<div>
 <a name="rfc.figure.u.38"></a>
+</div>
 <pre>   g:h           =  g:h
    g             =  http://a/b/c/g
    ./g           =  http://a/b/c/g
@@ -3409,44 +3761,60 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
 <a name="rfc.section.C.2">C.2</a>&nbsp;
     <a name="relative-abnormal">Abnormal Examples</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.C.2.p.1"></a>
+</div>
+<p>
    Although the following abnormal examples are unlikely to occur in
    normal practice, all URI parsers should be capable of resolving them
    consistently.  Each example uses the same base as above.
 </p>
-<p>
+<div>
 <a name="rfc.section.C.2.p.2"></a>
+</div>
+<p>
    An empty reference refers to the start of the current document.
 </p>
+<div>
 <a name="rfc.figure.u.39"></a>
+</div>
 <pre>   &lt;&gt;            =  (current document)
 </pre>
-<p>
+<div>
 <a name="rfc.section.C.2.p.4"></a>
+</div>
+<p>
    Parsers must be careful in handling the case where there are more
    relative path ".." segments than there are hierarchical levels in the
    base URI's path.  Note that the ".." syntax cannot be used to change
    the authority component of a URI.
 </p>
+<div>
 <a name="rfc.figure.u.40"></a>
+</div>
 <pre>   ../../../g    =  http://a/../g
    ../../../../g =  http://a/../../g
 </pre>
-<p>
+<div>
 <a name="rfc.section.C.2.p.6"></a>
+</div>
+<p>
    In practice, some implementations strip leading relative symbolic
    elements (".", "..") after applying a relative URI calculation, based
    on the theory that compensating for obvious author errors is better
    than allowing the request to fail.  Thus, the above two references
    will be interpreted as "http://a/g" by some implementations.
 </p>
-<p>
+<div>
 <a name="rfc.section.C.2.p.7"></a>
+</div>
+<p>
    Similarly, parsers must avoid treating "." and ".." as special when
    they are not complete components of a relative path.
 </p>
+<div>
 <a name="rfc.figure.u.41"></a>
+</div>
 <pre>   /./g          =  http://a/./g
    /../g         =  http://a/../g
    g.            =  http://a/b/c/g.
@@ -3454,12 +3822,16 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
    g..           =  http://a/b/c/g..
    ..g           =  http://a/b/c/..g
 </pre>
-<p>
+<div>
 <a name="rfc.section.C.2.p.9"></a>
+</div>
+<p>
    Less likely are cases where the relative URI uses unnecessary or
    nonsensical forms of the "." and ".." complete path segments.
 </p>
+<div>
 <a name="rfc.figure.u.42"></a>
+</div>
 <pre>   ./../g        =  http://a/b/g
    ./g/.         =  http://a/b/c/g/
    g/./h         =  http://a/b/c/g/h
@@ -3467,43 +3839,53 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
    g;x=1/./y     =  http://a/b/c/g;x=1/y
    g;x=1/../y    =  http://a/b/c/y
 </pre>
-<p>
+<div>
 <a name="rfc.section.C.2.p.11"></a>
+</div>
+<p>
    Some applications fail to separate the reference's query and/or
    fragment components from a relative path before merging it with
    the base path.  This error is rarely noticed, since typical usage
    of a fragment never includes the hierarchy ("/") character, and the
    query component is not normally used within relative references.
 </p>
+<div>
 <a name="rfc.figure.u.43"></a>
+</div>
 <pre>   g?y/./x       =  http://a/b/c/g?y/./x
    g?y/../x      =  http://a/b/c/g?y/../x
    g#s/./x       =  http://a/b/c/g#s/./x
    g#s/../x      =  http://a/b/c/g#s/../x
 </pre>
-<p>
+<div>
 <a name="rfc.section.C.2.p.13"></a>
+</div>
+<p>
    Some parsers allow the scheme name to be present in a relative URI if
    it is the same as the base URI scheme.  This is considered to be a
    loophole in prior specifications of partial URI <a href="#RFC1630" title="Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web">[RFC1630]</a>.
    Its use should be avoided, but is allowed for backwards compatibility.
 </p>
+<div>
 <a name="rfc.figure.u.44"></a>
+</div>
 <pre>   http:g        =  http:g           ; for validating parsers
                  /  http://a/b/c/g   ; for backwards compatibility
 </pre>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.section.D">D</a>&nbsp;
     <a name="html">Embedding the Base URI in HTML documents</a>
 </h1>
-<p>
+<div>
 <a name="rfc.section.D.p.1"></a>
+</div>
+<p>
    It is useful to consider an example of how the base URI of a document
    can be embedded within the document's content.  In this appendix, we
    describe how documents written in the Hypertext Markup Language
@@ -3511,8 +3893,10 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
    does not form a part of the URI specification and should not be
    considered as anything more than a descriptive example.
 </p>
-<p>
+<div>
 <a name="rfc.section.D.p.2"></a>
+</div>
+<p>
    HTML defines a special element "BASE" which, when present in the
    "HEAD" portion of a document, signals that the parser should use the
    BASE element's "HREF" attribute as the base URI for resolving any
@@ -3520,7 +3904,9 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
    that, in HTML, element and attribute names are case-insensitive.  For
    example:
 </p>
+<div>
 <a name="rfc.figure.u.45"></a>
+</div>
 <pre>   &lt;!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
    &lt;HTML&gt;&lt;HEAD&gt;
    &lt;TITLE&gt;An example HTML document&lt;/TITLE&gt;
@@ -3529,30 +3915,38 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
    ... &lt;A href="../x"&gt;a hypertext anchor&lt;/A&gt; ...
    &lt;/BODY&gt;&lt;/HTML&gt;
 </pre>
-<p>
+<div>
 <a name="rfc.section.D.p.4"></a>
+</div>
+<p>
    A parser reading the example document should interpret the given
    relative URI "../x" as representing the absolute URI
 </p>
+<div>
 <a name="rfc.figure.u.46"></a>
+</div>
 <pre>   &lt;http://www.example.com/Test/a/x&gt;
 </pre>
-<p>
+<div>
 <a name="rfc.section.D.p.6"></a>
+</div>
+<p>
    regardless of the context in which the example document was obtained.
 </p>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.section.E">E</a>&nbsp;
     <a name="delimiting">Recommendations for Delimiting URI in Context</a>
 </h1>
-<p>
+<div>
 <a name="rfc.section.E.p.1"></a>
+</div>
+<p>
    URIs are often transmitted through formats that do not provide a clear
    context for their interpretation.  For example, there are many
    occasions when a URI is included in plain text; examples include text
@@ -3561,33 +3955,45 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
    delimit the URI from the rest of the text, and in particular from
    punctuation marks that might be mistaken for part of the URI.
 </p>
-<p>
+<div>
 <a name="rfc.section.E.p.2"></a>
+</div>
+<p>
    In practice, URI are delimited in a variety of ways, but usually
    within double-quotes "http://example.com/", angle brackets
    &lt;http://example.com/&gt;, or just using whitespace
 </p>
+<div>
 <a name="rfc.figure.u.47"></a>
+</div>
 <pre>   http://example.com/
 </pre>
-<p>
+<div>
 <a name="rfc.section.E.p.4"></a>
+</div>
+<p>
    These wrappers do not form part of the URI.
 </p>
-<p>
+<div>
 <a name="rfc.section.E.p.5"></a>
+</div>
+<p>
    In the case where a fragment identifier is associated with a URI
    reference, the fragment would be placed within the brackets as well
    (separated from the URI with a "#" character).
 </p>
-<p>
+<div>
 <a name="rfc.section.E.p.6"></a>
+</div>
+<p>
    In some cases, extra whitespace (spaces, linebreaks, tabs, etc.) may
    need to be added to break a long URI across lines. The whitespace
    should be ignored when extracting the URI.
 </p>
-<p>
+<div>
 <a name="rfc.section.E.p.7"></a>
+</div>
+<p>
    No whitespace should be introduced after a hyphen ("-") character.
    Because some typesetters and printers may (erroneously) introduce a
    hyphen at the end of line when breaking a line, the interpreter of a
@@ -3595,24 +4001,32 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
    all unescaped whitespace around the line break, and should be aware
    that the hyphen may or may not actually be part of the URI.
 </p>
-<p>
+<div>
 <a name="rfc.section.E.p.8"></a>
+</div>
+<p>
    Using &lt;&gt; angle brackets around each URI is especially recommended as
    a delimiting style for a URI that contains whitespace.
 </p>
-<p>
+<div>
 <a name="rfc.section.E.p.9"></a>
+</div>
+<p>
    The prefix "URL:" (with or without a trailing space) was formerly
    recommended as a way to help distinguish a URI from other bracketed
    designators, though it is not commonly used in practice and is
    no longer recommended.
 </p>
-<p>
+<div>
 <a name="rfc.section.E.p.10"></a>
+</div>
+<p>
    For robustness, software that accepts user-typed URI should attempt
    to recognize and strip both delimiters and embedded whitespace.
 </p>
+<div>
 <a name="rfc.figure.u.48"></a>
+</div>
 <p>
 For example, the text:
 </p>
@@ -3621,27 +4035,33 @@ For example, the text:
    net/rfc/&gt;.  Note the warning in &lt;http://www.ics.uci.edu/pub/
    ietf/uri/historical.html#WARNING&gt;.
 </pre>
-<p>
+<div>
 <a name="rfc.section.E.p.12"></a>
+</div>
+<p>
 contains the URI references
 </p>
+<div>
 <a name="rfc.figure.u.49"></a>
+</div>
 <pre>   http://www.w3.org/Addressing/
    ftp://ds.internic.net/rfc/
    http://www.ics.uci.edu/pub/ietf/uri/historical.html#WARNING
 </pre>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
 <a name="rfc.section.F">F</a>&nbsp;
     <a name="abbreviated">Abbreviated URIs</a>
 </h1>
-<p>
+<div>
 <a name="rfc.section.F.p.1"></a>
+</div>
+<p>
    The URI syntax was designed for unambiguous reference to network
    resources and extensibility via the URI scheme.  However, as URI
    identification and usage have become commonplace, traditional media
@@ -3650,11 +4070,15 @@ contains the URI references
    only the authority and path portions of the identified resource, such
    as
 </p>
+<div>
 <a name="rfc.figure.u.50"></a>
+</div>
 <pre>   www.w3.org/Addressing/
 </pre>
-<p>
+<div>
 <a name="rfc.section.F.p.3"></a>
+</div>
+<p>
    or simply the DNS hostname on its own.  Such references are primarily
    intended for human interpretation rather than machine, with the
    assumption that context-based heuristics are sufficient to complete
@@ -3665,8 +4089,10 @@ contains the URI references
    heuristically resolved.  It should be noted that such heuristics may
    change over time, particularly when new URI schemes are introduced.
 </p>
-<p>
+<div>
 <a name="rfc.section.F.p.4"></a>
+</div>
+<p>
    Since an abbreviated URI has the same syntax as a relative URI path,
    abbreviated URI references cannot be used in contexts where relative
    URIs are expected.  This limits the use of abbreviated URIs to places
@@ -3674,9 +4100,9 @@ contains the URI references
    advertisements.
 </p>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
@@ -3687,8 +4113,10 @@ contains the URI references
 <a name="rfc.section.G.1">G.1</a>&nbsp;
     <a name="additions">Additions</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.G.1.p.1"></a>
+</div>
+<p>
 IPv6 literals have been added to the list of possible identifiers
 for the host portion of a authority component, as described by
 <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>, with the addition of "[" and "]" to
@@ -3701,8 +4129,10 @@ components, those rules were redefined to directly specify the
 characters allowed rather than continuing to be defined in terms
 of uric.
 </p>
-<p>
+<div>
 <a name="rfc.section.G.1.p.2"></a>
+</div>
+<p>
 Since <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a> defers to <a href="#RFC3513" title="Internet Protocol Version 6 (IPv6) Addressing Architecture">[RFC3513]</a>
 for definition of an IPv6 literal address, which unfortunately lacks
 an ABNF description of IPv6address, we created a new ABNF rule
@@ -3713,15 +4143,19 @@ octet to the range 0-255, and the definition of hostname has been
 improved to better specify length limitations and partially-qualified
 domain names.
 </p>
-<p>
+<div>
 <a name="rfc.section.G.1.p.3"></a>
+</div>
+<p>
 Section 6 on URI normalization and comparison has been completely
 rewritten and extended using input from Tim Bray and discussion within
 the W3C Technical Architecture Group.  Likewise, section 2.1 on the
 encoding of characters has been replaced.
 </p>
-<p>
+<div>
 <a name="rfc.section.G.1.p.4"></a>
+</div>
+<p>
 An ABNF production for URI has been introduced to correspond to the
 common usage of the term: an absolute URI with optional fragment.
 </p>
@@ -3729,16 +4163,20 @@ common usage of the term: an absolute URI with optional fragment.
 <a name="rfc.section.G.2">G.2</a>&nbsp;
     <a name="modifications">Modifications from RFC 2396</a>
 </h2>
-<p>
+<div>
 <a name="rfc.section.G.2.p.1"></a>
+</div>
+<p>
 The ad-hoc BNF syntax has been replaced with the ABNF of
 <a href="#RFC2234" title="Augmented BNF for Syntax Specifications: ABNF">[RFC2234]</a>.  This change required all rule names that
 formerly included underscore characters to be renamed with a dash instead.
 Likewise, absoluteURI and relativeURI have been changed to absolute-URI
 and relative-URI, respectively, for consistency.
 </p>
-<p>
+<div>
 <a name="rfc.section.G.2.p.2"></a>
+</div>
+<p>
 Section 2.2 on reserved characters has been rewritten to clearly explain
 what characters are reserved, when they are reserved, and why they are
 reserved even when not used as delimiters by the generic syntax.
@@ -3747,8 +4185,10 @@ URI normalizers are now given license to unescape any octets
 corresponding to unreserved characters.  The crosshatch ("#") character
 has been moved back from the excluded delims to the reserved set.
 </p>
-<p>
+<div>
 <a name="rfc.section.G.2.p.3"></a>
+</div>
+<p>
 I am in the midst of rewriting the ABNF for URI to make it more
 friendly to LALR parsers and significantly reduce complexity.
 As a result, the layout form of syntax description has been removed,
@@ -3758,8 +4198,10 @@ description of how the path component may be opaque to hierarchy.
 The fragment identifier has been moved back into the URI components,
 though I am still working on the text.
 </p>
-<p>
+<div>
 <a name="rfc.section.G.2.p.4"></a>
+</div>
+<p>
 The ABNF of hier-part and relative-URI (Section 3) has been corrected
 to allow a relative URI path to be empty.  This also allows an
 absolute-URI to consist of nothing after the "scheme:", as is present
@@ -3768,8 +4210,10 @@ the "about:" URI used by many browser implementations.
 The ambiguity regarding the parsing of net-path, abs-path, and rel-path
 is now fully explained and disambiguated in the same section.
 </p>
-<p>
+<div>
 <a name="rfc.section.G.2.p.5"></a>
+</div>
+<p>
 Registry-based naming authorities that use the hierarchical authority
 syntax component are now limited to DNS hostnames, since those have
 been the only such URIs in deployment.  This change was necessary to
@@ -3778,20 +4222,25 @@ character encodings at the application layers above URI processing.
 The reg_name, server, and hostport productions have been removed
 to simplify parsing of the URI syntax.
 </p>
-<p>
+<div>
 <a name="rfc.section.G.2.p.6"></a>
+</div>
+<p>
 The ABNF of qualified has been simplified to remove a parsing ambiguity
 without changing the allowed syntax.  The toplabel production has been
 removed because it served no useful purpose.
 The ambiguity regarding the parsing of host as IPv4address or hostname
 is now fully explained and disambiguated in the same section.
 </p>
-<p>
+<div>
 <a name="rfc.section.G.2.p.7"></a>
+</div>
+<p>
 The resolving relative references algorithm of <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>
 has been rewritten using pseudocode for this revision to improve clarity
 and fix the following issues:
-  <ul>
+  </p>
+<ul>
   
 <li>
     
@@ -3806,66 +4255,88 @@ and fix the following issues:
   </li>
   
 </ul>
+<p>
 
 </p>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
 <h1>
-<a name="rfc.copyright">Full Copyright Statement</a>
+<a name="rfc.ipr">Intellectual Property Statement</a>
 </h1>
 <p>
-<a name="rfc.section.1.p.1"></a>    
+    The IETF takes no position regarding the validity or scope of
+    any intellectual property or other rights that might be claimed
+    to  pertain to the implementation or use of the technology
+    described in this document or the extent to which any license
+    under such rights might or might not be available; neither does
+    it represent that it has made any effort to identify any such
+    rights. Information on the IETF's procedures with respect to
+    rights in standards-track and standards-related documentation
+    can be found in BCP-11. Copies of claims of rights made
+    available for publication and any assurances of licenses to
+    be made available, or the result of an attempt made
+    to obtain a general license or permission for the use of such
+    proprietary rights by implementors or users of this
+    specification can be obtained from the IETF Secretariat.
+  </p>
+<p>
+    The IETF invites any interested party to bring to its
+    attention any copyrights, patents or patent applications, or
+    other proprietary rights which may cover technology that may be
+    required to practice this standard. Please address the
+    information to the IETF Executive Director.
+  </p>
+<h1>
+<a name="rfc.copyright">Full Copyright Statement</a>
+</h1>
+<p>    
     Copyright (C) The Internet Society (2003). All Rights Reserved.
   </p>
 <p>
-<a name="rfc.section.1.p.2"></a>
     This document and translations of it may be copied and furnished to
-    others, and derivative works that comment on or otherwise explain it or
-    assist in its implementation may be prepared, copied, published and
+    others, and derivative works that comment on or otherwise explain it
+    or assist in its implementation may be prepared, copied, published and
     distributed, in whole or in part, without restriction of any kind,
-    provided that the above copyright notice and this paragraph are included
-    on all such copies and derivative works. However, this document itself
-    may not be modified in any way, such as by removing the copyright notice
-    or references to the Internet Society or other Internet organizations,
-    except as needed for the purpose of developing Internet standards in
-    which case the procedures for copyrights defined in the Internet
-    Standards process must be followed, or as required to translate it into
-    languages other than English.
+    provided that the above copyright notice and this paragraph are
+    included on all such copies and derivative works. However, this
+    document itself may not be modified in any way, such as by removing
+    the copyright notice or references to the Internet Society or other
+    Internet organizations, except as needed for the purpose of
+    developing Internet standards in which case the procedures for
+    copyrights defined in the Internet Standards process must be
+    followed, or as required to translate it into languages other than
+    English.
   </p>
 <p>
-<a name="rfc.section.1.p.3"></a>
     The limited permissions granted above are perpetual and will not be
-    revoked by the Internet Society or its successors or assigns.
+    revoked by the Internet Society or its successors or assignees.
   </p>
 <p>
-<a name="rfc.section.1.p.4"></a>
     This document and the information contained herein is provided on an
     "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
-    TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT
-    NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL
-    NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR
-    FITNESS FOR A PARTICULAR PURPOSE.
+    TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+    BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+    HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   </p>
 <h1>Acknowledgement</h1>
 <p>
-<a name="rfc.section.2.p.1"></a>
       Funding for the RFC editor function is currently provided by the
       Internet Society.
   </p>
 <hr class="noprint">
-<table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
+<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
 <tr>
-<td height="15" width="30" align="center" bgcolor="#990000"><a CLASS="link2" href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
+<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
 </tr>
 </table>
-<a name="rfc.index">
-<h1>Index</h1>
-</a>
-<table>
+<h1>
+<a name="rfc.index"></a>Index</h1>
+<table summary="Index">
 <tr>
 <td><b>A</b></td>
 </tr>
