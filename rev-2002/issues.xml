@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!-- anybody know XSLT?   want to write a DTD?  go for it.
 <?xml-stylesheet type='text/xsl' href='issuelist.xslt' ?>
+<!-- anybody want to write a DTD?  go for it.
 <DOCTYPE issuelist SYSTEM "issuelist.dtd">
  -->
 <issuelist>
+<title>Proposed changes to RFC 2396</title>
+
 <issue>
- <type>scheme-specific: file</type>
+ <type>scheme: file</type>
  <name>001-file</name>
  <title>file scheme implementations vary on use of authority component</title>
  <status>postponed</status>
@@ -58,11 +60,10 @@ As for UNC paths, I am not aware of a legal way to use them in file
 URLs which works with both Netscape and Explorer.
 </pre>
  </report>
- <action>postpone until authors are found for new drafts</action>
 </issue>
 
 <issue>
- <type>scheme-specific</type>
+ <type>scheme</type>
  <name>002-undefined-schemes</name>
  <title>schemes from RFC 1738 need their own specs</title>
  <status>postponed</status>
@@ -96,7 +97,6 @@ suggests that other OS profiles should be developed for local
 name mapping.
 </pre>
  </report>
- <action>postpone until authors are found for new drafts</action>
 </issue>
 
 <issue>
@@ -295,6 +295,7 @@ and the base URI has no path.  Proposal 1 looks the cleanest to me.
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="19990917">17 Sep 1999</date>
+  <where>private mail</where>
 <pre>
 I guess step 6a should be
 
@@ -308,7 +309,7 @@ I guess step 6a should be
 </issue>
 
 <issue>
- <type>scheme-specific: ftp</type>
+ <type>scheme: ftp</type>
  <name>005-ftp</name>
  <title>background on ftp extensions</title>
  <status>postponed</status>
@@ -352,11 +353,10 @@ drafts have, by now, expired and are not expected to progress to
 submission.
 </pre>
  </report>
- <action>postpone until authors are found for new drafts</action>
 </issue>
 
 <issue>
- <type>uri-syntax</type>
+ <type>syntax</type>
  <name>006-absoluteURIref</name>
  <title>need BNF term for absolute URI with optional fragment</title>
  <status>accepted</status>
@@ -425,6 +425,7 @@ I used absoluteURI and URI_reference with their rfc2396 meanings.
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20020827">27 Aug 2002</date>
+  <where>private mail</where>
 <pre>
 Something like absoluteURIref will be added to the BNF.
 </pre>
@@ -432,7 +433,7 @@ Something like absoluteURIref will be added to the BNF.
 </issue>
 
 <issue>
- <type>uri-syntax: relative</type>
+ <type>syntax: relative</type>
  <name>007-empty-rel_path</name>
  <title>relative URI syntax does not allow empty path</title>
  <status>accepted</status>
@@ -507,6 +508,7 @@ permitting a lone delimited query.
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20000323">20 Mar 2000</date>
+  <where>private mail</where>
 <pre>
 I don't even remember making this change, but it was broken
 when draft-fielding-uri-syntax-02.txt changed from
@@ -609,7 +611,7 @@ to readers.
 </issue>
 
 <issue>
- <type>uri-syntax: netpath</type>
+ <type>syntax: netpath</type>
  <name>009-nullable-netpath</name>
  <title>syntax for netpath allows bad URI to be considered valid</title>
  <status>pending</status>
@@ -693,7 +695,7 @@ So "//" does parse as net_path, and the regex in appendix B is fine.
 </issue>
 
 <issue>
- <type>uri-syntax: hostname</type>
+ <type>syntax: hostname</type>
  <name>010-gethostbyname</name>
  <title>gethostbyname allows much more than hostname BNF</title>
  <status>pending</status>
@@ -739,7 +741,7 @@ for the port, where http://63.197.151.31:0000000080/ accesses port 80).
 </issue>
 
 <issue>
- <type>uri-syntax: IPv6</type>
+ <type>syntax: IPv6</type>
  <name>011-IPv6-literal</name>
  <title>integrate IPv6 syntax of RFC 2732</title>
  <status>accepted</status>
@@ -754,7 +756,7 @@ http://www.ietf.org/rfc/rfc2732.txt
 </issue>
 
 <issue>
- <type>uri-syntax: IPv6</type>
+ <type>syntax: IPv6</type>
  <name>012-simplify-IPv6</name>
  <title>change BNF to incorporate IPv6 better than RFC 2732</title>
  <status>pending</status>
@@ -901,7 +903,7 @@ RFC 2732 (with ipv6 addresses), though.
 </issue>
 
 <issue>
- <type>uri-syntax: query</type>
+ <type>syntax: query</type>
  <name>013-query-slash</name>
  <title>slash character should be forbidden in query</title>
  <status>rejected</status>
@@ -926,6 +928,7 @@ value.
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20010524">24 May 2001</date>
+  <where>private mail</where>
 <pre>
 This is not an error in the spec, though it could be useful as a note
 in future revisions.  The specification cannot disallow characters that
@@ -938,7 +941,7 @@ meaning is intended).
 </issue>
 
 <issue>
- <type>uri-syntax: opaque_part</type>
+ <type>syntax: opaque_part</type>
  <name>014-empty-opaque_part</name>
  <title>syntax does not allow "dav:" or "about:" as URI</title>
  <status>accepted</status>
@@ -971,6 +974,7 @@ academic before).
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20010524">24 May 2001</date>
+  <where>private mail</where>
 <pre>
 will fix BNF
 </pre>
@@ -978,7 +982,7 @@ will fix BNF
 </issue>
 
 <issue>
- <type>uri-syntax: fragment</type>
+ <type>syntax: fragment</type>
  <name>015-fragment-handling</name>
  <title>clarify how URI processor is expected to handle fragment</title>
  <status>pending</status>
@@ -1025,7 +1029,7 @@ absolute form and would like that encapsulated into a single function.
 </issue>
 
 <issue>
- <type>uri-syntax: hostname</type>
+ <type>syntax: hostname</type>
  <name>016-hostname-toplabel</name>
  <title>hostname toplabel syntax could be improved</title>
  <status>pending</status>
@@ -1078,7 +1082,7 @@ or equivalently but more compactly as:
 </issue>
 
 <issue>
- <type>uri-syntax: fragment</type>
+ <type>syntax: fragment</type>
  <name>017-rdf-fragment</name>
  <title>RDF does not believe in same-document references</title>
  <status>pending</status>
@@ -1359,7 +1363,7 @@ future?
 </issue>
 
 <issue>
- <type>uri-syntax: IPv6</type>
+ <type>syntax: IPv6</type>
  <name>018-IPv6-example</name>
  <title>RFC 2732 example bug</title>
  <status>accepted</status>
@@ -1416,7 +1420,7 @@ because the IP4address is filled via the IPv6reference
 </issue>
 
 <issue>
- <type>uri-intro</type>
+ <type>intro</type>
  <name>019-URI-URL-URN</name>
  <title>URI/URL/URN contemporary view</title>
  <status>pending</status>
@@ -1460,7 +1464,7 @@ View":
 </issue>
 
 <issue>
- <type>uri-syntax</type>
+ <type>syntax</type>
  <name>020-utf8-default</name>
  <title>Defaulting to UTF-8 for unknown encoding</title>
  <status>pending</status>
@@ -1534,7 +1538,7 @@ But in either way, it should be folded into the URI spec.
 </issue>
 
 <issue>
- <type>uri-examples</type>
+ <type>examples</type>
  <name>021-relative-examples</name>
  <title>relative URI examples could be improved</title>
  <status>accepted</status>
@@ -1601,7 +1605,7 @@ More annotation is welcome.
 </issue>
 
 <issue>
- <type>uri-examples</type>
+ <type>examples</type>
  <name>022-definitions</name>
  <title>definitions for operations on URIs</title>
  <status>pending</status>
@@ -1636,7 +1640,7 @@ URI Retrieval:
 </issue>
 
 <issue>
- <type>uri-intro</type>
+ <type>intro</type>
  <name>023-URI-plural</name>
  <title>URI or URIs for plural</title>
  <status>accepted</status>
