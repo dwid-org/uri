@@ -2108,7 +2108,7 @@ in draft 01.
  <type>references</type>
  <name>028-ref-rfc0952</name>
  <title>draft 00 normative reference to RFC 952</title>
- <status>fixed in 01</status>
+ <status>fixed 01</status>
  <report>
   <author email="dan@dankohn.com">Dan Kohn</author>
   <date sort="20021109">09 Nov 2002</date>
