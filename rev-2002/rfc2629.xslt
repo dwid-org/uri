@@ -201,6 +201,10 @@
     2003-05-16  julian.reschke@greenbytes.de
   
     put nbsps between "section" and section number (xref).
+
+    2003-05-16  fielding
+  
+    remove DC.Creator and generator meta tags
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -921,15 +925,6 @@
         </xsl:variable>
         <meta name="keywords" content="{$keyw}" />
       </xsl:if>
-      
-      <!-- generator -->
-      <meta name="generator" content="rfc2629.xslt $Id: rfc2629.xslt,v 1.9 2003/05/16 22:40:03 fielding Exp $" />
-      
-      <!-- DC creator -->
-      <xsl:variable name="creator">
-        <xsl:call-template name="get-author-summary" />
-      </xsl:variable>
-      <meta name="DC.Creator" content="{$creator}" />
     </head>
     <body>
       <!-- insert diagnostics -->
