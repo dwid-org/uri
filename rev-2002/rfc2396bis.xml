@@ -801,8 +801,8 @@ distinguish between the complete domain name and any local domain.
 </preamble><artwork>
    hostname      = domainlabel qualified
    qualified     = *( "." domainlabel ) [ "." toplabel "." ]
-   domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
-   toplabel      = ALPHA    [ 0*61( alphanum | "-" ) alphanum ]
+   domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
+   toplabel      = ALPHA    [ 0*61( alphanum / "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
 </artwork></figure>
 <figure><preamble>
@@ -1719,18 +1719,18 @@ More information on URI-based semantic attacks can be found in
 
 <section title="Acknowledgements">
 <t>
-   This document is derived from RFC 2396 <xref target="RFC2396"/>,
-   RFC 1808 <xref target="RFC1808"/>, and RFC 1738 <xref target="RFC1738"/>;
-   the acknowledgements in those specifications still apply.
-   It also incorporates the update (with corrections) for IPv6 literals
-   in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
-   and Larry Masinter in <xref target="RFC2732"/>.
-   In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
-   Adam M. Costello, Jason Diamond, Martin Duerst, Stefan Eissing,
-   Clive D.W. Feather, Henry Holtzman, Graham Klyne, Dan Kohn, Bruce Lilly,
-   Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
-   Miles Sabin, Ronald Tschalaer, Marc Warne, and Henry Zongaro are
-   gratefully acknowledged.
+This document is derived from RFC 2396 <xref target="RFC2396"/>,
+RFC 1808 <xref target="RFC1808"/>, and RFC 1738 <xref target="RFC1738"/>;
+the acknowledgements in those specifications still apply.
+It also incorporates the update (with corrections) for IPv6 literals
+in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
+and Larry Masinter in <xref target="RFC2732"/>.
+In addition, contributions by Reese Anschultz, Tim Bray, Rob Cameron,
+Dan Connolly, Adam M. Costello, Jason Diamond, Martin Duerst, Stefan Eissing,
+Clive D.W. Feather, Henry Holtzman, Graham Klyne, Dan Kohn, Bruce Lilly,
+Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
+Miles Sabin, Ronald Tschalaer, Marc Warne, and Henry Zongaro are
+gratefully acknowledged.
 </t>
 </section>
 </middle>

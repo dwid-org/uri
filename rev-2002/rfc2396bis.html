@@ -1669,8 +1669,8 @@ distinguish between the complete domain name and any local domain.
 </p>
 <pre>   hostname      = domainlabel qualified
    qualified     = *( "." domainlabel ) [ "." toplabel "." ]
-   domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
-   toplabel      = ALPHA    [ 0*61( alphanum | "-" ) alphanum ]
+   domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
+   toplabel      = ALPHA    [ 0*61( alphanum / "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
 </pre>
 <a name="rfc.figure.u.19"></a>
@@ -2759,18 +2759,18 @@ More information on URI-based semantic attacks can be found in
     Acknowledgements</h1>
 <p>
 <a name="rfc.section.8.p.1"></a>
-   This document is derived from RFC 2396 <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>,
-   RFC 1808 <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a>, and RFC 1738 <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a>;
-   the acknowledgements in those specifications still apply.
-   It also incorporates the update (with corrections) for IPv6 literals
-   in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
-   and Larry Masinter in <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>.
-   In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
-   Adam M. Costello, Jason Diamond, Martin Duerst, Stefan Eissing,
-   Clive D.W. Feather, Henry Holtzman, Graham Klyne, Dan Kohn, Bruce Lilly,
-   Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
-   Miles Sabin, Ronald Tschalaer, Marc Warne, and Henry Zongaro are
-   gratefully acknowledged.
+This document is derived from RFC 2396 <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>,
+RFC 1808 <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a>, and RFC 1738 <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a>;
+the acknowledgements in those specifications still apply.
+It also incorporates the update (with corrections) for IPv6 literals
+in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
+and Larry Masinter in <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>.
+In addition, contributions by Reese Anschultz, Tim Bray, Rob Cameron,
+Dan Connolly, Adam M. Costello, Jason Diamond, Martin Duerst, Stefan Eissing,
+Clive D.W. Feather, Henry Holtzman, Graham Klyne, Dan Kohn, Bruce Lilly,
+Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
+Miles Sabin, Ronald Tschalaer, Marc Warne, and Henry Zongaro are
+gratefully acknowledged.
 </p>
 
 <hr class="noprint">
