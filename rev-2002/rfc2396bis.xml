@@ -2377,6 +2377,7 @@ More information on URI-based semantic attacks can be found in
 URI scheme names, as defined by &lt;scheme&gt; in <xref target="scheme"/>,
 form a registered name space that is managed by IANA according to the
 procedures defined in <xref target="BCP35"/>.
+No IANA actions are required by this document.
 </t>
 </section>
 
