@@ -519,6 +519,7 @@ is available at
 
 
 
+
 <b>&nbsp;3.1&nbsp;
             <a href="#scheme">Scheme</a></b>
 <br>
@@ -1864,6 +1865,20 @@ abs-path or rel-path production in the syntax above, since they are
 mutually exclusive for any given URI and can be parsed as a single
 component.
 </p>
+<div>
+<a name="rfc.figure.u.11"></a>
+</div>
+<p>
+The following are two example URIs and their component parts:
+</p>
+<pre>      foo://example.com:8042/over/there?name=ferret#nose
+      \_/   \______________/\_________/ \_________/ \__/
+       |           |            |            |        |
+    scheme     authority       path        query   fragment
+       |   _____________________|__
+      / \ /                        \
+      urn:example:animal:ferret:nose
+</pre>
 <h2>
 <a name="rfc.iref.59"></a><a name="rfc.section.3.1">3.1</a>&nbsp;
     <a name="scheme">Scheme</a>
@@ -1879,7 +1894,7 @@ may further restrict the syntax and semantics of identifiers using that
 scheme. 
 </p>
 <div>
-<a name="rfc.figure.u.11"></a>
+<a name="rfc.figure.u.12"></a>
 </div>
 <p>
 Scheme names consist of a sequence of characters beginning with a
@@ -1917,7 +1932,7 @@ means for distinguishing an authority based on a registered domain name
 or server address, along with optional port and user information.
 </p>
 <div>
-<a name="rfc.figure.u.12"></a>
+<a name="rfc.figure.u.13"></a>
 </div>
 <p>
 The authority component is preceded by a double slash ("//") and is
@@ -1951,7 +1966,7 @@ mislead the user (<a href="#security-semantic">section&nbsp;7.5</a>).
     <a name="userinfo">User Information</a>
 </h3>
 <div>
-<a name="rfc.figure.u.13"></a>
+<a name="rfc.figure.u.14"></a>
 </div>
 <p>
 The userinfo sub-component may consist of a user name and, optionally,
@@ -1981,7 +1996,7 @@ domain name in order to mislead users, as described in
     <a name="host">Host</a>
 </h3>
 <div>
-<a name="rfc.figure.u.14"></a>
+<a name="rfc.figure.u.15"></a>
 </div>
 <p>
 The host sub-component of authority is identified by an IPv6 literal
@@ -2009,7 +2024,7 @@ IPv4address, then it should be considered an IPv4 address literal
 and not a hostname.
 </p>
 <div>
-<a name="rfc.figure.u.15"></a>
+<a name="rfc.figure.u.16"></a>
 </div>
 <p>
 
@@ -2036,7 +2051,7 @@ domain name and some local domain.
    alphanum    = ALPHA / DIGIT
 </pre>
 <div>
-<a name="rfc.figure.u.16"></a>
+<a name="rfc.figure.u.17"></a>
 </div>
 <p>
 
@@ -2063,7 +2078,7 @@ four octets is allowed by this grammar.
                / "25" %x30-35          ; 250-255
 </pre>
 <div>
-<a name="rfc.figure.u.17"></a>
+<a name="rfc.figure.u.18"></a>
 </div>
 <p>
 
@@ -2116,7 +2131,7 @@ may change over time for reasons not anticipated by the URI creator.
     <a name="port">Port</a>
 </h3>
 <div>
-<a name="rfc.figure.u.18"></a>
+<a name="rfc.figure.u.19"></a>
 </div>
 <p>
 The port sub-component of authority is designated by an optional
@@ -2138,7 +2153,7 @@ For example, the "http" URI scheme defines a default of TCP port 80.
     <a name="path">Path</a>
 </h2>
 <div>
-<a name="rfc.figure.u.19"></a>
+<a name="rfc.figure.u.20"></a>
 </div>
 <p>
 The path component contains hierarchical data that, along with data
@@ -2209,7 +2224,7 @@ cases the meaning of a parameter is specific to the URI originator.
     <a name="query">Query</a>
 </h2>
 <div>
-<a name="rfc.figure.u.20"></a>
+<a name="rfc.figure.u.21"></a>
 </div>
 <p>
 
@@ -2258,7 +2273,7 @@ loss of information if the query component contains the strings
     <a name="fragment">Fragment</a>
 </h2>
 <div>
-<a name="rfc.figure.u.21"></a>
+<a name="rfc.figure.u.22"></a>
 </div>
 <p>
 
@@ -2365,7 +2380,7 @@ in order to be interpreted consistently.
     <a name="uri-reference">URI Reference</a>
 </h2>
 <div>
-<a name="rfc.figure.u.22"></a>
+<a name="rfc.figure.u.23"></a>
 </div>
 <p>
 The ABNF rule URI-reference is used to denote the most common usage of a
@@ -2401,7 +2416,7 @@ string and extract the URI components.
     <a name="relative-uri">Relative URI</a>
 </h2>
 <div>
-<a name="rfc.figure.u.23"></a>
+<a name="rfc.figure.u.24"></a>
 </div>
 <p>
 A relative URI reference takes advantage of the hier-part syntax
@@ -2444,7 +2459,7 @@ reference.
     <a name="absolute-uri">Absolute URI</a>
 </h2>
 <div>
-<a name="rfc.figure.u.24"></a>
+<a name="rfc.figure.u.25"></a>
 </div>
 <p>
 Some protocol elements allow only the absolute form of a URI without
@@ -2500,7 +2515,7 @@ the URI as a reference, consisting of only the authority and path
 portions of the URI, such as
 </p>
 <div>
-<a name="rfc.figure.u.25"></a>
+<a name="rfc.figure.u.26"></a>
 </div>
 <pre>   www.w3.org/Addressing/
 </pre>
@@ -2571,7 +2586,7 @@ thought of in terms of layers, where the innermost defined base URI
 has the highest precedence.  This can be visualized graphically as:
 </p>
 <div>
-<a name="rfc.figure.u.26"></a>
+<a name="rfc.figure.u.27"></a>
 </div>
 <pre>   .----------------------------------------------------------.
    |  .----------------------------------------------------.  |
@@ -2710,7 +2725,7 @@ never undefined, though it may be empty.  The algorithm assumes that
 the base URI is well-formed and does not contain dot-segments in its path.
 </p>
 <div>
-<a name="rfc.figure.u.27"></a>
+<a name="rfc.figure.u.28"></a>
 </div>
 <p>
 For each URI reference (R), the following pseudocode describes an
@@ -2861,7 +2876,7 @@ series of string pattern replacements.
     <a name="recomposition">Recomposition of a Parsed URI</a>
 </h2>
 <div>
-<a name="rfc.figure.u.28"></a>
+<a name="rfc.figure.u.29"></a>
 </div>
 <p>
 Parsed URI components can be recomposed to obtain the corresponding
@@ -2911,7 +2926,7 @@ next component separator or the end of the reference.
 Within an object with a well-defined base URI of
 </p>
 <div>
-<a name="rfc.figure.u.29"></a>
+<a name="rfc.figure.u.30"></a>
 </div>
 <pre>   http://a/b/c/d;p?q
 </pre>
@@ -2926,7 +2941,7 @@ a relative URI reference would be resolved as follows:
     <a name="relative-normal">Normal Examples</a>
 </h3>
 <div>
-<a name="rfc.figure.u.30"></a>
+<a name="rfc.figure.u.31"></a>
 </div>
 <pre>   "g:h"           =  "g:h"
    "g"             =  "http://a/b/c/g"
@@ -2970,7 +2985,7 @@ consistently.  Each example uses the same base as above.
 An empty reference refers to the current base URI.
 </p>
 <div>
-<a name="rfc.figure.u.31"></a>
+<a name="rfc.figure.u.32"></a>
 </div>
 <pre>   ""              =  "http://a/b/c/d;p?q"
 </pre>
@@ -2984,7 +2999,7 @@ base URI's path.  Note that the ".." syntax cannot be used to change
 the authority component of a URI.
 </p>
 <div>
-<a name="rfc.figure.u.32"></a>
+<a name="rfc.figure.u.33"></a>
 </div>
 <pre>   "../../../g"    =  "http://a/g"
    "../../../../g" =  "http://a/g"
@@ -2998,7 +3013,7 @@ they are complete components of a path, but not when they are only
 part of a segment.
 </p>
 <div>
-<a name="rfc.figure.u.33"></a>
+<a name="rfc.figure.u.34"></a>
 </div>
 <pre>   "/./g"          =  "http://a/g"
    "/../g"         =  "http://a/g"
@@ -3015,7 +3030,7 @@ Less likely are cases where the relative URI uses unnecessary or
 nonsensical forms of the "." and ".." complete path segments.
 </p>
 <div>
-<a name="rfc.figure.u.34"></a>
+<a name="rfc.figure.u.35"></a>
 </div>
 <pre>   "./../g"        =  "http://a/b/g"
    "./g/."         =  "http://a/b/c/g/"
@@ -3036,7 +3051,7 @@ character, and the query component is not normally used within
 relative references.
 </p>
 <div>
-<a name="rfc.figure.u.35"></a>
+<a name="rfc.figure.u.36"></a>
 </div>
 <pre>   "g?y/./x"       =  "http://a/b/c/g?y/./x"
    "g?y/../x"      =  "http://a/b/c/g?y/../x"
@@ -3053,7 +3068,7 @@ loophole in prior specifications of partial URI <a href="#RFC1630" title="Univer
 Its use should be avoided, but is allowed for backward compatibility.
 </p>
 <div>
-<a name="rfc.figure.u.36"></a>
+<a name="rfc.figure.u.37"></a>
 </div>
 <pre>   "http:g"        =  "http:g"         ; for strict parsers
                    /  "http://a/b/c/g" ; for backward compatibility
@@ -3212,7 +3227,7 @@ codepoint-by-codepoint.
     <a name="normalize-syntax">Syntax-based Normalization</a>
 </h3>
 <div>
-<a name="rfc.figure.u.37"></a>
+<a name="rfc.figure.u.38"></a>
 </div>
 <p>
 Software may use logic based on the definitions provided by this
@@ -3290,7 +3305,7 @@ remove_dot_segments algorithm to the path, as described in
     <a name="normalize-scheme">Scheme-based Normalization</a>
 </h3>
 <div>
-<a name="rfc.figure.u.38"></a>
+<a name="rfc.figure.u.39"></a>
 </div>
 <p>
 The syntax and semantics of URIs vary from scheme to scheme, as described
@@ -3316,7 +3331,7 @@ scheme, is equivalent to one where the port is elided.
     <a name="normalize-protocol">Protocol-based Normalization</a>
 </h3>
 <div>
-<a name="rfc.figure.u.39"></a>
+<a name="rfc.figure.u.40"></a>
 </div>
 <p>
 Web spiders, for which substantial effort to reduce the incidence
@@ -3327,7 +3342,7 @@ observe that a URI such as
 <pre>   http://example.com/data
 </pre>
 <div>
-<a name="rfc.figure.u.40"></a>
+<a name="rfc.figure.u.41"></a>
 </div>
 <p>
 redirects to a URI differing only in the trailing slash
@@ -3519,7 +3534,7 @@ public.
     <a name="security-semantic">Semantic Attacks</a>
 </h2>
 <div>
-<a name="rfc.figure.u.41"></a>
+<a name="rfc.figure.u.42"></a>
 </div>
 <p>
 Because the userinfo component is rarely used and appears before the
@@ -3822,7 +3837,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
     <a name="collected-abnf">Collected ABNF for URI</a>
 </h1>
 <div>
-<a name="rfc.figure.u.42"></a>
+<a name="rfc.figure.u.43"></a>
 </div>
 <pre>To be filled-in later.
 </pre>
@@ -3853,7 +3868,7 @@ The following line is the regular expression for breaking-down a
 well-formed URI reference into its components.
 </p>
 <div>
-<a name="rfc.figure.u.43"></a>
+<a name="rfc.figure.u.44"></a>
 </div>
 <pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
     12            3  4          5       6  7        8 9
@@ -3868,7 +3883,7 @@ paired parenthesis).  We refer to the value matched for subexpression
 &lt;n&gt; as $&lt;n&gt;.  For example, matching the above expression to
 </p>
 <div>
-<a name="rfc.figure.u.44"></a>
+<a name="rfc.figure.u.45"></a>
 </div>
 <pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
 </pre>
@@ -3879,7 +3894,7 @@ paired parenthesis).  We refer to the value matched for subexpression
 results in the following subexpression matches:
 </p>
 <div>
-<a name="rfc.figure.u.45"></a>
+<a name="rfc.figure.u.46"></a>
 </div>
 <pre>   $1 = http:
    $2 = http
@@ -3900,7 +3915,7 @@ the case for the query component in the above example.  Therefore, we
 can determine the value of the four components and fragment as
 </p>
 <div>
-<a name="rfc.figure.u.46"></a>
+<a name="rfc.figure.u.47"></a>
 </div>
 <pre>   scheme    = $2
    authority = $4
@@ -3946,7 +3961,7 @@ within double-quotes "http://example.com/", angle brackets
 &lt;http://example.com/&gt;, or just using whitespace
 </p>
 <div>
-<a name="rfc.figure.u.47"></a>
+<a name="rfc.figure.u.48"></a>
 </div>
 <pre>   http://example.com/
 </pre>
@@ -4007,7 +4022,7 @@ For robustness, software that accepts user-typed URI should attempt
 to recognize and strip both delimiters and embedded whitespace.
 </p>
 <div>
-<a name="rfc.figure.u.48"></a>
+<a name="rfc.figure.u.49"></a>
 </div>
 <p>
 For example, the text:
@@ -4024,7 +4039,7 @@ For example, the text:
 contains the URI references
 </p>
 <div>
-<a name="rfc.figure.u.49"></a>
+<a name="rfc.figure.u.50"></a>
 </div>
 <pre>   http://www.w3.org/Addressing/
    ftp://ds.internic.net/rfc/

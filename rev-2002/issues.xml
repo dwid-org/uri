@@ -2919,7 +2919,7 @@ The definition of query has been rewritten for draft 02:
  <type>examples</type>
  <name>032-component-examples</name>
  <title>add more examples for generic syntax components</title>
- <status>pending</status>
+ <status>added 03</status>
  <report>
   <author email="tbray_AT_textuality.com">Tim Bray</author>
   <date sort="20030221">21 Feb 2003</date>
@@ -2941,6 +2941,15 @@ folks who try to implement according to examples (and not BNF) are not
 led too far astray.  [I have seen plenty of cases where implementers of
 RFC 2616 looked at the examples and implemented only the cases described,
 ignoring the actual syntax specification.]
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030606">06 Jun 2003</date>
+  <where>draft 03</where>
+<pre>
+I have added a couple examples to section 3 that illustrate the
+components.
 </pre>
  </action>
 </issue>
