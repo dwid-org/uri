@@ -5,11 +5,13 @@
 <?rfc symrefs="yes" ?>
 <?rfc sortrefs="yes"?>
 <?rfc toc="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
 <?rfc linkmailto="no"?>
 <?rfc editing="no"?>
 <?rfc-ext parse-xml-in-artwork="yes" ?>
 <rfc obsoletes="2732, 2396, 1808" updates="1738" category="std"
-     ipr="full3667" docName="draft-fielding-uri-rfc2396bis-0x">
+     ipr="full3667" docName="draft-fielding-uri-rfc2396bis-06">
 
 <front>
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifier (URI): Generic Syntax</title>
@@ -38,7 +40,7 @@
         <street>5251 California Ave., Suite 110</street>
         <city>Irvine</city>
         <region>CA</region>
-        <code>92612-3074</code>
+        <code>92617</code>
         <country>USA</country>
       </postal>
       <phone>+1-949-679-2960</phone>
@@ -63,7 +65,7 @@
     </address>
   </author>
 
-  <date month='May' year='2004'></date>
+  <date month='July' year='2004'></date>
 
   <area>Applications</area>
   <keyword>uniform resource identifier</keyword>
@@ -118,7 +120,7 @@ which introduced syntax for IPv6 addresses.  It excludes those
 portions of RFC 1738 that defined the specific syntax of individual
 URI schemes; those portions will be updated as separate documents.
 The process for registration of new URI schemes is defined separately
-by <xref target="RFC2717"/>.
+by <xref target="BCP35"/>.
 Advice for designers of new URI schemes can be found in
 <xref target="RFC2718"/>.
 </t>
@@ -130,8 +132,8 @@ All significant changes from RFC 2396 are noted in <xref target="changes"/>.
 <iref item="character encoding" primary="true"/>
 <t>
 This specification uses the terms "character" and "coded character set"
-in accordance with the definitions provided in <xref target="RFC2978"/>,
-and "character encoding" in place of what <xref target="RFC2978"/>
+in accordance with the definitions provided in <xref target="BCP19"/>,
+and "character encoding" in place of what <xref target="BCP19"/>
 refers to as a "charset".
 </t>
 
@@ -185,12 +187,17 @@ or numeric values (e.g., zero, one, and infinity).
     <t>
 An identifier embodies the information required to distinguish what is
 being identified from all other things within its scope of identification.
-Our use of the terms "identify" and "identifying" refer to distinguishing
-one resource from all other resources; they should not be mistaken as an
-assumption that an identifier defines or embodies the identity of what
-is referenced, though that may be the case for some identifiers.  Likewise,
-the "one" resource identified might not be singular in nature (e.g.,
-a resource might be a named set, or a mapping that varies over time).
+Our use of the terms "identify" and "identifying" refer to this purpose
+of distinguishing one resource from all other resources, regardless of
+how that purpose is accomplished (e.g., by name, address, context, etc.).
+These terms should not be mistaken as an assumption that an identifier
+defines or embodies the identity of what is referenced, though that
+may be the case for some identifiers. Nor should it be assumed that a
+system using URIs will access the resource identified: in many cases,
+URIs are used to denote resources without any intention that they be
+accessed.  Likewise, the "one" resource identified might not be singular
+in nature (e.g., a resource might be a named set or a mapping that
+varies over time).
     </t>
   </list>
 </t>
@@ -208,12 +215,9 @@ the reasons why an application might wish to refer to a resource, or the
 kinds of system that might use URIs for the sake of identifying resources.
 This specification does not require that a URI persists in identifying the
 same resource over all time, though that is a common goal of all URI schemes.
-This specification does not provide a mechanism for determing or describing
-the resource identified by a URI, nor does it require that everyone
-making use of a given URI have a shared understanding of what it is actually
-intended to identify.  Nevertheless, nothing in this specification prevents
-an application from limiting itself to particular types of resources, or to
-a subset of URIs that maintains characteristics desired by that application.
+Nevertheless, nothing in this specification prevents an application from
+limiting itself to particular types of resources, or to a subset of URIs
+that maintains characteristics desired by that application.
 </t>
 <t>
 URIs have a global scope and are interpreted consistently regardless
@@ -264,17 +268,24 @@ of all URI schemes.
 
 <section title="Examples" anchor="examples">
 <figure><preamble>
-The following examples illustrate URIs that are in common use.
+The following example URIs illustrate several URI schemes and
+variations in their common syntax components:
 </preamble><artwork>
    ftp://ftp.is.co.za/rfc/rfc1808.txt
 
    http://www.ietf.org/rfc/rfc2396.txt
 
+   ldap://[2001:db8::7]/c=GB?objectClass?one
+
    mailto:John.Doe@example.com
 
    news:comp.infosystems.www.servers.unix
 
-   telnet://melvyl.ucop.edu/
+   tel:+1-816-555-1212
+
+   telnet://192.0.2.16:80/
+
+   urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 </artwork></figure>
 </section>
 
@@ -722,7 +733,7 @@ the letter "X" corresponds to the octet "01011000", and there is no harm
 in making that assumption even when it is incorrect.  A system that
 internally provides identifiers in the form of a different character
 encoding, such as EBCDIC, will generally perform character translation
-of textual identifiers to UTF-8 <xref target="RFC3629"/> (or some other
+of textual identifiers to UTF-8 <xref target="STD63"/> (or some other
 superset of the US-ASCII character encoding) at an internal interface,
 thereby providing more meaningful identifiers than simply percent-encoding
 the original octets.
@@ -753,9 +764,9 @@ producing the URI.
 </t>
 <t>
 When a new URI scheme defines a component that represents textual data
-consisting of characters from the Unicode (ISO/IEC 10646-1) character
-set, the data should be encoded first as octets according to the
-UTF-8 character encoding <xref target="RFC3629"/>, and then only those
+consisting of characters from the Unicode character set <xref target="UCS"/>,
+the data should be encoded first as octets according to the
+UTF-8 character encoding <xref target="STD63"/>, and then only those
 octets that do not correspond to characters in the unreserved set
 should be percent-encoded.  For example, the character A would be
 represented as "A", the character LATIN CAPITAL LETTER A WITH GRAVE
@@ -842,7 +853,7 @@ but should only produce lowercase scheme names, for consistency.
 </artwork><postamble>
 Individual schemes are not specified by this document.
 The process for registration of new URI schemes is defined separately
-by <xref target="RFC2717"/>.  The scheme registry maintains
+by <xref target="BCP35"/>.  The scheme registry maintains
 the mapping between scheme names and their specifications.
 Advice for designers of new URI schemes can be found in
 <xref target="RFC2718"/>.
@@ -1088,7 +1099,7 @@ should limit such names to no more than 255 characters in length.
 The reg-name syntax allows percent-encoded octets in order to represent
 non-ASCII registered names in a uniform way that is independent of
 the underlying name resolution technology; such non-ASCII characters must
-first be encoded according to UTF-8 <xref target="RFC3629"/> and then
+first be encoded according to UTF-8 <xref target="STD63"/> and then
 each octet of the corresponding UTF-8 sequence must be percent-encoded
 to be represented as URI characters.  URI producing applications must not
 use percent-encoding in host unless it is used to represent a UTF-8
@@ -2360,6 +2371,14 @@ More information on URI-based semantic attacks can be found in
 </section>
 </section>
 
+<section title="IANA Considerations" anchor="IANA">
+<t>
+URI scheme names, as defined by &lt;scheme&gt; in <xref target="scheme"/>,
+form a registered name space that is managed by IANA according to the
+procedures defined in <xref target="BCP35"/>.
+</t>
+</section>
+
 <section title="Acknowledgments" anchor="ack">
 <t>
 This specification is derived from RFC 2396 <xref target="RFC2396"/>,
@@ -2427,7 +2446,7 @@ are gratefully acknowledged.
 <format type='TXT' octets='24265' target='http://www.ietf.org/rfc/rfc2234.txt' />
 </reference>
 
-<reference anchor='RFC3629'>
+<reference anchor='STD63'>
 <front>
 <title>UTF-8, a transformation format of ISO 10646</title>
 <author initials='F.' surname='Yergeau' fullname='Francois Yergeau'>
@@ -2450,29 +2469,20 @@ are gratefully acknowledged.
 <format type='TXT' octets='33856' target='http://www.ietf.org/rfc/rfc3629.txt' />
 </reference>
 
+<reference anchor='UCS'>
+<front>
+<title>Information Technology - Universal Multiple-Octet Coded Character Set (UCS)</title>
+<author>
+<organization>International Organization for Standardization</organization>
+</author>
+<date month='December' year='2003' />
+</front>
+<seriesInfo name="ISO/IEC" value="10646:2003" />
+</reference>
+
   </references>
 
   <references title="Informative References">
-
-<reference anchor='RFC2277'>
-<front>
-<title abbrev='Charset Policy'>IETF Policy on Character Sets and Languages</title>
-<author initials='H.T.' surname='Alvestrand' fullname='Harald Tveit Alvestrand'>
-<organization>UNINETT</organization>
-<address>
-<postal>
-<street>P.O.Box 6883 Elgeseter</street>
-<street>N-7002 TRONDHEIM</street>
-<country>NORWAY</country></postal>
-<phone>+47 73 59 70 94</phone>
-<email>Harald.T.Alvestrand@uninett.no</email></address></author>
-<date month='January' year='1998'></date>
-<area>Applications</area>
-<keyword>Internet Engineering Task Force</keyword>
-<keyword>character encoding</keyword></front>
-<seriesInfo name='BCP' value='18' />
-<seriesInfo name='RFC' value='2277' />
-</reference>
 
 <reference anchor='RFC1630'>
 <front>
@@ -2665,7 +2675,7 @@ are gratefully acknowledged.
 <seriesInfo name='RFC' value='2046' />
 </reference>
 
-<reference anchor='RFC2978'>
+<reference anchor='BCP19'>
 <front>
 <title>IANA Charset Registration Procedures</title>
 <author initials='N.' surname='Freed' fullname='N. Freed'>
@@ -3017,7 +3027,7 @@ Science, University of California, Irvine</organization>
 <seriesInfo name='RFC' value='2557' />
 </reference>
 
-<reference anchor='RFC2717'>
+<reference anchor='BCP35'>
 <front>
 <title>Registration Procedures for URL Scheme Names</title>
 <author initials='R.' surname='Petke' fullname='Rich Petke'>
@@ -3413,6 +3423,18 @@ the base URI has a non-hierarchical path.
 </list>
 </t>
 </section>
+</section>
+
+<section title="Instructions to RFC Editor" anchor="RFC-editor">
+<t>
+Prior to publication as an RFC, please remove this section and
+the "Editorial Note" that appears after the Abstract.  If
+<xref target="BCP35"/> or any of the normative references are
+updated prior to publication, the associated reference in this
+document can be safely updated as well.  This document has been
+produced using the xml2rfc tool set; the XML version can be obtained
+via the URI listed in the editorial note.
+</t>
 </section>
 </back>
 </rfc>

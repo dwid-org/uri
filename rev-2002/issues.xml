@@ -2503,13 +2503,17 @@ The definition has been updated to
       An identifier embodies the information required to distinguish
       what is being identified from all other things within its scope
       of identification.  Our use of the terms "identify" and
-      "identifying" refer to distinguishing one resource from all other
-      resources; they should not be mistaken as an assumption that an
-      identifier defines or embodies the identity of what is referenced,
-      though that may be the case for some identifiers.  Likewise,
-      the "one" resource identified might not be singular in nature
-      (e.g., a resource might be a named set, or a mapping that varies
-      over time).
+      "identifying" refer to this purpose of distinguishing one resource
+      from all other resources, regardless of how that purpose is
+      accomplished (e.g., by name, address, context, etc.).  These terms
+      should not be mistaken as an assumption that an identifier
+      defines or embodies the identity of what is referenced, though that
+      may be the case for some identifiers. Nor should it be assumed that
+      a system using URIs will access the resource identified: in many cases, 
+      URIs are used to denote resources without any intention that they
+      be accessed.  Likewise, the "one" resource identified might not be
+      singular in nature (e.g., a resource might be a named set or a
+      mapping that varies over time).
 </pre>
  </action>
 </issue>
