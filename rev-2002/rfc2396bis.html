@@ -1869,7 +1869,8 @@ table.closedissue {
          the mapping between scheme names and their specifications.
          Advice for designers of new URI schemes can be found in
          <a href="#RFC2718" title="Guidelines for new URL Schemes">[RFC2718]</a>.
-         URI scheme specifications must define their own syntax as a subset of the
+         URI scheme specifications must define their own syntax such that all
+         strings matching their scheme-specific syntax will also match the
          &lt;absolute-URI&gt; grammar, as described in <a href="#absolute-uri" title="Absolute URI">Section&nbsp;4.3</a>.
          
       </p>
@@ -2481,7 +2482,8 @@ table.closedissue {
          
       </p><pre>   absolute-URI  = scheme ":" hier-part [ "?" query ]
 </pre><p>
-         URI scheme specifications must define their own syntax as a subset of the
+         URI scheme specifications must define their own syntax such that all
+         strings matching their scheme-specific syntax will also match the
          &lt;absolute-URI&gt; grammar.  Scheme specifications are not responsible
          for defining fragment identifier syntax or usage, regardless of its
          applicability to resources identifiable via that scheme, since fragment

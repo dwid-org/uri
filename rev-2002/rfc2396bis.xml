@@ -866,7 +866,8 @@ by <xref target="BCP35"/>.  The scheme registry maintains
 the mapping between scheme names and their specifications.
 Advice for designers of new URI schemes can be found in
 <xref target="RFC2718"/>.
-URI scheme specifications must define their own syntax as a subset of the
+URI scheme specifications must define their own syntax such that all
+strings matching their scheme-specific syntax will also match the
 &lt;absolute-URI&gt; grammar, as described in <xref target="absolute-uri"/>.
 </postamble></figure>
 <t>
@@ -1442,7 +1443,8 @@ does not allow a fragment.
 </preamble><artwork type="abnf">
    absolute-URI  = scheme ":" hier-part [ "?" query ]
 </artwork><postamble>
-URI scheme specifications must define their own syntax as a subset of the
+URI scheme specifications must define their own syntax such that all
+strings matching their scheme-specific syntax will also match the
 &lt;absolute-URI&gt; grammar.  Scheme specifications are not responsible
 for defining fragment identifier syntax or usage, regardless of its
 applicability to resources identifiable via that scheme, since fragment
