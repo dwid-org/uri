@@ -18,7 +18,7 @@
 <td nowrap="nowrap"><a href="#002-undefined-schemes">002-undefined-schemes</a></td><td>schemes from RFC 1738 need their own specs</td><td>scheme</td><td>postponed</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#003-relative-query">003-relative-query</a></td><td>inconsistent resolution of query-only relative URI</td><td>relativeURI</td><td>pending</td>
+<td nowrap="nowrap"><a href="#003-relative-query">003-relative-query</a></td><td>inconsistent resolution of query-only relative URI</td><td>relativeURI</td><td>fixed 00</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#004-pathless-base">004-pathless-base</a></td><td>resolution algorithm fails for base URI with no path</td><td>relativeURI</td><td>fixed 00</td>
@@ -54,7 +54,7 @@
 <td nowrap="nowrap"><a href="#014-empty-opaque_part">014-empty-opaque_part</a></td><td>syntax does not allow "dav:" or "about:" as URI</td><td>syntax: opaque_part</td><td>fixed 00</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#015-fragment-handling">015-fragment-handling</a></td><td>clarify how URI processor is expected to handle fragment</td><td>syntax: fragment</td><td>pending</td>
+<td nowrap="nowrap"><a href="#015-fragment-handling">015-fragment-handling</a></td><td>clarify how URI processor is expected to handle fragment</td><td>syntax: fragment</td><td>fixed 00</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#016-hostname-toplabel">016-hostname-toplabel</a></td><td>hostname toplabel syntax could be improved</td><td>syntax: hostname</td><td>pending</td>
@@ -194,7 +194,7 @@ name mapping.
       inconsistent resolution of query-only relative URI</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">relativeURI</th><th>pending</th>
+<th width="40%">relativeURI</th><th>fixed 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -292,6 +292,17 @@ Please do not click &lt;a href="?action=there"&gt;there&lt;/a&gt;.&lt;br&gt;
 Thank you.
 &lt;/body&gt;
 &lt;/html&gt;
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  14 Oct 2002,
+  draft 00:
+  <pre>
+Fixed by rewriting the algorithm as pseudocode and restoring the
+original RFC 1808 behavior, with the example changed accordingly.
 </pre>
 </td>
 </tr>
@@ -1205,7 +1216,7 @@ draft-00:
       clarify how URI processor is expected to handle fragment</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax: fragment</th><th>pending</th>
+<th width="40%">syntax: fragment</th><th>fixed 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1246,6 +1257,16 @@ would the model that you suggest above. It passes all of the tests in
 Appendix C. I'm actually working on an RDF parser (in XSLT) so am not
 fetching any resources but I do need to convert all URI references to their
 absolute form and would like that encapsulated into a single function.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  14 Oct 2002,
+  draft 00:
+  <pre>
+Fixed by rewriting the algorithm as pseudocode.
 </pre>
 </td>
 </tr>

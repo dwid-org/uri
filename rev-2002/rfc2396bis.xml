@@ -1228,7 +1228,11 @@ rel_segment   = 1*( unreserved | escaped |
 <section title="Resolving Relative References to Absolute Form">
 <t>
    This section describes an example algorithm for resolving URI
-   references that might be relative to a given base URI.
+   references that might be relative to a given base URI.  The algorithm
+   is intended to provide a definitive result that can be used to test
+   the output of other implementations.  Implementation of the algorithm
+   itself is not required, but the result given by an implementation must
+   match the result that would be given by this algorithm.
 </t>
 <t>
    The base URI is established according to the rules of Section 5.1 and
@@ -1240,160 +1244,157 @@ rel_segment   = 1*( unreserved | escaped |
    empty.  The base URI's query component is not used by the resolution
    algorithm and may be discarded.
 </t>
-<t>
-   For each URI reference, the following steps are performed in order:
-</t>
-<t>
-  <list style="numbers">
-    <t>
-      The URI reference is parsed into the potential four components and
-      fragment identifier, as described in Section 4.3.
-    </t>
-    <t>
-      If the path component is empty and the scheme, authority, and
-      query components are undefined, then it is a reference to the
-      current document and we are done.  Otherwise, the reference URI's
-      query and fragment components are defined as found (or not found)
-      within the URI reference and not inherited from the base URI.
-    </t>
-    <t>
-      If the scheme component is defined, indicating that the reference
-      starts with a scheme name, then the reference is interpreted as an
-      absolute URI and we are done.  Otherwise, the reference URI's
-      scheme is inherited from the base URI's scheme component.
-      Due to a loophole in prior specifications <xref target="RFC1630"/>, some parsers
-      allow the scheme name to be present in a relative URI if it is the
-      same as the base URI scheme.  Unfortunately, this can conflict
-      with the correct parsing of non-hierarchical URI.  For backwards
-      compatibility, an implementation may work around such references
-      by removing the scheme if it matches that of the base URI and the
-      scheme is known to always use the &lt;hier_part&gt; syntax.  The parser
-      can then continue with the steps below for the remainder of the
-      reference components.  Validating parsers should mark such a
-      misformed relative reference as an error.
-    </t>
-    <t>
-      If the authority component is defined, then the reference is a
-      network-path and we skip to step 7.  Otherwise, the reference
-      URI's authority is inherited from the base URI's authority
-      component, which will also be undefined if the URI scheme does not
-      use an authority component.
-    </t>
-    <t>
-      If the path component begins with a slash character ("/"), then
-      the reference is an absolute-path and we skip to step 7.
-    </t>
-    <t>
-      If this step is reached, then we are resolving a relative-path
-      reference.  The relative path needs to be merged with the base
-      URI's path.  Although there are many ways to do this, we will
-      describe a simple method using a separate string buffer.
-      <list style="numbers">
-        <t>
-         All but the last segment of the base URI's path component is
-         copied to the buffer.  In other words, any characters after the
-         last (right-most) slash character, if any, are excluded.
-         If the base URI's path component is the empty string, then
-         a single slash character ("/") is copied to the buffer.
-        </t>
-        <t>
-         The reference's path component is appended to the buffer
-         string.
-        </t>
-        <t>
-         All occurrences of "./", where "." is a complete path segment,
-         are removed from the buffer string.
-        </t>
-        <t>
-         If the buffer string ends with "." as a complete path segment,
-         that "." is removed.
-        </t>
-        <t>
-         All occurrences of "&lt;segment&gt;/../", where &lt;segment&gt; is a
-         complete path segment not equal to "..", are removed from the
-         buffer string.  Removal of these path segments is performed
-         iteratively, removing the leftmost matching pattern on each
-         iteration, until no matching pattern remains.
-        </t>
-        <t>
-         If the buffer string ends with "&lt;segment&gt;/..", where &lt;segment&gt;
-         is a complete path segment not equal to "..", that
-         "&lt;segment&gt;/.." is removed.
-        </t>
-        <t>
-         If the resulting buffer string still begins with one or more
-         complete path segments of "..", then the reference is
-         considered to be in error.  Implementations may handle this
-         error by retaining these components in the resolved path (i.e.,
-         treating them as part of the final URI), by removing them from
-         the resolved path (i.e., discarding relative levels above the
-         root), or by avoiding traversal of the reference.
-        </t>
-        <t>
-         The remaining buffer string is the reference URI's new path
-         component.
-        </t>
-      </list>
-    </t>
-    <t>
-      The resulting URI components, including any inherited from the
-      base URI, are recombined to give the absolute form of the URI
-      reference.  Using pseudocode, this would be
-    </t>
-  </list>
-</t>
-<figure><artwork>
-result = ""
+<figure><preamble>
+   For each URI reference (R), the following pseudocode describes an
+   algorithm for transforming R into its target (T), which is either
+   an absolute URI or the current document, and R's optional fragment:
+</preamble>
+<artwork>
+(R.scheme, R.authority, R.path, R.query, fragment) = parse(R);
+   -- The URI reference is parsed into the four components and
+   -- fragment identifier, as described in Section 4.3.
 
-if scheme is defined then
-   append scheme to result
-   append ":" to result
+if ((not validating) and (R.scheme == Base.scheme)) then
+   -- For compatibility, a non-validating parser may ignore a scheme
+   -- in the reference if it is identical to the base URI's scheme.
+   undefine(R.scheme);
+endif;
 
-if authority is defined then
-   append "//" to result
-   append authority to result
+if defined(R.scheme) then
+   T.scheme    = R.scheme;
+   T.authority = R.authority;
+   T.path      = R.path;
+   T.query     = R.query;
+else
+   if defined(R.authority) then
+      T.authority = R.authority;
+      T.path      = R.path;
+      T.query     = R.query;
+   else
+      if (R.path == "") then
+         if defined(R.query) then
+            T.path  = Base.path;
+            T.query = R.query;
+         else
+            -- An empty reference refers to the current document
+            return (current_document, fragment);
+         endif;
+      else
+         if (R.path starts-with "/") then
+            T.path = R.path;
+         else
+            T.path = merge(Base.path, R.path);
+         endif;
+         T.query = R.query;
+      endif;
+      T.authority = Base.authority;
+   endif;
+   T.scheme = Base.scheme;
+endif;
 
-append path to result
-
-if query is defined then
-   append "?" to result
-   append query to result
-
-if fragment is defined then
-   append "#" to result
-   append fragment to result
-
-return result
+return (T, fragment);
 </artwork></figure>
 <t>
-  <list>
-    <t>
-      Note that we must be careful to preserve the distinction between a
-      component that is undefined, meaning that its separator was not
-      present in the reference, and a component that is empty, meaning
-      that the separator was present and was immediately followed by the
-      next component separator or the end of the reference.
-    </t>
+The pseudocode above refers to a merge routine for merging a
+relative-path reference with the path of the base URI to obtain the
+target path.  Although there are many ways to do this, we will describe
+a simple method using a separate string buffer:
+  <list style="numbers">
+  <t>
+All but the last segment of the base URI's path component is
+copied to the buffer.  In other words, any characters after the
+last (right-most) slash character, if any, are excluded.
+If the base URI's path component is the empty string, then
+a single slash character ("/") is copied to the buffer.
+  </t>
+  <t>
+The reference's path component is appended to the buffer
+string.
+  </t>
+  <t>
+All occurrences of "./", where "." is a complete path segment,
+are removed from the buffer string.
+  </t>
+  <t>
+If the buffer string ends with "." as a complete path segment,
+that "." is removed.
+  </t>
+  <t>
+All occurrences of "&lt;segment&gt;/../", where &lt;segment&gt; is a
+complete path segment not equal to "..", are removed from the
+buffer string.  Removal of these path segments is performed
+iteratively, removing the leftmost matching pattern on each
+iteration, until no matching pattern remains.
+  </t>
+  <t>
+If the buffer string ends with "&lt;segment&gt;/..", where &lt;segment&gt;
+is a complete path segment not equal to "..", that
+"&lt;segment&gt;/.." is removed.
+  </t>
+  <t>
+If the resulting buffer string still begins with one or more
+complete path segments of "..", then the reference is
+considered to be in error.  Implementations may handle this
+error by retaining these components in the resolved path (i.e.,
+treating them as part of the final URI), by removing them from
+the resolved path (i.e., discarding relative levels above the
+root), or by avoiding traversal of the reference.
+  </t>
+  <t>
+The remaining buffer string is the target URI's path component.
+  </t>
   </list>
 </t>
 <t>
-   The above algorithm is intended to provide an example by which the
-   output of implementations can be tested -- implementation of the
-   algorithm itself is not required.  For example, some systems may find
-   it more efficient to implement step 6 as a pair of segment stacks
-   being merged, rather than as a series of string pattern replacements.
-</t>
-<t>
+   Some systems may find it more efficient to implement the merge
+   algorithm as a pair of path segment stacks being merged, rather
+   than as a series of string pattern replacements.
   <list>
     <t>
       Note: Some WWW client applications will fail to separate the
       reference's query component from its path component before merging
-      the base and reference paths in step 6 above.  This may result in
-      a loss of information if the query component contains the strings
-      "/../" or "/./".
+      the base and reference paths.  This may result in a loss of
+      information if the query component contains the strings "/../" or "/./".
     </t>
   </list>
 </t>
+<figure><preamble>
+The resulting target URI components and fragment can be
+recombined to provide the absolute form of the URI reference.
+Using pseudocode, this would be:
+</preamble><artwork>
+result = ""
+
+if defined(T.scheme) then
+   append T.scheme to result;
+   append ":" to result;
+endif;
+
+if defined(T.authority) then
+   append "//" to result;
+   append T.authority to result;
+endif;
+
+append T.path to result;
+
+if defined(T.query) then
+   append "?" to result;
+   append T.query to result;
+endif;
+
+if defined(fragment) then
+   append "#" to result;
+   append fragment to result;
+endif;
+
+return result;
+</artwork><postamble>
+Note that we must be careful to preserve the distinction between a
+component that is undefined, meaning that its separator was not
+present in the reference, and a component that is empty, meaning
+that the separator was present and was immediately followed by the
+next component separator or the end of the reference.
+</postamble></figure>
 <t>
    Resolution examples are provided in Appendix C.
 </t>
@@ -1675,6 +1676,48 @@ return result
 <seriesInfo name='RFC' value='1866' />
 </reference>
 
+<reference anchor='RFC2396'>
+<front>
+<title abbrev='URI Generic Syntax'>Uniform Resource Identifiers (URI): Generic Syntax</title>
+<author initials='T.' surname='Berners-Lee' fullname='Tim Berners-Lee'>
+<organization abbrev='MIT/LCS'>World Wide Web Consortium</organization>
+<address>
+<postal>
+<street>MIT Laboratory for Computer Science, NE43-356</street>
+<street>545 Technology Square</street>
+<city>Cambridge</city>
+<region>MA</region>
+<code>02139</code></postal>
+<facsimile>+1(617)258-8682</facsimile>
+<email>timbl@w3.org</email></address></author>
+<author initials='R.T.' surname='Fielding' fullname='Roy T. Fielding'>
+<organization abbrev='U.C. Irvine'>Department of Information and Computer Science</organization>
+<address>
+<postal>
+<street>University of California, Irvine</street>
+<city>Irvine</city>
+<region>CA</region>
+<code>92697-3425</code></postal>
+<facsimile>+1(949)824-1715</facsimile>
+<email>fielding@ics.uci.edu</email></address></author>
+<author initials='L.' surname='Masinter' fullname='Larry Masinter'>
+<organization abbrev='Xerox Corporation'>Xerox PARC</organization>
+<address>
+<postal>
+<street>3333 Coyote Hill Road</street>
+<city>Palo Alto</city>
+<region>CA</region>
+<code>94034</code></postal>
+<facsimile>+1(415)812-4333</facsimile>
+<email>masinter@parc.xerox.com</email></address></author>
+<date month='August' year='1998' />
+<area>Applications</area>
+<keyword>resource</keyword>
+<keyword>URI</keyword>
+</front>
+<seriesInfo name='RFC' value='2396' />
+</reference>
+
 <reference anchor='RFC1808'>
 <front>
 <title>Relative Uniform Resource Locators</title>
@@ -1861,6 +1904,7 @@ Science, University of California, Irvine</organization>
 </reference>
 
 </references>
+
 <section title="Collected BNF for URI">
 <figure><artwork>
 URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
@@ -1989,7 +2033,7 @@ fragment  = $9
 </artwork></figure>
 <t>
    and, going in the opposite direction, we can recreate a URI reference
-   from its components using the algorithm in step 7 of Section 5.2.
+   from its components using the algorithm of Section 5.2.
 </t>
 </section>
 
@@ -2012,7 +2056,7 @@ g             =  http://a/b/c/g
 g/            =  http://a/b/c/g/
 /g            =  http://a/g
 //g           =  http://g
-?y            =  http://a/b/c/?y
+?y            =  http://a/b/c/d;p?y
 g?y           =  http://a/b/c/g?y
 #s            =  (current document)#s
 g#s           =  http://a/b/c/g#s
@@ -2085,13 +2129,11 @@ g;x=1/./y     =  http://a/b/c/g;x=1/y
 g;x=1/../y    =  http://a/b/c/y
 </artwork></figure>
 <t>
-   All client applications remove the query component from the base URI
-   before resolving relative URI.  However, some applications fail to
-   separate the reference's query and/or fragment components from a
-   relative path before merging it with the base path.  This error is
-   rarely noticed, since typical usage of a fragment never includes the
-   hierarchy ("/") character, and the query component is not normally
-   used within relative references.
+   Some applications fail to separate the reference's query and/or
+   fragment components from a relative path before merging it with
+   the base path.  This error is rarely noticed, since typical usage
+   of a fragment never includes the hierarchy ("/") character, and the
+   query component is not normally used within relative references.
 </t>
 <figure><artwork>
 g?y/./x       =  http://a/b/c/g?y/./x
@@ -2102,8 +2144,8 @@ g#s/../x      =  http://a/b/c/g#s/../x
 <t>
    Some parsers allow the scheme name to be present in a relative URI if
    it is the same as the base URI scheme.  This is considered to be a
-   loophole in prior specifications of partial URI <xref target="RFC1630"/>. Its use
-   should be avoided.
+   loophole in prior specifications of partial URI <xref target="RFC1630"/>.
+   Its use should be avoided, but is allowed for backwards compatibility.
 </t>
 <figure><artwork>
 http:g        =  http:g           ; for validating parsers
@@ -2266,15 +2308,27 @@ none yet
 
 <section title="Modifications from RFC 2396">
 <t>
-The relative path resolution algorithm of section 5.2, step 6a, has
-been corrected to account for a base URI with no path.
-</t>
-<t>
 The BNF of hier_part and relativeURI (Section 3) has been corrected
 to allow a relative URI path to be empty.  This also allows an
 absoluteURI to consist of nothing after the "scheme:", as is present
 in practice with the "DAV:" namespace <xref target="RFC2518"/> and
 the "about:" URI used by many browser implementations.
+</t>
+<t>
+The resolving relative references algorithm of <xref target="RFC2396"/>
+has been rewritten using pseudocode for this revision to improve clarity
+and fix the following issues:
+  <list style="symbols">
+  <t>
+    <xref target="RFC2396"/> section 5.2, step 6a, failed to account for
+    a base URI with no path.
+  </t>
+  <t>
+    Restored the behavior of <xref target="RFC1808"/> where, if the
+    the reference contains an empty path and a defined query component,
+    then the target URI inherits the base URI's path component.
+  </t>
+  </list>
 </t>
 </section>
 </section>

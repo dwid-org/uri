@@ -103,7 +103,7 @@ name mapping.
  <type>relativeURI</type>
  <name>003-relative-query</name>
  <title>inconsistent resolution of query-only relative URI</title>
- <status>pending</status>
+ <status>fixed 00</status>
  <report>
   <author email="msabin_AT_milessabin.com">Miles Sabin</author>
   <date sort="19990323">23 Mar 1999</date>
@@ -199,6 +199,15 @@ Thank you.
 &lt;/html&gt;
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021014">14 Oct 2002</date>
+  <where>draft 00</where>
+<pre>
+Fixed by rewriting the algorithm as pseudocode and restoring the
+original RFC 1808 behavior, with the example changed accordingly.
+</pre>
+ </action>
 </issue>
 
 <issue>
@@ -1030,7 +1039,7 @@ draft-00:
  <type>syntax: fragment</type>
  <name>015-fragment-handling</name>
  <title>clarify how URI processor is expected to handle fragment</title>
- <status>pending</status>
+ <status>fixed 00</status>
  <report>
   <author email="jason_AT_injektilo.org">Jason Diamond</author>
   <date sort="20020111">11 Jan 2002</date>
@@ -1071,6 +1080,14 @@ fetching any resources but I do need to convert all URI references to their
 absolute form and would like that encapsulated into a single function.
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021014">14 Oct 2002</date>
+  <where>draft 00</where>
+<pre>
+Fixed by rewriting the algorithm as pseudocode.
+</pre>
+ </action>
 </issue>
 
 <issue>
