@@ -192,9 +192,8 @@ table.resolution
 <link href="#rfc.section.8" title="8 Acknowledgments" rel="Chapter">
 <link href="#rfc.section.A" title="A Collected ABNF for URI" rel="Appendix">
 <link href="#rfc.section.B" title="B Parsing a URI Reference with a Regular Expression" rel="Appendix">
-<link href="#rfc.section.C" title="C Embedding the Base URI in HTML documents" rel="Appendix">
-<link href="#rfc.section.D" title="D Delimiting a URI in Context" rel="Appendix">
-<link href="#rfc.section.E" title="E Summary of Non-editorial Changes" rel="Appendix">
+<link href="#rfc.section.C" title="C Delimiting a URI in Context" rel="Appendix">
+<link href="#rfc.section.D" title="D Summary of Non-editorial Changes" rel="Appendix">
 <link href="http://purl.org/dc" rel="schema.DC">
 <meta content="uniform resource identifier,URI,URL,URN,WWW,resource" name="keywords">
 </head>
@@ -938,16 +937,6 @@ is available at
 
 
 <b>C&nbsp;
-            <a href="#html-base">Embedding the Base URI in HTML documents</a></b>
-<br>
-
-
-
-
-
-
-
-<b>D&nbsp;
             <a href="#delimiting">Delimiting a URI in Context</a></b>
 <br>
 
@@ -964,12 +953,12 @@ is available at
 
 
 
-<b>E&nbsp;
+<b>D&nbsp;
             <a href="#changes">Summary of Non-editorial Changes</a></b>
 <br>
 
 
-<b>&nbsp;E.1&nbsp;
+<b>&nbsp;D.1&nbsp;
             <a href="#additions">Additions</a></b>
 <br>
 
@@ -979,7 +968,7 @@ is available at
 
 
 
-<b>&nbsp;E.2&nbsp;
+<b>&nbsp;D.2&nbsp;
             <a href="#modifications">Modifications from RFC 2396</a></b>
 <br>
 
@@ -1040,7 +1029,7 @@ by <a href="#RFC2717" title="Registration Procedures for URL Scheme Names">[RFC2
 <a name="rfc.section.1.p.3"></a>
 </div>
 <p>
-All significant changes from RFC 2396 are noted in <a href="#changes">appendix&nbsp;E</a>.
+All significant changes from RFC 2396 are noted in <a href="#changes">appendix&nbsp;D</a>.
 </p>
 <h2>
 <a name="rfc.iref.1"></a><a name="rfc.iref.2"></a><a name="rfc.iref.3"></a><a name="rfc.section.1.1">1.1</a>&nbsp;
@@ -1330,8 +1319,8 @@ are defined by the protocols that make use of URIs, not by this
 specification.  However, we do use a few general terms for describing
 common operations on URIs.  URI "resolution" is the process of determining
 an access mechanism and the appropriate parameters necessary to dereference
-a URI; such resolution may require several iterations.  Using that access
-mechanism to perform some action on the URI's resource is termed a
+a URI; such resolution may require several iterations.  Use of that access
+mechanism to perform an action on the URI's resource is termed a
 "dereference" of the URI.
 </p>
 <div>
@@ -1399,7 +1388,7 @@ generic parsing algorithms.
 </div>
 <p>
 The URI syntax reserves the slash ("/"), question-mark ("?"), and
-crosshatch ("#") characters for the purpose of delimiting components
+number-sign ("#") characters for the purpose of delimiting components
 that are significant to the generic parser's hierarchical interpretation
 of an identifier.  In addition to aiding the readability of such
 identifiers through the consistent use of familiar syntax, this
@@ -1539,7 +1528,7 @@ When a URI scheme defines a component that represents textual data
 consisting of characters from the Unicode (ISO 10646) character
 set, we recommend that the data be encoded first as octets according
 to the UTF-8 <a href="#UTF-8" title="UTF-8, a transformation format of ISO 10646">[UTF-8]</a> character encoding, and then
-escaping any octets that are not in the unreserved character set.
+escaping only those octets that are not in the unreserved character set.
 </p>
 <h2>
 <a name="rfc.section.2.2">2.2</a>&nbsp;
@@ -1587,13 +1576,13 @@ that is responsible for interpreting it during URI resolution.
 <a name="rfc.section.2.2.p.3"></a>
 </div>
 <p>
-The slash ("/"), question-mark ("?"), and crosshatch ("#") characters
+The slash ("/"), question-mark ("?"), and number-sign ("#") characters
 are reserved in all URIs for the purpose of delimiting components
 that are significant to the generic parser's hierarchical interpretation
 of an identifier.  The hierarchical prefix of a URI, wherein the
 slash ("/") character signifies a hierarchy delimiter, extends from
 the <a href="#scheme">scheme</a> through to the first
-question-mark ("?"), crosshatch ("#"), or the end of the URI string.
+question-mark ("?"), number-sign ("#"), or the end of the URI string.
 In other words, the slash ("/") character is not treated as a
 hierarchical separator within the query (<a href="#query">section&nbsp;3.4</a>) and
 fragment (<a href="#fragment">section&nbsp;3.5</a>) components of a URI, but is
@@ -1611,7 +1600,7 @@ outside the scope of this specification.
 
 <a name="rfc.iref.32"></a>
 <a name="rfc.iref.33"></a>
-Data characters that are allowed in a URI but do not have a reserved
+Characters that are allowed in a URI but do not have a reserved
 purpose are called unreserved.  These include uppercase and lowercase
 letters, decimal digits, and a limited set of punctuation marks and
 symbols.
@@ -1930,7 +1919,7 @@ or server address, along with optional port and user information.
 <p>
 The authority component is preceded by a double slash ("//") and is
 terminated by the next slash ("/"), question-mark ("?"), or
-crosshatch ("#") character, or by the end of the URI.
+number-sign ("#") character, or by the end of the URI.
 <a name="rfc.iref.62"></a>
 <a name="rfc.iref.63"></a>
 <a name="rfc.iref.64"></a>
@@ -2158,7 +2147,7 @@ the URI path is that part of the parsed URI string matching either
 the abs-path or the rel-path production, since they are mutually
 exclusive for any given URI and can be parsed as a single component.
 The path is terminated by the first question-mark ("?") or
-crosshatch ("#") character, or by the end of the URI.
+number-sign ("#") character, or by the end of the URI.
 <a name="rfc.iref.98"></a>
 <a name="rfc.iref.99"></a>
 <a name="rfc.iref.100"></a>
@@ -2184,20 +2173,6 @@ has a path of "fred@example.com".
 <a name="rfc.section.3.3.p.3"></a>
 </div>
 <p>
-Within a path segment, the semicolon (";") and equals ("=") reserved
-characters are often used for delimiting parameters and parameter values
-applicable to that segment.  The comma (",") reserved character is often
-used for similar purposes.  For example, one URI generator might use
-a segment like "name;v=1.1" to indicate a reference to version 1.1 of "name",
-whereas another might use a segment like "name,1.1" to indicate the same.
-Parameter types may be defined by scheme-specific semantics, but in most
-cases the meaning of a parameter is specific to the URI originator.
-Parameters are not significant to the parsing of relative references.
-</p>
-<div>
-<a name="rfc.section.3.3.p.4"></a>
-</div>
-<p>
 The path segments "." and ".." are defined for relative reference within
 the path name hierarchy.  They are intended for use at the beginning of
 a relative path reference (<a href="#relative-uri">section&nbsp;4.2</a>) for indicating
@@ -2208,6 +2183,23 @@ respectively.  Unlike a file system, however, these dot-segments are
 only interpreted within the URI path hierarchy and are removed
 as part of the URI normalization or resolution process, as described in
 <a href="#absolutize">section&nbsp;5.2</a>.
+</p>
+<div>
+<a name="rfc.section.3.3.p.4"></a>
+</div>
+<p>
+Aside from dot-segments in hierarchical paths, a path segment is
+considered opaque by the generic syntax.  URI generating applications
+often use the reserved characters allowed in segment for the purpose
+of delimiting scheme-specific or generator-specific sub-components.
+For example, the semicolon (";") and equals ("=") reserved characters
+are often used for delimiting parameters and parameter values
+applicable to that segment.  The comma (",") reserved character is often
+used for similar purposes.  For example, one URI generator might use
+a segment like "name;v=1.1" to indicate a reference to version 1.1 of "name",
+whereas another might use a segment like "name,1.1" to indicate the same.
+Parameter types may be defined by scheme-specific semantics, but in most
+cases the meaning of a parameter is specific to the URI originator.
 </p>
 <h2>
 <a name="rfc.section.3.4">3.4</a>&nbsp;
@@ -2223,7 +2215,7 @@ The query component contains non-hierarchical data that, along with data
 in the <a href="#path">path</a> component, serves to identify a
 resource within the scope of that URI's scheme and naming authority (if any).
 The query component is indicated by the first question-mark ("?") character 
-and terminated by a crosshatch ("#") character or by the end of the URI.
+and terminated by a number-sign ("#") character or by the end of the URI.
 <a name="rfc.iref.103"></a>
 <a name="rfc.iref.104"></a>
 
@@ -2275,7 +2267,7 @@ The identified secondary resource may be some portion or subset of
 the primary resource, some view on representations of the primary
 resource, or some other resource that is merely named within the primary
 resource.  A fragment identifier component is indicated by the presence of
-a crosshatch ("#") character and terminated by the end of the URI string.
+a number-sign ("#") character and terminated by the end of the URI string.
 <a name="rfc.iref.106"></a>
 <a name="rfc.iref.107"></a>
 
@@ -2288,17 +2280,17 @@ a crosshatch ("#") character and terminated by the end of the URI string.
 <p>
 The semantics of a fragment identifier are defined by the set of
 representations that might result from a retrieval action on the primary
-resource.  Therefore, the format and interpretation of a fragment identifier
-component is dependent on the media type <a href="#RFC2046" title="Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types">[RFC2046]</a> of a
-potential retrieval result.  Individual media types may define their own
-restrictions on, or structure within, the fragment identifier syntax
-for specifying different types of subsets, views, or external references
-that are identifiable as fragments by that media type.  If the primary
-resource is represented by multiple media types, as is often the case
-for resources whose representation is selected based on attributes of
-the retrieval request, then interpretation of the given fragment identifier
-must be consistent across all of those media types in order for it to be
-viable as an identifier.
+resource. The fragment's format and resolution is therefore dependent on
+the media type <a href="#RFC2046" title="Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types">[RFC2046]</a> of the retrieved representation,
+even though such a retrieval is only performed if the URI is dereferenced.
+Individual media types may define their own restrictions on, or structure
+within, the fragment identifier syntax for specifying different types of
+subsets, views, or external references that are identifiable as secondary
+resources by that media type.  If the primary resource is represented by
+multiple media types, as is often the case for resources whose representation
+is selected based on attributes of the retrieval request, then interpretation
+of the fragment identifier must be consistent across all of those
+media types in order for it to be viable as an identifier.
 </p>
 <div>
 <a name="rfc.section.3.5.p.3"></a>
@@ -2311,7 +2303,8 @@ that the primary resource is accessible.  However, if that URI is used
 in a context that does call for retrieval and is not a same-document
 reference (<a href="#same-document">section&nbsp;4.4</a>), the fragment identifier is
 only valid as a reference if a retrieval action on the primary resource
-succeeds and results in a representation that defines the fragment.
+succeeds and results in a representation for which the fragment identifier
+is meaningful.
 </p>
 <div>
 <a name="rfc.section.3.5.p.4"></a>
@@ -2476,7 +2469,7 @@ to a URI that is, aside from its fragment component (if any),
 identical to the base URI (<a href="#base-uri">section&nbsp;5.1</a>), that reference
 is called a "same-document" reference.  The most frequent examples
 of same-document references are relative references that are empty
-or include only the crosshatch ("#") separator followed by a fragment
+or include only the number-sign ("#") separator followed by a fragment
 identifier.
 </p>
 <div>
@@ -2617,9 +2610,7 @@ USENET news).
 It is beyond the scope of this document to specify how, for each
 media type, the base URI can be embedded.  It is assumed that user
 agents manipulating such media types will be able to obtain the
-appropriate syntax from that media type's specification.  An example
-of how the base URI can be embedded in the Hypertext Markup Language
-(HTML) <a href="#HTML" title="Hypertext Markup Language (HTML 4.01) Specification">[HTML]</a> is provided in <a href="#html-base">appendix&nbsp;C</a>.
+appropriate syntax from that media type's specification.
 </p>
 <div>
 <a name="rfc.section.5.1.1.p.3"></a>
@@ -3707,11 +3698,6 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
 
 
 <tr>
-<td class="topnowrap"><b><a name="HTML">[HTML]</a></b></td><td class="top">Raggett, D.,&nbsp;Le Hors, A. and Jacobs, I.,&nbsp;"Hypertext Markup Language (HTML 4.01) Specification", December&nbsp;1999.</td>
-</tr>
-
-
-<tr>
 <td class="topnowrap"><b><a name="Siedzik">[Siedzik]</a></b></td><td class="top">Siedzik, R.,&nbsp;"Semantic Attacks: What's in a URL?", April&nbsp;2001.</td>
 </tr>
 
@@ -3934,71 +3920,10 @@ from its components using the algorithm of <a href="#recomposition">section&nbsp
 </table>
 <h1>
 <a name="rfc.section.C">C</a>&nbsp;
-    <a name="html-base">Embedding the Base URI in HTML documents</a>
-</h1>
-<div>
-<a name="rfc.section.C.p.1"></a>
-</div>
-<p>
-It is useful to consider an example of how the base URI of a document
-can be embedded within the document's content.  In this appendix, we
-describe how documents written in the Hypertext Markup Language
-(HTML) <a href="#HTML" title="Hypertext Markup Language (HTML 4.01) Specification">[HTML]</a> can include an embedded base URI.  This appendix
-does not form a part of the URI specification and should not be
-considered as anything more than a descriptive example.
-</p>
-<div>
-<a name="rfc.section.C.p.2"></a>
-</div>
-<p>
-HTML defines a special element "BASE" which, when present in the
-"HEAD" portion of a document, signals that the parser should use the
-BASE element's "HREF" attribute as the base URI for resolving any
-relative URI.  The "HREF" attribute must be an absolute-URI.  Note
-that, in HTML, element and attribute names are case-insensitive.
-For example:
-</p>
-<div>
-<a name="rfc.figure.u.47"></a>
-</div>
-<pre>   &lt;!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
-   &lt;HTML&gt;&lt;HEAD&gt;
-   &lt;TITLE&gt;An example HTML document&lt;/TITLE&gt;
-   &lt;BASE href="http://www.example.com/Test/a/b/c"&gt;
-   &lt;/HEAD&gt;&lt;BODY&gt;
-   ... &lt;A href="../x"&gt;a hypertext anchor&lt;/A&gt; ...
-   &lt;/BODY&gt;&lt;/HTML&gt;
-</pre>
-<div>
-<a name="rfc.section.C.p.4"></a>
-</div>
-<p>
-A parser reading the example document should interpret the given
-relative URI "../x" as representing the URI
-</p>
-<div>
-<a name="rfc.figure.u.48"></a>
-</div>
-<pre>   &lt;http://www.example.com/Test/a/x&gt;
-</pre>
-<div>
-<a name="rfc.section.C.p.6"></a>
-</div>
-<p>
-regardless of the context in which the example document was obtained.
-</p>
-<hr class="noprint">
-<table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
-<tr>
-<td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
-</tr>
-</table>
-<h1>
-<a name="rfc.section.D">D</a>&nbsp;
     <a name="delimiting">Delimiting a URI in Context</a>
 </h1>
 <div>
-<a name="rfc.section.D.p.1"></a>
+<a name="rfc.section.C.p.1"></a>
 </div>
 <p>
 URIs are often transmitted through formats that do not provide a clear
@@ -4010,7 +3935,7 @@ delimit the URI from the rest of the text, and in particular from
 punctuation marks that might be mistaken for part of the URI.
 </p>
 <div>
-<a name="rfc.section.D.p.2"></a>
+<a name="rfc.section.C.p.2"></a>
 </div>
 <p>
 In practice, URI are delimited in a variety of ways, but usually
@@ -4018,18 +3943,18 @@ within double-quotes "http://example.com/", angle brackets
 &lt;http://example.com/&gt;, or just using whitespace
 </p>
 <div>
-<a name="rfc.figure.u.49"></a>
+<a name="rfc.figure.u.47"></a>
 </div>
 <pre>   http://example.com/
 </pre>
 <div>
-<a name="rfc.section.D.p.4"></a>
+<a name="rfc.section.C.p.4"></a>
 </div>
 <p>
 These wrappers do not form part of the URI.
 </p>
 <div>
-<a name="rfc.section.D.p.5"></a>
+<a name="rfc.section.C.p.5"></a>
 </div>
 <p>
 In the case where a fragment identifier is associated with a URI
@@ -4037,7 +3962,7 @@ reference, the fragment would be placed within the brackets as well
 (separated from the URI with a "#" character).
 </p>
 <div>
-<a name="rfc.section.D.p.6"></a>
+<a name="rfc.section.C.p.6"></a>
 </div>
 <p>
 In some cases, extra whitespace (spaces, line-breaks, tabs, etc.) may
@@ -4045,7 +3970,7 @@ need to be added to break a long URI across lines. The whitespace
 should be ignored when extracting the URI.
 </p>
 <div>
-<a name="rfc.section.D.p.7"></a>
+<a name="rfc.section.C.p.7"></a>
 </div>
 <p>
 No whitespace should be introduced after a hyphen ("-") character.
@@ -4056,14 +3981,14 @@ all unescaped whitespace around the line break, and should be aware
 that the hyphen may or may not actually be part of the URI.
 </p>
 <div>
-<a name="rfc.section.D.p.8"></a>
+<a name="rfc.section.C.p.8"></a>
 </div>
 <p>
 Using &lt;&gt; angle brackets around each URI is especially recommended as
 a delimiting style for a URI that contains whitespace.
 </p>
 <div>
-<a name="rfc.section.D.p.9"></a>
+<a name="rfc.section.C.p.9"></a>
 </div>
 <p>
 The prefix "URL:" (with or without a trailing space) was formerly
@@ -4072,14 +3997,14 @@ designators, though it is not commonly used in practice and is
 no longer recommended.
 </p>
 <div>
-<a name="rfc.section.D.p.10"></a>
+<a name="rfc.section.C.p.10"></a>
 </div>
 <p>
 For robustness, software that accepts user-typed URI should attempt
 to recognize and strip both delimiters and embedded whitespace.
 </p>
 <div>
-<a name="rfc.figure.u.50"></a>
+<a name="rfc.figure.u.48"></a>
 </div>
 <p>
 For example, the text:
@@ -4090,13 +4015,13 @@ For example, the text:
    ietf/uri/historical.html#WARNING&gt;.
 </pre>
 <div>
-<a name="rfc.section.D.p.12"></a>
+<a name="rfc.section.C.p.12"></a>
 </div>
 <p>
 contains the URI references
 </p>
 <div>
-<a name="rfc.figure.u.51"></a>
+<a name="rfc.figure.u.49"></a>
 </div>
 <pre>   http://www.w3.org/Addressing/
    ftp://ds.internic.net/rfc/
@@ -4109,15 +4034,15 @@ contains the URI references
 </tr>
 </table>
 <h1>
-<a name="rfc.section.E">E</a>&nbsp;
+<a name="rfc.section.D">D</a>&nbsp;
     <a name="changes">Summary of Non-editorial Changes</a>
 </h1>
 <h2>
-<a name="rfc.section.E.1">E.1</a>&nbsp;
+<a name="rfc.section.D.1">D.1</a>&nbsp;
     <a name="additions">Additions</a>
 </h2>
 <div>
-<a name="rfc.section.E.1.p.1"></a>
+<a name="rfc.section.D.1.p.1"></a>
 </div>
 <p>
 IPv6 literals have been added to the list of possible identifiers
@@ -4132,7 +4057,7 @@ directly specify the characters allowed rather than be defined in
 terms of uric.
 </p>
 <div>
-<a name="rfc.section.E.1.p.2"></a>
+<a name="rfc.section.D.1.p.2"></a>
 </div>
 <p>
 Since <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a> defers to <a href="#RFC3513" title="Internet Protocol Version 6 (IPv6) Addressing Architecture">[RFC3513]</a>
@@ -4146,7 +4071,7 @@ improved to better specify length limitations and partially-qualified
 domain names.
 </p>
 <div>
-<a name="rfc.section.E.1.p.3"></a>
+<a name="rfc.section.D.1.p.3"></a>
 </div>
 <p>
 
@@ -4156,18 +4081,18 @@ and discussion within the W3C Technical Architecture Group.  Likewise,
 <a href="#encoding">section&nbsp;2.1</a> on the encoding of characters has been replaced.
 </p>
 <div>
-<a name="rfc.section.E.1.p.4"></a>
+<a name="rfc.section.D.1.p.4"></a>
 </div>
 <p>
 An ABNF production for URI has been introduced to correspond to the
 common usage of the term: an absolute URI with optional fragment.
 </p>
 <h2>
-<a name="rfc.section.E.2">E.2</a>&nbsp;
+<a name="rfc.section.D.2">D.2</a>&nbsp;
     <a name="modifications">Modifications from RFC 2396</a>
 </h2>
 <div>
-<a name="rfc.section.E.2.p.1"></a>
+<a name="rfc.section.D.2.p.1"></a>
 </div>
 <p>
 The ad-hoc BNF syntax has been replaced with the ABNF of
@@ -4175,7 +4100,7 @@ The ad-hoc BNF syntax has been replaced with the ABNF of
 formerly included underscore characters to be renamed with a dash instead.
 </p>
 <div>
-<a name="rfc.section.E.2.p.2"></a>
+<a name="rfc.section.D.2.p.2"></a>
 </div>
 <p>
 Section 2.2 on reserved characters has been rewritten to clearly explain
@@ -4183,11 +4108,11 @@ what characters are reserved, when they are reserved, and why they are
 reserved even when not used as delimiters by the generic syntax.
 Likewise, the section on escaped characters has been rewritten, and
 URI normalizers are now given license to unescape any octets
-corresponding to unreserved characters.  The crosshatch ("#") character
+corresponding to unreserved characters.  The number-sign ("#") character
 has been moved back from the excluded delims to the reserved set.
 </p>
 <div>
-<a name="rfc.section.E.2.p.3"></a>
+<a name="rfc.section.D.2.p.3"></a>
 </div>
 <p>
 The ABNF for URI and URI-reference has been redesigned to make them
@@ -4204,7 +4129,7 @@ relative-URI with a colon in the first segment is now explained
 and disambiguated in the section defining relative-URI.
 </p>
 <div>
-<a name="rfc.section.E.2.p.4"></a>
+<a name="rfc.section.D.2.p.4"></a>
 </div>
 <p>
 The ABNF of hier-part and relative-URI has been corrected
@@ -4216,7 +4141,7 @@ The ambiguity regarding the parsing of net-path, abs-path, and rel-path
 is now explained and disambiguated in the same section.
 </p>
 <div>
-<a name="rfc.section.E.2.p.5"></a>
+<a name="rfc.section.D.2.p.5"></a>
 </div>
 <p>
 Registry-based naming authorities that use the generic syntax
@@ -4228,7 +4153,7 @@ The reg_name, server, and hostport productions have been removed
 to simplify parsing of the URI syntax.
 </p>
 <div>
-<a name="rfc.section.E.2.p.6"></a>
+<a name="rfc.section.D.2.p.6"></a>
 </div>
 <p>
 The ABNF of qualified has been simplified to remove a parsing ambiguity
@@ -4238,7 +4163,7 @@ The ambiguity regarding the parsing of host as IPv4address or hostname
 is now explained and disambiguated in the same section.
 </p>
 <div>
-<a name="rfc.section.E.2.p.7"></a>
+<a name="rfc.section.D.2.p.7"></a>
 </div>
 <p>
 The resolving relative references algorithm of <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>

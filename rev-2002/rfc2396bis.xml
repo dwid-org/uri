@@ -342,8 +342,8 @@ are defined by the protocols that make use of URIs, not by this
 specification.  However, we do use a few general terms for describing
 common operations on URIs.  URI "resolution" is the process of determining
 an access mechanism and the appropriate parameters necessary to dereference
-a URI; such resolution may require several iterations.  Using that access
-mechanism to perform some action on the URI's resource is termed a
+a URI; such resolution may require several iterations.  Use of that access
+mechanism to perform an action on the URI's resource is termed a
 "dereference" of the URI.
 </t>
 <iref item="retrieval" primary="true"/>        
@@ -399,7 +399,7 @@ generic parsing algorithms.
 </t>
 <t>
 The URI syntax reserves the slash ("/"), question-mark ("?"), and
-crosshatch ("#") characters for the purpose of delimiting components
+number-sign ("#") characters for the purpose of delimiting components
 that are significant to the generic parser's hierarchical interpretation
 of an identifier.  In addition to aiding the readability of such
 identifiers through the consistent use of familiar syntax, this
@@ -512,7 +512,7 @@ When a URI scheme defines a component that represents textual data
 consisting of characters from the Unicode (ISO 10646) character
 set, we recommend that the data be encoded first as octets according
 to the UTF-8 <xref target="UTF-8"/> character encoding, and then
-escaping any octets that are not in the unreserved character set.
+escaping only those octets that are not in the unreserved character set.
 </t>
 </section>
 
@@ -548,13 +548,13 @@ to a reserved character cannot be unescaped outside the software
 that is responsible for interpreting it during URI resolution.
 </t>
 <t>
-The slash ("/"), question-mark ("?"), and crosshatch ("#") characters
+The slash ("/"), question-mark ("?"), and number-sign ("#") characters
 are reserved in all URIs for the purpose of delimiting components
 that are significant to the generic parser's hierarchical interpretation
 of an identifier.  The hierarchical prefix of a URI, wherein the
 slash ("/") character signifies a hierarchy delimiter, extends from
 the <xref target="scheme">scheme</xref> through to the first
-question-mark ("?"), crosshatch ("#"), or the end of the URI string.
+question-mark ("?"), number-sign ("#"), or the end of the URI string.
 In other words, the slash ("/") character is not treated as a
 hierarchical separator within the query (<xref target="query"/>) and
 fragment (<xref target="fragment"/>) components of a URI, but is
@@ -567,7 +567,7 @@ outside the scope of this specification.
 <figure><preamble>
 <iref item="unreserved" primary="true"/>
 <iref item="mark" primary="true"/>
-Data characters that are allowed in a URI but do not have a reserved
+Characters that are allowed in a URI but do not have a reserved
 purpose are called unreserved.  These include uppercase and lowercase
 letters, decimal digits, and a limited set of punctuation marks and
 symbols.
@@ -813,7 +813,7 @@ or server address, along with optional port and user information.
 <figure><preamble>
 The authority component is preceded by a double slash ("//") and is
 terminated by the next slash ("/"), question-mark ("?"), or
-crosshatch ("#") character, or by the end of the URI.
+number-sign ("#") character, or by the end of the URI.
 <iref item="URI grammar" subitem="authority" primary="true"/>
 <iref item="URI grammar" subitem="userinfo" primary="false"/>
 <iref item="URI grammar" subitem="host" primary="false"/>
@@ -999,7 +999,7 @@ the URI path is that part of the parsed URI string matching either
 the abs-path or the rel-path production, since they are mutually
 exclusive for any given URI and can be parsed as a single component.
 The path is terminated by the first question-mark ("?") or
-crosshatch ("#") character, or by the end of the URI.
+number-sign ("#") character, or by the end of the URI.
 <iref item="URI grammar" subitem="path-segments" primary="true"/>
 <iref item="URI grammar" subitem="segment" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="true"/>
@@ -1017,17 +1017,6 @@ the defined path may be empty (zero length) or opaque (not containing
 any "/" delimiters).  For example, the URI &lt;mailto:fred@example.com&gt;
 has a path of "fred@example.com".
 </t>
-<t>
-Within a path segment, the semicolon (";") and equals ("=") reserved
-characters are often used for delimiting parameters and parameter values
-applicable to that segment.  The comma (",") reserved character is often
-used for similar purposes.  For example, one URI generator might use
-a segment like "name;v=1.1" to indicate a reference to version 1.1 of "name",
-whereas another might use a segment like "name,1.1" to indicate the same.
-Parameter types may be defined by scheme-specific semantics, but in most
-cases the meaning of a parameter is specific to the URI originator.
-Parameters are not significant to the parsing of relative references.
-</t>
 <iref item="dot-segments" primary="true"/>
 <t>
 The path segments "." and ".." are defined for relative reference within
@@ -1041,6 +1030,20 @@ only interpreted within the URI path hierarchy and are removed
 as part of the URI normalization or resolution process, as described in
 <xref target="absolutize"/>.
 </t>
+<t>
+Aside from dot-segments in hierarchical paths, a path segment is
+considered opaque by the generic syntax.  URI generating applications
+often use the reserved characters allowed in segment for the purpose
+of delimiting scheme-specific or generator-specific sub-components.
+For example, the semicolon (";") and equals ("=") reserved characters
+are often used for delimiting parameters and parameter values
+applicable to that segment.  The comma (",") reserved character is often
+used for similar purposes.  For example, one URI generator might use
+a segment like "name;v=1.1" to indicate a reference to version 1.1 of "name",
+whereas another might use a segment like "name,1.1" to indicate the same.
+Parameter types may be defined by scheme-specific semantics, but in most
+cases the meaning of a parameter is specific to the URI originator.
+</t>
 </section>
 
 <section title="Query" anchor="query">
@@ -1050,7 +1053,7 @@ The query component contains non-hierarchical data that, along with data
 in the <xref target="path">path</xref> component, serves to identify a
 resource within the scope of that URI's scheme and naming authority (if any).
 The query component is indicated by the first question-mark ("?") character 
-and terminated by a crosshatch ("#") character or by the end of the URI.
+and terminated by a number-sign ("#") character or by the end of the URI.
 <iref item="URI grammar" subitem="query" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="false"/>
 </preamble><artwork type="abnf">
@@ -1088,7 +1091,7 @@ The identified secondary resource may be some portion or subset of
 the primary resource, some view on representations of the primary
 resource, or some other resource that is merely named within the primary
 resource.  A fragment identifier component is indicated by the presence of
-a crosshatch ("#") character and terminated by the end of the URI string.
+a number-sign ("#") character and terminated by the end of the URI string.
 <iref item="URI grammar" subitem="fragment" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="false"/>
 </preamble><artwork type="abnf">
@@ -1097,17 +1100,17 @@ a crosshatch ("#") character and terminated by the end of the URI string.
 <t>
 The semantics of a fragment identifier are defined by the set of
 representations that might result from a retrieval action on the primary
-resource.  Therefore, the format and interpretation of a fragment identifier
-component is dependent on the media type <xref target="RFC2046"/> of a
-potential retrieval result.  Individual media types may define their own
-restrictions on, or structure within, the fragment identifier syntax
-for specifying different types of subsets, views, or external references
-that are identifiable as fragments by that media type.  If the primary
-resource is represented by multiple media types, as is often the case
-for resources whose representation is selected based on attributes of
-the retrieval request, then interpretation of the given fragment identifier
-must be consistent across all of those media types in order for it to be
-viable as an identifier.
+resource. The fragment's format and resolution is therefore dependent on
+the media type <xref target="RFC2046"/> of the retrieved representation,
+even though such a retrieval is only performed if the URI is dereferenced.
+Individual media types may define their own restrictions on, or structure
+within, the fragment identifier syntax for specifying different types of
+subsets, views, or external references that are identifiable as secondary
+resources by that media type.  If the primary resource is represented by
+multiple media types, as is often the case for resources whose representation
+is selected based on attributes of the retrieval request, then interpretation
+of the fragment identifier must be consistent across all of those
+media types in order for it to be viable as an identifier.
 </t>
 <t>
 As with any URI, use of a fragment identifier component does not imply
@@ -1117,7 +1120,8 @@ that the primary resource is accessible.  However, if that URI is used
 in a context that does call for retrieval and is not a same-document
 reference (<xref target="same-document"/>), the fragment identifier is
 only valid as a reference if a retrieval action on the primary resource
-succeeds and results in a representation that defines the fragment.
+succeeds and results in a representation for which the fragment identifier
+is meaningful.
 </t>
 <t>
 Fragment identifiers have a special role in information systems as
@@ -1243,7 +1247,7 @@ to a URI that is, aside from its fragment component (if any),
 identical to the base URI (<xref target="base-uri"/>), that reference
 is called a "same-document" reference.  The most frequent examples
 of same-document references are relative references that are empty
-or include only the crosshatch ("#") separator followed by a fragment
+or include only the number-sign ("#") separator followed by a fragment
 identifier.
 </t>
 <t>
@@ -1345,9 +1349,7 @@ USENET news).
 It is beyond the scope of this document to specify how, for each
 media type, the base URI can be embedded.  It is assumed that user
 agents manipulating such media types will be able to obtain the
-appropriate syntax from that media type's specification.  An example
-of how the base URI can be embedded in the Hypertext Markup Language
-(HTML) <xref target="HTML"/> is provided in <xref target="html-base"/>.
+appropriate syntax from that media type's specification.
 </t>
 <t>
 A mechanism for embedding the base URI within MIME container types
@@ -2579,23 +2581,6 @@ Science, University of California, Irvine</organization>
 <seriesInfo name='RFC' value='2717' />
 </reference>
 
-<reference anchor='HTML'>
-<front>
-<title>Hypertext Markup Language (HTML 4.01) Specification</title>
-<author initials='D.' surname='Raggett' fullname='Dave Raggett'>
-<organization>W3C/MIT</organization>
-</author>
-<author initials='A.' surname='Le Hors' fullname='Arnaud Le Hors'>
-<organization>W3C/Inria</organization>
-</author>
-<author initials='I.' surname='Jacobs' fullname='Ian Jacobs'>
-<organization>W3C/MIT</organization>
-</author>
-<date month='December' year='1999'></date>
-</front>
-<format type='HTML' target='http://www.w3.org/TR/html401/' />
-</reference>
-
 <reference anchor='Siedzik'>
 <front>
 <title>Semantic Attacks: What's in a URL?</title>
@@ -2689,44 +2674,6 @@ can determine the value of the four components and fragment as
 <t>
 and, going in the opposite direction, we can recreate a URI reference
 from its components using the algorithm of <xref target="recomposition"/>.
-</t>
-</section>
-
-<section title="Embedding the Base URI in HTML documents" anchor="html-base">
-<t>
-It is useful to consider an example of how the base URI of a document
-can be embedded within the document's content.  In this appendix, we
-describe how documents written in the Hypertext Markup Language
-(HTML) <xref target="HTML"/> can include an embedded base URI.  This appendix
-does not form a part of the URI specification and should not be
-considered as anything more than a descriptive example.
-</t>
-<t>
-HTML defines a special element "BASE" which, when present in the
-"HEAD" portion of a document, signals that the parser should use the
-BASE element's "HREF" attribute as the base URI for resolving any
-relative URI.  The "HREF" attribute must be an absolute-URI.  Note
-that, in HTML, element and attribute names are case-insensitive.
-For example:
-</t>
-<figure><artwork>
-   &lt;!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
-   &lt;HTML&gt;&lt;HEAD&gt;
-   &lt;TITLE&gt;An example HTML document&lt;/TITLE&gt;
-   &lt;BASE href="http://www.example.com/Test/a/b/c"&gt;
-   &lt;/HEAD&gt;&lt;BODY&gt;
-   ... &lt;A href="../x"&gt;a hypertext anchor&lt;/A&gt; ...
-   &lt;/BODY&gt;&lt;/HTML&gt;
-</artwork></figure>
-<t>
-A parser reading the example document should interpret the given
-relative URI "../x" as representing the URI
-</t>
-<figure><artwork>
-   &lt;http://www.example.com/Test/a/x&gt;
-</artwork></figure>
-<t>
-regardless of the context in which the example document was obtained.
 </t>
 </section>
 
@@ -2852,7 +2799,7 @@ what characters are reserved, when they are reserved, and why they are
 reserved even when not used as delimiters by the generic syntax.
 Likewise, the section on escaped characters has been rewritten, and
 URI normalizers are now given license to unescape any octets
-corresponding to unreserved characters.  The crosshatch ("#") character
+corresponding to unreserved characters.  The number-sign ("#") character
 has been moved back from the excluded delims to the reserved set.
 </t>
 <t>
