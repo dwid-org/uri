@@ -1,10 +1,10 @@
-Uniform Resource Identifiers Working Group               R. T. Fielding
+Uniform Resource Identifiers Working Group                  R. Fielding
 INTERNET-DRAFT                                                UC Irvine
-Expires July 30, 1995                                  January 30, 1995
+Expires September 19, 1995                               March 19, 1995
 
 
                   Relative Uniform Resource Locators
-                 <draft-ietf-uri-relative-url-05.txt>
+                 <draft-ietf-uri-relative-url-06.txt>
 
 
 Status of this Memo
@@ -67,23 +67,23 @@ Abstract
    including the scheme, network location, and parts of the URL path.
    In situations where the base URL is well-defined and known, it is
    useful to be able to embed a URL reference which inherits that
-   context rather than re-specifying it within each instance.
-   Similarly, relative URLs can be used within data-entry dialogs to
-   decrease the number of characters necessary to describe a location.
+   context rather than re-specifying it within each instance.  Relative
+   URLs can also be used within data-entry dialogs to decrease the
+   number of characters necessary to describe a location.
 
-   It is often the case that a group or "tree" of documents has been
-   constructed to serve a common purpose; the vast majority of URLs
-   within these documents point to locations within the tree rather
+   In addition, it is often the case that a group or "tree" of documents
+   has been constructed to serve a common purpose; the vast majority of
+   URLs in these documents point to locations within the tree rather
    than outside of it.  Similarly, documents located at a particular
    Internet site are much more likely to refer to other resources at
    that site than to resources at remote sites.
 
    Relative addressing of URLs allows document trees to be partially
    independent of their location and access scheme.  For instance,
-   if they refer to each other using relative URLs, it is possible for
-   a single set of documents to be simultaneously accessible and, if
-   hypertext, traversable via each of the "file", "http", and "ftp"
-   schemes. Furthermore, document trees can be moved, as a whole,
+   it is possible for a single set of hypertext documents to be
+   simultaneously accessible and traversable via each of the "file",
+   "http", and "ftp" schemes if the documents refer to each other using
+   relative URLs.  Furthermore, document trees can be moved, as a whole,
    without changing any of the embedded URLs.  Experience within the
    World-Wide Web has demonstrated that the ability to perform relative
    referencing is necessary for the long-term usability of embedded
@@ -158,6 +158,11 @@ Abstract
    with <n>* to designate n or more repetitions of the following
    element; n defaults to 0.
 
+   This BNF also describes the generic-RL syntax for valid base URLs.
+   Note that this differs from the URL syntax defined in RFC 1738 [2]
+   in that all schemes are required to use a single set of reserved
+   characters and use them consistently within the major URL components.
+
    URL         = ( absoluteURL | relativeURL ) [ "#" fragment ]
 
    absoluteURL = generic-RL | ( scheme ":" *( uchar | reserved ) )
@@ -184,7 +189,7 @@ Abstract
 
    pchar       = uchar | ":" | "@" | "&" | "="
    uchar       = unreserved | escape
-   unreserved  = alpha | digit | safe | extra | national
+   unreserved  = alpha | digit | safe | extra
 
    escape      = "%" hex hex
    hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
@@ -235,22 +240,32 @@ Abstract
       wais       Wide Area Information Servers Protocol
 
    Users of gopher URLs should note that gopher-type information is
-   often included at the beginning of what would be the generic-RL path.
-   If present, this type information prevents relative-path references
-   to documents with differing gopher-types.
+   almost always included at the beginning of what would be the
+   generic-RL path.  If present, this type information prevents
+   relative-path references to documents with differing gopher-types.
 
    Finally, the following schemes can always be parsed using the
-   generic-RL syntax.
+   generic-RL syntax.  This does not necessarily imply that relative
+   URLs will be useful with these schemes -- that decision is left to
+   the system implementation and the author of the base document.
 
       file       Host-specific Files
       ftp        File Transfer Protocol
       http       Hypertext Transfer Protocol
       nntp       USENET news using NNTP access
 
-   It is recommended that new schemes be designed to be parsable via
-   the generic-RL syntax if they are intended to be used with relative
-   URLs.  A description of the allowed relative forms should be included
-   when a new scheme is registered, as per Section 4 of RFC 1738 [2].
+   NOTE: Section 5 of RFC 1738 specifies that the question-mark
+         character ("?") is allowed in an ftp or file path segment.
+         However, this is not true in practice and is believed to be an
+         error in the RFC.  Similarly, RFC 1738 allows the reserved
+         character semicolon (";") within an http path segment, but does
+         not define its semantics; the correct semantics are as defined
+         by this document for <params>.
+
+   We recommend that new schemes be designed to be parsable via the
+   generic-RL syntax if they are intended to be used with relative URLs.
+   A description of the allowed relative forms should be included when a
+   new scheme is registered, as per Section 4 of RFC 1738 [2].
 
 2.4.  Parsing a URL
 
@@ -339,20 +354,20 @@ Abstract
    thought of in terms of layers, where the innermost defined base URL
    has the highest precedence.  This can be visualized graphically as:
 
-      .---------------------------------------------------------.
-      |  .---------------------------------------------------.  |
-      |  |  .---------------------------------------------.  |  |
-      |  |  |  .---------------------------------------.  |  |  |
-      |  |  |  |   (3.1) Base URL embedded in the      |  |  |  |
-      |  |  |  |         document's content            |  |  |  |
-      |  |  |  `---------------------------------------'  |  |  |
-      |  |  |   (3.2) URL defined by a "Base" message     |  |  |
-      |  |  |         header (or equivalent)              |  |  |
-      |  |  `---------------------------------------------'  |  |
-      |  |   (3.3) URL of the document's retrieval context   |  |
-      |  `---------------------------------------------------'  |
-      |   (3.4) Base URL = "" (undefined)                       |
-      `---------------------------------------------------------'
+      .----------------------------------------------------------.
+      |  .----------------------------------------------------.  |
+      |  |  .----------------------------------------------.  |  |
+      |  |  |  .----------------------------------------.  |  |  |
+      |  |  |  |   (3.1) Base URL embedded in the       |  |  |  |
+      |  |  |  |         document's content             |  |  |  |
+      |  |  |  `----------------------------------------'  |  |  |
+      |  |  |   (3.2) Base URL of the encapsulating entity |  |  |
+      |  |  |         (message, document, or none).        |  |  |
+      |  |  `----------------------------------------------'  |  |
+      |  |   (3.3) URL used to retrieve the entity            |  |
+      |  `----------------------------------------------------'  |
+      |   (3.4) Base URL = "" (undefined)                        |
+      `----------------------------------------------------------'
 
 3.1.  Base URL within Document Content
 
@@ -364,67 +379,66 @@ Abstract
    (e.g. E-Mail or USENET news).
 
    It is beyond the scope of this document to specify how, for each
-   media type, the base URL can be embedded.  However, an example of
-   how this is done for the Hypertext Markup Language (HTML) [3] is
-   provided in an Appendix (Section 10).
+   media type, the base URL can be embedded.  It is assumed that user
+   agents manipulating such media types will be able to obtain the
+   appropriate syntax from that media type's specification.  An example
+   of how the base URL can be embedded in the Hypertext Markup Language
+   (HTML) [3] is provided in an Appendix (Section 10).
 
-3.2.  Base URL within Message Headers
-
-   A second method for identifying the base URL of a document is to
-   specify it within the message headers (or equivalent tagged
-   metainformation) of the message enclosing the document.  For
-   protocols that make use of message headers like those described in
-   RFC 822 [5], it is recommended that the format of this header be:
+   Messages are considered to be composite documents.  The base URL of
+   a message can be specified within the message headers (or equivalent
+   tagged metainformation) of the message.  For protocols that make use
+   of message headers like those described in RFC 822 [5], we recommend
+   that the format of this header be:
 
       base-header  = "Base" ":" "<URL:" absoluteURL ">"
 
-   where "Base" is case-insensitive.  For example, the header
+   where "Base" is case-insensitive and any whitespace (including that
+   used for line folding) inside the angle brackets is ignored.
+   For example, the header field
 
       Base: <URL:http://www.ics.uci.edu/Test/a/b/c>
 
-   would indicate that any relative URLs found within the document
-   should be parsed relative to <URL:http://www.ics.uci.edu/Test/a/b/c>.
-   Any whitespace (including that used for line folding) inside the
-   angle brackets should be ignored.
+   would indicate that the base URL for that message is the string
+   "http://www.ics.uci.edu/Test/a/b/c".  The base URL for a message
+   serves as both the base for any relative URLs within the message
+   headers and the default base URL for documents enclosed within the
+   message, as described in the next section.
 
    Protocols which do not use the RFC 822 message header syntax, but
    which do allow some form of tagged metainformation to be included
-   within messages, may define their own syntax for passing the base URL
-   as part of a message.  Describing the syntax for all possible
-   protocols is beyond the scope of this document.  It is assumed that
-   user agents using such a protocol will be able to obtain the
-   appropriate syntax from that protocol's specification.
+   within messages, may define their own syntax for defining the base
+   URL as part of a message.
 
-   In situations where both an embedded base URL (as described in
-   Section 3.1) and a base-header are present, the embedded base URL
-   takes precedence.
+3.2.  Base URL from the Encapsulating Entity
 
-3.3.  Base URL from the Retrieval Context
-
-   If neither an embedded base URL nor a base-header is present, then,
-   if a URL was used to retrieve the base document, that URL shall be
-   considered the base URL.  Note that if the retrieval was the result
-   of a redirected request, the last URL used (i.e., that which resulted
-   in the actual retrieval of the document) is the base URL.
+   If no base URL is embedded, the base URL of a document is defined by
+   the document's retrieval context.  For a document that is enclosed
+   within another entity (such as a message or another document), the
+   retrieval context is that entity; thus, the default base URL of the
+   document is the base URL of the entity in which the document is
+   encapsulated.
 
    Composite media types, such as the "multipart/*" and "message/*"
-   media types defined by MIME (RFC 1521, [4]), require special
-   processing in order to determine the retrieval context of an enclosed
-   document.  For these types, the base URL of the composite entity
-   must be determined first; this base is then considered the retrieval
-   context for its component parts, and thus the base URL for any part
-   that does not define its own base via one of the methods described
-   in Sections 3.1 and 3.2.  This logic is applied recursively for
-   component parts that are themselves composite entities.
+   media types defined by MIME (RFC 1521, [4]), define a hierarchy of
+   retrieval context for their enclosed documents.  In other words,
+   the retrieval context of a component part is the base URL of the
+   composite entity of which it is a part.  Thus, a composite entity
+   can redefine the retrieval context of its component parts via the
+   inclusion of a base-header, and this redefinition applies recursively
+   for a hierarchy of composite parts.  Note that this might not change
+   the base URL of the components, since each component may include an
+   embedded base URL or base-header that takes precedence over the
+   retrieval context.
 
-   In other words, the retrieval context (Section 3.3) of a component
-   part is the base URL of the composite entity of which it is a part.
-   Thus, a composite entity can redefine the retrieval context of its
-   component parts via inclusion of a base-header, and this redefinition
-   applies recursively for a hierarchy of composite parts.  Note that
-   this is not necessarily the same as defining the base URL of the
-   components, since each component may include an embedded base URL
-   or base-header that takes precedence over the retrieval context.
+3.3.  Base URL from the Retrieval URL
+
+   If no base URL is embedded and the document is not encapsulated
+   within some other entity (e.g., the top level of a composite entity),
+   then, if a URL was used to retrieve the base document, that URL shall
+   be considered the base URL.  Note that if the retrieval was the
+   result of a redirected request, the last URL used (i.e., that which
+   resulted in the actual retrieval of the document) is the base URL.
 
 3.4.  Default Base URL
 
@@ -434,7 +448,7 @@ Abstract
    It is the responsibility of the distributor(s) of a document
    containing relative URLs to ensure that the base URL for that
    document can be established.  It must be emphasized that relative
-   URLs cannot be used reliably in situations where the object's base
+   URLs cannot be used reliably in situations where the document's base
    URL is not well-defined.
 
 4.  Resolving Relative URLs
@@ -498,25 +512,32 @@ Abstract
            b) If the path ends with "." as a complete path segment,
               that "." is removed.
 
-           c) All occurrences of "<segment>/../", where <segment> and
-              ".." are complete path segments, are removed.  Removal of
-              these path segments is performed iteratively, removing the
-              leftmost matching pattern on each iteration, until no
-              matching pattern remains.
+           c) All occurrences of "<segment>/../", where <segment> is a
+              complete path segment not equal to "..", are removed.
+              Removal of these path segments is performed iteratively,
+              removing the leftmost matching pattern on each iteration,
+              until no matching pattern remains.
 
-           d) If the path ends with "<segment>/..", that "<segment>/.."
-              is removed.
+           d) If the path ends with "<segment>/..", where <segment> is a
+              complete path segment not equal to "..", that
+              "<segment>/.." is removed.
 
    Step 7: The resulting URL components, including any inherited from
            the base URL, are recombined to give the absolute form of
            the embedded URL.
 
    Parameters, regardless of their purpose, do not form a part of the
-   URL path and thus have no effect on the resolving of relative paths.
+   URL path and thus do not affect the resolving of relative paths.
    In particular, the presence or absence of the ";type=d" parameter
-   on an ftp URL has no effect on the interpretation of paths relative
+   on an ftp URL does not affect the interpretation of paths relative
    to that URL.  Fragment identifiers are only inherited from the base
    URL when the entire embedded URL is empty.
+
+   The above algorithm is intended to provide an example by which the
+   output of implementations can be tested -- implementation of the
+   algorithm itself is not required.  For example, some systems may find
+   it more efficient to implement Step 6 as a pair of segment stacks
+   being merged, rather than as a series of string pattern matches.
 
 5.  Examples and Recommended Practice
 
@@ -561,40 +582,41 @@ Abstract
 
    An empty reference resolves to the complete base URL:
 
-      <>         = <URL:http://a/b/c/d;p?q#f>
+      <>            = <URL:http://a/b/c/d;p?q#f>
 
    Parsers must be careful in handling the case where there are more
    relative path ".." segments than there are hierarchical levels in
    the base URL's path.  Note that the ".." syntax cannot be used to
    change the <net_loc> of a URL.
 
-      ../../../g = <URL:http://a/../g>
+      ../../../g    = <URL:http://a/../g>
+      ../../../../g = <URL:http://a/../../g>
 
    Similarly, parsers must avoid treating "." and ".." as special when
    they are not complete components of a relative path.
 
-      /./g       = <URL:http://a/./g>
-      /../g      = <URL:http://a/../g>
-      g.         = <URL:http://a/b/c/g.>
-      .g         = <URL:http://a/b/c/.g>
-      g..        = <URL:http://a/b/c/g..>
-      ..g        = <URL:http://a/b/c/..g>
+      /./g          = <URL:http://a/./g>
+      /../g         = <URL:http://a/../g>
+      g.            = <URL:http://a/b/c/g.>
+      .g            = <URL:http://a/b/c/.g>
+      g..           = <URL:http://a/b/c/g..>
+      ..g           = <URL:http://a/b/c/..g>
 
    Less likely are cases where the relative URL uses unnecessary or
    nonsensical forms of the "." and ".." complete path segments.
 
-      ./../g     = <URL:http://a/b/g>
-      ./g/.      = <URL:http://a/b/c/g/>
-      g/./h      = <URL:http://a/b/c/g/h>
-      g/../h     = <URL:http://a/b/c/h>
+      ./../g        = <URL:http://a/b/g>
+      ./g/.         = <URL:http://a/b/c/g/>
+      g/./h         = <URL:http://a/b/c/g/h>
+      g/../h        = <URL:http://a/b/c/h>
 
    Finally, some older parsers allow the scheme name to be present in
    a relative URL if it is the same as the base URL scheme.  This is
    considered to be a loophole in prior specifications of partial
    URLs [1] and should be avoided by future parsers.
 
-      http:g     = <URL:http:g>
-      http:      = <URL:http:>
+      http:g        = <URL:http:g>
+      http:         = <URL:http:>
 
 5.3.  Recommended Practice
 
@@ -604,16 +626,16 @@ Abstract
    a scheme name.  It is therefore necessary to precede such cases with
    other components (e.g., "./this:that"), or to escape the colon
    character (e.g., "this%3Athat"), in order for them to be correctly
-   parsed.  The former solution is preferred because it has no effect
-   on the absolute form of the URL.
+   parsed.  The former solution is preferred because it does not affect
+   the absolute form of the URL.
 
    There is an ambiguity in the semantics for the ftp URL scheme
    regarding the use of a trailing slash ("/") character and/or a
    parameter ";type=d" to indicate a resource that is an ftp directory.
    If the result of retrieving that directory includes embedded 
    relative URLs, it is necessary that the base URL path for that result
-   include a trailing slash.  For this reason, it is recommended that
-   the ";type=d" parameter value not be used within contexts that allow
+   include a trailing slash.  For this reason, we recommend that the
+   ";type=d" parameter value not be used within contexts that allow
    relative URLs.
 
 6.  Security Considerations
@@ -633,42 +655,39 @@ Abstract
    discussion, the URI-WG decided to specify Relative URLs separately
    from the primary URL draft.
 
-   This document is intended to fulfill the requirements for Internet
+   This document is intended to fulfill the recommendations for Internet
    Resource Locators as stated in [6].  It has benefited greatly from
    the comments of all those participating in the URI-WG.  Particular
-   thanks go to Larry Masinter, Michael A. Dolan, Guido van Rossum, and
-   Dave Kristol for identifying problems/deficiencies in earlier drafts.
+   thanks go to Larry Masinter, Michael A. Dolan, Guido van Rossum,
+   Dave Kristol, David Robinson, and Brad Barber for identifying
+   problems/deficiencies in earlier drafts.
 
 8.  References
 
    [1] T. Berners-Lee, "Universal Resource Identifiers in WWW:
        A Unifying Syntax for the Expression of Names and Addresses of
        Objects on the Network as used in the World-Wide Web", RFC 1630,
-       CERN, June 1994. <URL:ftp://ds.internic.net/rfc/rfc1630.txt>
+       CERN, June 1994.
 
    [2] T. Berners-Lee, L. Masinter, and M. McCahill, Editors,
        "Uniform Resource Locators (URL)", RFC 1738, CERN, 
        Xerox Corporation, University of Minnesota, December 1994. 
-       <URL:ftp://ds.internic.net/rfc/rfc1738.txt>
 
    [3] T. Berners-Lee and D. Connolly, "HyperText Markup Language
        Specification -- 2.0", Work in Progress, MIT, HaL Computer
-       Systems, November 1994.
+       Systems, February 1995.
        <URL:http://www.ics.uci.edu/pub/ietf/html/>
 
    [4] N. Borenstein and N. Freed, "MIME (Multipurpose Internet Mail
        Extensions): Mechanisms for Specifying and Describing the Format
        of Internet Message Bodies", RFC 1521, Bellcore, Innosoft,
-       September 1993.  <URL:ftp://ds.internic.net/rfc/rfc1521.txt>
+       September 1993.
 
    [5] D. H. Crocker, "Standard for the Format of ARPA Internet
        Text Messages", STD 11, RFC 822, UDEL, August 1982.
-       <URL:ftp://ds.internic.net/rfc/rfc822.txt>
 
-   [6] J. Kunze, "Functional Requirements for Internet Resource
-       Locators", Work in Progress, IS&T, UC Berkeley, January 1995.
-       <URL:ftp://ds.internic.net/internet-drafts/
-       draft-ietf-uri-irl-fun-req-03.txt>
+   [6] J. Kunze, "Functional Recommendations for Internet Resource
+       Locators", RFC 1736, IS&T, UC Berkeley, February 1995.
 
 9.  Author's Address
 
@@ -682,10 +701,7 @@ Abstract
    Fax: +1 (714) 824-4056
    Email: fielding@ics.uci.edu
 
-   This Internet-Draft expires July 30, 1995.
-
-
-10.  Appendix - Embedding the Base URL in HTML documents.
+10.  Appendix - Embedding the Base URL in HTML documents
 
    It is useful to consider an example of how the base URL of a
    document can be embedded within the document's content.  In this
