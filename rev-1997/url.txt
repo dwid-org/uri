@@ -870,18 +870,15 @@ Abstract
    Further examples are provided in Appendix C.
 
 
-7. Registration of New Schemes
+7. Adding New Schemes
 
-   A new scheme may be introduced by defining a mapping onto a
-   conforming URL syntax, using a new prefix.  URLs for experimental
-   schemes may be used by mutual agreement between parties.  Scheme
-   names starting with the characters "x-" are reserved for experimental
-   purposes.
+   The Internet Assigned Numbers Authority (IANA) maintains a registry
+   of URL schemes.
 
-   The Internet Assigned Numbers Authority (IANA) will maintain a
-   registry of URL schemes.  Any submission of a new URL scheme must
-   include a definition of an algorithm for accessing of resources
-   within that scheme and the syntax for representing such a scheme.
+   The current process for defining URL schemes is via the Internet
+   standards process: new URL schemes should be described in
+   standards-track RFCs.  Over time, other methods of registering URL
+   schemes may be added.
 
    URL schemes must have demonstrable utility and operability.  One way
    to provide such a demonstration is via a gateway which provides
@@ -889,20 +886,11 @@ Abstract
    the new scheme does not locate resources that are data objects, the
    properties of names in the new space must be clearly defined.
 
-   New schemes should try to follow the same syntactic conventions of
-   existing schemes, where appropriate.  It is likewise recommended
-   that, where a protocol allows for retrieval by URL, that the client
-   software have provision for being configured to use specific gateway
-   locators for indirect access through new naming schemes.
-
-   The following schemes have been proposed at various times, but this
-   document does not define their syntax or use at this time.  It is
-   suggested that IANA reserve their scheme names for future definition:
-
-   We recommend that new schemes be designed to be parsable via the
-   generic-URL syntax if they are intended to be used with relative URLs.
-   A description of the allowed relative forms should be included when a
-   new scheme is registered.
+   URL schemes should follow the same syntactic conventions of existing
+   schemes when appropriate.  URL schemes should use the generic-URL
+   syntax if they are intended to be used with relative URLs.  A
+   description of the allowed relative forms should be included in the
+   scheme's definition.
 
 
 8. Security Considerations
