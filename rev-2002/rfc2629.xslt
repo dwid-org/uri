@@ -202,9 +202,15 @@
   
     put nbsps between "section" and section number (xref).
 
-    2003-05-16  fielding
+    2003-05-18  julian.reschke@greenbytes.de
   
-    remove DC.Creator and generator meta tags
+    author summary: add missing comma.
+    
+    2003-06-06  julian.reschke@greenbytes.de
+    
+    fix index generation bug (transposed characters in key generation). Enhance
+    sentence start detection (xref starting a section was using lowercase
+    "section").
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -329,7 +335,7 @@
 <!-- build help keys for indices -->
 <xsl:key name="index-first-letter"
   match="iref"
-    use="translate(substring(@item,1,1),'abcdefghijklmnoprrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+    use="translate(substring(@item,1,1),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
 
 <xsl:key name="index-item"
   match="iref"
@@ -925,6 +931,18 @@
         </xsl:variable>
         <meta name="keywords" content="{$keyw}" />
       </xsl:if>
+      
+      <!-- generator -->
+      <xsl:variable name="gen">
+        <xsl:call-template name="get-generator" />
+      </xsl:variable>
+      <meta name="generator" content="{$gen}" />
+      
+      <!-- DC creator -->
+      <xsl:variable name="creator">
+        <xsl:call-template name="get-authors" />
+      </xsl:variable>
+      <meta name="DC.Creator" content="{$creator}" />
     </head>
     <body>
       <!-- insert diagnostics -->
@@ -2064,6 +2082,7 @@ table.resolution
 <xsl:template name="endsWithDot">
   <xsl:param name="str"/>
   <xsl:choose>
+    <xsl:when test="$str=''"><xsl:value-of select="true()"/></xsl:when>
     <xsl:when test="contains($str,'.') and substring-after($str,'.')=''" ><xsl:value-of select="true()"/></xsl:when>
     <xsl:when test="not(contains($str,'.'))" ><xsl:value-of select="false()"/></xsl:when>
     <xsl:otherwise>
@@ -2373,9 +2392,16 @@ table.resolution
       <xsl:value-of select="concat(/rfc/front/author[1]/@surname,' &amp; ',/rfc/front/author[2]/@surname)" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="concat(/rfc/front/author[1]/@surname,' et al.')" />
+      <xsl:value-of select="concat(/rfc/front/author[1]/@surname,', et al.')" />
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<xsl:template name="get-authors">
+  <xsl:for-each select="/rfc/front/author">
+    <xsl:value-of select="@fullname" />
+    <xsl:if test="position()!=last()">, </xsl:if>
+  </xsl:for-each>
 </xsl:template>
 
 <xsl:template name="get-category-long">
@@ -2405,6 +2431,21 @@ table.resolution
     <xsl:when test="/rfc/@ipr">INTERNET DRAFT</xsl:when>
     <xsl:otherwise>RFC <xsl:value-of select="/rfc/@number"/></xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<xsl:template name="get-generator">
+  <xsl:variable name="gen">
+    <xsl:text>http://greenbytes.de/tech/webdav/rfc2629.xslt, </xsl:text>
+    <!-- when RCS keyword substitution in place, add version info -->
+    <xsl:if test="contains('$Revision: 1.11 $',':')">
+      <xsl:value-of select="concat('Revision ',normalize-space(translate(substring-after('$Revision: 1.11 $', 'Revision: '),'$','')),', ')" />
+    </xsl:if>
+    <xsl:if test="contains('$Date: 2003/06/06 21:21:56 $',':')">
+      <xsl:value-of select="concat(normalize-space(translate(substring-after('$Date: 2003/06/06 21:21:56 $', 'Date: '),'$','')),', ')" />
+    </xsl:if>
+    <xsl:value-of select="concat('XSLT vendor: ',system-property('xsl:vendor'),' ',system-property('xsl:vendor-url'))" />
+  </xsl:variable>
+  <xsl:value-of select="$gen" />
 </xsl:template>
 
 <xsl:template name="get-header-right">
