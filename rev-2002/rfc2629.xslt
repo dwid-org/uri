@@ -1927,7 +1927,10 @@
     
   <h1 id="{$anchor-prefix}.authors">
     <xsl:call-template name="insert-conditional-pagebreak"/>
-    Author's Address<xsl:if test="count(/rfc/front/author) &gt; 1">es</xsl:if>
+    <xsl:choose>
+      <xsl:when test="count(/rfc/front/author)=1">Author's Address</xsl:when>
+      <xsl:otherwise>Authors' Addresses</xsl:otherwise>
+   </xsl:choose>
   </h1>
 
   <table summary="Authors" width="99%" border="0" cellpadding="0" cellspacing="0">
@@ -2196,7 +2199,7 @@ thead {
 }
 ul.toc {
   list-style: none;
-  margin-left: 1.5em;
+  margin-left: 2em;
   margin-right: 0em;
   padding-left: 0em;
 }
@@ -3599,11 +3602,11 @@ table.closedissue {
   <xsl:variable name="gen">
     <xsl:text>http://greenbytes.de/tech/webdav/rfc2629.xslt, </xsl:text>
     <!-- when RCS keyword substitution in place, add version info -->
-    <xsl:if test="contains('$Revision: 1.21 $',':')">
-      <xsl:value-of select="concat('Revision ',normalize-space(translate(substring-after('$Revision: 1.21 $', 'Revision: '),'$','')),', ')" />
+    <xsl:if test="contains('$Revision: 1.22 $',':')">
+      <xsl:value-of select="concat('Revision ',normalize-space(translate(substring-after('$Revision: 1.22 $', 'Revision: '),'$','')),', ')" />
     </xsl:if>
-    <xsl:if test="contains('$Date: 2005/02/09 02:22:30 $',':')">
-      <xsl:value-of select="concat(normalize-space(translate(substring-after('$Date: 2005/02/09 02:22:30 $', 'Date: '),'$','')),', ')" />
+    <xsl:if test="contains('$Date: 2005/02/09 02:33:51 $',':')">
+      <xsl:value-of select="concat(normalize-space(translate(substring-after('$Date: 2005/02/09 02:33:51 $', 'Date: '),'$','')),', ')" />
     </xsl:if>
     <xsl:value-of select="concat('XSLT vendor: ',system-property('xsl:vendor'),' ',system-property('xsl:vendor-url'))" />
   </xsl:variable>
