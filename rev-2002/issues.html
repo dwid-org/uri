@@ -12,6 +12,48 @@
 <th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#006-absoluteURIref">006-absoluteURIref</a></td><td>need BNF term for absolute URI with optional fragment</td><td>syntax</td><td>accepted</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#011-IPv6-literal">011-IPv6-literal</a></td><td>integrate IPv6 syntax of RFC 2732</td><td>syntax: IPv6</td><td>accepted</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>syntax: IPv6</td><td>accepted</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td>accepted</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#025-rel_segment">025-rel_segment</a></td><td>rel_segment is defined without distinguishing param</td><td>syntax</td><td>accepted</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td bgcolor="#FFFFCC">URI versus URI Reference</td><td>uri</td><td>pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#010-gethostbyname">010-gethostbyname</a></td><td bgcolor="#FFFFCC">gethostbyname allows much more than hostname BNF</td><td>syntax: hostname</td><td>pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#012-simplify-IPv6">012-simplify-IPv6</a></td><td bgcolor="#FFFFCC">change BNF to incorporate IPv6 better than RFC 2732</td><td>syntax: IPv6</td><td>pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#016-hostname-toplabel">016-hostname-toplabel</a></td><td bgcolor="#FFFFCC">hostname toplabel syntax could be improved</td><td>syntax: hostname</td><td>pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#017-rdf-fragment">017-rdf-fragment</a></td><td bgcolor="#FFFFCC">RDF does not believe in same-document references</td><td>syntax: fragment</td><td>pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#019-URI-URL-URN">019-URI-URL-URN</a></td><td bgcolor="#FFFFCC">URI/URL/URN contemporary view</td><td>intro</td><td>pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#020-utf8-default">020-utf8-default</a></td><td bgcolor="#FFFFCC">Defaulting to UTF-8 for unknown encoding</td><td>syntax</td><td>pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#022-definitions">022-definitions</a></td><td bgcolor="#FFFFCC">definitions for operations on URIs</td><td>examples</td><td>pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td bgcolor="#FFFFCC">Resource should not be defined as anything that has identity</td><td>intro</td><td>pending</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#001-file">001-file</a></td><td>file scheme implementations vary on use of authority component</td><td>scheme: file</td><td>postponed</td>
 </tr>
 <tr>
@@ -27,28 +69,13 @@
 <td nowrap="nowrap"><a href="#005-ftp">005-ftp</a></td><td>background on ftp extensions</td><td>scheme: ftp</td><td>postponed</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#006-absoluteURIref">006-absoluteURIref</a></td><td>need BNF term for absolute URI with optional fragment</td><td>syntax</td><td>accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#007-empty-rel_path">007-empty-rel_path</a></td><td>relative URI syntax does not allow empty path</td><td>syntax: relative</td><td>fixed 00</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>uri</td><td>pending</td>
+<td nowrap="nowrap"><a href="#009-nullable-netpath">009-nullable-netpath</a></td><td>syntax for netpath allows empty authority</td><td>syntax: netpath</td><td>closed</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#009-nullable-netpath">009-nullable-netpath</a></td><td>syntax for netpath allows bad URI to be considered valid</td><td>syntax: netpath</td><td>pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#010-gethostbyname">010-gethostbyname</a></td><td>gethostbyname allows much more than hostname BNF</td><td>syntax: hostname</td><td>pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#011-IPv6-literal">011-IPv6-literal</a></td><td>integrate IPv6 syntax of RFC 2732</td><td>syntax: IPv6</td><td>accepted</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#012-simplify-IPv6">012-simplify-IPv6</a></td><td>change BNF to incorporate IPv6 better than RFC 2732</td><td>syntax: IPv6</td><td>pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#013-query-slash">013-query-slash</a></td><td>slash character should be forbidden in query</td><td>syntax: query</td><td>rejected</td>
+<td nowrap="nowrap"><a href="#013-query-slash">013-query-slash</a></td><td>slash character should be forbidden in query</td><td>syntax: query</td><td>closed</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#014-empty-opaque_part">014-empty-opaque_part</a></td><td>syntax does not allow "dav:" or "about:" as URI</td><td>syntax: opaque_part</td><td>fixed 00</td>
@@ -57,34 +84,7 @@
 <td nowrap="nowrap"><a href="#015-fragment-handling">015-fragment-handling</a></td><td>clarify how URI processor is expected to handle fragment</td><td>syntax: fragment</td><td>fixed 00</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#016-hostname-toplabel">016-hostname-toplabel</a></td><td>hostname toplabel syntax could be improved</td><td>syntax: hostname</td><td>pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#017-rdf-fragment">017-rdf-fragment</a></td><td>RDF does not believe in same-document references</td><td>syntax: fragment</td><td>pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>syntax: IPv6</td><td>accepted</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#019-URI-URL-URN">019-URI-URL-URN</a></td><td>URI/URL/URN contemporary view</td><td>intro</td><td>pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#020-utf8-default">020-utf8-default</a></td><td>Defaulting to UTF-8 for unknown encoding</td><td>syntax</td><td>pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td>accepted</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#022-definitions">022-definitions</a></td><td>definitions for operations on URIs</td><td>examples</td><td>pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#023-URI-plural">023-URI-plural</a></td><td>URI or URIs for plural</td><td>intro</td><td>accepted</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>intro</td><td>pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#025-rel_segment">025-rel_segment</a></td><td>rel_segment is defined without distinguishing param</td><td>syntax</td><td>accepted</td>
+<td nowrap="nowrap"><a href="#023-URI-plural">023-URI-plural</a></td><td>URI or URIs for plural</td><td>intro</td><td>fixed 00</td>
 </tr>
 </table>
 <br>
@@ -784,10 +784,10 @@ to readers.
 <br>
 <h2>
 <a name="009-nullable-netpath">009-nullable-netpath</a>: 
-      syntax for netpath allows bad URI to be considered valid</h2>
+      syntax for netpath allows empty authority</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax: netpath</th><th>pending</th>
+<th width="40%">syntax: netpath</th><th>closed</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -826,6 +826,20 @@ follows?
 </td>
 </tr>
 <tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy Fielding</a>,
+  17 Oct 2002,
+  issues list:
+  <pre>
+That URI is valid (maybe not for http, but for the URI syntax in general).
+The generic syntax requires that the components be extracted first in
+order to disambiguate these cases (the greedy rule).  Only after the
+components are extracted can the syntax of those components be tested
+for correctness.
+</pre>
+</td>
+</tr>
+<tr>
 <td colspan="2">report:
   <a href="mailto:jjc_AT_jclark.com">James Clark</a>,
   20 Jul 2001,
@@ -858,7 +872,7 @@ consistent.
 </td>
 </tr>
 <tr>
-<td colspan="2">report:
+<td colspan="2">action:
   <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
   11 Aug 2001,
   private mail:
@@ -1105,7 +1119,7 @@ RFC 2732 (with ipv6 addresses), though.
       slash character should be forbidden in query</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax: query</th><th>rejected</th>
+<th width="40%">syntax: query</th><th>closed</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1934,7 +1948,7 @@ URI Retrieval:
       URI or URIs for plural</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">intro</th><th>accepted</th>
+<th width="40%">intro</th><th>fixed 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1959,6 +1973,16 @@ I prefer whichever one is easier to say while speaking, since I do not
 believe in the theory that people expand acronyms as they read.
 
 I am fine with either one, provided I only have to change it once.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  17 Oct 2002,
+  draft 00:
+  <pre>
+Fixed by rewriting URI to "a URI" or URIs, as appropriate.
 </pre>
 </td>
 </tr>

@@ -229,7 +229,7 @@ ins
 <p>
    A Uniform Resource Identifier (URI) is a compact string of characters
    for identifying an abstract or physical resource.  This document
-   defines the generic syntax of URI, including both absolute and
+   defines the generic syntax of URIs, including both absolute and
    relative forms, and guidelines for their use.
 </p>
 
@@ -238,15 +238,15 @@ ins
    such that an implementation can parse the common components of a URI
    reference without knowing the scheme-specific requirements of every
    possible identifier type.  This document does not define a generative
-   grammar for URI; that task will be performed by the individual
+   grammar for all URIs; that task will be performed by the individual
    specifications of each URI scheme.
 </p>
 <h1>IESG Note</h1>
 
 <p>
    This paper describes a "superset" of operations that can be applied
-   to URI.  It consists of both a grammar and a description of basic
-   functionality for URI.  To understand what is a valid URI, both the
+   to a URI.  It consists of both a grammar and a description of basic
+   functionality for URIs.  To understand what is a valid URI, both the
    grammar and the associated description have to be studied.  Some of
    the functionality described is not applicable to all URI schemes, and
    some operations are only possible when certain media types are
@@ -277,7 +277,7 @@ ins
 
 
 <b>&nbsp;1.1&nbsp;
-            <a href="#rfc.section.1.1">Overview of URI</a></b>
+            <a href="#rfc.section.1.1">Overview of URIs</a></b>
 <br>
 
 
@@ -299,7 +299,7 @@ ins
 
 
 <b>&nbsp;1.3&nbsp;
-            <a href="#rfc.section.1.3">Example URI</a></b>
+            <a href="#rfc.section.1.3">Example URIs</a></b>
 <br>
 
 
@@ -312,7 +312,7 @@ ins
 
 
 <b>&nbsp;1.4&nbsp;
-            <a href="#rfc.section.1.4">Hierarchical URI and Relative Forms</a></b>
+            <a href="#rfc.section.1.4">Hierarchical URIs and Relative Forms</a></b>
 <br>
 
 
@@ -352,7 +352,7 @@ ins
 
 
 <b>&nbsp;2.1&nbsp;
-            <a href="#rfc.section.2.1">URI and non-ASCII characters</a></b>
+            <a href="#rfc.section.2.1">URIs and non-ASCII characters</a></b>
 <br>
 
 
@@ -772,38 +772,37 @@ ins
     Introduction</h1>
 <p>
 <a name="rfc.section.1.p.1"></a>
-   Uniform Resource Identifiers (URI) provide a simple and extensible
+   A Uniform Resource Identifier (URI) provides a simple and extensible
    means for identifying a resource.  This specification of URI syntax
    and semantics is derived from concepts introduced by the World Wide
    Web global information initiative, whose use of such objects dates
    from 1990 and is described in "Universal Resource Identifiers in WWW"
-   <a href="#RFC1630" title="Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web">[RFC1630]</a>.  The specification of URI is designed to meet the
+   <a href="#RFC1630" title="Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web">[RFC1630]</a>, and is designed to meet the
    recommendations laid out in "Functional Recommendations for Internet
-   Resource Locators" <a href="#RFC1736" title="Functional Recommendations for Internet Resource Locators">[RFC1736]</a> and "Functional Requirements for Uniform
-   Resource Names" <a href="#RFC1737" title="Functional Requirements for Uniform Resource Names">[RFC1737]</a>.
+   Resource Locators" <a href="#RFC1736" title="Functional Recommendations for Internet Resource Locators">[RFC1736]</a> and "Functional Requirements
+   for Uniform Resource Names" <a href="#RFC1737" title="Functional Requirements for Uniform Resource Names">[RFC1737]</a>.
 </p>
 <p>
 <a name="rfc.section.1.p.2"></a>
-   This document updates and merges "Uniform Resource Locators"
-   <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a> and "Relative Uniform Resource Locators" <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a> in order
-   to define a single, generic syntax for all URI.  It excludes those
+   This document obsoletes <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>, which merged
+   "Uniform Resource Locators" <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a> and
+   "Relative Uniform Resource Locators" <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a> in order
+   to define a single, generic syntax for all URIs.  It excludes those
    portions of RFC 1738 that defined the specific syntax of individual
-   URL schemes; those portions will be updated as separate documents, as
-   will the process for registration of new URI schemes.  This document
-   does not discuss the issues and recommendation for dealing with
-   characters outside of the US-ASCII character set <a href="#ASCII" title="Coded Character Set -- 7-bit American Standard Code for Information Interchange">[ASCII]</a>; those
-   recommendations are discussed in a separate document.
+   URL schemes; those portions will be updated as separate documents.
+   The process for registration of new URI schemes is defined separately
+   by <a href="#RFC2717" title="Registration Procedures for URL Scheme Names">[RFC2717]</a>.
 </p>
 <p>
 <a name="rfc.section.1.p.3"></a>
-   All significant changes from the prior RFCs are noted in Appendix G.
+   All significant changes from RFC 2396 are noted in Appendix G.
 </p>
 <h2>
 <a name="rfc.section.1.1">1.1</a>&nbsp;
-    Overview of URI</h2>
+    Overview of URIs</h2>
 <p>
 <a name="rfc.section.1.1.p.1"></a>
-   URI are characterized by the following definitions:
+   URIs are characterized by the following definitions:
 </p>
 <p>
 <a name="rfc.section.1.1.p.2"></a>Uniform
@@ -857,7 +856,7 @@ ins
     
 <p>
          An identifier is an object that can act as a reference to
-         something that has identity.  In the case of URI, the object is
+         something that has identity.  In the case of a URI, the object is
          a sequence of characters with a restricted syntax.
     </p>
   
@@ -876,11 +875,11 @@ ins
 <p>
 <a name="rfc.section.1.2.p.1"></a>
    A URI can be further classified as a locator, a name, or both.  The
-   term "Uniform Resource Locator" (URL) refers to the subset of URI
+   term "Uniform Resource Locator" (URL) refers to the subset of URIs
    that identify resources via a representation of their primary access
    mechanism (e.g., their network "location"), rather than identifying
    the resource by name or by some other attribute(s) of that resource.
-   The term "Uniform Resource Name" (URN) refers to the subset of URI
+   The term "Uniform Resource Name" (URN) refers to the subset of URIs
    that are required to remain globally unique and persistent even when
    the resource ceases to exist or becomes unavailable.
 </p>
@@ -915,8 +914,8 @@ ins
    from one of a set of defined namespaces, each of which has its own
    set name structure and assignment procedures.  The "urn" scheme has
    been reserved to establish the requirements for a standardized URN
-   namespace, as defined in "URN Syntax" <a href="#RFC2141" title="URN Syntax">[RFC2141]</a> and its related
-   specifications.
+   namespace, as defined in "URN Syntax" <a href="#RFC2141" title="URN Syntax">[RFC2141]</a> and
+   its related specifications.
 </p>
 <p>
 <a name="rfc.section.1.2.p.5"></a>
@@ -930,10 +929,10 @@ ins
 </p>
 <h2>
 <a name="rfc.section.1.3">1.3</a>&nbsp;
-    Example URI</h2>
+    Example URIs</h2>
 <p>
 <a name="rfc.section.1.3.p.1"></a>
-   The following examples illustrate URI that are in common use.
+   The following examples illustrate URIs that are in common use.
 </p>
 <a name="rfc.figure.u.1"></a>
 <pre>ftp://ftp.is.co.za/rfc/rfc1808.txt
@@ -973,7 +972,7 @@ ins
 </p>
 <h2>
 <a name="rfc.section.1.4">1.4</a>&nbsp;
-    Hierarchical URI and Relative Forms</h2>
+    Hierarchical URIs and Relative Forms</h2>
 <p>
 <a name="rfc.section.1.4.p.1"></a>
    An absolute identifier refers to a resource independent of the
@@ -988,9 +987,9 @@ ins
    hierarchy of the name is denoted by a "/" delimiter separating the
    components in the scheme. This document defines a scheme-independent
    `relative' form of URI reference that can be used in conjunction with
-   a `base' URI (of a hierarchical scheme) to produce another URI. The
-   syntax of hierarchical URI is described in Section 3; the relative
-   URI calculation is described in Section 5.
+   a `base' URI of a hierarchical scheme to produce the `absolute' URI
+   form of the reference. The syntax of a hierarchical URI is described
+   in Section 3; the relative URI calculation is described in Section 5.
 </p>
 <h2>
 <a name="rfc.section.1.5">1.5</a>&nbsp;
@@ -1140,12 +1139,12 @@ ins
     URI Characters and Escape Sequences</h1>
 <p>
 <a name="rfc.section.2.p.1"></a>
-   URI consist of a restricted set of characters, primarily chosen to
+   A URI consists of a restricted set of characters, primarily chosen to
    aid transcribability and usability both in computer systems and in
    non-computer communications. Characters used conventionally as
-   delimiters around URI were excluded.  The restricted set of
+   delimiters around a URI are excluded.  The restricted set of
    characters consists of digits, letters, and a few graphic symbols
-   were chosen from those common to most of the character encodings and
+   chosen from those common to most of the character encodings and
    input facilities available to Internet users.
 </p>
 <a name="rfc.figure.u.9"></a>
@@ -1155,7 +1154,7 @@ ins
 </pre>
 <p>
 <a name="rfc.section.2.p.3"></a>
-   Within a URI, characters are either used as delimiters, or to
+   Within a URI, characters are either used as delimiters or to
    represent strings of data (octets) within the delimited portions.
    Octets are either represented directly by a character (using the US-ASCII
    character for that octet <a href="#ASCII" title="Coded Character Set -- 7-bit American Standard Code for Information Interchange">[ASCII]</a>) or by an escape encoding.
@@ -1163,10 +1162,10 @@ ins
 </p>
 <h2>
 <a name="rfc.section.2.1">2.1</a>&nbsp;
-    URI and non-ASCII characters</h2>
+    URIs and non-ASCII characters</h2>
 <p>
 <a name="rfc.section.2.1.p.1"></a>
-   The relationship between URI and characters has been a source of
+   The relationship between URIs and characters has been a source of
    confusion for characters that are not part of US-ASCII. To describe
    the relationship, it is useful to distinguish between a "character"
    (as a distinguishable semantic entity) and an "octet" (an 8-bit
@@ -1179,7 +1178,7 @@ ins
 <p>
 <a name="rfc.section.2.1.p.3"></a>
    A URI is represented as a sequence of characters, not as a sequence
-   of octets. That is because URI might be "transported" by means that
+   of octets. That is because a URI might be "transported" by means that
    are not through a computer network, e.g., printed on paper, read over
    the radio, etc.
 </p>
@@ -1225,7 +1224,7 @@ ins
 <p>
 <a name="rfc.section.2.1.p.8"></a>
    It is expected that a systematic treatment of character encoding
-   within URI will be developed as a future modification of this
+   within URIs will be developed as a future modification of this
    specification.
 </p>
 <h2>
@@ -1372,9 +1371,9 @@ hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
 <p>
 <a name="rfc.section.2.4.3.p.4"></a>
    The space character is excluded because significant spaces may
-   disappear and insignificant spaces may be introduced when URI are
+   disappear and insignificant spaces may be introduced when a URI is
    transcribed or typeset or subjected to the treatment of word-processing
-   programs.  Whitespace is also used to delimit URI in many
+   programs.  Whitespace is also used to delimit a URI in many
    contexts.
 </p>
 <a name="rfc.figure.u.15"></a>
@@ -1385,10 +1384,10 @@ hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
 <p>
 <a name="rfc.section.2.4.3.p.6"></a>
    The angle-bracket "&lt;" and "&gt;" and double-quote (") characters are
-   excluded because they are often used as the delimiters around URI in
+   excluded because they are often used as the delimiters around a URI in
    text documents and protocol fields.  The character "#" is excluded
-   because it is used to delimit a URI from a fragment identifier in URI
-   references (Section 4). The percent character "%" is excluded because
+   because it is used to delimit a URI from a fragment identifier in a URI
+   reference (Section 4). The percent character "%" is excluded because
    it is used for the encoding of escaped characters.
 </p>
 <a name="rfc.figure.u.16"></a>
@@ -1441,7 +1440,7 @@ hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
 <a name="rfc.section.3.p.4"></a>
    The URI syntax does not require that the scheme-specific-part have
    any general structure or set of semantics which is common among all
-   URI.  However, a subset of URI do share a common syntax for
+   URIs.  However, a subset of URI do share a common syntax for
    representing hierarchical relationships within the namespace.  This
    "generic URI" syntax consists of a sequence of four main components:
 </p>
@@ -1461,7 +1460,7 @@ hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
 </pre>
 <p>
 <a name="rfc.section.3.p.8"></a>
-   URI that are hierarchical in nature use the slash "/" character for
+   URIs that are hierarchical in nature use the slash "/" character for
    separating hierarchical components.  For some file systems, a "/"
    character (used to denote the hierarchical structure of a URI) is the
    delimiter used to construct a file name hierarchy, and thus the URI
@@ -1482,7 +1481,7 @@ abs_path      = "/"  path_segments
 </pre>
 <p>
 <a name="rfc.section.3.p.10"></a>
-   URI that do not make use of the slash "/" character for separating
+   URIs that do not make use of the slash "/" character for separating
    hierarchical components are considered opaque by the generic URI
    parser.
 </p>
@@ -1517,7 +1516,7 @@ uric_no_slash = unreserved | escaped | ";" | "?" | ":" | "@" |
    Scheme names consist of a sequence of characters beginning with a
    lower case letter and followed by any combination of lower case
    letters, digits, plus ("+"), period ("."), or hyphen ("-").  For
-   resiliency, programs interpreting URI should treat upper case letters
+   resiliency, programs interpreting a URI should treat upper case letters
    as equivalent to lower case in scheme names (e.g., allow "HTTP" as
    well as "http").
 </p>
@@ -1615,7 +1614,7 @@ uric_no_slash = unreserved | escaped | ";" | "?" | ":" | "@" |
 <a name="rfc.section.3.2.2.p.7"></a>
    Some URL schemes use the format "user:password" in the userinfo
    field. This practice is NOT RECOMMENDED, because the passing of
-   authentication information in clear text (such as URI) has proven to
+   authentication information in clear text has proven to
    be a security risk in almost every case where it has been used.
 </p>
 <p>
@@ -1759,7 +1758,7 @@ pchar         = unreserved | escaped |
 </pre>
 <p>
 <a name="rfc.section.4.p.3"></a>
-   The syntax for relative URI is a shortened form of that for absolute
+   The syntax for a relative URI is a shortened form of that for an absolute
    URI, where some prefix of the URI is missing and certain path
    components ("." and "..") have a special meaning when, and only when,
    interpreting a relative path.  The relative URI syntax is defined in
@@ -1789,7 +1788,7 @@ pchar         = unreserved | escaped |
    in the reference.  Therefore, the format and interpretation of
    fragment identifiers is dependent on the media type <a href="#RFC2046" title="Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types">[RFC2046]</a> of the
    retrieval result.  The character restrictions described in Section 2
-   for URI also apply to the fragment in a URI-reference.  Individual
+   for a URI also apply to the fragment in a URI-reference.  Individual
    media types may define additional restrictions or structure within
    the fragment for specifying different types of "partial views" that
    can be identified within that media type.
@@ -1856,7 +1855,7 @@ pchar         = unreserved | escaped |
 <p>
 <a name="rfc.section.5.p.1"></a>
    It is often the case that a group or "tree" of documents has been
-   constructed to serve a common purpose; the vast majority of URI in
+   constructed to serve a common purpose; the vast majority of URIs in
    these documents point to resources within the tree rather than
    outside of it.  Similarly, documents located at a particular site are
    much more likely to refer to other resources at that site than to
@@ -1864,19 +1863,19 @@ pchar         = unreserved | escaped |
 </p>
 <p>
 <a name="rfc.section.5.p.2"></a>
-   Relative addressing of URI allows document trees to be partially
+   Relative addressing of URIs allows document trees to be partially
    independent of their location and access scheme.  For instance, it is
    possible for a single set of hypertext documents to be simultaneously
    accessible and traversable via each of the "file", "http", and "ftp"
-   schemes if the documents refer to each other using relative URI.
+   schemes if the documents refer to each other using relative URIs.
    Furthermore, such document trees can be moved, as a whole, without
    changing any of the relative references.  Experience within the WWW
    has demonstrated that the ability to perform relative referencing is
-   necessary for the long-term usability of embedded URI.
+   necessary for the long-term usability of embedded URIs.
 </p>
 <p>
 <a name="rfc.section.5.p.3"></a>
-   The syntax for relative URI takes advantage of the &lt;hier_part&gt; syntax
+   The relative URI syntax takes advantage of the &lt;hier_part&gt; syntax
    of &lt;absoluteURI&gt; (Section 3) in order to express a reference that is
    relative to the namespace of another hierarchical URI.
 </p>
@@ -1934,11 +1933,11 @@ rel_segment   = 1*( unreserved | escaped |
 <a name="rfc.section.5.p.11"></a>
    It is not necessary for all URI within a given scheme to be
    restricted to the &lt;hier_part&gt; syntax, since the hierarchical
-   properties of that syntax are only necessary when relative URI are
+   properties of that syntax are only necessary when a relative URI is
    used within a particular document.  Documents can only make use of
-   relative URI when their base URI fits within the &lt;hier_part&gt; syntax.
+   a relative URI when their base URI fits within the &lt;hier_part&gt; syntax.
    It is assumed that any document which contains a relative reference
-   will also have a base URI that obeys the syntax.  In other words,
+   will also have a base URI that obeys the syntax.  In other words, a
    relative URI cannot be used within a document that has an unsuitable
    base URI.
 </p>
@@ -2054,8 +2053,8 @@ rel_segment   = 1*( unreserved | escaped |
 <p>
 <a name="rfc.section.5.1.4.p.2"></a>
    It is the responsibility of the distributor(s) of a document
-   containing relative URI to ensure that the base URI for that document
-   can be established.  It must be emphasized that relative URI cannot
+   containing a relative URI to ensure that the base URI for that document
+   can be established.  It must be emphasized that a relative URI cannot
    be used reliably in situations where the document's base URI is not
    well-defined.
 </p>
@@ -2473,6 +2472,11 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 
 <tr>
 <td nowrap="nowrap" valign="top"><b><a name="RFC2110">[RFC2110]</a></b></td><td valign="top"><a href="mailto:jpalme@dsv.su.se" title="Stockholm University and KTH">Palme, J.</a> and <a href="mailto:alexhop@microsoft.com" title="Microsoft Corporation">Hopmann, A.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2110.txt">MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)</a>", RFC&nbsp;2110, March&nbsp;1997.</td>
+</tr>
+
+
+<tr>
+<td nowrap="nowrap" valign="top"><b><a name="RFC2717">[RFC2717]</a></b></td><td valign="top"><a href="mailto:rpetke@wcom.net" title="UUNET Technologies">Petke, R.</a> and <a href="mailto:iking@microsoft.com" title="Microsoft Corporation">King, I.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2717.txt">Registration Procedures for URL Scheme Names</a>", BCP&nbsp;35, RFC&nbsp;2717, November&nbsp;1999.</td>
 </tr>
 
 
@@ -2920,9 +2924,9 @@ g#s/../x      =  http://a/b/c/g#s/../x
     Recommendations for Delimiting URI in Context</h1>
 <p>
 <a name="rfc.section.E.p.1"></a>
-   URI are often transmitted through formats that do not provide a clear
+   URIs are often transmitted through formats that do not provide a clear
    context for their interpretation.  For example, there are many
-   occasions when URI are included in plain text; examples include text
+   occasions when a URI is included in plain text; examples include text
    sent in electronic mail, USENET news messages, and, most importantly,
    printed on paper.  In such cases, it is important to be able to
    delimit the URI from the rest of the text, and in particular from
@@ -2950,7 +2954,7 @@ g#s/../x      =  http://a/b/c/g#s/../x
 <p>
 <a name="rfc.section.E.p.6"></a>
    In some cases, extra whitespace (spaces, linebreaks, tabs, etc.) may
-   need to be added to break long URI across lines. The whitespace
+   need to be added to break a long URI across lines. The whitespace
    should be ignored when extracting the URI.
 </p>
 <p>
@@ -2965,12 +2969,12 @@ g#s/../x      =  http://a/b/c/g#s/../x
 <p>
 <a name="rfc.section.E.p.8"></a>
    Using &lt;&gt; angle brackets around each URI is especially recommended as
-   a delimiting style for URI that contain whitespace.
+   a delimiting style for a URI that contains whitespace.
 </p>
 <p>
 <a name="rfc.section.E.p.9"></a>
    The prefix "URL:" (with or without a trailing space) was recommended
-   as a way to used to help distinguish a URL from other bracketed
+   as a way to help distinguish a URL from other bracketed
    designators, although this is not common in practice.
 </p>
 <p>

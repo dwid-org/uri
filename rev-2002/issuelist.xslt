@@ -31,12 +31,34 @@
       <th>status</th>
     </tr>
    <xsl:for-each select="issue">
+     <xsl:if test="status='accepted'">
     <tr>
       <td nowrap="nowrap"><a href="#{name}"><xsl:value-of select="name"/></a></td>
       <td><xsl:value-of select="title"/></td>
       <td><xsl:value-of select="type"/></td>
       <td><xsl:value-of select="status"/></td>
     </tr>
+     </xsl:if>
+   </xsl:for-each>
+   <xsl:for-each select="issue">
+     <xsl:if test="status='pending'">
+    <tr>
+      <td nowrap="nowrap"><a href="#{name}"><xsl:value-of select="name"/></a></td>
+      <td bgcolor="#FFFFCC"><xsl:value-of select="title"/></td>
+      <td><xsl:value-of select="type"/></td>
+      <td><xsl:value-of select="status"/></td>
+    </tr>
+     </xsl:if>
+   </xsl:for-each>
+   <xsl:for-each select="issue">
+     <xsl:if test="status!='pending' and status!='accepted'">
+    <tr>
+      <td nowrap="nowrap"><a href="#{name}"><xsl:value-of select="name"/></a></td>
+      <td><xsl:value-of select="title"/></td>
+      <td><xsl:value-of select="type"/></td>
+      <td><xsl:value-of select="status"/></td>
+    </tr>
+     </xsl:if>
    </xsl:for-each>
   </table>
   <xsl:apply-templates select="issue" />

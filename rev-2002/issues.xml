@@ -649,8 +649,8 @@ to readers.
 <issue>
  <type>syntax: netpath</type>
  <name>009-nullable-netpath</name>
- <title>syntax for netpath allows bad URI to be considered valid</title>
- <status>pending</status>
+ <title>syntax for netpath allows empty authority</title>
+ <status>closed</status>
  <report>
   <author email="kohsuke.kawaguchi_AT_eng.sun.com">Kohsuke Kawaguchi</author>
   <date sort="20010315">15 Mar 2001</date>
@@ -685,6 +685,18 @@ follows?
    segment = 1*pchar *( ";" param )
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy Fielding</author>
+  <date sort="20021017">17 Oct 2002</date>
+  <where>issues list</where>
+<pre>
+That URI is valid (maybe not for http, but for the URI syntax in general).
+The generic syntax requires that the components be extracted first in
+order to disambiguate these cases (the greedy rule).  Only after the
+components are extracted can the syntax of those components be tested
+for correctness.
+</pre>
+ </action>
  <report>
   <author email="jjc_AT_jclark.com">James Clark</author>
   <date sort="20010720">20 Jul 2001</date>
@@ -715,7 +727,7 @@ ambiguity to which 4.3 could be applied, and the existing regex would be
 consistent.
 </pre>
  </report>
- <report>
+ <action>
   <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="20010811">11 Aug 2001</date>
   <where>private mail</where>
@@ -727,7 +739,7 @@ it turns out to look like an empty 'server', rather than an empty 'regname'.
 
 So "//" does parse as net_path, and the regex in appendix B is fine.
 </pre>
- </report>
+ </action>
 </issue>
 
 <issue>
@@ -942,7 +954,7 @@ RFC 2732 (with ipv6 addresses), though.
  <type>syntax: query</type>
  <name>013-query-slash</name>
  <title>slash character should be forbidden in query</title>
- <status>rejected</status>
+ <status>closed</status>
  <report>
   <author email="aaron.douglas_AT_fuse.net">A. Carl Douglas</author>
   <date sort="20010426">26 Apr 2001</date>
@@ -1705,7 +1717,7 @@ URI Retrieval:
  <type>intro</type>
  <name>023-URI-plural</name>
  <title>URI or URIs for plural</title>
- <status>accepted</status>
+ <status>fixed 00</status>
  <report>
   <author email="tbray_AT_textuality.com">Tim Bray</author>
   <date sort="20020809">09 Aug 2002</date>
@@ -1726,6 +1738,14 @@ I prefer whichever one is easier to say while speaking, since I do not
 believe in the theory that people expand acronyms as they read.
 
 I am fine with either one, provided I only have to change it once.
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021017">17 Oct 2002</date>
+  <where>draft 00</where>
+<pre>
+Fixed by rewriting URI to "a URI" or URIs, as appropriate.
 </pre>
  </action>
 </issue>
