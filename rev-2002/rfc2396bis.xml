@@ -242,16 +242,19 @@ term "Uniform Resource Locator" (URL) refers to the subset of URIs
 that, in addition to identifying a resource, provide a means of
 locating the resource by describing its primary access mechanism
 (e.g., its network "location").  The term "Uniform Resource Name" (URN)
-refers to URIs under the "urn" scheme <xref target="RFC2141"/>, which
-are required to remain globally unique and persistent even when the
-resource ceases to exist or becomes unavailable.
+has been used historically to refer to both URIs under the "urn" scheme
+<xref target="RFC2141"/>, which are required to remain globally unique
+and persistent even when the resource ceases to exist or becomes
+unavailable, and to any other URI with the properties of a name.
 </t>
 <t>
 An individual scheme does not need to be classified as being just one of
 "name" or "locator".  Instances of URIs from any given scheme may have
 the characteristics of names or locators or both, often depending on the
 persistence and care in the assignment of identifiers by the naming
-authority, rather than any quality of the scheme.
+authority, rather than any quality of the scheme.  Future specifications
+and related documentation should use the general term "URI", rather than
+the more restrictive terms URL and URN <xref target="RFC3305"/>.
 </t>
 </section>
 
@@ -884,50 +887,6 @@ IPv4address, then it should be considered an IPv4 address literal
 and not a hostname.
 </t>
 <figure><preamble>
-<iref item="hostname" primary="true"/>
-<iref item="qualified" primary="true"/>
-<iref item="domainlabel" primary="true"/>
-<iref item="alphanum" primary="true"/>
-A hostname takes the form described in Section 3 of <xref target="RFC1034"/>
-and Section 2.1 of <xref target="RFC1123"/>: a sequence of domain labels
-separated by ".", each domain label starting and ending with an alphanumeric
-character and possibly also containing "-" characters.  The rightmost
-domain label of a fully qualified domain name may be followed by a
-single "." if it is necessary to distinguish between the complete
-domain name and some local domain.
-<iref item="URI grammar" subitem="hostname" primary="true"/>
-<iref item="URI grammar" subitem="qualified" primary="true"/>
-<iref item="URI grammar" subitem="domainlabel" primary="true"/>
-<iref item="URI grammar" subitem="alphanum" primary="true"/>
-</preamble><artwork type="abnf">
-   hostname    = domainlabel qualified
-   qualified   = *( "." domainlabel ) [ "." ]
-   domainlabel = alphanum [ 0*61( alphanum / "-" ) alphanum ]
-   alphanum    = ALPHA / DIGIT
-</artwork></figure>
-<figure><preamble>
-<iref item="IPv4" primary="true"/>
-<iref item="IPv4address" primary="true"/>
-<iref item="dec-octet" primary="true"/>
-A host identified by an IPv4 literal address is represented in
-dotted-decimal notation (a sequence of four decimal numbers in the
-range 0 to 255, separated by "."), as described in <xref target="RFC1123"/>
-by reference to <xref target="RFC0952"/>.  Note that other forms of
-dotted notation may be interpreted on some platforms, as described in
-<xref target="security-ipv4"/>, but only the dotted-decimal form of
-four octets is allowed by this grammar.
-<iref item="URI grammar" subitem="IPv4address" primary="true"/>
-<iref item="URI grammar" subitem="dec-octet" primary="true"/>
-</preamble><artwork type="abnf">
-   IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
-
-   dec-octet   = DIGIT                 ; 0-9
-               / %x31-39 DIGIT         ; 10-99
-               / "1" 2DIGIT            ; 100-199
-               / "2" %x30-34 DIGIT     ; 200-249
-               / "25" %x30-35          ; 250-255
-</artwork></figure>
-<figure><preamble>
 <iref item="IPv6" primary="true"/>
 <iref item="IPv6reference" primary="true"/>
 <iref item="IPv6address" primary="true"/>
@@ -958,6 +917,50 @@ are allowed in the URI syntax.
                ; least-significant 32 bits of address
 
    h4          = 1*4HEXDIG
+</artwork></figure>
+<figure><preamble>
+<iref item="IPv4" primary="true"/>
+<iref item="IPv4address" primary="true"/>
+<iref item="dec-octet" primary="true"/>
+A host identified by an IPv4 literal address is represented in
+dotted-decimal notation (a sequence of four decimal numbers in the
+range 0 to 255, separated by "."), as described in <xref target="RFC1123"/>
+by reference to <xref target="RFC0952"/>.  Note that other forms of
+dotted notation may be interpreted on some platforms, as described in
+<xref target="security-ipv4"/>, but only the dotted-decimal form of
+four octets is allowed by this grammar.
+<iref item="URI grammar" subitem="IPv4address" primary="true"/>
+<iref item="URI grammar" subitem="dec-octet" primary="true"/>
+</preamble><artwork type="abnf">
+   IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
+
+   dec-octet   = DIGIT                 ; 0-9
+               / %x31-39 DIGIT         ; 10-99
+               / "1" 2DIGIT            ; 100-199
+               / "2" %x30-34 DIGIT     ; 200-249
+               / "25" %x30-35          ; 250-255
+</artwork></figure>
+<figure><preamble>
+<iref item="hostname" primary="true"/>
+<iref item="qualified" primary="true"/>
+<iref item="domainlabel" primary="true"/>
+<iref item="alphanum" primary="true"/>
+A hostname takes the form described in Section 3 of <xref target="RFC1034"/>
+and Section 2.1 of <xref target="RFC1123"/>: a sequence of domain labels
+separated by ".", each domain label starting and ending with an alphanumeric
+character and possibly also containing "-" characters.  The rightmost
+domain label of a fully qualified domain name may be followed by a
+single "." if it is necessary to distinguish between the complete
+domain name and some local domain.
+<iref item="URI grammar" subitem="hostname" primary="true"/>
+<iref item="URI grammar" subitem="qualified" primary="true"/>
+<iref item="URI grammar" subitem="domainlabel" primary="true"/>
+<iref item="URI grammar" subitem="alphanum" primary="true"/>
+</preamble><artwork type="abnf">
+   hostname    = domainlabel qualified
+   qualified   = *( "." domainlabel ) [ "." ]
+   domainlabel = alphanum [ 0*61( alphanum / "-" ) alphanum ]
+   alphanum    = ALPHA / DIGIT
 </artwork></figure>
 <t>
 The presence of host within a URI does not imply that the scheme
@@ -2058,8 +2061,8 @@ in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
 and Larry Masinter in <xref target="RFC2732"/>.
 In addition, contributions by Reese Anschultz, Tim Bray, Rob Cameron,
 Dan Connolly, Adam M. Costello, John Cowan, Jason Diamond, Martin Duerst,
-Stefan Eissing,
-Clive D.W. Feather, Pat Hayes, Henry Holtzman, Graham Klyne, Dan Kohn,
+Stefan Eissing, Clive D.W. Feather, Tony Hammond,
+Pat Hayes, Henry Holtzman, Graham Klyne, Dan Kohn,
 Bruce Lilly, Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
 Miles Sabin, Ronald Tschalaer, Marc Warne, Stuart Williams, and Henry Zongaro
 are gratefully acknowledged.
@@ -2477,6 +2480,18 @@ Science, University of California, Irvine</organization>
 <seriesInfo name='RFC' value='1737' />
 </reference>
 
+<reference anchor='RFC3305'>
+<front>
+<title>Report from the Joint W3C/IETF URI Planning Interest Group: Uniform Resource Identifiers (URIs), URLs, and Uniform Resource Names (URNs): Clarifications and Recommendations</title>
+<author initials='M.' surname='Mealling' fullname='M. Mealling'>
+<organization /></author>
+<author initials='R.' surname='Denenberg' fullname='R. Denenberg'>
+<organization /></author>
+<date month='August' year='2002' /></front>
+<seriesInfo name='RFC' value='3305' />
+<format type='TXT' octets='21793' target='ftp://ftp.isi.edu/in-notes/rfc3305.txt' />
+</reference>
+
 <reference anchor='RFC2141'>
 <front>
 <title>URN Syntax</title>
@@ -2774,7 +2789,7 @@ delimit the URI from the rest of the text, and in particular from
 punctuation marks that might be mistaken for part of the URI.
 </t>
 <t>
-In practice, URI are delimited in a variety of ways, but usually
+In practice, URIs are delimited in a variety of ways, but usually
 within double-quotes "http://example.com/", angle brackets
 &lt;http://example.com/&gt;, or just using whitespace
 </t>
@@ -2783,11 +2798,6 @@ within double-quotes "http://example.com/", angle brackets
 </artwork></figure>
 <t>
 These wrappers do not form part of the URI.
-</t>
-<t>
-In the case where a fragment identifier is associated with a URI
-reference, the fragment would be placed within the brackets as well
-(separated from the URI with a "#" character).
 </t>
 <t>
 In some cases, extra whitespace (spaces, line-breaks, tabs, etc.) may
@@ -2804,7 +2814,7 @@ that the hyphen may or may not actually be part of the URI.
 </t>
 <t>
 Using &lt;&gt; angle brackets around each URI is especially recommended as
-a delimiting style for a URI that contains whitespace.
+a delimiting style for a reference that contains embedded whitespace.
 </t>
 <t>
 The prefix "URL:" (with or without a trailing space) was formerly
@@ -2820,8 +2830,8 @@ to recognize and strip both delimiters and embedded whitespace.
 For example, the text:
 </preamble><artwork>
    Yes, Jim, I found it under "http://www.w3.org/Addressing/",
-   but you can probably pick it up from &lt;ftp://ds.internic.
-   net/rfc/&gt;.  Note the warning in &lt;http://www.ics.uci.edu/pub/
+   but you can probably pick it up from &lt;ftp://foo.example.
+   com/rfc/&gt;.  Note the warning in &lt;http://www.ics.uci.edu/pub/
    ietf/uri/historical.html#WARNING&gt;.
 </artwork></figure>
 <t>
@@ -2829,7 +2839,7 @@ contains the URI references
 </t>
 <figure><artwork>
    http://www.w3.org/Addressing/
-   ftp://ds.internic.net/rfc/
+   ftp://foo.example.com/rfc/
    http://www.ics.uci.edu/pub/ietf/uri/historical.html#WARNING
 </artwork></figure>
 </section>
@@ -2906,8 +2916,8 @@ and disambiguated in the section defining relative-URI.
 The ABNF of hier-part and relative-URI has been corrected
 to allow a relative URI path to be empty.  This also allows an
 absolute-URI to consist of nothing after the "scheme:", as is present
-in practice with the "DAV:" namespace <xref target="RFC2518"/> and
-the "about:" URI used by many browser implementations.
+in practice with the "dav:" namespace <xref target="RFC2518"/> and
+the "about:" scheme used internally by many browser implementations.
 The ambiguity regarding the parsing of net-path, abs-path, and rel-path
 is now explained and disambiguated in the same section.
 </t>

@@ -954,7 +954,6 @@ is available at
 
 
 
-
 <b>D&nbsp;
             <a href="#changes">Summary of Non-editorial Changes</a></b>
 <br>
@@ -1195,9 +1194,10 @@ term "Uniform Resource Locator" (URL) refers to the subset of URIs
 that, in addition to identifying a resource, provide a means of
 locating the resource by describing its primary access mechanism
 (e.g., its network "location").  The term "Uniform Resource Name" (URN)
-refers to URIs under the "urn" scheme <a href="#RFC2141" title="URN Syntax">[RFC2141]</a>, which
-are required to remain globally unique and persistent even when the
-resource ceases to exist or becomes unavailable.
+has been used historically to refer to both URIs under the "urn" scheme
+<a href="#RFC2141" title="URN Syntax">[RFC2141]</a>, which are required to remain globally unique
+and persistent even when the resource ceases to exist or becomes
+unavailable, and to any other URI with the properties of a name.
 </p>
 <div>
 <a name="rfc.section.1.1.3.p.2"></a>
@@ -1207,7 +1207,9 @@ An individual scheme does not need to be classified as being just one of
 "name" or "locator".  Instances of URIs from any given scheme may have
 the characteristics of names or locators or both, often depending on the
 persistence and care in the assignment of identifiers by the naming
-authority, rather than any quality of the scheme.
+authority, rather than any quality of the scheme.  Future specifications
+and related documentation should use the general term "URI", rather than
+the more restrictive terms URL and URN <a href="#RFC3305" title="Report from the Joint W3C/IETF URI Planning Interest Group: Uniform Resource Identifiers (URIs), URLs, and Uniform Resource Names (URNs): Clarifications and Recommendations">[RFC3305]</a>.
 </p>
 <h2>
 <a name="rfc.section.1.2">1.2</a>&nbsp;
@@ -2024,69 +2026,15 @@ and not a hostname.
 <a name="rfc.iref.71"></a>
 <a name="rfc.iref.72"></a>
 <a name="rfc.iref.73"></a>
-A hostname takes the form described in Section 3 of <a href="#RFC1034" title="Domain names - concepts and facilities">[RFC1034]</a>
-and Section 2.1 of <a href="#RFC1123" title="Requirements for Internet Hosts - Application and Support">[RFC1123]</a>: a sequence of domain labels
-separated by ".", each domain label starting and ending with an alphanumeric
-character and possibly also containing "-" characters.  The rightmost
-domain label of a fully qualified domain name may be followed by a
-single "." if it is necessary to distinguish between the complete
-domain name and some local domain.
 <a name="rfc.iref.74"></a>
-<a name="rfc.iref.75"></a>
-<a name="rfc.iref.76"></a>
-<a name="rfc.iref.77"></a>
-
-</p>
-<pre>   hostname    = domainlabel qualified
-   qualified   = *( "." domainlabel ) [ "." ]
-   domainlabel = alphanum [ 0*61( alphanum / "-" ) alphanum ]
-   alphanum    = ALPHA / DIGIT
-</pre>
-<div>
-<a name="rfc.figure.u.17"></a>
-</div>
-<p>
-
-<a name="rfc.iref.78"></a>
-<a name="rfc.iref.79"></a>
-<a name="rfc.iref.80"></a>
-A host identified by an IPv4 literal address is represented in
-dotted-decimal notation (a sequence of four decimal numbers in the
-range 0 to 255, separated by "."), as described in <a href="#RFC1123" title="Requirements for Internet Hosts - Application and Support">[RFC1123]</a>
-by reference to <a href="#RFC0952" title="DoD Internet host table specification">[RFC0952]</a>.  Note that other forms of
-dotted notation may be interpreted on some platforms, as described in
-<a href="#security-ipv4">section&nbsp;7.3</a>, but only the dotted-decimal form of
-four octets is allowed by this grammar.
-<a name="rfc.iref.81"></a>
-<a name="rfc.iref.82"></a>
-
-</p>
-<pre>   IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
-
-   dec-octet   = DIGIT                 ; 0-9
-               / %x31-39 DIGIT         ; 10-99
-               / "1" 2DIGIT            ; 100-199
-               / "2" %x30-34 DIGIT     ; 200-249
-               / "25" %x30-35          ; 250-255
-</pre>
-<div>
-<a name="rfc.figure.u.18"></a>
-</div>
-<p>
-
-<a name="rfc.iref.83"></a>
-<a name="rfc.iref.84"></a>
-<a name="rfc.iref.85"></a>
-<a name="rfc.iref.86"></a>
-<a name="rfc.iref.87"></a>
 A host identified by an IPv6 literal address <a href="#RFC3513" title="Internet Protocol Version 6 (IPv6) Addressing Architecture">[RFC3513]</a>
 is distinguished by enclosing the IPv6 literal within square-brackets
 ("[" and "]").  This is the only place where square-bracket characters
 are allowed in the URI syntax.
-<a name="rfc.iref.88"></a>
-<a name="rfc.iref.89"></a>
-<a name="rfc.iref.90"></a>
-<a name="rfc.iref.91"></a>
+<a name="rfc.iref.75"></a>
+<a name="rfc.iref.76"></a>
+<a name="rfc.iref.77"></a>
+<a name="rfc.iref.78"></a>
 
 </p>
 <pre>   IPv6reference = "[" IPv6address "]"
@@ -2105,6 +2053,60 @@ are allowed in the URI syntax.
                ; least-significant 32 bits of address
 
    h4          = 1*4HEXDIG
+</pre>
+<div>
+<a name="rfc.figure.u.17"></a>
+</div>
+<p>
+
+<a name="rfc.iref.79"></a>
+<a name="rfc.iref.80"></a>
+<a name="rfc.iref.81"></a>
+A host identified by an IPv4 literal address is represented in
+dotted-decimal notation (a sequence of four decimal numbers in the
+range 0 to 255, separated by "."), as described in <a href="#RFC1123" title="Requirements for Internet Hosts - Application and Support">[RFC1123]</a>
+by reference to <a href="#RFC0952" title="DoD Internet host table specification">[RFC0952]</a>.  Note that other forms of
+dotted notation may be interpreted on some platforms, as described in
+<a href="#security-ipv4">section&nbsp;7.3</a>, but only the dotted-decimal form of
+four octets is allowed by this grammar.
+<a name="rfc.iref.82"></a>
+<a name="rfc.iref.83"></a>
+
+</p>
+<pre>   IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
+
+   dec-octet   = DIGIT                 ; 0-9
+               / %x31-39 DIGIT         ; 10-99
+               / "1" 2DIGIT            ; 100-199
+               / "2" %x30-34 DIGIT     ; 200-249
+               / "25" %x30-35          ; 250-255
+</pre>
+<div>
+<a name="rfc.figure.u.18"></a>
+</div>
+<p>
+
+<a name="rfc.iref.84"></a>
+<a name="rfc.iref.85"></a>
+<a name="rfc.iref.86"></a>
+<a name="rfc.iref.87"></a>
+A hostname takes the form described in Section 3 of <a href="#RFC1034" title="Domain names - concepts and facilities">[RFC1034]</a>
+and Section 2.1 of <a href="#RFC1123" title="Requirements for Internet Hosts - Application and Support">[RFC1123]</a>: a sequence of domain labels
+separated by ".", each domain label starting and ending with an alphanumeric
+character and possibly also containing "-" characters.  The rightmost
+domain label of a fully qualified domain name may be followed by a
+single "." if it is necessary to distinguish between the complete
+domain name and some local domain.
+<a name="rfc.iref.88"></a>
+<a name="rfc.iref.89"></a>
+<a name="rfc.iref.90"></a>
+<a name="rfc.iref.91"></a>
+
+</p>
+<pre>   hostname    = domainlabel qualified
+   qualified   = *( "." domainlabel ) [ "." ]
+   domainlabel = alphanum [ 0*61( alphanum / "-" ) alphanum ]
+   alphanum    = ALPHA / DIGIT
 </pre>
 <div>
 <a name="rfc.section.3.2.2.p.6"></a>
@@ -3580,8 +3582,8 @@ in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
 and Larry Masinter in <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>.
 In addition, contributions by Reese Anschultz, Tim Bray, Rob Cameron,
 Dan Connolly, Adam M. Costello, John Cowan, Jason Diamond, Martin Duerst,
-Stefan Eissing,
-Clive D.W. Feather, Pat Hayes, Henry Holtzman, Graham Klyne, Dan Kohn,
+Stefan Eissing, Clive D.W. Feather, Tony Hammond,
+Pat Hayes, Henry Holtzman, Graham Klyne, Dan Kohn,
 Bruce Lilly, Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
 Miles Sabin, Ronald Tschalaer, Marc Warne, Stuart Williams, and Henry Zongaro
 are gratefully acknowledged.
@@ -3627,6 +3629,8 @@ are gratefully acknowledged.
 
 
   
+
+
 
 
 
@@ -3711,6 +3715,9 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
 </tr>
 <tr>
 <td class="topnowrap"><b><a name="RFC2732">[RFC2732]</a></b></td><td class="top"><a title="Nokia">Hinden, R.M.</a>,&nbsp;<a title="IBM, iCAIR">Carpenter, B.E.</a> and <a title="AT&amp;T Labs">Masinter, L.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2732.txt">Format for Literal IPv6 Addresses in URL's</a>", RFC&nbsp;2732, December&nbsp;1999.</td>
+</tr>
+<tr>
+<td class="topnowrap"><b><a name="RFC3305">[RFC3305]</a></b></td><td class="top">Mealling, M. and Denenberg, R.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc3305.txt">Report from the Joint W3C/IETF URI Planning Interest Group: Uniform Resource Identifiers (URIs), URLs, and Uniform Resource Names (URNs): Clarifications and Recommendations</a>", RFC&nbsp;3305, August&nbsp;2002.</td>
 </tr>
 <tr>
 <td class="topnowrap"><b><a name="RFC3513">[RFC3513]</a></b></td><td class="top"><a title="Nokia">Hinden, R.</a> and <a title="Cisco Systems, Inc.">Deering, S.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc3513.txt">Internet Protocol Version 6 (IPv6) Addressing Architecture</a>", RFC&nbsp;3513, April&nbsp;2003.</td>
@@ -4028,7 +4035,7 @@ punctuation marks that might be mistaken for part of the URI.
 <a name="rfc.section.C.p.2"></a>
 </div>
 <p>
-In practice, URI are delimited in a variety of ways, but usually
+In practice, URIs are delimited in a variety of ways, but usually
 within double-quotes "http://example.com/", angle brackets
 &lt;http://example.com/&gt;, or just using whitespace
 </p>
@@ -4047,20 +4054,12 @@ These wrappers do not form part of the URI.
 <a name="rfc.section.C.p.5"></a>
 </div>
 <p>
-In the case where a fragment identifier is associated with a URI
-reference, the fragment would be placed within the brackets as well
-(separated from the URI with a "#" character).
-</p>
-<div>
-<a name="rfc.section.C.p.6"></a>
-</div>
-<p>
 In some cases, extra whitespace (spaces, line-breaks, tabs, etc.) may
 need to be added to break a long URI across lines. The whitespace
 should be ignored when extracting the URI.
 </p>
 <div>
-<a name="rfc.section.C.p.7"></a>
+<a name="rfc.section.C.p.6"></a>
 </div>
 <p>
 No whitespace should be introduced after a hyphen ("-") character.
@@ -4071,14 +4070,14 @@ all unescaped whitespace around the line break, and should be aware
 that the hyphen may or may not actually be part of the URI.
 </p>
 <div>
-<a name="rfc.section.C.p.8"></a>
+<a name="rfc.section.C.p.7"></a>
 </div>
 <p>
 Using &lt;&gt; angle brackets around each URI is especially recommended as
-a delimiting style for a URI that contains whitespace.
+a delimiting style for a reference that contains embedded whitespace.
 </p>
 <div>
-<a name="rfc.section.C.p.9"></a>
+<a name="rfc.section.C.p.8"></a>
 </div>
 <p>
 The prefix "URL:" (with or without a trailing space) was formerly
@@ -4087,7 +4086,7 @@ designators, though it is not commonly used in practice and is
 no longer recommended.
 </p>
 <div>
-<a name="rfc.section.C.p.10"></a>
+<a name="rfc.section.C.p.9"></a>
 </div>
 <p>
 For robustness, software that accepts user-typed URI should attempt
@@ -4100,12 +4099,12 @@ to recognize and strip both delimiters and embedded whitespace.
 For example, the text:
 </p>
 <pre>   Yes, Jim, I found it under "http://www.w3.org/Addressing/",
-   but you can probably pick it up from &lt;ftp://ds.internic.
-   net/rfc/&gt;.  Note the warning in &lt;http://www.ics.uci.edu/pub/
+   but you can probably pick it up from &lt;ftp://foo.example.
+   com/rfc/&gt;.  Note the warning in &lt;http://www.ics.uci.edu/pub/
    ietf/uri/historical.html#WARNING&gt;.
 </pre>
 <div>
-<a name="rfc.section.C.p.12"></a>
+<a name="rfc.section.C.p.11"></a>
 </div>
 <p>
 contains the URI references
@@ -4114,7 +4113,7 @@ contains the URI references
 <a name="rfc.figure.u.50"></a>
 </div>
 <pre>   http://www.w3.org/Addressing/
-   ftp://ds.internic.net/rfc/
+   ftp://foo.example.com/rfc/
    http://www.ics.uci.edu/pub/ietf/uri/historical.html#WARNING
 </pre>
 <hr class="noprint">
@@ -4225,8 +4224,8 @@ and disambiguated in the section defining relative-URI.
 The ABNF of hier-part and relative-URI has been corrected
 to allow a relative URI path to be empty.  This also allows an
 absolute-URI to consist of nothing after the "scheme:", as is present
-in practice with the "DAV:" namespace <a href="#RFC2518" title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</a> and
-the "about:" URI used by many browser implementations.
+in practice with the "dav:" namespace <a href="#RFC2518" title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</a> and
+the "about:" scheme used internally by many browser implementations.
 The ambiguity regarding the parsing of net-path, abs-path, and rel-path
 is now explained and disambiguated in the same section.
 </p>
@@ -4427,7 +4426,7 @@ the base URI has a non-hierarchical path.
               &nbsp;&nbsp;alphanum&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.73"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.87"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -4455,7 +4454,7 @@ the base URI has a non-hierarchical path.
               &nbsp;&nbsp;dec-octet&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.80"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.81"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -4476,7 +4475,7 @@ the base URI has a non-hierarchical path.
               &nbsp;&nbsp;domainlabel&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.72"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.86"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -4530,7 +4529,7 @@ the base URI has a non-hierarchical path.
               &nbsp;&nbsp;h4&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.87"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.74"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -4558,7 +4557,7 @@ the base URI has a non-hierarchical path.
               &nbsp;&nbsp;hostname&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.70"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.84"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td><b>I</b></td>
@@ -4582,35 +4581,35 @@ the base URI has a non-hierarchical path.
               &nbsp;&nbsp;IPv4&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.78"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.79"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;IPv4address&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.79"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.80"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;IPv6&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.83"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.70"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;IPv6address&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.85"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.72"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;IPv6reference&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.84"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.71"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td><b>L</b></td>
@@ -4627,7 +4626,7 @@ the base URI has a non-hierarchical path.
               &nbsp;&nbsp;ls32&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.86"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.73"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td><b>M</b></td>
@@ -4710,7 +4709,7 @@ the base URI has a non-hierarchical path.
               &nbsp;&nbsp;qualified&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.71"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.85"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -4912,7 +4911,7 @@ the base URI has a non-hierarchical path.
                 &nbsp;&nbsp;&nbsp;&nbsp;alphanum&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.77"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.91"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -4941,7 +4940,7 @@ the base URI has a non-hierarchical path.
                 &nbsp;&nbsp;&nbsp;&nbsp;dec-octet&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.82"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.83"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -4955,7 +4954,7 @@ the base URI has a non-hierarchical path.
                 &nbsp;&nbsp;&nbsp;&nbsp;domainlabel&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.76"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.90"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -4985,7 +4984,7 @@ the base URI has a non-hierarchical path.
                 &nbsp;&nbsp;&nbsp;&nbsp;h4&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.91"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.78"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -5016,28 +5015,28 @@ the base URI has a non-hierarchical path.
                 &nbsp;&nbsp;&nbsp;&nbsp;hostname&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.74"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.88"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;IPv4address&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.81"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.82"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;IPv6address&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.89"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.76"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;IPv6reference&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.88"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.75"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -5051,7 +5050,7 @@ the base URI has a non-hierarchical path.
                 &nbsp;&nbsp;&nbsp;&nbsp;ls32&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.90"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.77"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -5104,7 +5103,7 @@ the base URI has a non-hierarchical path.
                 &nbsp;&nbsp;&nbsp;&nbsp;qualified&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.75"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.89"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
