@@ -237,7 +237,7 @@ table.closedissue {
       <link rel="Appendix" title="B Parsing a URI Reference with a Regular Expression" href="#rfc.section.B">
       <link rel="Appendix" title="C Delimiting a URI in Context" href="#rfc.section.C">
       <link rel="Appendix" title="D Summary of Non-editorial Changes" href="#rfc.section.D">
-      <meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.160, 2004/05/16 20:16:02, XSLT vendor: SAXON 7.8 from Michael Kay http://saxon.sf.net/">
+      <meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.15, 2004/05/21 00:48:58, XSLT vendor: SAXON 7.8 from Michael Kay http://saxon.sf.net/">
       <meta name="keywords" content="uniform resource identifier, URI, URL, URN, WWW, resource">
       <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
       <meta name="DC.Creator" content="Berners-Lee, T.">
@@ -966,7 +966,9 @@ table.closedissue {
          This document obsoletes <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>, which merged
          "Uniform Resource Locators" <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a> and
          "Relative Uniform Resource Locators" <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a> in order
-         to define a single, generic syntax for all URIs.  It excludes those
+         to define a single, generic syntax for all URIs.  
+         It contains the updates from, and obsoletes, <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>,
+         which introduced syntax for IPv6 addresses.  It excludes those
          portions of RFC 1738 that defined the specific syntax of individual
          URI schemes; those portions will be updated as separate documents.
          The process for registration of new URI schemes is defined separately
@@ -1298,7 +1300,7 @@ table.closedissue {
          URI references in information systems are designed to be late-binding:
          the result of an access is generally determined at the time it is accessed
          and may vary over time or due to other aspects of the interaction.
-         Such references are created in order to be be used in the future:
+         Such references are created in order to be used in the future:
          what is being identified is not some specific result that was obtained
          in the past, but rather some characteristic that is expected to be true
          for future results.  In such cases, the resource referred to by the URI
@@ -1538,10 +1540,10 @@ table.closedissue {
 </pre><div><a name="rfc.section.2.3.p.2"></a></div>
       <p>
          URIs that differ in the replacement of an unreserved character with
-         its corresponding percent-encoded octet are equivalent: they identify
-         the same resource.  However, percent-encoded unreserved characters may
-         change the result of some URI comparisons (<a href="#comparison" title="Normalization and Comparison">Section&nbsp;6</a>),
-         potentially leading to incorrect or inefficient behavior.
+         its corresponding percent-encoded US-ASCII octet are equivalent:
+         they identify the same resource.  However, URI comparison implementations
+         do not always perform normalization prior to comparison
+         <a href="#comparison" title="Normalization and Comparison">Section&nbsp;6</a>.
          For consistency, percent-encoded octets in the ranges of
          ALPHA (%41-%5A and %61-%7A), DIGIT (%30-%39), hyphen (%2D), period (%2E),
          underscore (%5F), or tilde (%7E) should not be created by URI producers
@@ -1859,7 +1861,7 @@ table.closedissue {
       </p><pre>   host        = IP-literal / IPv4address / reg-name
 </pre><p>
          The syntax rule for host is ambiguous because it does not completely
-         distinguish between an IPv4address and a reg-name.  In order to disambiguate,
+         distinguish between an IPv4address and a reg-name.  In order to disambiguate
          the syntax, we apply the "first-match-wins" algorithm: If host matches
          the rule for IPv4address, then it should be considered an IPv4 address literal
          and not a reg-name.  Although host is case-insensitive, producers
@@ -2058,9 +2060,10 @@ table.closedissue {
          In addition, a URI reference (<a href="#uri-reference" title="URI Reference">Section&nbsp;4.1</a>) may begin
          with a relative path, in which case the first path segment cannot
          contain a colon (":") character.  The ABNF requires five separate rules
-         to disambiguate these cases, only one of which will match a given
-         URI reference.  We use the generic term "path component" to describe
-         the URI substring that is matched by the parser to one of these rules.
+         to disambiguate these cases, only one of which will match the path
+         substring within a given URI reference.  We use the generic term
+         "path component" to describe the URI substring that is matched by the
+         parser to one of these rules.
          <a name="rfc.iref.107"></a>
          <a name="rfc.iref.108"></a>
          <a name="rfc.iref.109"></a>

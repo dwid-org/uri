@@ -114,7 +114,9 @@ for Uniform Resource Names" <xref target="RFC1737"/>.
 This document obsoletes <xref target="RFC2396"/>, which merged
 "Uniform Resource Locators" <xref target="RFC1738"/> and
 "Relative Uniform Resource Locators" <xref target="RFC1808"/> in order
-to define a single, generic syntax for all URIs.  It excludes those
+to define a single, generic syntax for all URIs.  
+It contains the updates from, and obsoletes, <xref target="RFC2732"/>,
+which introduced syntax for IPv6 addresses.  It excludes those
 portions of RFC 1738 that defined the specific syntax of individual
 URI schemes; those portions will be updated as separate documents.
 The process for registration of new URI schemes is defined separately
@@ -404,7 +406,7 @@ and its relation to other resources.
 URI references in information systems are designed to be late-binding:
 the result of an access is generally determined at the time it is accessed
 and may vary over time or due to other aspects of the interaction.
-Such references are created in order to be be used in the future:
+Such references are created in order to be used in the future:
 what is being identified is not some specific result that was obtained
 in the past, but rather some characteristic that is expected to be true
 for future results.  In such cases, the resource referred to by the URI
@@ -633,10 +635,10 @@ letters, decimal digits, hyphen, period, underscore, and tilde.
 </artwork></figure>
 <t>
 URIs that differ in the replacement of an unreserved character with
-its corresponding percent-encoded octet are equivalent: they identify
-the same resource.  However, percent-encoded unreserved characters may
-change the result of some URI comparisons (<xref target="comparison"/>),
-potentially leading to incorrect or inefficient behavior.
+its corresponding percent-encoded US-ASCII octet are equivalent:
+they identify the same resource.  However, URI comparison implementations
+do not always perform normalization prior to comparison
+<xref target="comparison"/>.
 For consistency, percent-encoded octets in the ranges of
 ALPHA (%41-%5A and %61-%7A), DIGIT (%30-%39), hyphen (%2D), period (%2E),
 underscore (%5F), or tilde (%7E) should not be created by URI producers
@@ -935,7 +937,7 @@ considered as semantically limiting the data within it.
    host        = IP-literal / IPv4address / reg-name
 </artwork><postamble>
 The syntax rule for host is ambiguous because it does not completely
-distinguish between an IPv4address and a reg-name.  In order to disambiguate,
+distinguish between an IPv4address and a reg-name.  In order to disambiguate
 the syntax, we apply the "first-match-wins" algorithm: If host matches
 the rule for IPv4address, then it should be considered an IPv4 address literal
 and not a reg-name.  Although host is case-insensitive, producers
@@ -1137,9 +1139,10 @@ the path cannot begin with two slash characters ("//").
 In addition, a URI reference (<xref target="uri-reference"/>) may begin
 with a relative path, in which case the first path segment cannot
 contain a colon (":") character.  The ABNF requires five separate rules
-to disambiguate these cases, only one of which will match a given
-URI reference.  We use the generic term "path component" to describe
-the URI substring that is matched by the parser to one of these rules.
+to disambiguate these cases, only one of which will match the path
+substring within a given URI reference.  We use the generic term
+"path component" to describe the URI substring that is matched by the
+parser to one of these rules.
 <iref item="URI grammar" subitem="path" primary="true"/>
 <iref item="URI grammar" subitem="path-abempty" primary="true"/>
 <iref item="URI grammar" subitem="path-abs" primary="true"/>
