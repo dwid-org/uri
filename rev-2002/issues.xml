@@ -1278,8 +1278,8 @@ Changed to reflect all of the suggestions:
 
    hostname      = domainlabel [ qualified ]
    qualified     = *( "." domainlabel ) [ "." toplabel "." ]
-   domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
-   toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
+   domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
+   toplabel      = alpha    [ 0*61( alphanum / "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
 </pre>
  </action>
@@ -1589,7 +1589,7 @@ The last call period for these documents ends on 21 Feb 2003.
  </report>
  <report>
   <author email="GK_AT_ninebynine.org">Graham Klyne</author>
-  <date sort="20030306">05 Mar 2003</date>
+  <date sort="20030305">05 Mar 2003</date>
   <where>URI-WG mailing list</where>
 <pre>
 Is there a way to specify a fragment identifer relative to the document
@@ -1625,6 +1625,36 @@ the base URI, later stating that a retrieval action must not take place
 if the new URI differs from the base URI only by its fragment.
 </pre>
  </action>
+ <report>
+  <author email="cameron_AT_cs.sfu.ca">Rob Cameron</author>
+  <date sort="20030505">05 May 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+In my implementation, I've assumed the following change in
+the pseudocode for the algorithm in 5.2
+
+    if (R.path == "") then
+       if defined(R.query) then
+          T.path  = Base.path;
+          T.query = R.query;
+       else
+          -- An empty reference refers to the current document
+          return (current-document, fragment);
+       endif;
+
+becomes
+    if (R.path == "") then
+       T.path  = Base.path;
+       if defined(R.query) then
+          T.query = R.query;
+       else
+          T.query = Base.query;
+       endif;
+
+This seems consistent with the requests of the RDF group and
+gives a clean, well-behaved algorithm.
+</pre>
+ </report>
 </issue>
 
 <issue>
@@ -3140,8 +3170,8 @@ Ref:
 [[
    hostname      = domainlabel [ qualified ]
    qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
-   domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
-   toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
+   domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
+   toplabel      = alpha    [ 0*61( alphanum / "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
 ]]
 
@@ -3291,6 +3321,24 @@ It would be best to have a syntax that was both unambiguous
 and easy for LALR parsers to process, but that may require too many changes.
 </pre>
  </action>
+ <report>
+  <author email="cameron_AT_cs.sfu.ca">Rob Cameron</author>
+  <date sort="20030505">05 May 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+The production rule for path is a bit problematic.
+
+  path          = [ abs-path / opaque-part ]
+
+  - it is not used in the grammar
+
+  - presumably, it is meant to say that whatever is
+    parsed as either abs-path or opaque-part is interpreted as a "path".
+
+  - the production does not include rel-path, but rel-path needs
+    to be processed as a path for the algorithms in 5.2
+</pre>
+ </report>
 </issue>
 
 <issue>

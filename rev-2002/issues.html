@@ -1539,8 +1539,8 @@ Changed to reflect all of the suggestions:
 
    hostname      = domainlabel [ qualified ]
    qualified     = *( "." domainlabel ) [ "." toplabel "." ]
-   domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
-   toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
+   domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
+   toplabel      = alpha    [ 0*61( alphanum / "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
 </pre>
 </td>
@@ -1900,6 +1900,38 @@ algorithm.  This can be accomplished by changing the spec to remove
 the bit about current document and instead replace the empty URI with
 the base URI, later stating that a retrieval action must not take place
 if the new URI differs from the base URI only by its fragment.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
+  05 May 2003,
+  URI-WG mailing list:
+  <pre>
+In my implementation, I've assumed the following change in
+the pseudocode for the algorithm in 5.2
+
+    if (R.path == "") then
+       if defined(R.query) then
+          T.path  = Base.path;
+          T.query = R.query;
+       else
+          -- An empty reference refers to the current document
+          return (current-document, fragment);
+       endif;
+
+becomes
+    if (R.path == "") then
+       T.path  = Base.path;
+       if defined(R.query) then
+          T.query = R.query;
+       else
+          T.query = Base.query;
+       endif;
+
+This seems consistent with the requests of the RDF group and
+gives a clean, well-behaved algorithm.
 </pre>
 </td>
 </tr>
@@ -3591,8 +3623,8 @@ Ref:
 [[
    hostname      = domainlabel [ qualified ]
    qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
-   domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
-   toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
+   domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
+   toplabel      = alpha    [ 0*61( alphanum / "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
 ]]
 
@@ -3754,6 +3786,26 @@ messy patches to get the kind of behaviour I'd expect from a "normal" parser.)
   <pre>
 It would be best to have a syntax that was both unambiguous
 and easy for LALR parsers to process, but that may require too many changes.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
+  05 May 2003,
+  URI-WG mailing list:
+  <pre>
+The production rule for path is a bit problematic.
+
+  path          = [ abs-path / opaque-part ]
+
+  - it is not used in the grammar
+
+  - presumably, it is meant to say that whatever is
+    parsed as either abs-path or opaque-part is interpreted as a "path".
+
+  - the production does not include rel-path, but rel-path needs
+    to be processed as a path for the algorithms in 5.2
 </pre>
 </td>
 </tr>
