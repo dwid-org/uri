@@ -2308,8 +2308,8 @@ To be filled-in later.
    potential four components and fragment identifier of a URI reference.
 </t>
 <t>
-   The following line is the regular expression for breaking-down a URI
-   reference into its components.
+   The following line is the regular expression for breaking-down a
+   well-formed URI reference into its components.
 </t>
 <figure><artwork>
    ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
