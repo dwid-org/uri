@@ -1071,7 +1071,7 @@ the URI substring that is matched by the parser to one of these rules.
    path-abs      = "/" [ segment-nz *( "/" segment ) ]
    path-noscheme = segment-nzc *( "/" segment )
    path-rootless = segment-nz *( "/" segment )
-   path-empty    = 0*0&lt;pchar&gt;
+   path-empty    = 0&lt;pchar&gt;
 
    segment       = *pchar
    segment-nz    = 1*pchar
@@ -2260,7 +2260,7 @@ Rob Cameron, Jeremy Carroll, Dan Connolly, Adam M. Costello, John Cowan,
 Jason Diamond, Martin Duerst, Stefan Eissing, Clive D.W. Feather,
 Tony Hammond, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
 Michael Kay, John C. Klensin, Graham Klyne, Dan Kohn, Bruce Lilly,
-Andrew Main, Ira McDonald, Michael Mealling, Stephen Pollei,
+Andrew Main, Ira McDonald, Michael Mealling, Ray Merkert, Stephen Pollei,
 Julian Reschke, Tomas Rokicki, Miles Sabin, Mark Thomson, Ronald Tschalaer,
 Norm Walsh, Marc Warne, Stuart Williams, and Henry Zongaro
 are gratefully acknowledged.
@@ -2942,13 +2942,23 @@ Science, University of California, Irvine</organization>
 
 <section title="Collected ABNF for URI" anchor="collected-abnf">
 <figure><artwork>
- URI = scheme ":" ["//" authority] path ["?" query] ["#" fragment]
+ URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+
+ hier-part     = "//" authority path-abempty
+               / path-abs
+               / path-rootless
+               / path-empty
 
  URI-reference = URI / relative-URI
 
- relative-URI  = ["//" authority] path ["?" query] ["#" fragment]
-
  absolute-URI  = scheme ":" ["//" authority] path ["?" query]
+
+ relative-URI  = relative-part [ "?" query ] [ "#" fragment ]
+
+ relative-part = "//" authority path-abempty
+               / path-abs
+               / path-noscheme
+               / path-empty
 
  scheme        = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
 
@@ -2984,16 +2994,29 @@ Science, University of California, Irvine</organization>
 
  reg-name      = 0*255( unreserved / pct-encoded / sub-delims )
 
- path          = segment *( "/" segment )
+ path          = path-abempty    ; begins with "/" or is empty
+               / path-abs        ; begins with "/" but not "//"
+               / path-noscheme   ; begins with a non-colon segment
+               / path-rootless   ; begins with a segment
+               / path-empty      ; zero characters
+
+ path-abempty  = *( "/" segment )
+ path-abs      = "/" [ segment-nz *( "/" segment ) ]
+ path-noscheme = segment-nzc *( "/" segment )
+ path-rootless = segment-nz *( "/" segment )
+ path-empty    = 0&lt;pchar&gt;
+
  segment       = *pchar
+ segment-nz    = 1*pchar
+ segment-nzc   = 1*( unreserved / pct-encoded / sub-delims / "@" )
+
+ pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 
  query         = *( pchar / "/" / "?" )
 
  fragment      = *( pchar / "/" / "?" )
 
  pct-encoded   = "%" HEXDIG HEXDIG
-
- pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 
  unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
  reserved      = gen-delims / sub-delims
