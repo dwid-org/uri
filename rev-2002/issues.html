@@ -16,6 +16,8 @@
              <a href="example_uri_refs.out">output</a>
 </li>
 <li>Published drafts:
+       <a href="draft-fielding-uri-rfc2396bis-04.txt">04.txt</a>,
+       <a href="draft-fielding-uri-rfc2396bis-04.html">04.html</a>,
        <a href="draft-fielding-uri-rfc2396bis-03.txt">03.txt</a>,
        <a href="draft-fielding-uri-rfc2396bis-03.html">03.html</a>,
        <a href="draft-fielding-uri-rfc2396bis-02.txt">02.txt</a>,
@@ -160,10 +162,10 @@
 <td nowrap="nowrap"><a href="#041-encoding">041-encoding</a></td><td>Section 2 on encoding causes too much confusion</td><td>characters</td><td nowrap="nowrap">fixed 04</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#044-empty-path">044-empty-path</a></td><td>no path is defined for scheme://ABCD?query</td><td>bnf</td><td nowrap="nowrap">fixed 04</td>
+<td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>IPv6</td><td nowrap="nowrap">added 04</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>IPv6</td><td nowrap="nowrap">added 04</td>
+<td nowrap="nowrap"><a href="#044-empty-path">044-empty-path</a></td><td>no path is defined for scheme://ABCD?query</td><td>bnf</td><td nowrap="nowrap">fixed 05</td>
 </tr>
 </table>
 <br>
@@ -1434,16 +1436,7 @@ will fix BNF
   14 Sep 2002,
   draft 00:
   <pre>
-Fixed by making the path optional in the BNF:
-
-2396:
-
-   relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
-   hier_part     = ( net_path | abs_path ) [ "?" query ]
-
-draft-00:
-   relative-URI  = [ net-path | abs-path | rel-path ] [ "?" query ]
-   hier-part     = [ net-path | abs-path ] [ "?" query ]
+Fixed by making the path optional in the BNF
 </pre>
 </td>
 </tr>
@@ -4672,7 +4665,7 @@ Closed due to lack of interest.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="044-empty-path">044-empty-path</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">no path is defined for scheme://ABCD?query</font></th>
 </tr>
 <tr>
-<th bgcolor="lightgreen">fixed 04</th><th align="left">bnf</th>
+<th bgcolor="lightgreen">fixed 05</th><th align="left">bnf</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -4799,6 +4792,49 @@ simplifies the grammar (and the associated text that had to explain it).
 As a result, almost all of the intermediate rules are no longer useful
 and have been removed, including hier-part, net-path, abs-path, rel-path,
 and path-segments.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  02 Apr 2004,
+  draft 05:
+  <pre>
+Upon further review, the above change had to be reverted in favor
+of five separate definitions for path.
+
+   URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+
+   hier-part     = "//" authority path-abempty
+                 / path-abs
+                 / path-rootless
+                 / path-empty
+
+   relative-URI  = relative-part [ "?" query ] [ "#" fragment ]
+
+   relative-part = "//" authority path-abempty
+                 / path-abs
+                 / path-noscheme
+                 / path-empty
+
+   path          = path-abempty    ; begins with "/" or is empty
+                 / path-abs        ; begins with "/" but not "//"
+                 / path-noscheme   ; begins with a non-colon segment
+                 / path-rootless   ; begins with a segment
+                 / path-empty      ; zero characters
+
+   path-abempty  = *( "/" segment )
+   path-abs      = "/" [ segment-nz *( "/" segment ) ]
+   path-noscheme = segment-nzc *( "/" segment )
+   path-rootless = segment-nz *( "/" segment )
+   path-empty    = 0&lt;pchar&gt;
+
+   segment       = *pchar
+   segment-nz    = 1*pchar
+   segment-nzc   = 1*( unreserved / pct-encoded / sub-delims / "@" )
+
+   pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 </pre>
 </td>
 </tr>

@@ -15,11 +15,11 @@
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifier (URI): Generic Syntax</title>
 
   <author initials='T.' surname='Berners-Lee' fullname='Tim Berners-Lee'>
-    <organization abbrev="MIT/LCS">World Wide Web Consortium</organization>
+    <organization abbrev="W3C/MIT">World Wide Web Consortium</organization>
     <address>
       <postal>
-        <street>MIT/LCS, Room NE43-356</street>
-        <street>200 Technology Square</street>
+        <street>Massachusetts Institute of Technology</street>
+        <street>77 Massachusetts Avenue</street>
         <city>Cambridge</city>
         <region>MA</region>
         <code>02139</code>
@@ -156,7 +156,7 @@ set of resource identifiers.
 <t>Resource
   <list>
     <t>
-Anything that can be named or described can be a resource.
+Anything that has been named or described can be a resource.
 Familiar examples include an electronic document, an image,
 a service (e.g., "today's weather report for Los Angeles"),
 and a collection of other resources.
@@ -164,8 +164,17 @@ A resource is not necessarily accessible via the Internet;
 e.g., human beings, corporations, and bound books in a library
 can also be resources.
 Likewise, abstract concepts can be resources, such as the operators and
-operands of a mathematical equation or the types of a relationship
-(e.g., "parent" or "employee").
+operands of a mathematical equation, the types of a relationship
+(e.g., "parent" or "employee"), or numeric values (e.g., zero, one, and
+infinity).
+These things are called resources because they each can be considered
+a source of supply or support, or an available means, for some system,
+where such systems may be as diverse as the World Wide Web, a filesystem,
+an ontological graph, a theorem prover, or some other form of system for
+the direct or indirect observation and/or manipulation of resources.
+Note that "supply" is not necessary for a thing to be considered a
+resource: the ability to simply refer to that thing is often sufficient
+to support the operation of a given system.
     </t>
   </list>
 </t>
@@ -175,21 +184,36 @@ operands of a mathematical equation or the types of a relationship
     <t>
 An identifier embodies the information required to distinguish what is
 being identified from all other things within its scope of identification.
+Our use of the terms "identify" and "identifying" refer to this process of
+distinguishing from many to one; they should not be mistaken as an assumption
+that the identifier defines the identity of what is referenced, though that
+may be the case for some identifiers.
     </t>
   </list>
 </t>
 <t>
 A URI is an identifier that consists of a sequence of characters
-matching the syntax defined by the syntax rule named "URI" in
-<xref target="components"/>.
+matching the syntax rule named &lt;URI&gt; in <xref target="components"/>.
 A URI can be used to refer to a resource.
 This specification does not place any
-limits on the nature of a resource or the reasons why an application
-might wish to refer to a resource.  URIs have a global scope
-and should be interpreted consistently regardless of context, but
-that interpretation may be defined in relation to the user's context
-(e.g., "http://localhost/" refers to a resource that is relative to
-the user's network interface and yet not specific to any one user).
+limits on the nature of a resource, the reasons why an application
+might wish to refer to a resource, or the kinds of system that
+might use URIs for the sake of identifying resources.
+</t>
+<t>
+URIs have a global scope and must be interpreted consistently regardless
+of context, though the result of that interpretation may be in relation
+to the end-user's context.  For example, "http://localhost/" has the same
+interpretation for every user of that reference, even though the network
+interface corresponding to localhost may be different for each end-user:
+interpretation is independent of access.  However, an action made on
+the basis of that reference will take place in relation to the end-user's
+context, which implies that an action intended to refer to a single,
+globally unique thing must use a URI that distinguishes that resource
+from all other things.  URIs that identify in relation to the end-user's
+local context should only be used when the context itself is a defining
+aspect of the resource, such as when an on-line Linux manual refers to a
+file on the end-user's filesystem (e.g., "file:/etc/hosts").
 </t>
 
 <section title="Generic Syntax" anchor="generic-syntax">
@@ -782,10 +806,8 @@ number sign ("#") character, or by the end of the URI.
 </preamble><artwork type="abnf">
    authority   = [ userinfo "@" ] host [ ":" port ]
 </artwork><postamble>
-URI producers and normalizers should omit the "@" delimiter that
-separates userinfo from host if the userinfo component is empty
-(zero length) and should omit the ":" delimiter that separates host
-from port if the port component is empty.
+URI producers and normalizers should omit the ":" delimiter that
+separates host from port if the port component is empty.
 Some schemes do not allow the userinfo and/or port subcomponents.
 </postamble></figure>
 <t>
@@ -955,8 +977,7 @@ some local domain.
    reg-name    = 0*255( unreserved / pct-encoded / sub-delims )
 </artwork><postamble>
 If the host component is defined and the registered name is empty
-(zero length), then the name defaults to "localhost"
-(<xref target="normalize-scheme"/> discusses how this should be normalized).
+(zero length), then the name defaults to "localhost".
 If "localhost" is not determined by a host name lookup, then it should be
 interpreted to mean the machine on which the URI is being resolved.
 </postamble></figure>
@@ -1132,11 +1153,11 @@ and terminated by a number sign ("#") character or by the end of the URI.
 </artwork></figure>
 <t>
 The characters slash ("/") and question mark ("?") may represent data
-within the query component, but should not be used as such within a URI
-that is expected to be the base for relative references
-(<xref target="base-uri"/>).  Incorrect implementations of reference
-resolution often fail to distinguish query data from path data when looking
-for hierarchical separators, thus resulting in non-interoperable results.
+within the query component.  Beware that some older, erroneous
+implementations do not handle such URIs correctly when they
+are used as the base for relative references (<xref target="base-uri"/>),
+apparently because they fail to to distinguish query data from path data
+when looking for hierarchical separators.
 However, since query components are often used to carry identifying information
 in the form of "key=value" pairs, and one frequently used value is a
 reference to another URI, it is sometimes better for usability to
@@ -1197,13 +1218,16 @@ Although this is often perceived to be a loss of information,
 particularly in regards to accurate redirection of references as
 content moves over time, it also serves to prevent information
 providers from denying reference authors the right to selectively
-refer to information within a resource.
+refer to information within a resource.  Likewise, indirect referencing
+provides additional flexibility and extensibility to systems that use
+URIs, since new media types are easier to define and deploy than
+new schemes of identification.
 </t>
 <t>
 The characters slash ("/") and question mark ("?") are allowed to
-represent data within the fragment identifier, but should not be used
-as such within a URI that is expected to be the base for relative references
-(<xref target="base-uri"/>) for the same reasons as described above for query.
+represent data within the fragment identifier.  Beware that some older,
+erroneous implementations do not handle such URIs correctly when they
+are used as the base for relative references (<xref target="base-uri"/>).
 </t>
 </section>
 
@@ -1418,7 +1442,7 @@ has the highest precedence.  This can be visualized graphically as:
    `----------------------------------------------------------'
 </artwork></figure>
 
-<section title="Base URI within Document Content" anchor="base-context">
+<section title="Base URI Embedded in Content" anchor="base-content">
 <t>
 Within certain media types, a base URI for relative references can
 be embedded within the content itself such that it can be readily
@@ -1656,10 +1680,11 @@ remove_dot_segments algorithm using two segment stacks rather than strings.
 <t>
 <list>
 <t>
-Note: Some client applications will fail to separate a reference's
-query component from its path component before merging the base and
-reference paths.  This may result in loss of information if the query
-component contains the strings "/../" or "/./".
+Note: Beware that some older, erroneous implementations will fail to
+separate a reference's query component from its path component
+prior to merging the base and reference paths, resulting in an
+interoperability failure if the query component contains the
+strings "/../" or "/./".
 </t>
 </list>
 </t>
@@ -1831,7 +1856,9 @@ and software with differing purposes will often be subject to differing
 design trade-offs in regards to how much effort should be spent in
 reducing duplicate identifiers.  This section describes a variety of
 methods that may be used to compare URIs, the trade-offs between them,
-and the types of applications that might use them.
+and the types of applications that might use them.  A canonical form
+for URI references is defined to reduce the occurrence of false negative
+comparisons.
 </t>
 
 <section title="Equivalence" anchor="equivalence">
@@ -1905,9 +1932,9 @@ before the other.
 Such character comparisons require that each pair of characters be put
 in comparable form.  For example, should one URI be stored in a byte
 array in EBCDIC encoding, and the second be in a Java String object (UTF-16),
-bit-for-bit comparisons applied naively will produce both false-positive
-and false-negative errors.  It is better to speak of equality on a
-character-for-character rather than byte-for-byte or bit-for-bit basis.
+bit-for-bit comparisons applied naively will produce errors.
+It is better to speak of equality on a character-for-character rather
+than byte-for-byte or bit-for-bit basis.
 In practical terms, character-by-character comparisons should be done
 codepoint-by-codepoint after conversion to a common character encoding.
 </t>
@@ -1927,8 +1954,7 @@ could reasonably consider the following two URIs equivalent:
 Web user agents, such as browsers, typically apply this type of URI
 normalization when determining whether a cached response is available.
 Syntax-based normalization includes such techniques as case normalization,
-encoding normalization, empty-component normalization, and removal of
-dot-segments.
+encoding normalization, and removal of dot-segments.
 </postamble></figure>
 
 <section title="Case Normalization" anchor="normalize-case">
@@ -1959,30 +1985,6 @@ Such URIs should be normalized by decoding any percent-encoded octet
 that corresponds to an unreserved character, as described in
 <xref target="unreserved"/>.
 </t>
-</section>
-
-<section title="Empty-component Normalization" anchor="normalize-empty">
-<figure><preamble>
-Components of the generic URI syntax are delimited from other components
-by optional separators.  For example, a query component is separated
-from the path by a question mark ("?") and a port subcomponent is
-separated from host by a colon (":").  A URI in which a delimiter is
-present and the (sub-)component it delimits is empty is equivalent to
-the same URI without that delimiter.  For example, the following are
-all equivalent:
-</preamble><artwork>
-   ftp://example.com/
-   ftp://example.com:/
-   ftp://@example.com:/
-   ftp://@example.com:/?
-   ftp://@example.com:/?#
-</artwork><postamble>
-URI producers and normalizers should omit a delimiter if the component
-it delimits is empty, as exemplified by the first URI above, with one
-exception: a double-slash delimiter indicating an authority component should
-not be removed, even when the authority is empty, since doing so can lead
-to misinterpreting the path.
-</postamble></figure>
 </section>
 
 <section title="Path Segment Normalization" anchor="normalize-path">
@@ -2025,8 +2027,8 @@ of an empty authority component.  For many scheme specifications, an
 empty authority is considered an error; for others, it is considered
 equivalent to "localhost".  For the sake of uniformity, future scheme
 specifications should define an empty authority as being equivalent
-to "localhost", and URI producers and normalizers should use
-"localhost" instead of an empty authority.
+to "localhost" and prefer the empty form for the sake of brevity and
+internationalization.
 </t>
 </section>
 
@@ -2057,7 +2059,7 @@ relative references).
 
 <section title="Canonical Form" anchor="canonical-form">
 <t>
-It is in the best interests of everyone to avoid false-negatives in
+It is in the best interests of everyone concerned to avoid false-negatives in
 comparing URIs and to minimize the amount of software processing for
 such comparisons.  Those who produce and make reference to URIs can
 reduce the cost of processing and the risk of false negatives by
@@ -2069,9 +2071,8 @@ with respect to their scheme.  Specifically:
   <t>Only perform percent-encoding where it is essential.</t>
   <t>Always use uppercase A-through-F characters when percent-encoding.</t>
   <t>Prevent /./ and /../ from appearing in non-relative URI paths.</t>
-  <t>Omit delimiters when their associated (sub-)component is empty.</t>
   <t>For schemes that define an empty authority to be equivalent to
-     "localhost", use "localhost".</t>
+     "localhost", use an empty authority.</t>
   <t>For schemes that define an empty path to be equivalent to a path
      of "/", use "/".</t>
 </list>
@@ -3214,8 +3215,8 @@ abs_path, rel_path, path_segments, rel_segment, and mark rules.
 All references to "opaque" URIs have been replaced with a better
 description of how the path component may be opaque to hierarchy.
 The ambiguity regarding the parsing of URI-reference as a URI or a
-relative-URI with a colon in the first segment is now explained
-and disambiguated through the use of five separate path matching rules.
+relative-URI with a colon in the first segment has been eliminated
+through the use of five separate path matching rules.
 </t>
 <t>
 The fragment identifier has been moved back into the section on
@@ -3229,9 +3230,8 @@ The ABNF has been corrected to allow a relative path to be empty.
 This also allows an absolute-URI to consist of nothing after the "scheme:",
 as is present in practice with the "dav:" namespace <xref target="RFC2518"/>
 and the "about:" scheme used internally by many WWW browser implementations.
-The ambiguity regarding the boundary between authority and path
-is now explained and disambiguated through the use of five separate
-path matching rules.
+The ambiguity regarding the boundary between authority and path has been
+eliminated through the use of five separate path matching rules.
 </t>
 <t>
 Registry-based naming authorities that use the generic syntax are now

@@ -263,7 +263,7 @@ table.closedissue {
          </tr>
          <tr>
             <td class="header-l">INTERNET DRAFT&nbsp;</td>
-            <td class="header-r">MIT/LCS&nbsp;</td>
+            <td class="header-r">W3C/MIT&nbsp;</td>
          </tr>
          <tr>
             <td class="header-l">
@@ -391,6 +391,7 @@ table.closedissue {
          
          <b>&nbsp;1.1&nbsp;
             <a href="#overview">Overview of URIs</a></b><br>
+         
          
          
          
@@ -678,7 +679,7 @@ table.closedissue {
          
          
          <b>&nbsp;&nbsp;5.1.1&nbsp;
-            <a href="#base-context">Base URI within Document Content</a></b><br>
+            <a href="#base-content">Base URI Embedded in Content</a></b><br>
          
          
          
@@ -801,11 +802,6 @@ table.closedissue {
          
          
          <b>&nbsp;&nbsp;&nbsp;6.2.2.3&nbsp;
-            <a href="#normalize-empty">Empty-component Normalization</a></b><br>
-         
-         
-         
-         <b>&nbsp;&nbsp;&nbsp;6.2.2.4&nbsp;
             <a href="#normalize-path">Path Segment Normalization</a></b><br>
          
          
@@ -1015,7 +1011,7 @@ table.closedissue {
       <dl>
          
          <dd style="margin-top: .5em">
-            Anything that can be named or described can be a resource.
+            Anything that has been named or described can be a resource.
             Familiar examples include an electronic document, an image,
             a service (e.g., "today's weather report for Los Angeles"),
             and a collection of other resources.
@@ -1023,8 +1019,17 @@ table.closedissue {
             e.g., human beings, corporations, and bound books in a library
             can also be resources.
             Likewise, abstract concepts can be resources, such as the operators and
-            operands of a mathematical equation or the types of a relationship
-            (e.g., "parent" or "employee").
+            operands of a mathematical equation, the types of a relationship
+            (e.g., "parent" or "employee"), or numeric values (e.g., zero, one, and
+            infinity).
+            These things are called resources because they each can be considered
+            a source of supply or support, or an available means, for some system,
+            where such systems may be as diverse as the World Wide Web, a filesystem,
+            an ontological graph, a theorem prover, or some other form of system for
+            the direct or indirect observation and/or manipulation of resources.
+            Note that "supply" is not necessary for a thing to be considered a
+            resource: the ability to simply refer to that thing is often sufficient
+            to support the operation of a given system.
             
          </dd>
          
@@ -1041,6 +1046,10 @@ table.closedissue {
          <dd style="margin-top: .5em">
             An identifier embodies the information required to distinguish what is
             being identified from all other things within its scope of identification.
+            Our use of the terms "identify" and "identifying" refer to this process of
+            distinguishing from many to one; they should not be mistaken as an assumption
+            that the identifier defines the identity of what is referenced, though that
+            may be the case for some identifiers.
             
          </dd>
          
@@ -1051,16 +1060,29 @@ table.closedissue {
       <div><a name="rfc.section.1.1.p.5"></a></div>
       <p>
          A URI is an identifier that consists of a sequence of characters
-         matching the syntax defined by the syntax rule named "URI" in
-         <a href="#components" title="Syntax Components">Section&nbsp;3</a>.
+         matching the syntax rule named &lt;URI&gt; in <a href="#components" title="Syntax Components">Section&nbsp;3</a>.
          A URI can be used to refer to a resource.
          This specification does not place any
-         limits on the nature of a resource or the reasons why an application
-         might wish to refer to a resource.  URIs have a global scope
-         and should be interpreted consistently regardless of context, but
-         that interpretation may be defined in relation to the user's context
-         (e.g., "http://localhost/" refers to a resource that is relative to
-         the user's network interface and yet not specific to any one user).
+         limits on the nature of a resource, the reasons why an application
+         might wish to refer to a resource, or the kinds of system that
+         might use URIs for the sake of identifying resources.
+         
+      </p>
+      <div><a name="rfc.section.1.1.p.6"></a></div>
+      <p>
+         URIs have a global scope and must be interpreted consistently regardless
+         of context, though the result of that interpretation may be in relation
+         to the end-user's context.  For example, "http://localhost/" has the same
+         interpretation for every user of that reference, even though the network
+         interface corresponding to localhost may be different for each end-user:
+         interpretation is independent of access.  However, an action made on
+         the basis of that reference will take place in relation to the end-user's
+         context, which implies that an action intended to refer to a single,
+         globally unique thing must use a URI that distinguishes that resource
+         from all other things.  URIs that identify in relation to the end-user's
+         local context should only be used when the context itself is a defining
+         aspect of the resource, such as when an on-line Linux manual refers to a
+         file on the end-user's filesystem (e.g., "file:/etc/hosts").
          
       </p>
       <h3><a name="rfc.iref.4"></a><a name="rfc.section.1.1.1">1.1.1</a>&nbsp;
@@ -1702,10 +1724,8 @@ table.closedissue {
          
       </p><pre>   authority   = [ userinfo "@" ] host [ ":" port ]
 </pre><p>
-         URI producers and normalizers should omit the "@" delimiter that
-         separates userinfo from host if the userinfo component is empty
-         (zero length) and should omit the ":" delimiter that separates host
-         from port if the port component is empty.
+         URI producers and normalizers should omit the ":" delimiter that
+         separates host from port if the port component is empty.
          Some schemes do not allow the userinfo and/or port subcomponents.
          
       </p>
@@ -1886,8 +1906,7 @@ table.closedissue {
       </p><pre>   reg-name    = 0*255( unreserved / pct-encoded / sub-delims )
 </pre><p>
          If the host component is defined and the registered name is empty
-         (zero length), then the name defaults to "localhost"
-         (<a href="#normalize-scheme" title="Scheme-based Normalization">Section&nbsp;6.2.3</a> discusses how this should be normalized).
+         (zero length), then the name defaults to "localhost".
          If "localhost" is not determined by a host name lookup, then it should be
          interpreted to mean the machine on which the URI is being resolved.
          
@@ -2064,11 +2083,11 @@ table.closedissue {
 </pre><div><a name="rfc.section.3.4.p.2"></a></div>
       <p>
          The characters slash ("/") and question mark ("?") may represent data
-         within the query component, but should not be used as such within a URI
-         that is expected to be the base for relative references
-         (<a href="#base-uri" title="Establishing a Base URI">Section&nbsp;5.1</a>).  Incorrect implementations of reference
-         resolution often fail to distinguish query data from path data when looking
-         for hierarchical separators, thus resulting in non-interoperable results.
+         within the query component.  Beware that some older, erroneous
+         implementations do not handle such URIs correctly when they
+         are used as the base for relative references (<a href="#base-uri" title="Establishing a Base URI">Section&nbsp;5.1</a>),
+         apparently because they fail to to distinguish query data from path data
+         when looking for hierarchical separators.
          However, since query components are often used to carry identifying information
          in the form of "key=value" pairs, and one frequently used value is a
          reference to another URI, it is sometimes better for usability to
@@ -2134,15 +2153,18 @@ table.closedissue {
          particularly in regards to accurate redirection of references as
          content moves over time, it also serves to prevent information
          providers from denying reference authors the right to selectively
-         refer to information within a resource.
+         refer to information within a resource.  Likewise, indirect referencing
+         provides additional flexibility and extensibility to systems that use
+         URIs, since new media types are easier to define and deploy than
+         new schemes of identification.
          
       </p>
       <div><a name="rfc.section.3.5.p.5"></a></div>
       <p>
          The characters slash ("/") and question mark ("?") are allowed to
-         represent data within the fragment identifier, but should not be used
-         as such within a URI that is expected to be the base for relative references
-         (<a href="#base-uri" title="Establishing a Base URI">Section&nbsp;5.1</a>) for the same reasons as described above for query.
+         represent data within the fragment identifier.  Beware that some older,
+         erroneous implementations do not handle such URIs correctly when they
+         are used as the base for relative references (<a href="#base-uri" title="Establishing a Base URI">Section&nbsp;5.1</a>).
          
       </p>
       
@@ -2380,7 +2402,7 @@ table.closedissue {
    | (5.1.4) Default Base URI (application-dependent)         |
    `----------------------------------------------------------'
 </pre><h3><a name="rfc.section.5.1.1">5.1.1</a>&nbsp;
-         <a name="base-context">Base URI within Document Content</a></h3>
+         <a name="base-content">Base URI Embedded in Content</a></h3>
       <div><a name="rfc.section.5.1.1.p.1"></a></div>
       <p>
          Within certain media types, a base URI for relative references can
@@ -2669,10 +2691,11 @@ table.closedissue {
       <dl>
          
          <dd style="margin-top: .5em">
-            Note: Some client applications will fail to separate a reference's
-            query component from its path component before merging the base and
-            reference paths.  This may result in loss of information if the query
-            component contains the strings "/../" or "/./".
+            Note: Beware that some older, erroneous implementations will fail to
+            separate a reference's query component from its path component
+            prior to merging the base and reference paths, resulting in an
+            interoperability failure if the query component contains the
+            strings "/../" or "/./".
             
          </dd>
          
@@ -2855,7 +2878,9 @@ table.closedissue {
          design trade-offs in regards to how much effort should be spent in
          reducing duplicate identifiers.  This section describes a variety of
          methods that may be used to compare URIs, the trade-offs between them,
-         and the types of applications that might use them.
+         and the types of applications that might use them.  A canonical form
+         for URI references is defined to reduce the occurrence of false negative
+         comparisons.
          
       </p>
       <h2><a name="rfc.section.6.1">6.1</a>&nbsp;
@@ -2944,9 +2969,9 @@ table.closedissue {
          Such character comparisons require that each pair of characters be put
          in comparable form.  For example, should one URI be stored in a byte
          array in EBCDIC encoding, and the second be in a Java String object (UTF-16),
-         bit-for-bit comparisons applied naively will produce both false-positive
-         and false-negative errors.  It is better to speak of equality on a
-         character-for-character rather than byte-for-byte or bit-for-bit basis.
+         bit-for-bit comparisons applied naively will produce errors.
+         It is better to speak of equality on a character-for-character rather
+         than byte-for-byte or bit-for-bit basis.
          In practical terms, character-by-character comparisons should be done
          codepoint-by-codepoint after conversion to a common character encoding.
          
@@ -2967,8 +2992,7 @@ table.closedissue {
          Web user agents, such as browsers, typically apply this type of URI
          normalization when determining whether a cached response is available.
          Syntax-based normalization includes such techniques as case normalization,
-         encoding normalization, empty-component normalization, and removal of
-         dot-segments.
+         encoding normalization, and removal of dot-segments.
          
       </p>
       <h3><a name="rfc.section.6.2.2.1">6.2.2.1</a>&nbsp;
@@ -3006,33 +3030,8 @@ table.closedissue {
          
       </p>
       <h3><a name="rfc.section.6.2.2.3">6.2.2.3</a>&nbsp;
-         <a name="normalize-empty">Empty-component Normalization</a></h3>
-      <div><a name="rfc.figure.u.35"></a></div>
-      <p>
-         Components of the generic URI syntax are delimited from other components
-         by optional separators.  For example, a query component is separated
-         from the path by a question mark ("?") and a port subcomponent is
-         separated from host by a colon (":").  A URI in which a delimiter is
-         present and the (sub-)component it delimits is empty is equivalent to
-         the same URI without that delimiter.  For example, the following are
-         all equivalent:
-         
-      </p><pre>   ftp://example.com/
-   ftp://example.com:/
-   ftp://@example.com:/
-   ftp://@example.com:/?
-   ftp://@example.com:/?#
-</pre><p>
-         URI producers and normalizers should omit a delimiter if the component
-         it delimits is empty, as exemplified by the first URI above, with one
-         exception: a double-slash delimiter indicating an authority component should
-         not be removed, even when the authority is empty, since doing so can lead
-         to misinterpreting the path.
-         
-      </p>
-      <h3><a name="rfc.section.6.2.2.4">6.2.2.4</a>&nbsp;
          <a name="normalize-path">Path Segment Normalization</a></h3>
-      <div><a name="rfc.section.6.2.2.4.p.1"></a></div>
+      <div><a name="rfc.section.6.2.2.3.p.1"></a></div>
       <p>
          The complete path segments "." and ".." have a special meaning within
          hierarchical URI schemes.  As such, they should not appear in absolute
@@ -3043,7 +3042,7 @@ table.closedissue {
       </p>
       <h3><a name="rfc.section.6.2.3">6.2.3</a>&nbsp;
          <a name="normalize-scheme">Scheme-based Normalization</a></h3>
-      <div><a name="rfc.figure.u.36"></a></div>
+      <div><a name="rfc.figure.u.35"></a></div>
       <p>
          The syntax and semantics of URIs vary from scheme to scheme, as described
          by the defining specification for each scheme.  Software may use
@@ -3073,13 +3072,13 @@ table.closedissue {
          empty authority is considered an error; for others, it is considered
          equivalent to "localhost".  For the sake of uniformity, future scheme
          specifications should define an empty authority as being equivalent
-         to "localhost", and URI producers and normalizers should use
-         "localhost" instead of an empty authority.
+         to "localhost" and prefer the empty form for the sake of brevity and
+         internationalization.
          
       </p>
       <h3><a name="rfc.section.6.2.4">6.2.4</a>&nbsp;
          <a name="normalize-protocol">Protocol-based Normalization</a></h3>
-      <div><a name="rfc.figure.u.37"></a></div>
+      <div><a name="rfc.figure.u.36"></a></div>
       <p>
          Web spiders, for which substantial effort to reduce the incidence
          of false negatives is often cost-effective, are observed to implement
@@ -3087,7 +3086,7 @@ table.closedissue {
          observe that a URI such as
          
       </p><pre>   http://example.com/data
-</pre><div><a name="rfc.figure.u.38"></a></div>
+</pre><div><a name="rfc.figure.u.37"></a></div>
       <p>
          redirects to a URI differing only in the trailing slash
          
@@ -3105,7 +3104,7 @@ table.closedissue {
          <a name="canonical-form">Canonical Form</a></h2>
       <div><a name="rfc.section.6.3.p.1"></a></div>
       <p>
-         It is in the best interests of everyone to avoid false-negatives in
+         It is in the best interests of everyone concerned to avoid false-negatives in
          comparing URIs and to minimize the amount of software processing for
          such comparisons.  Those who produce and make reference to URIs can
          reduce the cost of processing and the risk of false negatives by
@@ -3125,10 +3124,8 @@ table.closedissue {
          
          <li>Prevent /./ and /../ from appearing in non-relative URI paths.</li>
          
-         <li>Omit delimiters when their associated (sub-)component is empty.</li>
-         
          <li>For schemes that define an empty authority to be equivalent to
-            "localhost", use "localhost".
+            "localhost", use an empty authority.
          </li>
          
          <li>For schemes that define an empty path to be equivalent to a path
@@ -3313,7 +3310,7 @@ table.closedissue {
       </p>
       <h2><a name="rfc.section.7.6">7.6</a>&nbsp;
          <a name="security-semantic">Semantic Attacks</a></h2>
-      <div><a name="rfc.figure.u.39"></a></div>
+      <div><a name="rfc.figure.u.38"></a></div>
       <p>
          Because the userinfo subcomponent is rarely used and appears before the
          host in the authority component, it can be used to construct a URI
@@ -3595,7 +3592,7 @@ table.closedissue {
          </tr>
          <tr>
             <td>&nbsp;</td>
-            <td>MIT/LCS, Room NE43-356<br>200 Technology Square<br></td>
+            <td>Massachusetts Institute of Technology<br>77 Massachusetts Avenue<br></td>
          </tr>
          <tr>
             <td>&nbsp;</td>
@@ -3710,7 +3707,7 @@ table.closedissue {
       </table>
       <h1 class="np"><a name="rfc.section.A">A</a>&nbsp;
          <a name="collected-abnf">Collected ABNF for URI</a></h1>
-      <div><a name="rfc.figure.u.40"></a></div><pre> URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+      <div><a name="rfc.figure.u.39"></a></div><pre> URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 
  hier-part     = "//" authority path-abempty
                / path-abs
@@ -3813,7 +3810,7 @@ table.closedissue {
          well-formed URI reference into its components.
          
       </p>
-      <div><a name="rfc.figure.u.41"></a></div><pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
+      <div><a name="rfc.figure.u.40"></a></div><pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
     12            3  4          5       6  7        8 9
 </pre><div><a name="rfc.section.B.p.4"></a></div>
       <p>
@@ -3823,13 +3820,13 @@ table.closedissue {
          &lt;n&gt; as $&lt;n&gt;.  For example, matching the above expression to
          
       </p>
-      <div><a name="rfc.figure.u.42"></a></div><pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
+      <div><a name="rfc.figure.u.41"></a></div><pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
 </pre><div><a name="rfc.section.B.p.6"></a></div>
       <p>
          results in the following subexpression matches:
          
       </p>
-      <div><a name="rfc.figure.u.43"></a></div><pre>   $1 = http:
+      <div><a name="rfc.figure.u.42"></a></div><pre>   $1 = http:
    $2 = http
    $3 = //www.ics.uci.edu
    $4 = www.ics.uci.edu
@@ -3845,7 +3842,7 @@ table.closedissue {
          can determine the value of the four components and fragment as
          
       </p>
-      <div><a name="rfc.figure.u.44"></a></div><pre>   scheme    = $2
+      <div><a name="rfc.figure.u.43"></a></div><pre>   scheme    = $2
    authority = $4
    path      = $5
    query     = $7
@@ -3882,7 +3879,7 @@ table.closedissue {
          &lt;http://example.com/&gt;, or just using whitespace
          
       </p>
-      <div><a name="rfc.figure.u.45"></a></div><pre>   http://example.com/
+      <div><a name="rfc.figure.u.44"></a></div><pre>   http://example.com/
 </pre><div><a name="rfc.section.C.p.4"></a></div>
       <p>
          These wrappers do not form part of the URI.
@@ -3925,7 +3922,7 @@ table.closedissue {
          to recognize and strip both delimiters and embedded whitespace.
          
       </p>
-      <div><a name="rfc.figure.u.46"></a></div>
+      <div><a name="rfc.figure.u.45"></a></div>
       <p>
          For example, the text:
          
@@ -3938,7 +3935,7 @@ table.closedissue {
          contains the URI references
          
       </p>
-      <div><a name="rfc.figure.u.47"></a></div><pre>   http://www.w3.org/Addressing/
+      <div><a name="rfc.figure.u.46"></a></div><pre>   http://www.w3.org/Addressing/
    ftp://foo.example.com/rfc/
    http://www.ics.uci.edu/pub/ietf/uri/historical.html#WARNING
 </pre><hr class="noprint">
@@ -4025,8 +4022,8 @@ table.closedissue {
          All references to "opaque" URIs have been replaced with a better
          description of how the path component may be opaque to hierarchy.
          The ambiguity regarding the parsing of URI-reference as a URI or a
-         relative-URI with a colon in the first segment is now explained
-         and disambiguated through the use of five separate path matching rules.
+         relative-URI with a colon in the first segment has been eliminated
+         through the use of five separate path matching rules.
          
       </p>
       <div><a name="rfc.section.D.2.p.4"></a></div>
@@ -4044,9 +4041,8 @@ table.closedissue {
          This also allows an absolute-URI to consist of nothing after the "scheme:",
          as is present in practice with the "dav:" namespace <a href="#RFC2518" title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</a>
          and the "about:" scheme used internally by many WWW browser implementations.
-         The ambiguity regarding the boundary between authority and path
-         is now explained and disambiguated through the use of five separate
-         path matching rules.
+         The ambiguity regarding the boundary between authority and path has been
+         eliminated through the use of five separate path matching rules.
          
       </p>
       <div><a name="rfc.section.D.2.p.6"></a></div>

@@ -13,6 +13,8 @@
              <a href="example_uri_refs.txt">input</a> and
              <a href="example_uri_refs.out">output</a></li>
  <li>Published drafts:
+       <a href="draft-fielding-uri-rfc2396bis-04.txt">04.txt</a>,
+       <a href="draft-fielding-uri-rfc2396bis-04.html">04.html</a>,
        <a href="draft-fielding-uri-rfc2396bis-03.txt">03.txt</a>,
        <a href="draft-fielding-uri-rfc2396bis-03.html">03.html</a>,
        <a href="draft-fielding-uri-rfc2396bis-02.txt">02.txt</a>,
@@ -46,6 +48,8 @@
   <status>added 03</status>
   <status>fixed 04</status>
   <status>added 04</status>
+  <status>fixed 05</status>
+  <status>added 05</status>
  </section><section>
   <title>Issues that will not be incorporated</title>
   <status>closed</status>
@@ -1175,16 +1179,7 @@ will fix BNF
   <date sort="20020914">14 Sep 2002</date>
   <where>draft 00</where>
 <pre>
-Fixed by making the path optional in the BNF:
-
-2396:
-
-   relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
-   hier_part     = ( net_path | abs_path ) [ "?" query ]
-
-draft-00:
-   relative-URI  = [ net-path | abs-path | rel-path ] [ "?" query ]
-   hier-part     = [ net-path | abs-path ] [ "?" query ]
+Fixed by making the path optional in the BNF
 </pre>
  </action>
 </issue>
@@ -4116,7 +4111,7 @@ Closed due to lack of interest.
  <type>bnf</type>
  <name>044-empty-path</name>
  <title>no path is defined for scheme://ABCD?query</title>
- <status>fixed 04</status>
+ <status>fixed 05</status>
  <report>
   <author email="marktt_AT_excite.com">Mark Thomson</author>
   <date sort="20030608">08 Jun 2003</date>
@@ -4233,6 +4228,47 @@ simplifies the grammar (and the associated text that had to explain it).
 As a result, almost all of the intermediate rules are no longer useful
 and have been removed, including hier-part, net-path, abs-path, rel-path,
 and path-segments.
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040402">02 Apr 2004</date>
+  <where>draft 05</where>
+<pre>
+Upon further review, the above change had to be reverted in favor
+of five separate definitions for path.
+
+   URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+
+   hier-part     = "//" authority path-abempty
+                 / path-abs
+                 / path-rootless
+                 / path-empty
+
+   relative-URI  = relative-part [ "?" query ] [ "#" fragment ]
+
+   relative-part = "//" authority path-abempty
+                 / path-abs
+                 / path-noscheme
+                 / path-empty
+
+   path          = path-abempty    ; begins with "/" or is empty
+                 / path-abs        ; begins with "/" but not "//"
+                 / path-noscheme   ; begins with a non-colon segment
+                 / path-rootless   ; begins with a segment
+                 / path-empty      ; zero characters
+
+   path-abempty  = *( "/" segment )
+   path-abs      = "/" [ segment-nz *( "/" segment ) ]
+   path-noscheme = segment-nzc *( "/" segment )
+   path-rootless = segment-nz *( "/" segment )
+   path-empty    = 0&lt;pchar&gt;
+
+   segment       = *pchar
+   segment-nz    = 1*pchar
+   segment-nzc   = 1*( unreserved / pct-encoded / sub-delims / "@" )
+
+   pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 </pre>
  </action>
 </issue>
