@@ -7,13 +7,13 @@
    
       <title>Uniform Resource Identifier (URI): Generic Syntax</title><style type="text/css" title="Xml2Rfc (sans serif)">
 a {
-  text-decoration: none
+  text-decoration: none;
 }
 a:hover {
-  text-decoration: underline
+  text-decoration: underline;
 }
 a:active {
-  text-decoration: underline
+  text-decoration: underline;
 }
 body {
   
@@ -34,17 +34,26 @@ h1 {
 h1.np {
   page-break-before: always;
 }
+h1 a {
+  color: #333333;
+}
 h2 {
   color: #000000;
   font-size: 14px;
   font-family: helvetica, arial, sans-serif;
   page-break-after: avoid;
 }
+h2 a {
+  color: #000000;
+}
 h3 {
   color: #000000;
   font-size: 13px;
   font-family: helvetica, arial, sans-serif;
   page-break-after: avoid;
+}
+h3 a {
+  color: #000000;
 }
 img {
   margin-left: 3em;
@@ -87,7 +96,7 @@ td.header-l {
   background-color: #666666;
   font-size: 10px;
   font-family: arial, helvetica, sans-serif;
-  vertical-align: top
+  vertical-align: top;
 }
 td.header-r {
   width: 33%;
@@ -176,6 +185,13 @@ ins {
   color: green;
   text-decoration: underline;
 }
+.pn {
+  position: absolute;
+  color: white;
+}
+.pn:hover {
+  color: #C8A8FF;
+}
 
 table.openissue {
   background-color: khaki;
@@ -196,7 +212,7 @@ table.closedissue {
   border: solid;
   border-width: thin;
   background-color: lime;
-  font-size: small;
+  font-size: smaller;
   font-weight: bold;
 }
 
@@ -204,7 +220,7 @@ table.closedissue {
   border: solid;
   border-width: thin;
   background-color: red;
-  font-size: small;
+  font-size: smaller;
   font-weight: bold;
 }
 
@@ -212,7 +228,7 @@ table.closedissue {
   border: solid;
   border-width: thin;
   background-color: yellow;
-  font-size: small;
+  font-size: smaller;
   font-weight: bold;
 }
 
@@ -220,6 +236,56 @@ table.closedissue {
   .noprint {
     display: none;
   }
+  
+  table.header {
+    width: 90%;
+  }
+
+  td.header-l {
+    width: 50%;
+    color: black;
+    background-color: white;
+    font-family: arial, helvetica, sans-serif;
+    vertical-align: top;
+    font-size: 13px;
+  }
+
+  td.header-r {
+    width: 33%;
+    color: black;
+    background-color: white;
+    font-family: arial, helvetica, sans-serif;
+    vertical-align: top;
+    text-align: right;
+    font-size: 13px;
+  }
+}
+
+@page {
+  @top-left {
+       font-family: helvetica, arial, sans-serif; 
+       content: "INTERNET DRAFT"; 
+  } 
+  @top-right {
+       font-family: helvetica, arial, sans-serif; 
+       content: "September 2004"; 
+  } 
+  @top-center {
+       font-family: helvetica, arial, sans-serif; 
+       content: "URI Generic Syntax"; 
+  } 
+  @bottom-left {
+       font-family: helvetica, arial, sans-serif; 
+       content: "Berners-Lee, et al."; 
+  } 
+  @bottom-center {
+       font-family: helvetica, arial, sans-serif; 
+       content: "Standards Track"; 
+  } 
+  @bottom-right {
+       font-family: helvetica, arial, sans-serif; 
+       content: "[Page ]" counter(pages) "]"; 
+  } 
 }
 </style><link rel="Contents" href="#rfc.toc">
       <link rel="Author" href="#rfc.authors">
@@ -239,7 +305,7 @@ table.closedissue {
       <link rel="Appendix" title="C Delimiting a URI in Context" href="#rfc.section.C">
       <link rel="Appendix" title="D Summary of Non-editorial Changes" href="#rfc.section.D">
       <link rel="Appendix" title="E Instructions to RFC Editor" href="#rfc.section.E">
-      <meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.16, 2004/07/17 22:29:58, XSLT vendor: SAXON 7.8 from Michael Kay http://saxon.sf.net/">
+      <meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.17, 2004/09/25 05:04:27, XSLT vendor: SAXON 7.8 from Michael Kay http://saxon.sf.net/">
       <meta name="keywords" content="uniform resource identifier, URI, URL, URN, WWW, resource">
       <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
       <meta name="DC.Creator" content="Berners-Lee, T.">
@@ -304,12 +370,14 @@ table.closedissue {
          </tr>
       </table>
       <p class="title">Uniform Resource Identifier (URI): Generic Syntax<br><span class="filename">draft-fielding-uri-rfc2396bis-07</span></p>
-      <h1><a name="rfc.status">Status of this Memo</a></h1>
+      <h1><a name="rfc.status" href="#rfc.status">Status of this Memo</a></h1>
       <p>
-         By submitting this Internet-Draft, I certify that any applicable
-         patent or other IPR claims of which I am aware have been disclosed,
-         and any of which I become aware will be disclosed, in accordance
-         with RFC 3668.
+         This document is an Internet-Draft and is subject to all provisions
+         of section 3 of RFC 3667.  By submitting this Internet-Draft, each
+         author represents that any applicable patent or other IPR claims of
+         which he or she is aware have been or will be disclosed, and any of
+         which he or she become aware will be disclosed, in accordance with
+         RFC 3668.
          
       </p>
       <p>
@@ -340,13 +408,12 @@ table.closedissue {
          This Internet-Draft will expire in March 2005.
          
       </p>
-      <h1><a name="rfc.copyrightnotice">Copyright Notice</a></h1>
+      <h1><a name="rfc.copyrightnotice" href="#rfc.copyrightnotice">Copyright Notice</a></h1>
       <p>
          Copyright (C) The Internet Society (2004). All Rights Reserved.
          
       </p>
-      <h1><a name="rfc.abstract"></a>Abstract
-      </h1>
+      <h1><a name="rfc.abstract" href="#rfc.abstract">Abstract</a></h1>
       
       <p>
          A Uniform Resource Identifier (URI) is a compact sequence of characters
@@ -381,7 +448,7 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1 class="np"><a name="rfc.toc">Table of Contents</a></h1>
+      <h1 class="np"><a name="rfc.toc" href="#rfc.toc">Table of Contents</a></h1>
       <p>
          <b>1&nbsp;
             <a href="#intro">Introduction</a></b><br>
@@ -952,8 +1019,8 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1 class="np"><a name="rfc.iref.1"></a><a name="rfc.iref.2"></a><a name="rfc.iref.3"></a><a name="rfc.section.1">1</a>&nbsp;<a name="intro">Introduction</a></h1>
-      <div><a name="rfc.section.1.p.1"></a></div>
+      <h1 class="np"><a name="rfc.iref.1"></a><a name="rfc.iref.2"></a><a name="rfc.iref.3"></a><a name="rfc.section.1" href="#rfc.section.1">1</a>&nbsp;<a name="intro" href="#intro">Introduction</a></h1>
+      <div class="noprint" title="rfc.section.1.p.1"><a name="rfc.section.1.p.1"></a></div>
       <p>
          A Uniform Resource Identifier (URI) provides a simple and extensible
          means for identifying a resource.  This specification of URI syntax
@@ -966,7 +1033,7 @@ table.closedissue {
          for Uniform Resource Names" <a href="#RFC1737" title="Functional Requirements for Uniform Resource Names">[RFC1737]</a>.
          
       </p>
-      <div><a name="rfc.section.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.1.p.2"><a name="rfc.section.1.p.2"></a></div>
       <p>
          This document obsoletes <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>, which merged
          "Uniform Resource Locators" <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a> and
@@ -982,12 +1049,12 @@ table.closedissue {
          <a href="#RFC2718" title="Guidelines for new URL Schemes">[RFC2718]</a>.
          
       </p>
-      <div><a name="rfc.section.1.p.3"></a></div>
+      <div class="noprint" title="rfc.section.1.p.3"><a name="rfc.section.1.p.3"></a></div>
       <p>
          All significant changes from RFC 2396 are noted in <a href="#changes" title="Summary of Non-editorial Changes">Appendix&nbsp;D</a>.
          
       </p>
-      <div><a name="rfc.section.1.p.4"></a></div>
+      <div class="noprint" title="rfc.section.1.p.4"><a name="rfc.section.1.p.4"></a></div>
       <p>
          This specification uses the terms "character" and "coded character set"
          in accordance with the definitions provided in <a href="#BCP19" title="IANA Charset Registration Procedures">[BCP19]</a>,
@@ -995,13 +1062,13 @@ table.closedissue {
          refers to as a "charset".
          
       </p>
-      <h2><a name="rfc.iref.4"></a><a name="rfc.iref.5"></a><a name="rfc.iref.6"></a><a name="rfc.section.1.1">1.1</a>&nbsp;<a name="overview">Overview of URIs</a></h2>
-      <div><a name="rfc.section.1.1.p.1"></a></div>
+      <h2><a name="rfc.iref.4"></a><a name="rfc.iref.5"></a><a name="rfc.iref.6"></a><a name="rfc.section.1.1" href="#rfc.section.1.1">1.1</a>&nbsp;<a name="overview" href="#overview">Overview of URIs</a></h2>
+      <div class="noprint" title="rfc.section.1.1.p.1"><a name="rfc.section.1.1.p.1"></a></div>
       <p>
          URIs are characterized as follows:
          
       </p>
-      <div><a name="rfc.section.1.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.1.1.p.2"><a name="rfc.section.1.1.p.2"></a></div>
       <p>Uniform
          
       </p>
@@ -1026,7 +1093,7 @@ table.closedissue {
       <p>
          
       </p>
-      <div><a name="rfc.section.1.1.p.3"></a></div>
+      <div class="noprint" title="rfc.section.1.1.p.3"><a name="rfc.section.1.1.p.3"></a></div>
       <p>Resource
          
       </p>
@@ -1055,7 +1122,7 @@ table.closedissue {
       <p>
          
       </p>
-      <div><a name="rfc.section.1.1.p.4"></a></div>
+      <div class="noprint" title="rfc.section.1.1.p.4"><a name="rfc.section.1.1.p.4"></a></div>
       <p>Identifier
          
       </p>
@@ -1082,7 +1149,7 @@ table.closedissue {
       <p>
          
       </p>
-      <div><a name="rfc.section.1.1.p.5"></a></div>
+      <div class="noprint" title="rfc.section.1.1.p.5"><a name="rfc.section.1.1.p.5"></a></div>
       <p>
          A URI is an identifier, consisting of a sequence of characters matching
          the syntax rule named &lt;URI&gt; in <a href="#components" title="Syntax Components">Section&nbsp;3</a>, that
@@ -1092,7 +1159,7 @@ table.closedissue {
          to each scheme specification.
          
       </p>
-      <div><a name="rfc.section.1.1.p.6"></a></div>
+      <div class="noprint" title="rfc.section.1.1.p.6"><a name="rfc.section.1.1.p.6"></a></div>
       <p>
          This specification does not place any limits on the nature of a resource,
          the reasons why an application might wish to refer to a resource, or the
@@ -1104,7 +1171,7 @@ table.closedissue {
          that maintains characteristics desired by that application.
          
       </p>
-      <div><a name="rfc.section.1.1.p.7"></a></div>
+      <div class="noprint" title="rfc.section.1.1.p.7"><a name="rfc.section.1.1.p.7"></a></div>
       <p>
          URIs have a global scope and are interpreted consistently regardless
          of context, though the result of that interpretation may be in relation
@@ -1121,8 +1188,8 @@ table.closedissue {
          file on the end-user's filesystem (e.g., "file:///etc/hosts").
          
       </p>
-      <h3><a name="rfc.iref.7"></a><a name="rfc.section.1.1.1">1.1.1</a>&nbsp;<a name="generic-syntax">Generic Syntax</a></h3>
-      <div><a name="rfc.section.1.1.1.p.1"></a></div>
+      <h3><a name="rfc.iref.7"></a><a name="rfc.section.1.1.1" href="#rfc.section.1.1.1">1.1.1</a>&nbsp;<a name="generic-syntax" href="#generic-syntax">Generic Syntax</a></h3>
+      <div class="noprint" title="rfc.section.1.1.1.p.1"><a name="rfc.section.1.1.1.p.1"></a></div>
       <p>
          Each URI begins with a scheme name, as defined in <a href="#scheme" title="Scheme">Section&nbsp;3.1</a>,
          that refers to a specification for assigning identifiers within that scheme.
@@ -1131,7 +1198,7 @@ table.closedissue {
          of identifiers using that scheme.
          
       </p>
-      <div><a name="rfc.section.1.1.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.1.1.1.p.2"><a name="rfc.section.1.1.1.p.2"></a></div>
       <p>
          This specification defines those elements of the URI syntax that are
          required of all URI schemes or are common to many URI schemes.  It thus
@@ -1146,7 +1213,7 @@ table.closedissue {
          and implementations that make use of URIs.
          
       </p>
-      <div><a name="rfc.section.1.1.1.p.3"></a></div>
+      <div class="noprint" title="rfc.section.1.1.1.p.3"><a name="rfc.section.1.1.1.p.3"></a></div>
       <p>
          A parser of the generic URI syntax is capable of parsing any URI
          reference into its major components; once the scheme is determined,
@@ -1155,8 +1222,9 @@ table.closedissue {
          of all URI schemes.
          
       </p>
-      <h3><a name="rfc.section.1.1.2">1.1.2</a>&nbsp;<a name="examples">Examples</a></h3>
+      <h3><a name="rfc.section.1.1.2" href="#rfc.section.1.1.2">1.1.2</a>&nbsp;<a name="examples" href="#examples">Examples</a></h3>
       <div><a name="rfc.figure.u.1"></a></div>
+      <div class="noprint" title="rfc.section.1.1.2.p.1"><a name="rfc.section.1.1.2.p.1"></a></div>
       <p>
          The following example URIs illustrate several URI schemes and
          variations in their common syntax components:
@@ -1176,8 +1244,8 @@ table.closedissue {
    telnet://192.0.2.16:80/
 
    urn:oasis:names:specification:docbook:dtd:xml:4.1.2
-</pre><h3><a name="rfc.iref.8"></a><a name="rfc.iref.9"></a><a name="rfc.iref.10"></a><a name="rfc.iref.11"></a><a name="rfc.section.1.1.3">1.1.3</a>&nbsp;<a name="URLvsURN">URI, URL, and URN</a></h3>
-      <div><a name="rfc.section.1.1.3.p.1"></a></div>
+</pre><h3><a name="rfc.iref.8"></a><a name="rfc.iref.9"></a><a name="rfc.iref.10"></a><a name="rfc.iref.11"></a><a name="rfc.section.1.1.3" href="#rfc.section.1.1.3">1.1.3</a>&nbsp;<a name="URLvsURN" href="#URLvsURN">URI, URL, and URN</a></h3>
+      <div class="noprint" title="rfc.section.1.1.3.p.1"><a name="rfc.section.1.1.3.p.1"></a></div>
       <p>
          A URI can be further classified as a locator, a name, or both.  The
          term "Uniform Resource Locator" (URL) refers to the subset of URIs
@@ -1190,7 +1258,7 @@ table.closedissue {
          unavailable, and to any other URI with the properties of a name.
          
       </p>
-      <div><a name="rfc.section.1.1.3.p.2"></a></div>
+      <div class="noprint" title="rfc.section.1.1.3.p.2"><a name="rfc.section.1.1.3.p.2"></a></div>
       <p>
          An individual scheme does not need to be classified as being just one of
          "name" or "locator".  Instances of URIs from any given scheme may have
@@ -1201,9 +1269,9 @@ table.closedissue {
          the more restrictive terms URL and URN <a href="#RFC3305" title="Report from the Joint W3C/IETF URI Planning Interest Group: Uniform Resource Identifiers (URIs), URLs, and Uniform Resource Names (URNs): Clarifications and Recommendations">[RFC3305]</a>.
          
       </p>
-      <h2><a name="rfc.section.1.2">1.2</a>&nbsp;<a name="design">Design Considerations</a></h2>
-      <h3><a name="rfc.iref.12"></a><a name="rfc.section.1.2.1">1.2.1</a>&nbsp;<a name="transcription">Transcription</a></h3>
-      <div><a name="rfc.section.1.2.1.p.1"></a></div>
+      <h2><a name="rfc.section.1.2" href="#rfc.section.1.2">1.2</a>&nbsp;<a name="design" href="#design">Design Considerations</a></h2>
+      <h3><a name="rfc.iref.12"></a><a name="rfc.section.1.2.1" href="#rfc.section.1.2.1">1.2.1</a>&nbsp;<a name="transcription" href="#transcription">Transcription</a></h3>
+      <div class="noprint" title="rfc.section.1.2.1.p.1"><a name="rfc.section.1.2.1.p.1"></a></div>
       <p>
          The URI syntax has been designed with global transcription as one of
          its main considerations.  A URI is a sequence of characters from a very
@@ -1215,7 +1283,7 @@ table.closedissue {
          in a network protocol.
          
       </p>
-      <div><a name="rfc.section.1.2.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.1.2.1.p.2"><a name="rfc.section.1.2.1.p.2"></a></div>
       <p>
          The goal of transcription can be described by a simple scenario.
          Imagine two colleagues, Sam and Kim, sitting in a pub at an
@@ -1226,7 +1294,7 @@ table.closedissue {
          information to which Kim referred.
          
       </p>
-      <div><a name="rfc.section.1.2.1.p.3"></a></div>
+      <div class="noprint" title="rfc.section.1.2.1.p.3"><a name="rfc.section.1.2.1.p.3"></a></div>
       <p>
          There are several design considerations revealed by the scenario:
          
@@ -1258,7 +1326,7 @@ table.closedissue {
       <p>
          
       </p>
-      <div><a name="rfc.section.1.2.1.p.4"></a></div>
+      <div class="noprint" title="rfc.section.1.2.1.p.4"><a name="rfc.section.1.2.1.p.4"></a></div>
       <p>
          These design considerations are not always in alignment.  For example, it
          is often the case that the most meaningful name for a URI component
@@ -1268,7 +1336,7 @@ table.closedissue {
          the most meaningful of components.
          
       </p>
-      <div><a name="rfc.section.1.2.1.p.5"></a></div>
+      <div class="noprint" title="rfc.section.1.2.1.p.5"><a name="rfc.section.1.2.1.p.5"></a></div>
       <p>
          In local or regional contexts and with improving technology, users might
          benefit from being able to use a wider range of characters; such use
@@ -1281,8 +1349,8 @@ table.closedissue {
          to being percent-encoded for the URI.
          
       </p>
-      <h3><a name="rfc.iref.13"></a><a name="rfc.iref.14"></a><a name="rfc.iref.15"></a><a name="rfc.iref.16"></a><a name="rfc.iref.17"></a><a name="rfc.iref.18"></a><a name="rfc.section.1.2.2">1.2.2</a>&nbsp;<a name="identification">Separating Identification from Interaction</a></h3>
-      <div><a name="rfc.section.1.2.2.p.1"></a></div>
+      <h3><a name="rfc.iref.13"></a><a name="rfc.iref.14"></a><a name="rfc.iref.15"></a><a name="rfc.iref.16"></a><a name="rfc.iref.17"></a><a name="rfc.iref.18"></a><a name="rfc.section.1.2.2" href="#rfc.section.1.2.2">1.2.2</a>&nbsp;<a name="identification" href="#identification">Separating Identification from Interaction</a></h3>
+      <div class="noprint" title="rfc.section.1.2.2.p.1"><a name="rfc.section.1.2.2.p.1"></a></div>
       <p>
          A common misunderstanding of URIs is that they are only used to
          refer to accessible resources.  In fact, the URI alone only provides
@@ -1292,7 +1360,7 @@ table.closedissue {
          data format attribute, or natural language text in which it appears.
          
       </p>
-      <div><a name="rfc.section.1.2.2.p.2"></a></div>
+      <div class="noprint" title="rfc.section.1.2.2.p.2"><a name="rfc.section.1.2.2.p.2"></a></div>
       <p>
          Given a URI, a system may attempt to perform a variety of operations
          on the resource, as might be characterized by such words as
@@ -1306,7 +1374,7 @@ table.closedissue {
          the URI.
          
       </p>
-      <div><a name="rfc.section.1.2.2.p.3"></a></div>
+      <div class="noprint" title="rfc.section.1.2.2.p.3"><a name="rfc.section.1.2.2.p.3"></a></div>
       <p>
          When URIs are used within information retrieval systems to identify sources
          of information, the most common form of URI dereference is "retrieval":
@@ -1323,7 +1391,7 @@ table.closedissue {
          and its relation to other resources.
          
       </p>
-      <div><a name="rfc.section.1.2.2.p.4"></a></div>
+      <div class="noprint" title="rfc.section.1.2.2.p.4"><a name="rfc.section.1.2.2.p.4"></a></div>
       <p>
          URI references in information retrieval systems are designed to be late-binding:
          the result of an access is generally determined at the time it is accessed
@@ -1336,7 +1404,7 @@ table.closedissue {
          elucidated by additional comments or assertions made by the resource provider.
          
       </p>
-      <div><a name="rfc.section.1.2.2.p.5"></a></div>
+      <div class="noprint" title="rfc.section.1.2.2.p.5"><a name="rfc.section.1.2.2.p.5"></a></div>
       <p>
          Although many URI schemes are named after protocols, this does not
          imply that use of such a URI will result in access to the resource
@@ -1350,8 +1418,8 @@ table.closedissue {
          a representation isn't found in a local cache).
          
       </p>
-      <h3><a name="rfc.iref.19"></a><a name="rfc.iref.20"></a><a name="rfc.section.1.2.3">1.2.3</a>&nbsp;<a name="hierarchical">Hierarchical Identifiers</a></h3>
-      <div><a name="rfc.section.1.2.3.p.1"></a></div>
+      <h3><a name="rfc.iref.19"></a><a name="rfc.iref.20"></a><a name="rfc.section.1.2.3" href="#rfc.section.1.2.3">1.2.3</a>&nbsp;<a name="hierarchical" href="#hierarchical">Hierarchical Identifiers</a></h3>
+      <div class="noprint" title="rfc.section.1.2.3.p.1"><a name="rfc.section.1.2.3.p.1"></a></div>
       <p>
          The URI syntax is organized hierarchically, with components listed
          in order of decreasing significance from left to right.  For some URI schemes,
@@ -1361,7 +1429,7 @@ table.closedissue {
          generic parsing algorithms.
          
       </p>
-      <div><a name="rfc.section.1.2.3.p.2"></a></div>
+      <div class="noprint" title="rfc.section.1.2.3.p.2"><a name="rfc.section.1.2.3.p.2"></a></div>
       <p>
          The generic syntax uses the slash ("/"), question mark ("?"), and
          number sign ("#") characters for the purpose of delimiting components
@@ -1372,7 +1440,7 @@ table.closedissue {
          scheme-independent references to be made relative to that hierarchy.
          
       </p>
-      <div><a name="rfc.section.1.2.3.p.3"></a></div>
+      <div class="noprint" title="rfc.section.1.2.3.p.3"><a name="rfc.section.1.2.3.p.3"></a></div>
       <p>
          It is often the case that a group or "tree" of documents has been
          constructed to serve a common purpose, wherein the vast majority of URI
@@ -1389,7 +1457,7 @@ table.closedissue {
          changing any of the relative references.
          
       </p>
-      <div><a name="rfc.section.1.2.3.p.4"></a></div>
+      <div class="noprint" title="rfc.section.1.2.3.p.4"><a name="rfc.section.1.2.3.p.4"></a></div>
       <p>
          A relative reference (<a href="#relative-ref" title="Relative Reference">Section&nbsp;4.2</a>) refers to a
          resource by describing the difference within a hierarchical name space
@@ -1402,7 +1470,7 @@ table.closedissue {
          are compelling reasons to forbid relative referencing within that scheme.
          
       </p>
-      <div><a name="rfc.section.1.2.3.p.5"></a></div>
+      <div class="noprint" title="rfc.section.1.2.3.p.5"><a name="rfc.section.1.2.3.p.5"></a></div>
       <p>
          All URIs are parsed by generic syntax parsers when used. A URI scheme that
          wishes to remain opaque to hierarchical processing must disallow the use
@@ -1413,8 +1481,8 @@ table.closedissue {
          dot-segments.
          
       </p>
-      <h2><a name="rfc.iref.21"></a><a name="rfc.iref.22"></a><a name="rfc.iref.23"></a><a name="rfc.iref.24"></a><a name="rfc.iref.25"></a><a name="rfc.iref.26"></a><a name="rfc.iref.27"></a><a name="rfc.iref.28"></a><a name="rfc.iref.29"></a><a name="rfc.section.1.3">1.3</a>&nbsp;<a name="notation">Syntax Notation</a></h2>
-      <div><a name="rfc.section.1.3.p.1"></a></div>
+      <h2><a name="rfc.iref.21"></a><a name="rfc.iref.22"></a><a name="rfc.iref.23"></a><a name="rfc.iref.24"></a><a name="rfc.iref.25"></a><a name="rfc.iref.26"></a><a name="rfc.iref.27"></a><a name="rfc.iref.28"></a><a name="rfc.iref.29"></a><a name="rfc.section.1.3" href="#rfc.section.1.3">1.3</a>&nbsp;<a name="notation" href="#notation">Syntax Notation</a></h2>
+      <div class="noprint" title="rfc.section.1.3.p.1"><a name="rfc.section.1.3.p.1"></a></div>
       <p>
          This specification uses the Augmented Backus-Naur Form (ABNF) notation of
          <a href="#RFC2234" title="Augmented BNF for Syntax Specifications: ABNF">[RFC2234]</a>, including the following core ABNF syntax rules
@@ -1433,8 +1501,8 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.iref.30"></a><a name="rfc.section.2">2</a>&nbsp;<a name="characters">Characters</a></h1>
-      <div><a name="rfc.section.2.p.1"></a></div>
+      <h1><a name="rfc.iref.30"></a><a name="rfc.section.2" href="#rfc.section.2">2</a>&nbsp;<a name="characters" href="#characters">Characters</a></h1>
+      <div class="noprint" title="rfc.section.2.p.1"><a name="rfc.section.2.p.1"></a></div>
       <p>
          The URI syntax provides a method of encoding data, presumably for the
          sake of identifying a resource, as a sequence of characters.  The URI
@@ -1447,7 +1515,7 @@ table.closedissue {
          the surrounding text.
          
       </p>
-      <div><a name="rfc.section.2.p.2"></a></div>
+      <div class="noprint" title="rfc.section.2.p.2"><a name="rfc.section.2.p.2"></a></div>
       <p>
          The ABNF notation defines its terminal values to be non-negative
          integers (codepoints) based on the US-ASCII coded character set
@@ -1458,7 +1526,7 @@ table.closedissue {
          the syntax rules.
          
       </p>
-      <div><a name="rfc.section.2.p.3"></a></div>
+      <div class="noprint" title="rfc.section.2.p.3"><a name="rfc.section.2.p.3"></a></div>
       <p>
          A URI is composed from a limited set of characters consisting of
          digits, letters, and a few graphic symbols.  A reserved subset of those
@@ -1468,8 +1536,9 @@ table.closedissue {
          identifying data.
          
       </p>
-      <h2><a name="rfc.section.2.1">2.1</a>&nbsp;<a name="percent-encoding">Percent-Encoding</a></h2>
+      <h2><a name="rfc.section.2.1" href="#rfc.section.2.1">2.1</a>&nbsp;<a name="percent-encoding" href="#percent-encoding">Percent-Encoding</a></h2>
       <div><a name="rfc.figure.u.2"></a></div>
+      <div class="noprint" title="rfc.section.2.1.p.1"><a name="rfc.section.2.1.p.1"></a></div>
       <p>
          <a name="rfc.iref.31"></a>
          <a name="rfc.iref.32"></a>
@@ -1493,8 +1562,9 @@ table.closedissue {
          use uppercase hexadecimal digits for all percent-encodings.
          
       </p>
-      <h2><a name="rfc.section.2.2">2.2</a>&nbsp;<a name="reserved">Reserved Characters</a></h2>
+      <h2><a name="rfc.section.2.2" href="#rfc.section.2.2">2.2</a>&nbsp;<a name="reserved" href="#reserved">Reserved Characters</a></h2>
       <div><a name="rfc.figure.u.3"></a></div>
+      <div class="noprint" title="rfc.section.2.2.p.1"><a name="rfc.section.2.2.p.1"></a></div>
       <p>
          <a name="rfc.iref.34"></a>
          URIs include components and subcomponents that are delimited by
@@ -1516,7 +1586,7 @@ table.closedissue {
 
    sub-delims  = "!" / "$" / "&amp;" / "'" / "(" / ")"
                / "*" / "+" / "," / ";" / "="
-</pre><div><a name="rfc.section.2.2.p.2"></a></div>
+</pre><div class="noprint" title="rfc.section.2.2.p.2"><a name="rfc.section.2.2.p.2"></a></div>
       <p>
          The purpose of reserved characters is to provide a set of delimiting
          characters that are distinguishable from other data within a URI.
@@ -1530,7 +1600,7 @@ table.closedissue {
          data subcomponents within a URI.
          
       </p>
-      <div><a name="rfc.section.2.2.p.3"></a></div>
+      <div class="noprint" title="rfc.section.2.2.p.3"><a name="rfc.section.2.2.p.3"></a></div>
       <p>
          A subset of the reserved characters (gen-delims) are used as delimiters
          of the generic URI components described in <a href="#components" title="Syntax Components">Section&nbsp;3</a>.
@@ -1545,7 +1615,7 @@ table.closedissue {
          delimited by characters in the reserved set allowed within that component.
          
       </p>
-      <div><a name="rfc.section.2.2.p.4"></a></div>
+      <div class="noprint" title="rfc.section.2.2.p.4"><a name="rfc.section.2.2.p.4"></a></div>
       <p>
          URI producing applications should percent-encode data octets that
          correspond to characters in the reserved set.  However, if a
@@ -1554,8 +1624,9 @@ table.closedissue {
          the data octet corresponding to that character's encoding in US-ASCII.
          
       </p>
-      <h2><a name="rfc.section.2.3">2.3</a>&nbsp;<a name="unreserved">Unreserved Characters</a></h2>
+      <h2><a name="rfc.section.2.3" href="#rfc.section.2.3">2.3</a>&nbsp;<a name="unreserved" href="#unreserved">Unreserved Characters</a></h2>
       <div><a name="rfc.figure.u.4"></a></div>
+      <div class="noprint" title="rfc.section.2.3.p.1"><a name="rfc.section.2.3.p.1"></a></div>
       <p>
          <a name="rfc.iref.40"></a>
          Characters that are allowed in a URI but do not have a reserved
@@ -1565,7 +1636,7 @@ table.closedissue {
          <a name="rfc.iref.42"></a>
          
       </p><pre>   unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
-</pre><div><a name="rfc.section.2.3.p.2"></a></div>
+</pre><div class="noprint" title="rfc.section.2.3.p.2"><a name="rfc.section.2.3.p.2"></a></div>
       <p>
          URIs that differ in the replacement of an unreserved character with
          its corresponding percent-encoded US-ASCII octet are equivalent:
@@ -1579,8 +1650,8 @@ table.closedissue {
          unreserved character by URI normalizers.
          
       </p>
-      <h2><a name="rfc.section.2.4">2.4</a>&nbsp;<a name="when-to-percent-encode">When to Encode or Decode</a></h2>
-      <div><a name="rfc.section.2.4.p.1"></a></div>
+      <h2><a name="rfc.section.2.4" href="#rfc.section.2.4">2.4</a>&nbsp;<a name="when-to-percent-encode" href="#when-to-percent-encode">When to Encode or Decode</a></h2>
+      <div class="noprint" title="rfc.section.2.4.p.1"><a name="rfc.section.2.4.p.1"></a></div>
       <p>
          Under normal circumstances, the only time that octets within a
          URI are percent-encoded is during the process of producing
@@ -1590,7 +1661,7 @@ table.closedissue {
          Once produced, a URI is always in its percent-encoded form.
          
       </p>
-      <div><a name="rfc.section.2.4.p.2"></a></div>
+      <div class="noprint" title="rfc.section.2.4.p.2"><a name="rfc.section.2.4.p.2"></a></div>
       <p>
          When a URI is dereferenced, the components and subcomponents significant
          to the scheme-specific dereferencing process (if any) must be parsed and
@@ -1603,7 +1674,7 @@ table.closedissue {
          the "%7E" can be replaced by "~" without changing its interpretation.
          
       </p>
-      <div><a name="rfc.section.2.4.p.3"></a></div>
+      <div class="noprint" title="rfc.section.2.4.p.3"><a name="rfc.section.2.4.p.3"></a></div>
       <p>
          Because the percent ("%") character serves as the indicator for
          percent-encoded octets, it must be percent-encoded as "%25" in order
@@ -1614,8 +1685,8 @@ table.closedissue {
          of percent-encoding an already percent-encoded string.
          
       </p>
-      <h2><a name="rfc.section.2.5">2.5</a>&nbsp;<a name="identifying-data">Identifying Data</a></h2>
-      <div><a name="rfc.section.2.5.p.1"></a></div>
+      <h2><a name="rfc.section.2.5" href="#rfc.section.2.5">2.5</a>&nbsp;<a name="identifying-data" href="#identifying-data">Identifying Data</a></h2>
+      <div class="noprint" title="rfc.section.2.5.p.1"><a name="rfc.section.2.5.p.1"></a></div>
       <p>
          URI characters provide identifying data for each of the URI components,
          serving as an external interface for identification between systems.
@@ -1629,7 +1700,7 @@ table.closedissue {
          encoding, data format encoding, and protocol encoding.
          
       </p>
-      <div><a name="rfc.section.2.5.p.2"></a></div>
+      <div class="noprint" title="rfc.section.2.5.p.2"><a name="rfc.section.2.5.p.2"></a></div>
       <p>
          The first encoding of identifying data is the one in which the local
          names or data are stored.  URI producing applications (a.k.a., origin
@@ -1644,7 +1715,7 @@ table.closedissue {
          Internet protocols.
          
       </p>
-      <div><a name="rfc.section.2.5.p.3"></a></div>
+      <div class="noprint" title="rfc.section.2.5.p.3"><a name="rfc.section.2.5.p.3"></a></div>
       <p>
          For most systems, an unreserved character appearing within a URI
          component is interpreted as representing the data octet corresponding
@@ -1659,7 +1730,7 @@ table.closedissue {
          the original octets.
          
       </p>
-      <div><a name="rfc.section.2.5.p.4"></a></div>
+      <div class="noprint" title="rfc.section.2.5.p.4"><a name="rfc.section.2.5.p.4"></a></div>
       <p>
          For example, consider an information service that provides data,
          stored locally using an EBCDIC-based filesystem, to clients on the
@@ -1676,7 +1747,7 @@ table.closedissue {
          reverse transcoding is applied to obtain the local name.
          
       </p>
-      <div><a name="rfc.section.2.5.p.5"></a></div>
+      <div class="noprint" title="rfc.section.2.5.p.5"><a name="rfc.section.2.5.p.5"></a></div>
       <p>
          In some cases, the internal interface between a URI component and the
          identifying data that it has been crafted to represent is much less direct
@@ -1687,7 +1758,7 @@ table.closedissue {
          producing the URI.
          
       </p>
-      <div><a name="rfc.section.2.5.p.6"></a></div>
+      <div class="noprint" title="rfc.section.2.5.p.6"><a name="rfc.section.2.5.p.6"></a></div>
       <p>
          When a new URI scheme defines a component that represents textual data
          consisting of characters from the Unicode character set <a href="#UCS" title="Information Technology - Universal Multiple-Octet Coded Character Set (UCS)">[UCS]</a>,
@@ -1708,8 +1779,9 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.iref.43"></a><a name="rfc.iref.44"></a><a name="rfc.iref.45"></a><a name="rfc.iref.46"></a><a name="rfc.iref.47"></a><a name="rfc.iref.48"></a><a name="rfc.iref.49"></a><a name="rfc.iref.50"></a><a name="rfc.iref.51"></a><a name="rfc.iref.52"></a><a name="rfc.iref.53"></a><a name="rfc.section.3">3</a>&nbsp;<a name="components">Syntax Components</a></h1>
+      <h1><a name="rfc.iref.43"></a><a name="rfc.iref.44"></a><a name="rfc.iref.45"></a><a name="rfc.iref.46"></a><a name="rfc.iref.47"></a><a name="rfc.iref.48"></a><a name="rfc.iref.49"></a><a name="rfc.iref.50"></a><a name="rfc.iref.51"></a><a name="rfc.iref.52"></a><a name="rfc.iref.53"></a><a name="rfc.section.3" href="#rfc.section.3">3</a>&nbsp;<a name="components" href="#components">Syntax Components</a></h1>
       <div><a name="rfc.figure.u.5"></a></div>
+      <div class="noprint" title="rfc.section.3.p.1"><a name="rfc.section.3.p.1"></a></div>
       <p>
          The generic URI syntax consists of a hierarchical sequence of components
          referred to as the scheme, authority, path, query, and fragment.
@@ -1740,6 +1812,7 @@ table.closedissue {
          
       </p>
       <div><a name="rfc.figure.u.6"></a></div>
+      <div class="noprint" title="rfc.section.3.p.2"><a name="rfc.section.3.p.2"></a></div>
       <p>
          The following are two example URIs and their component parts:
          
@@ -1750,8 +1823,8 @@ table.closedissue {
        |   _____________________|__
       / \ /                        \
       urn:example:animal:ferret:nose
-</pre><h2><a name="rfc.iref.64"></a><a name="rfc.section.3.1">3.1</a>&nbsp;<a name="scheme">Scheme</a></h2>
-      <div><a name="rfc.section.3.1.p.1"></a></div>
+</pre><h2><a name="rfc.iref.64"></a><a name="rfc.section.3.1" href="#rfc.section.3.1">3.1</a>&nbsp;<a name="scheme" href="#scheme">Scheme</a></h2>
+      <div class="noprint" title="rfc.section.3.1.p.1"><a name="rfc.section.3.1.p.1"></a></div>
       <p>
          Each URI begins with a scheme name that refers to a specification for
          assigning identifiers within that scheme. As such, the URI syntax is a
@@ -1761,6 +1834,7 @@ table.closedissue {
          
       </p>
       <div><a name="rfc.figure.u.7"></a></div>
+      <div class="noprint" title="rfc.section.3.1.p.2"><a name="rfc.section.3.1.p.2"></a></div>
       <p>
          Scheme names consist of a sequence of characters beginning with a
          letter and followed by any combination of letters, digits, plus ("+"),
@@ -1782,7 +1856,7 @@ table.closedissue {
          <a href="#RFC2718" title="Guidelines for new URL Schemes">[RFC2718]</a>.
          
       </p>
-      <div><a name="rfc.section.3.1.p.3"></a></div>
+      <div class="noprint" title="rfc.section.3.1.p.3"><a name="rfc.section.3.1.p.3"></a></div>
       <p>
          When presented with a URI that violates one or more scheme-specific
          restrictions, the scheme-specific resolution process should flag
@@ -1792,8 +1866,8 @@ table.closedissue {
          mislead the user (<a href="#security-semantic" title="Semantic Attacks">Section&nbsp;7.6</a>).
          
       </p>
-      <h2><a name="rfc.iref.66"></a><a name="rfc.section.3.2">3.2</a>&nbsp;<a name="authority">Authority</a></h2>
-      <div><a name="rfc.section.3.2.p.1"></a></div>
+      <h2><a name="rfc.iref.66"></a><a name="rfc.section.3.2" href="#rfc.section.3.2">3.2</a>&nbsp;<a name="authority" href="#authority">Authority</a></h2>
+      <div class="noprint" title="rfc.section.3.2.p.1"><a name="rfc.section.3.2.p.1"></a></div>
       <p>
          Many URI schemes include a hierarchical element for a naming
          authority, such that governance of the name space defined by the
@@ -1804,6 +1878,7 @@ table.closedissue {
          
       </p>
       <div><a name="rfc.figure.u.8"></a></div>
+      <div class="noprint" title="rfc.section.3.2.p.2"><a name="rfc.section.3.2.p.2"></a></div>
       <p>
          The authority component is preceded by a double slash ("//") and is
          terminated by the next slash ("/"), question mark ("?"), or
@@ -1820,7 +1895,7 @@ table.closedissue {
          Some schemes do not allow the userinfo and/or port subcomponents.
          
       </p>
-      <div><a name="rfc.section.3.2.p.3"></a></div>
+      <div class="noprint" title="rfc.section.3.2.p.3"><a name="rfc.section.3.2.p.3"></a></div>
       <p>
          If a URI contains an authority component, then the path component must
          either be empty or begin with a slash ("/") character.  Non-validating
@@ -1830,8 +1905,9 @@ table.closedissue {
          terminating delimiter, until such time as the URI is dereferenced.
          
       </p>
-      <h3><a name="rfc.iref.71"></a><a name="rfc.section.3.2.1">3.2.1</a>&nbsp;<a name="userinfo">User Information</a></h3>
+      <h3><a name="rfc.iref.71"></a><a name="rfc.section.3.2.1" href="#rfc.section.3.2.1">3.2.1</a>&nbsp;<a name="userinfo" href="#userinfo">User Information</a></h3>
       <div><a name="rfc.figure.u.9"></a></div>
+      <div class="noprint" title="rfc.section.3.2.1.p.1"><a name="rfc.section.3.2.1.p.1"></a></div>
       <p>
          The userinfo subcomponent may consist of a user name and, optionally,
          scheme-specific information about how to gain authorization to access
@@ -1843,7 +1919,7 @@ table.closedissue {
 </pre><p>
          
       </p>
-      <div><a name="rfc.section.3.2.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.3.2.1.p.2"><a name="rfc.section.3.2.1.p.2"></a></div>
       <p>
          Use of the format "user:password" in the userinfo field is deprecated.
          Applications should not render as clear text any data after the first
@@ -1856,7 +1932,7 @@ table.closedissue {
          where it has been used.
          
       </p>
-      <div><a name="rfc.section.3.2.1.p.3"></a></div>
+      <div class="noprint" title="rfc.section.3.2.1.p.3"><a name="rfc.section.3.2.1.p.3"></a></div>
       <p>
          Applications that render a URI for the sake of user feedback, such
          as in graphical hypertext browsing, should render userinfo in a way
@@ -1866,8 +1942,9 @@ table.closedissue {
          (<a href="#security-semantic" title="Semantic Attacks">Section&nbsp;7.6</a>).
          
       </p>
-      <h3><a name="rfc.iref.73"></a><a name="rfc.section.3.2.2">3.2.2</a>&nbsp;<a name="host">Host</a></h3>
+      <h3><a name="rfc.iref.73"></a><a name="rfc.section.3.2.2" href="#rfc.section.3.2.2">3.2.2</a>&nbsp;<a name="host" href="#host">Host</a></h3>
       <div><a name="rfc.figure.u.10"></a></div>
+      <div class="noprint" title="rfc.section.3.2.2.p.1"><a name="rfc.section.3.2.2.p.1"></a></div>
       <p>
          The host subcomponent of authority is identified by an IP literal
          encapsulated within square brackets, an IPv4 address in dotted-decimal form,
@@ -1899,6 +1976,7 @@ table.closedissue {
          
       </p>
       <div><a name="rfc.figure.u.11"></a></div>
+      <div class="noprint" title="rfc.section.3.2.2.p.2"><a name="rfc.section.3.2.2.p.2"></a></div>
       <p>
          <a name="rfc.iref.75"></a>
          <a name="rfc.iref.76"></a>
@@ -1931,6 +2009,7 @@ table.closedissue {
          
       </p>
       <div><a name="rfc.figure.u.12"></a></div>
+      <div class="noprint" title="rfc.section.3.2.2.p.3"><a name="rfc.section.3.2.2.p.3"></a></div>
       <p>
          A host identified by an IPv6 literal address is represented inside
          the square brackets without a preceding version flag.  The ABNF provided
@@ -1965,6 +2044,7 @@ table.closedissue {
    h16         = 1*4HEXDIG
                ; 16 bits of address represented in hexadecimal
 </pre><div><a name="rfc.figure.u.13"></a></div>
+      <div class="noprint" title="rfc.section.3.2.2.p.4"><a name="rfc.section.3.2.2.p.4"></a></div>
       <p>
          <a name="rfc.iref.87"></a>
          <a name="rfc.iref.88"></a>
@@ -1987,6 +2067,7 @@ table.closedissue {
                / "2" %x30-34 DIGIT     ; 200-249
                / "25" %x30-35          ; 250-255
 </pre><div><a name="rfc.figure.u.14"></a></div>
+      <div class="noprint" title="rfc.section.3.2.2.p.5"><a name="rfc.section.3.2.2.p.5"></a></div>
       <p>
          <a name="rfc.iref.92"></a>
          <a name="rfc.iref.93"></a>
@@ -2016,7 +2097,7 @@ table.closedissue {
          empty host to be invalid.
          
       </p>
-      <div><a name="rfc.section.3.2.2.p.6"></a></div>
+      <div class="noprint" title="rfc.section.3.2.2.p.6"><a name="rfc.section.3.2.2.p.6"></a></div>
       <p>
          This specification does not mandate a particular registered name lookup
          technology and therefore does not restrict the syntax of reg-name beyond
@@ -2033,7 +2114,7 @@ table.closedissue {
          should limit such names to no more than 255 characters in length.
          
       </p>
-      <div><a name="rfc.section.3.2.2.p.7"></a></div>
+      <div class="noprint" title="rfc.section.3.2.2.p.7"><a name="rfc.section.3.2.2.p.7"></a></div>
       <p>
          The reg-name syntax allows percent-encoded octets in order to represent
          non-ASCII registered names in a uniform way that is independent of
@@ -2050,8 +2131,9 @@ table.closedissue {
          interoperability with legacy URI resolvers.
          
       </p>
-      <h3><a name="rfc.iref.95"></a><a name="rfc.section.3.2.3">3.2.3</a>&nbsp;<a name="port">Port</a></h3>
+      <h3><a name="rfc.iref.95"></a><a name="rfc.section.3.2.3" href="#rfc.section.3.2.3">3.2.3</a>&nbsp;<a name="port" href="#port">Port</a></h3>
       <div><a name="rfc.figure.u.15"></a></div>
+      <div class="noprint" title="rfc.section.3.2.3.p.1"><a name="rfc.section.3.2.3.p.1"></a></div>
       <p>
          The port subcomponent of authority is designated by an optional
          port number in decimal following the host and delimited from it by
@@ -2068,8 +2150,8 @@ table.closedissue {
          would be the same as the scheme's default.
          
       </p>
-      <h2><a name="rfc.iref.97"></a><a name="rfc.iref.98"></a><a name="rfc.iref.99"></a><a name="rfc.iref.100"></a><a name="rfc.iref.101"></a><a name="rfc.iref.102"></a><a name="rfc.iref.103"></a><a name="rfc.iref.104"></a><a name="rfc.iref.105"></a><a name="rfc.iref.106"></a><a name="rfc.iref.117"></a><a name="rfc.section.3.3">3.3</a>&nbsp;<a name="path">Path</a></h2>
-      <div><a name="rfc.section.3.3.p.1"></a></div>
+      <h2><a name="rfc.iref.97"></a><a name="rfc.iref.98"></a><a name="rfc.iref.99"></a><a name="rfc.iref.100"></a><a name="rfc.iref.101"></a><a name="rfc.iref.102"></a><a name="rfc.iref.103"></a><a name="rfc.iref.104"></a><a name="rfc.iref.105"></a><a name="rfc.iref.106"></a><a name="rfc.iref.117"></a><a name="rfc.section.3.3" href="#rfc.section.3.3">3.3</a>&nbsp;<a name="path" href="#path">Path</a></h2>
+      <div class="noprint" title="rfc.section.3.3.p.1"><a name="rfc.section.3.3.p.1"></a></div>
       <p>
          The path component contains data, usually organized in hierarchical form,
          that, along with data in the non-hierarchical
@@ -2081,6 +2163,7 @@ table.closedissue {
          
       </p>
       <div><a name="rfc.figure.u.16"></a></div>
+      <div class="noprint" title="rfc.section.3.3.p.2"><a name="rfc.section.3.3.p.2"></a></div>
       <p>
          If a URI contains an authority component, then the path component must
          either be empty or begin with a slash ("/") character.
@@ -2122,7 +2205,7 @@ table.closedissue {
                  ; non-zero-length segment without any colon ":"
 
    pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
-</pre><div><a name="rfc.section.3.3.p.3"></a></div>
+</pre><div class="noprint" title="rfc.section.3.3.p.3"><a name="rfc.section.3.3.p.3"></a></div>
       <p>
          A path consists of a sequence of path segments separated by a
          slash ("/") character.  A path is always defined for a URI, though
@@ -2133,7 +2216,7 @@ table.closedissue {
          the URI &lt;foo://info.example.com?fred&gt; has an empty path.
          
       </p>
-      <div><a name="rfc.section.3.3.p.4"></a></div>
+      <div class="noprint" title="rfc.section.3.3.p.4"><a name="rfc.section.3.3.p.4"></a></div>
       <p>
          The path segments "." and "..", also known as dot-segments, are defined for
          relative reference within the path name hierarchy.
@@ -2147,7 +2230,7 @@ table.closedissue {
          resolution process (<a href="#absolutize" title="Relative Resolution">Section&nbsp;5.2</a>).
          
       </p>
-      <div><a name="rfc.section.3.3.p.5"></a></div>
+      <div class="noprint" title="rfc.section.3.3.p.5"><a name="rfc.section.3.3.p.5"></a></div>
       <p>
          Aside from dot-segments in hierarchical paths, a path segment is
          considered opaque by the generic syntax.  URI-producing applications
@@ -2164,8 +2247,9 @@ table.closedissue {
          of the URI's dereferencing algorithm.
          
       </p>
-      <h2><a name="rfc.section.3.4">3.4</a>&nbsp;<a name="query">Query</a></h2>
+      <h2><a name="rfc.section.3.4" href="#rfc.section.3.4">3.4</a>&nbsp;<a name="query" href="#query">Query</a></h2>
       <div><a name="rfc.figure.u.17"></a></div>
+      <div class="noprint" title="rfc.section.3.4.p.1"><a name="rfc.section.3.4.p.1"></a></div>
       <p>
          <a name="rfc.iref.118"></a>
          The query component contains non-hierarchical data that, along with data
@@ -2177,7 +2261,7 @@ table.closedissue {
          <a name="rfc.iref.120"></a>
          
       </p><pre>   query       = *( pchar / "/" / "?" )
-</pre><div><a name="rfc.section.3.4.p.2"></a></div>
+</pre><div class="noprint" title="rfc.section.3.4.p.2"><a name="rfc.section.3.4.p.2"></a></div>
       <p>
          The characters slash ("/") and question mark ("?") may represent data
          within the query component.  Beware that some older, erroneous
@@ -2191,8 +2275,9 @@ table.closedissue {
          avoid percent-encoding those characters.
          
       </p>
-      <h2><a name="rfc.section.3.5">3.5</a>&nbsp;<a name="fragment">Fragment</a></h2>
+      <h2><a name="rfc.section.3.5" href="#rfc.section.3.5">3.5</a>&nbsp;<a name="fragment" href="#fragment">Fragment</a></h2>
       <div><a name="rfc.figure.u.18"></a></div>
+      <div class="noprint" title="rfc.section.3.5.p.1"><a name="rfc.section.3.5.p.1"></a></div>
       <p>
          <a name="rfc.iref.121"></a>
          The fragment identifier component of a URI allows indirect identification
@@ -2207,7 +2292,7 @@ table.closedissue {
          <a name="rfc.iref.123"></a>
          
       </p><pre>   fragment    = *( pchar / "/" / "?" )
-</pre><div><a name="rfc.section.3.5.p.2"></a></div>
+</pre><div class="noprint" title="rfc.section.3.5.p.2"><a name="rfc.section.3.5.p.2"></a></div>
       <p>
          The semantics of a fragment identifier are defined by the set of
          representations that might result from a retrieval action on the primary
@@ -2220,7 +2305,7 @@ table.closedissue {
          thus cannot be redefined by scheme specifications.
          
       </p>
-      <div><a name="rfc.section.3.5.p.3"></a></div>
+      <div class="noprint" title="rfc.section.3.5.p.3"><a name="rfc.section.3.5.p.3"></a></div>
       <p>
          Individual media types may define their own restrictions on, or structure
          within, the fragment identifier syntax for specifying different types of
@@ -2235,7 +2320,7 @@ table.closedissue {
          left undefined by the representation (i.e., not found).
          
       </p>
-      <div><a name="rfc.section.3.5.p.4"></a></div>
+      <div class="noprint" title="rfc.section.3.5.p.4"><a name="rfc.section.3.5.p.4"></a></div>
       <p>
          As with any URI, use of a fragment identifier component does not imply
          that a retrieval action will take place.  A URI with a fragment identifier
@@ -2243,7 +2328,7 @@ table.closedissue {
          that the primary resource is accessible or will ever be accessed.
          
       </p>
-      <div><a name="rfc.section.3.5.p.5"></a></div>
+      <div class="noprint" title="rfc.section.3.5.p.5"><a name="rfc.section.3.5.p.5"></a></div>
       <p>
          Fragment identifiers have a special role in information retrieval systems as
          the primary form of client-side indirect referencing, allowing
@@ -2264,7 +2349,7 @@ table.closedissue {
          new schemes of identification.
          
       </p>
-      <div><a name="rfc.section.3.5.p.6"></a></div>
+      <div class="noprint" title="rfc.section.3.5.p.6"><a name="rfc.section.3.5.p.6"></a></div>
       <p>
          The characters slash ("/") and question mark ("?") are allowed to
          represent data within the fragment identifier.  Beware that some older,
@@ -2280,8 +2365,8 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.section.4">4</a>&nbsp;<a name="usage">Usage</a></h1>
-      <div><a name="rfc.section.4.p.1"></a></div>
+      <h1><a name="rfc.section.4" href="#rfc.section.4">4</a>&nbsp;<a name="usage" href="#usage">Usage</a></h1>
+      <div class="noprint" title="rfc.section.4.p.1"><a name="rfc.section.4.p.1"></a></div>
       <p>
          When applications make reference to a URI, they do not always use the
          full form of reference defined by the "URI" syntax rule.
@@ -2294,8 +2379,9 @@ table.closedissue {
          in order to be interpreted consistently.
          
       </p>
-      <h2><a name="rfc.iref.124"></a><a name="rfc.section.4.1">4.1</a>&nbsp;<a name="uri-reference">URI Reference</a></h2>
+      <h2><a name="rfc.iref.124"></a><a name="rfc.section.4.1" href="#rfc.section.4.1">4.1</a>&nbsp;<a name="uri-reference" href="#uri-reference">URI Reference</a></h2>
       <div><a name="rfc.figure.u.19"></a></div>
+      <div class="noprint" title="rfc.section.4.1.p.1"><a name="rfc.section.4.1.p.1"></a></div>
       <p>
          URI-reference is used to denote the most common usage of a
          resource identifier.
@@ -2310,7 +2396,7 @@ table.closedissue {
          by its colon separator, then the URI-reference is a relative reference.
          
       </p>
-      <div><a name="rfc.section.4.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.4.1.p.2"><a name="rfc.section.4.1.p.2"></a></div>
       <p>
          A URI-reference is typically parsed first into the five URI components,
          in order to determine what components are present and whether or not the
@@ -2323,8 +2409,9 @@ table.closedissue {
          string and extract the URI components.
          
       </p>
-      <h2><a name="rfc.iref.128"></a><a name="rfc.iref.129"></a><a name="rfc.iref.130"></a><a name="rfc.iref.131"></a><a name="rfc.section.4.2">4.2</a>&nbsp;<a name="relative-ref">Relative Reference</a></h2>
+      <h2><a name="rfc.iref.128"></a><a name="rfc.iref.129"></a><a name="rfc.iref.130"></a><a name="rfc.iref.131"></a><a name="rfc.section.4.2" href="#rfc.section.4.2">4.2</a>&nbsp;<a name="relative-ref" href="#relative-ref">Relative Reference</a></h2>
       <div><a name="rfc.figure.u.20"></a></div>
+      <div class="noprint" title="rfc.section.4.2.p.1"><a name="rfc.section.4.2.p.1"></a></div>
       <p>
          A relative reference takes advantage of the hierarchical syntax
          (<a href="#hierarchical" title="Hierarchical Identifiers">Section&nbsp;1.2.3</a>) in order to express a URI reference
@@ -2345,7 +2432,7 @@ table.closedissue {
          the reference resolution algorithm of <a href="#reference-resolution" title="Reference Resolution">Section&nbsp;5</a>.
          
       </p>
-      <div><a name="rfc.section.4.2.p.2"></a></div>
+      <div class="noprint" title="rfc.section.4.2.p.2"><a name="rfc.section.4.2.p.2"></a></div>
       <p>
          A relative reference that begins with two slash characters is termed a
          network-path reference; such references are rarely used.
@@ -2354,7 +2441,7 @@ table.closedissue {
          begin with a slash character is termed a relative-path reference.
          
       </p>
-      <div><a name="rfc.section.4.2.p.3"></a></div>
+      <div class="noprint" title="rfc.section.4.2.p.3"><a name="rfc.section.4.2.p.3"></a></div>
       <p>
          A path segment that contains a colon character (e.g., "this:that")
          cannot be used as the first segment of a relative-path reference
@@ -2363,8 +2450,9 @@ table.closedissue {
          reference.
          
       </p>
-      <h2><a name="rfc.iref.135"></a><a name="rfc.iref.136"></a><a name="rfc.section.4.3">4.3</a>&nbsp;<a name="absolute-uri">Absolute URI</a></h2>
+      <h2><a name="rfc.iref.135"></a><a name="rfc.iref.136"></a><a name="rfc.section.4.3" href="#rfc.section.4.3">4.3</a>&nbsp;<a name="absolute-uri" href="#absolute-uri">Absolute URI</a></h2>
       <div><a name="rfc.figure.u.21"></a></div>
+      <div class="noprint" title="rfc.section.4.3.p.1"><a name="rfc.section.4.3.p.1"></a></div>
       <p>
          Some protocol elements allow only the absolute form of a URI without
          a fragment identifier.  For example, defining a base URI for later
@@ -2375,8 +2463,8 @@ table.closedissue {
          <a name="rfc.iref.139"></a>
          
       </p><pre>   absolute-URI  = scheme ":" hier-part [ "?" query ]
-</pre><h2><a name="rfc.iref.140"></a><a name="rfc.section.4.4">4.4</a>&nbsp;<a name="same-document">Same-document Reference</a></h2>
-      <div><a name="rfc.section.4.4.p.1"></a></div>
+</pre><h2><a name="rfc.iref.140"></a><a name="rfc.section.4.4" href="#rfc.section.4.4">4.4</a>&nbsp;<a name="same-document" href="#same-document">Same-document Reference</a></h2>
+      <div class="noprint" title="rfc.section.4.4.p.1"><a name="rfc.section.4.4.p.1"></a></div>
       <p>
          When a URI reference refers to a URI that is, aside from its fragment
          component (if any), identical to the base URI (<a href="#base-uri" title="Establishing a Base URI">Section&nbsp;5.1</a>),
@@ -2386,7 +2474,7 @@ table.closedissue {
          identifier.
          
       </p>
-      <div><a name="rfc.section.4.4.p.2"></a></div>
+      <div class="noprint" title="rfc.section.4.4.p.2"><a name="rfc.section.4.4.p.2"></a></div>
       <p>
          When a same-document reference is dereferenced for the purpose of a
          retrieval action, the target of that reference is defined to be within
@@ -2394,7 +2482,7 @@ table.closedissue {
          therefore, a dereference should not result in a new retrieval action.
          
       </p>
-      <div><a name="rfc.section.4.4.p.3"></a></div>
+      <div class="noprint" title="rfc.section.4.4.p.3"><a name="rfc.section.4.4.p.3"></a></div>
       <p>
          Normalization of the base and target URIs prior to their comparison,
          as described in <a href="#normalize-syntax" title="Syntax-based Normalization">Section&nbsp;6.2.2</a> and
@@ -2406,8 +2494,8 @@ table.closedissue {
          same-document reference by any given application.
          
       </p>
-      <h2><a name="rfc.iref.141"></a><a name="rfc.section.4.5">4.5</a>&nbsp;<a name="suffix">Suffix Reference</a></h2>
-      <div><a name="rfc.section.4.5.p.1"></a></div>
+      <h2><a name="rfc.iref.141"></a><a name="rfc.section.4.5" href="#rfc.section.4.5">4.5</a>&nbsp;<a name="suffix" href="#suffix">Suffix Reference</a></h2>
+      <div class="noprint" title="rfc.section.4.5.p.1"><a name="rfc.section.4.5.p.1"></a></div>
       <p>
          The URI syntax is designed for unambiguous reference to resources and
          extensibility via the URI scheme.  However, as URI identification and
@@ -2417,8 +2505,9 @@ table.closedissue {
          portions of the URI, such as
          
       </p>
-      <div><a name="rfc.figure.u.22"></a></div><pre>   www.w3.org/Addressing/
-</pre><div><a name="rfc.section.4.5.p.3"></a></div>
+      <div><a name="rfc.figure.u.22"></a></div>
+      <div class="noprint" title="rfc.section.4.5.p.2"><a name="rfc.section.4.5.p.2"></a></div><pre>   www.w3.org/Addressing/
+</pre><div class="noprint" title="rfc.section.4.5.p.3"><a name="rfc.section.4.5.p.3"></a></div>
       <p>
          or simply a DNS registered name on its own.  Such references are primarily
          intended for human interpretation, rather than for machines, with the
@@ -2429,7 +2518,7 @@ table.closedissue {
          allow them to be entered by the user and heuristically resolved.
          
       </p>
-      <div><a name="rfc.section.4.5.p.4"></a></div>
+      <div class="noprint" title="rfc.section.4.5.p.4"><a name="rfc.section.4.5.p.4"></a></div>
       <p>
          While this practice of using suffix references is common, it should
          be avoided whenever possible and never used in situations where long-term
@@ -2440,7 +2529,7 @@ table.closedissue {
          <a href="#RFC1535" title="A Security Problem and Proposed Correction With Widely Deployed DNS Software">[RFC1535]</a>.
          
       </p>
-      <div><a name="rfc.section.4.5.p.5"></a></div>
+      <div class="noprint" title="rfc.section.4.5.p.5"><a name="rfc.section.4.5.p.5"></a></div>
       <p>
          Since a URI suffix has the same syntax as a relative-path reference, a
          suffix reference cannot be used in contexts where a relative reference
@@ -2456,16 +2545,16 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.iref.142"></a><a name="rfc.iref.143"></a><a name="rfc.section.5">5</a>&nbsp;<a name="reference-resolution">Reference Resolution</a></h1>
-      <div><a name="rfc.section.5.p.1"></a></div>
+      <h1><a name="rfc.iref.142"></a><a name="rfc.iref.143"></a><a name="rfc.section.5" href="#rfc.section.5">5</a>&nbsp;<a name="reference-resolution" href="#reference-resolution">Reference Resolution</a></h1>
+      <div class="noprint" title="rfc.section.5.p.1"><a name="rfc.section.5.p.1"></a></div>
       <p>
          This section defines the process of resolving a URI reference within
          a context that allows relative references, such that the result is a
          string matching the &lt;URI&gt; syntax rule of <a href="#components" title="Syntax Components">Section&nbsp;3</a>.
          
       </p>
-      <h2><a name="rfc.iref.144"></a><a name="rfc.section.5.1">5.1</a>&nbsp;<a name="base-uri">Establishing a Base URI</a></h2>
-      <div><a name="rfc.section.5.1.p.1"></a></div>
+      <h2><a name="rfc.iref.144"></a><a name="rfc.section.5.1" href="#rfc.section.5.1">5.1</a>&nbsp;<a name="base-uri" href="#base-uri">Establishing a Base URI</a></h2>
+      <div class="noprint" title="rfc.section.5.1.p.1"><a name="rfc.section.5.1.p.1"></a></div>
       <p>
          The term "relative" implies that there exists a "base URI" against
          which the relative reference is applied.  Aside from fragment-only
@@ -2478,7 +2567,7 @@ table.closedissue {
          and stripped of any fragment component prior to use as a base URI.
          
       </p>
-      <div><a name="rfc.section.5.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.5.1.p.2"><a name="rfc.section.5.1.p.2"></a></div>
       <p>
          The base URI of a reference can be established in one of four ways,
          discussed below in order of precedence.  The order of precedence can be
@@ -2486,7 +2575,8 @@ table.closedissue {
          has the highest precedence.  This can be visualized graphically as:
          
       </p>
-      <div><a name="rfc.figure.u.23"></a></div><pre>   .----------------------------------------------------------.
+      <div><a name="rfc.figure.u.23"></a></div>
+      <div class="noprint" title="rfc.section.5.1.p.3"><a name="rfc.section.5.1.p.3"></a></div><pre>   .----------------------------------------------------------.
    |  .----------------------------------------------------.  |
    |  |  .----------------------------------------------.  |  |
    |  |  |  .----------------------------------------.  |  |  |
@@ -2502,8 +2592,8 @@ table.closedissue {
    |  `----------------------------------------------------'  |
    | (5.1.4) Default Base URI (application-dependent)         |
    `----------------------------------------------------------'
-</pre><h3><a name="rfc.section.5.1.1">5.1.1</a>&nbsp;<a name="base-content">Base URI Embedded in Content</a></h3>
-      <div><a name="rfc.section.5.1.1.p.1"></a></div>
+</pre><h3><a name="rfc.section.5.1.1" href="#rfc.section.5.1.1">5.1.1</a>&nbsp;<a name="base-content" href="#base-content">Base URI Embedded in Content</a></h3>
+      <div class="noprint" title="rfc.section.5.1.1.p.1"><a name="rfc.section.5.1.1.p.1"></a></div>
       <p>
          Within certain media types, a base URI for relative references can
          be embedded within the content itself such that it can be readily
@@ -2513,7 +2603,7 @@ table.closedissue {
          USENET news).
          
       </p>
-      <div><a name="rfc.section.5.1.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.5.1.1.p.2"><a name="rfc.section.5.1.1.p.2"></a></div>
       <p>
          It is beyond the scope of this specification to specify how, for each
          media type, a base URI can be embedded.  The appropriate syntax, when
@@ -2521,8 +2611,8 @@ table.closedissue {
          with each media type.
          
       </p>
-      <h3><a name="rfc.section.5.1.2">5.1.2</a>&nbsp;<a name="base-encapsulated">Base URI from the Encapsulating Entity</a></h3>
-      <div><a name="rfc.section.5.1.2.p.1"></a></div>
+      <h3><a name="rfc.section.5.1.2" href="#rfc.section.5.1.2">5.1.2</a>&nbsp;<a name="base-encapsulated" href="#base-encapsulated">Base URI from the Encapsulating Entity</a></h3>
+      <div class="noprint" title="rfc.section.5.1.2.p.1"><a name="rfc.section.5.1.2.p.1"></a></div>
       <p>
          If no base URI is embedded, the base URI is defined by the representation's
          retrieval context.  For a document that is enclosed within another entity,
@@ -2531,7 +2621,7 @@ table.closedissue {
          which the representation is encapsulated.
          
       </p>
-      <div><a name="rfc.section.5.1.2.p.2"></a></div>
+      <div class="noprint" title="rfc.section.5.1.2.p.2"><a name="rfc.section.5.1.2.p.2"></a></div>
       <p>
          A mechanism for embedding a base URI within MIME container types
          (e.g., the message and multipart types) is defined by MHTML
@@ -2541,8 +2631,8 @@ table.closedissue {
          URI as part of a message.
          
       </p>
-      <h3><a name="rfc.section.5.1.3">5.1.3</a>&nbsp;<a name="base-retrieval">Base URI from the Retrieval URI</a></h3>
-      <div><a name="rfc.section.5.1.3.p.1"></a></div>
+      <h3><a name="rfc.section.5.1.3" href="#rfc.section.5.1.3">5.1.3</a>&nbsp;<a name="base-retrieval" href="#base-retrieval">Base URI from the Retrieval URI</a></h3>
+      <div class="noprint" title="rfc.section.5.1.3.p.1"><a name="rfc.section.5.1.3.p.1"></a></div>
       <p>
          If no base URI is embedded and the representation is not encapsulated
          within some other entity, then, if a URI was used to retrieve the
@@ -2552,8 +2642,8 @@ table.closedissue {
          resulted in the actual retrieval of the representation) is the base URI.
          
       </p>
-      <h3><a name="rfc.section.5.1.4">5.1.4</a>&nbsp;<a name="base-default">Default Base URI</a></h3>
-      <div><a name="rfc.section.5.1.4.p.1"></a></div>
+      <h3><a name="rfc.section.5.1.4" href="#rfc.section.5.1.4">5.1.4</a>&nbsp;<a name="base-default" href="#base-default">Default Base URI</a></h3>
+      <div class="noprint" title="rfc.section.5.1.4.p.1"><a name="rfc.section.5.1.4.p.1"></a></div>
       <p>
          If none of the conditions described above apply,
          then the base URI is defined by the context of the application.
@@ -2563,7 +2653,7 @@ table.closedissue {
          application.
          
       </p>
-      <div><a name="rfc.section.5.1.4.p.2"></a></div>
+      <div class="noprint" title="rfc.section.5.1.4.p.2"><a name="rfc.section.5.1.4.p.2"></a></div>
       <p>
          A sender of a representation containing relative references is responsible
          for ensuring that a base URI for those references can be established.
@@ -2571,8 +2661,8 @@ table.closedissue {
          reliably in situations where the base URI is well-defined.
          
       </p>
-      <h2><a name="rfc.section.5.2">5.2</a>&nbsp;<a name="absolutize">Relative Resolution</a></h2>
-      <div><a name="rfc.section.5.2.p.1"></a></div>
+      <h2><a name="rfc.section.5.2" href="#rfc.section.5.2">5.2</a>&nbsp;<a name="absolutize" href="#absolutize">Relative Resolution</a></h2>
+      <div class="noprint" title="rfc.section.5.2.p.1"><a name="rfc.section.5.2.p.1"></a></div>
       <p>
          This section describes an algorithm for converting a URI reference
          that might be relative to a given base URI into the parsed components
@@ -2584,8 +2674,8 @@ table.closedissue {
          the results match what would be given by this algorithm.
          
       </p>
-      <h3><a name="rfc.section.5.2.1">5.2.1</a>&nbsp;<a name="relative-base">Pre-parse the Base URI</a></h3>
-      <div><a name="rfc.section.5.2.1.p.1"></a></div>
+      <h3><a name="rfc.section.5.2.1" href="#rfc.section.5.2.1">5.2.1</a>&nbsp;<a name="relative-base" href="#relative-base">Pre-parse the Base URI</a></h3>
+      <div class="noprint" title="rfc.section.5.2.1.p.1"><a name="rfc.section.5.2.1.p.1"></a></div>
       <p>
          The base URI (Base) is established according to the procedure of
          <a href="#base-uri" title="Establishing a Base URI">Section&nbsp;5.1</a> and parsed into the five main components
@@ -2596,7 +2686,7 @@ table.closedissue {
          never undefined, though it may be empty.
          
       </p>
-      <div><a name="rfc.section.5.2.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.5.2.1.p.2"><a name="rfc.section.5.2.1.p.2"></a></div>
       <p>
          Normalization of the base URI, as described in
          <a href="#normalize-syntax" title="Syntax-based Normalization">Section&nbsp;6.2.2</a> and <a href="#normalize-scheme" title="Scheme-based Normalization">Section&nbsp;6.2.3</a>,
@@ -2604,8 +2694,9 @@ table.closedissue {
          it can be normalized.
          
       </p>
-      <h3><a name="rfc.section.5.2.2">5.2.2</a>&nbsp;<a name="relative-transform">Transform References</a></h3>
+      <h3><a name="rfc.section.5.2.2" href="#rfc.section.5.2.2">5.2.2</a>&nbsp;<a name="relative-transform" href="#relative-transform">Transform References</a></h3>
       <div><a name="rfc.figure.u.24"></a></div>
+      <div class="noprint" title="rfc.section.5.2.2.p.1"><a name="rfc.section.5.2.2.p.1"></a></div>
       <p>
          For each URI reference (R), the following pseudocode describes an
          algorithm for transforming R into its target URI (T):
@@ -2655,8 +2746,8 @@ table.closedissue {
    endif;
 
    T.fragment = R.fragment;
-</pre><h3><a name="rfc.iref.145"></a><a name="rfc.section.5.2.3">5.2.3</a>&nbsp;<a name="relative-merge">Merge Paths</a></h3>
-      <div><a name="rfc.section.5.2.3.p.1"></a></div>
+</pre><h3><a name="rfc.iref.145"></a><a name="rfc.section.5.2.3" href="#rfc.section.5.2.3">5.2.3</a>&nbsp;<a name="relative-merge" href="#relative-merge">Merge Paths</a></h3>
+      <div class="noprint" title="rfc.section.5.2.3.p.1"><a name="rfc.section.5.2.3.p.1"></a></div>
       <p>
          The pseudocode above refers to a "merge" routine for merging a
          relative-path reference with the path of the base URI.  This is
@@ -2684,8 +2775,8 @@ table.closedissue {
       <p>
          
       </p>
-      <h3><a name="rfc.iref.146"></a><a name="rfc.section.5.2.4">5.2.4</a>&nbsp;<a name="relative-dot-segments">Remove Dot Segments</a></h3>
-      <div><a name="rfc.section.5.2.4.p.1"></a></div>
+      <h3><a name="rfc.iref.146"></a><a name="rfc.section.5.2.4" href="#rfc.section.5.2.4">5.2.4</a>&nbsp;<a name="relative-dot-segments" href="#relative-dot-segments">Remove Dot Segments</a></h3>
+      <div class="noprint" title="rfc.section.5.2.4.p.1"><a name="rfc.section.5.2.4.p.1"></a></div>
       <p>
          The pseudocode also refers to a "remove_dot_segments" routine
          for interpreting and removing the special "." and ".." complete
@@ -2758,7 +2849,7 @@ table.closedissue {
       <p>
          
       </p>
-      <div><a name="rfc.section.5.2.4.p.2"></a></div>
+      <div class="noprint" title="rfc.section.5.2.4.p.2"><a name="rfc.section.5.2.4.p.2"></a></div>
       <p>
          Note that dot-segments are intended for use in URI references to express
          an identifier relative to the hierarchy of names in the base URI.  The
@@ -2768,6 +2859,7 @@ table.closedissue {
          
       </p>
       <div><a name="rfc.figure.u.25"></a></div>
+      <div class="noprint" title="rfc.section.5.2.4.p.3"><a name="rfc.section.5.2.4.p.3"></a></div>
       <p>
          The following illustrates how the above steps are applied for two example
          merged paths, showing the state of the two buffers after each step.
@@ -2795,7 +2887,7 @@ table.closedissue {
          remove_dot_segments algorithm using two segment stacks rather than strings.
          
       </p>
-      <div><a name="rfc.section.5.2.4.p.4"></a></div>
+      <div class="noprint" title="rfc.section.5.2.4.p.4"><a name="rfc.section.5.2.4.p.4"></a></div>
       <p>
          
       </p>
@@ -2814,8 +2906,9 @@ table.closedissue {
       <p>
          
       </p>
-      <h2><a name="rfc.section.5.3">5.3</a>&nbsp;<a name="recomposition">Component Recomposition</a></h2>
+      <h2><a name="rfc.section.5.3" href="#rfc.section.5.3">5.3</a>&nbsp;<a name="recomposition" href="#recomposition">Component Recomposition</a></h2>
       <div><a name="rfc.figure.u.26"></a></div>
+      <div class="noprint" title="rfc.section.5.3.p.1"><a name="rfc.section.5.3.p.1"></a></div>
       <p>
          Parsed URI components can be recomposed to obtain the corresponding
          URI reference string.  Using pseudocode, this would be:
@@ -2853,20 +2946,22 @@ table.closedissue {
          next component separator or the end of the reference.
          
       </p>
-      <h2><a name="rfc.section.5.4">5.4</a>&nbsp;<a name="reference-examples">Reference Resolution Examples</a></h2>
-      <div><a name="rfc.section.5.4.p.1"></a></div>
+      <h2><a name="rfc.section.5.4" href="#rfc.section.5.4">5.4</a>&nbsp;<a name="reference-examples" href="#reference-examples">Reference Resolution Examples</a></h2>
+      <div class="noprint" title="rfc.section.5.4.p.1"><a name="rfc.section.5.4.p.1"></a></div>
       <p>
          Within a representation with a well-defined base URI of
          
       </p>
-      <div><a name="rfc.figure.u.27"></a></div><pre>   http://a/b/c/d;p?q
-</pre><div><a name="rfc.section.5.4.p.3"></a></div>
+      <div><a name="rfc.figure.u.27"></a></div>
+      <div class="noprint" title="rfc.section.5.4.p.2"><a name="rfc.section.5.4.p.2"></a></div><pre>   http://a/b/c/d;p?q
+</pre><div class="noprint" title="rfc.section.5.4.p.3"><a name="rfc.section.5.4.p.3"></a></div>
       <p>
          a relative reference is transformed to its target URI as follows.
          
       </p>
-      <h3><a name="rfc.section.5.4.1">5.4.1</a>&nbsp;<a name="relative-normal">Normal Examples</a></h3>
-      <div><a name="rfc.figure.u.28"></a></div><pre>   "g:h"           =  "g:h"
+      <h3><a name="rfc.section.5.4.1" href="#rfc.section.5.4.1">5.4.1</a>&nbsp;<a name="relative-normal" href="#relative-normal">Normal Examples</a></h3>
+      <div><a name="rfc.figure.u.28"></a></div>
+      <div class="noprint" title="rfc.section.5.4.1.p.1"><a name="rfc.section.5.4.1.p.1"></a></div><pre>   "g:h"           =  "g:h"
    "g"             =  "http://a/b/c/g"
    "./g"           =  "http://a/b/c/g"
    "g/"            =  "http://a/b/c/g/"
@@ -2889,15 +2984,15 @@ table.closedissue {
    "../.."         =  "http://a/"
    "../../"        =  "http://a/"
    "../../g"       =  "http://a/g"
-</pre><h3><a name="rfc.section.5.4.2">5.4.2</a>&nbsp;<a name="relative-abnormal">Abnormal Examples</a></h3>
-      <div><a name="rfc.section.5.4.2.p.1"></a></div>
+</pre><h3><a name="rfc.section.5.4.2" href="#rfc.section.5.4.2">5.4.2</a>&nbsp;<a name="relative-abnormal" href="#relative-abnormal">Abnormal Examples</a></h3>
+      <div class="noprint" title="rfc.section.5.4.2.p.1"><a name="rfc.section.5.4.2.p.1"></a></div>
       <p>
          Although the following abnormal examples are unlikely to occur in
          normal practice, all URI parsers should be capable of resolving them
          consistently.  Each example uses the same base as above.
          
       </p>
-      <div><a name="rfc.section.5.4.2.p.2"></a></div>
+      <div class="noprint" title="rfc.section.5.4.2.p.2"><a name="rfc.section.5.4.2.p.2"></a></div>
       <p>
          Parsers must be careful in handling cases where there are more
          ".." segments in a relative-path reference than there are hierarchical
@@ -2906,34 +3001,37 @@ table.closedissue {
          the authority component of a URI.
          
       </p>
-      <div><a name="rfc.figure.u.29"></a></div><pre>   "../../../g"    =  "http://a/g"
+      <div><a name="rfc.figure.u.29"></a></div>
+      <div class="noprint" title="rfc.section.5.4.2.p.3"><a name="rfc.section.5.4.2.p.3"></a></div><pre>   "../../../g"    =  "http://a/g"
    "../../../../g" =  "http://a/g"
-</pre><div><a name="rfc.section.5.4.2.p.4"></a></div>
+</pre><div class="noprint" title="rfc.section.5.4.2.p.4"><a name="rfc.section.5.4.2.p.4"></a></div>
       <p>
          Similarly, parsers must remove the dot-segments "." and ".." when
          they are complete components of a path, but not when they are only
          part of a segment.
          
       </p>
-      <div><a name="rfc.figure.u.30"></a></div><pre>   "/./g"          =  "http://a/g"
+      <div><a name="rfc.figure.u.30"></a></div>
+      <div class="noprint" title="rfc.section.5.4.2.p.5"><a name="rfc.section.5.4.2.p.5"></a></div><pre>   "/./g"          =  "http://a/g"
    "/../g"         =  "http://a/g"
    "g."            =  "http://a/b/c/g."
    ".g"            =  "http://a/b/c/.g"
    "g.."           =  "http://a/b/c/g.."
    "..g"           =  "http://a/b/c/..g"
-</pre><div><a name="rfc.section.5.4.2.p.6"></a></div>
+</pre><div class="noprint" title="rfc.section.5.4.2.p.6"><a name="rfc.section.5.4.2.p.6"></a></div>
       <p>
          Less likely are cases where the relative reference uses unnecessary or
          nonsensical forms of the "." and ".." complete path segments.
          
       </p>
-      <div><a name="rfc.figure.u.31"></a></div><pre>   "./../g"        =  "http://a/b/g"
+      <div><a name="rfc.figure.u.31"></a></div>
+      <div class="noprint" title="rfc.section.5.4.2.p.7"><a name="rfc.section.5.4.2.p.7"></a></div><pre>   "./../g"        =  "http://a/b/g"
    "./g/."         =  "http://a/b/c/g/"
    "g/./h"         =  "http://a/b/c/g/h"
    "g/../h"        =  "http://a/b/c/h"
    "g;x=1/./y"     =  "http://a/b/c/g;x=1/y"
    "g;x=1/../y"    =  "http://a/b/c/y"
-</pre><div><a name="rfc.section.5.4.2.p.8"></a></div>
+</pre><div class="noprint" title="rfc.section.5.4.2.p.8"><a name="rfc.section.5.4.2.p.8"></a></div>
       <p>
          Some applications fail to separate the reference's query and/or
          fragment components from the path component before merging it with
@@ -2943,11 +3041,12 @@ table.closedissue {
          relative references.
          
       </p>
-      <div><a name="rfc.figure.u.32"></a></div><pre>   "g?y/./x"       =  "http://a/b/c/g?y/./x"
+      <div><a name="rfc.figure.u.32"></a></div>
+      <div class="noprint" title="rfc.section.5.4.2.p.9"><a name="rfc.section.5.4.2.p.9"></a></div><pre>   "g?y/./x"       =  "http://a/b/c/g?y/./x"
    "g?y/../x"      =  "http://a/b/c/g?y/../x"
    "g#s/./x"       =  "http://a/b/c/g#s/./x"
    "g#s/../x"      =  "http://a/b/c/g#s/../x"
-</pre><div><a name="rfc.section.5.4.2.p.10"></a></div>
+</pre><div class="noprint" title="rfc.section.5.4.2.p.10"><a name="rfc.section.5.4.2.p.10"></a></div>
       <p>
          Some parsers allow the scheme name to be present in a relative reference if
          it is the same as the base URI scheme.  This is considered to be a
@@ -2955,7 +3054,8 @@ table.closedissue {
          Its use should be avoided, but is allowed for backward compatibility.
          
       </p>
-      <div><a name="rfc.figure.u.33"></a></div><pre>   "http:g"        =  "http:g"         ; for strict parsers
+      <div><a name="rfc.figure.u.33"></a></div>
+      <div class="noprint" title="rfc.section.5.4.2.p.11"><a name="rfc.section.5.4.2.p.11"></a></div><pre>   "http:g"        =  "http:g"         ; for strict parsers
                    /  "http://a/b/c/g" ; for backward compatibility
 </pre>
       
@@ -2965,8 +3065,8 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.section.6">6</a>&nbsp;<a name="comparison">Normalization and Comparison</a></h1>
-      <div><a name="rfc.section.6.p.1"></a></div>
+      <h1><a name="rfc.section.6" href="#rfc.section.6">6</a>&nbsp;<a name="comparison" href="#comparison">Normalization and Comparison</a></h1>
+      <div class="noprint" title="rfc.section.6.p.1"><a name="rfc.section.6.p.1"></a></div>
       <p>
          One of the most common operations on URIs is simple comparison:
          determining if two URIs are equivalent without using the URIs to
@@ -2978,7 +3078,7 @@ table.closedissue {
          reduce duplication of request actions and response storage.
          
       </p>
-      <div><a name="rfc.section.6.p.2"></a></div>
+      <div class="noprint" title="rfc.section.6.p.2"><a name="rfc.section.6.p.2"></a></div>
       <p>
          URI comparison is performed in respect to some particular purpose,
          and implementations with differing purposes will often be subject to differing
@@ -2988,8 +3088,8 @@ table.closedissue {
          and the types of applications that might use them.
          
       </p>
-      <h2><a name="rfc.section.6.1">6.1</a>&nbsp;<a name="equivalence">Equivalence</a></h2>
-      <div><a name="rfc.section.6.1.p.1"></a></div>
+      <h2><a name="rfc.section.6.1" href="#rfc.section.6.1">6.1</a>&nbsp;<a name="equivalence" href="#equivalence">Equivalence</a></h2>
+      <div class="noprint" title="rfc.section.6.1.p.1"><a name="rfc.section.6.1.p.1"></a></div>
       <p>
          Since URIs exist to identify resources, presumably they should be
          considered equivalent when they identify the same resource.  However,
@@ -3004,7 +3104,7 @@ table.closedissue {
          are many application-dependent versions of equivalence.
          
       </p>
-      <div><a name="rfc.section.6.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.6.1.p.2"><a name="rfc.section.6.1.p.2"></a></div>
       <p>
          Even though it is possible to determine that two URIs are equivalent,
          URI comparison is not sufficient to determine if two URIs identify different
@@ -3014,7 +3114,7 @@ table.closedissue {
          false negatives while strictly avoiding false positives.
          
       </p>
-      <div><a name="rfc.section.6.1.p.3"></a></div>
+      <div class="noprint" title="rfc.section.6.1.p.3"><a name="rfc.section.6.1.p.3"></a></div>
       <p>
          In testing for equivalence, applications should not directly compare
          relative references; the references should be converted to their
@@ -3024,8 +3124,8 @@ table.closedissue {
          be excluded from the comparison.
          
       </p>
-      <h2><a name="rfc.section.6.2">6.2</a>&nbsp;<a name="comparison-ladder">Comparison Ladder</a></h2>
-      <div><a name="rfc.section.6.2.p.1"></a></div>
+      <h2><a name="rfc.section.6.2" href="#rfc.section.6.2">6.2</a>&nbsp;<a name="comparison-ladder" href="#comparison-ladder">Comparison Ladder</a></h2>
+      <div class="noprint" title="rfc.section.6.2.p.1"><a name="rfc.section.6.2.p.1"></a></div>
       <p>
          A variety of methods are used in practice to test URI equivalence.
          These methods fall into a range, distinguished by the amount of
@@ -3036,7 +3136,7 @@ table.closedissue {
          for all applications.
          
       </p>
-      <div><a name="rfc.section.6.2.p.2"></a></div>
+      <div class="noprint" title="rfc.section.6.2.p.2"><a name="rfc.section.6.2.p.2"></a></div>
       <p>
          If this range of comparison practices is considered as a ladder, the
          following discussion will climb the ladder, starting with those practices that
@@ -3045,8 +3145,8 @@ table.closedissue {
          of false negatives.
          
       </p>
-      <h3><a name="rfc.section.6.2.1">6.2.1</a>&nbsp;<a name="comparison-string">Simple String Comparison</a></h3>
-      <div><a name="rfc.section.6.2.1.p.1"></a></div>
+      <h3><a name="rfc.section.6.2.1" href="#rfc.section.6.2.1">6.2.1</a>&nbsp;<a name="comparison-string" href="#comparison-string">Simple String Comparison</a></h3>
+      <div class="noprint" title="rfc.section.6.2.1.p.1"><a name="rfc.section.6.2.1.p.1"></a></div>
       <p>
          If two URIs, considered as character strings, are identical, then it is
          safe to conclude that they are equivalent.  This type of equivalence test
@@ -3054,7 +3154,7 @@ table.closedissue {
          applications, particularly in the domain of parsing.
          
       </p>
-      <div><a name="rfc.section.6.2.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.6.2.1.p.2"><a name="rfc.section.6.2.1.p.2"></a></div>
       <p>
          Testing strings for equivalence requires some basic precautions.
          This procedure is often referred to as "bit-for-bit" or "byte-for-byte"
@@ -3066,7 +3166,7 @@ table.closedissue {
          before the other.
          
       </p>
-      <div><a name="rfc.section.6.2.1.p.3"></a></div>
+      <div class="noprint" title="rfc.section.6.2.1.p.3"><a name="rfc.section.6.2.1.p.3"></a></div>
       <p>
          Such character comparisons require that each pair of characters be put
          in comparable form.  For example, should one URI be stored in a byte
@@ -3078,7 +3178,7 @@ table.closedissue {
          codepoint-by-codepoint after conversion to a common character encoding.
          
       </p>
-      <div><a name="rfc.section.6.2.1.p.4"></a></div>
+      <div class="noprint" title="rfc.section.6.2.1.p.4"><a name="rfc.section.6.2.1.p.4"></a></div>
       <p>
          False negatives are caused by the production and use of URI aliases.
          Unnecessary aliases can be reduced, regardless of the comparison method,
@@ -3091,8 +3191,9 @@ table.closedissue {
          to negate any efficiency that might be obtained from further normalization.
          
       </p>
-      <h3><a name="rfc.section.6.2.2">6.2.2</a>&nbsp;<a name="normalize-syntax">Syntax-based Normalization</a></h3>
+      <h3><a name="rfc.section.6.2.2" href="#rfc.section.6.2.2">6.2.2</a>&nbsp;<a name="normalize-syntax" href="#normalize-syntax">Syntax-based Normalization</a></h3>
       <div><a name="rfc.figure.u.34"></a></div>
+      <div class="noprint" title="rfc.section.6.2.2.p.1"><a name="rfc.section.6.2.2.p.1"></a></div>
       <p>
          Implementations may use logic based on the definitions provided by this
          specification to reduce the probability of false negatives.  Such
@@ -3109,15 +3210,15 @@ table.closedissue {
          percent-encoding normalization, and removal of dot-segments.
          
       </p>
-      <h3><a name="rfc.section.6.2.2.1">6.2.2.1</a>&nbsp;<a name="normalize-case">Case Normalization</a></h3>
-      <div><a name="rfc.section.6.2.2.1.p.1"></a></div>
+      <h3><a name="rfc.section.6.2.2.1" href="#rfc.section.6.2.2.1">6.2.2.1</a>&nbsp;<a name="normalize-case" href="#normalize-case">Case Normalization</a></h3>
+      <div class="noprint" title="rfc.section.6.2.2.1.p.1"><a name="rfc.section.6.2.2.1.p.1"></a></div>
       <p>
          For all URIs, the hexadecimal digits within a percent-encoding triplet
          (e.g., "%3a" versus "%3A") are case-insensitive and therefore should be
          normalized to use uppercase letters for the digits A-F.
          
       </p>
-      <div><a name="rfc.section.6.2.2.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.6.2.2.1.p.2"><a name="rfc.section.6.2.2.1.p.2"></a></div>
       <p>
          When a URI uses components of the generic syntax, the component syntax
          equivalence rules always apply; namely, that the scheme and host are
@@ -3129,8 +3230,8 @@ table.closedissue {
          (see <a href="#normalize-scheme" title="Scheme-based Normalization">Section&nbsp;6.2.3</a>).
          
       </p>
-      <h3><a name="rfc.section.6.2.2.2">6.2.2.2</a>&nbsp;<a name="normalize-encoding">Percent-Encoding Normalization</a></h3>
-      <div><a name="rfc.section.6.2.2.2.p.1"></a></div>
+      <h3><a name="rfc.section.6.2.2.2" href="#rfc.section.6.2.2.2">6.2.2.2</a>&nbsp;<a name="normalize-encoding" href="#normalize-encoding">Percent-Encoding Normalization</a></h3>
+      <div class="noprint" title="rfc.section.6.2.2.2.p.1"><a name="rfc.section.6.2.2.2.p.1"></a></div>
       <p>
          The percent-encoding mechanism (<a href="#percent-encoding" title="Percent-Encoding">Section&nbsp;2.1</a>)
          is a frequent source of variance among otherwise identical URIs.
@@ -3142,8 +3243,8 @@ table.closedissue {
          <a href="#unreserved" title="Unreserved Characters">Section&nbsp;2.3</a>.
          
       </p>
-      <h3><a name="rfc.section.6.2.2.3">6.2.2.3</a>&nbsp;<a name="normalize-path">Path Segment Normalization</a></h3>
-      <div><a name="rfc.section.6.2.2.3.p.1"></a></div>
+      <h3><a name="rfc.section.6.2.2.3" href="#rfc.section.6.2.2.3">6.2.2.3</a>&nbsp;<a name="normalize-path" href="#normalize-path">Path Segment Normalization</a></h3>
+      <div class="noprint" title="rfc.section.6.2.2.3.p.1"><a name="rfc.section.6.2.2.3.p.1"></a></div>
       <p>
          The complete path segments "." and ".." are intended only for use
          within relative references (<a href="#uri-reference" title="URI Reference">Section&nbsp;4.1</a>) and are
@@ -3157,8 +3258,9 @@ table.closedissue {
          <a href="#relative-dot-segments" title="Remove Dot Segments">Section&nbsp;5.2.4</a>.
          
       </p>
-      <h3><a name="rfc.section.6.2.3">6.2.3</a>&nbsp;<a name="normalize-scheme">Scheme-based Normalization</a></h3>
+      <h3><a name="rfc.section.6.2.3" href="#rfc.section.6.2.3">6.2.3</a>&nbsp;<a name="normalize-scheme" href="#normalize-scheme">Scheme-based Normalization</a></h3>
       <div><a name="rfc.figure.u.35"></a></div>
+      <div class="noprint" title="rfc.section.6.2.3.p.1"><a name="rfc.section.6.2.3.p.1"></a></div>
       <p>
          The syntax and semantics of URIs vary from scheme to scheme, as described
          by the defining specification for each scheme.  Implementations may use
@@ -3181,7 +3283,7 @@ table.closedissue {
          second URI above is the normal form for the "http" scheme.
          
       </p>
-      <div><a name="rfc.section.6.2.3.p.2"></a></div>
+      <div class="noprint" title="rfc.section.6.2.3.p.2"><a name="rfc.section.6.2.3.p.2"></a></div>
       <p>
          Another case where normalization varies by scheme is in the handling
          of an empty authority component or empty host subcomponent.  For many
@@ -3194,7 +3296,7 @@ table.closedissue {
          then the host should be given explicitly even if it matches the default.
          
       </p>
-      <div><a name="rfc.section.6.2.3.p.3"></a></div>
+      <div class="noprint" title="rfc.section.6.2.3.p.3"><a name="rfc.section.6.2.3.p.3"></a></div>
       <p>
          Normalization should not remove delimiters when their associated
          component is empty unless licensed to do so by the scheme specification.
@@ -3206,7 +3308,7 @@ table.closedissue {
          by the suffix "#" are considered different regardless of the scheme.
          
       </p>
-      <div><a name="rfc.section.6.2.3.p.4"></a></div>
+      <div class="noprint" title="rfc.section.6.2.3.p.4"><a name="rfc.section.6.2.3.p.4"></a></div>
       <p>
          Some schemes define additional subcomponents that consist of
          case-insensitive data, giving an implicit license to normalizers
@@ -3219,13 +3321,14 @@ table.closedissue {
          the path component to be case-sensitive).
          
       </p>
-      <div><a name="rfc.section.6.2.3.p.5"></a></div>
+      <div class="noprint" title="rfc.section.6.2.3.p.5"><a name="rfc.section.6.2.3.p.5"></a></div>
       <p>
          Other scheme-specific normalizations are possible.
          
       </p>
-      <h3><a name="rfc.section.6.2.4">6.2.4</a>&nbsp;<a name="normalize-protocol">Protocol-based Normalization</a></h3>
+      <h3><a name="rfc.section.6.2.4" href="#rfc.section.6.2.4">6.2.4</a>&nbsp;<a name="normalize-protocol" href="#normalize-protocol">Protocol-based Normalization</a></h3>
       <div><a name="rfc.figure.u.36"></a></div>
+      <div class="noprint" title="rfc.section.6.2.4.p.1"><a name="rfc.section.6.2.4.p.1"></a></div>
       <p>
          Web spiders, for which substantial effort to reduce the incidence
          of false negatives is often cost-effective, are observed to implement
@@ -3234,6 +3337,7 @@ table.closedissue {
          
       </p><pre>   http://example.com/data
 </pre><div><a name="rfc.figure.u.37"></a></div>
+      <div class="noprint" title="rfc.section.6.2.4.p.2"><a name="rfc.section.6.2.4.p.2"></a></div>
       <p>
          redirects to a URI differing only in the trailing slash
          
@@ -3255,8 +3359,8 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.section.7">7</a>&nbsp;<a name="security">Security Considerations</a></h1>
-      <div><a name="rfc.section.7.p.1"></a></div>
+      <h1><a name="rfc.section.7" href="#rfc.section.7">7</a>&nbsp;<a name="security" href="#security">Security Considerations</a></h1>
+      <div class="noprint" title="rfc.section.7.p.1"><a name="rfc.section.7.p.1"></a></div>
       <p>
          A URI does not in itself pose a security threat.  However, since URIs
          are often used to provide a compact set of instructions for access to
@@ -3265,8 +3369,8 @@ table.closedissue {
          to avoid including data that should not be revealed in plain text.
          
       </p>
-      <h2><a name="rfc.section.7.1">7.1</a>&nbsp;<a name="security-reliability">Reliability and Consistency</a></h2>
-      <div><a name="rfc.section.7.1.p.1"></a></div>
+      <h2><a name="rfc.section.7.1" href="#rfc.section.7.1">7.1</a>&nbsp;<a name="security-reliability" href="#security-reliability">Reliability and Consistency</a></h2>
+      <div class="noprint" title="rfc.section.7.1.p.1"><a name="rfc.section.7.1.p.1"></a></div>
       <p>
          There is no guarantee that, having once used a given URI to retrieve
          some information, the same information will be retrievable by
@@ -3280,8 +3384,8 @@ table.closedissue {
          if those semantics are required of all naming authorities for that scheme.
          
       </p>
-      <h2><a name="rfc.section.7.2">7.2</a>&nbsp;<a name="security-malicious">Malicious Construction</a></h2>
-      <div><a name="rfc.section.7.2.p.1"></a></div>
+      <h2><a name="rfc.section.7.2" href="#rfc.section.7.2">7.2</a>&nbsp;<a name="security-malicious" href="#security-malicious">Malicious Construction</a></h2>
+      <div class="noprint" title="rfc.section.7.2.p.1"><a name="rfc.section.7.2.p.1"></a></div>
       <p>
          It is sometimes possible to construct a URI such that an attempt to
          perform a seemingly harmless, idempotent operation, such as the
@@ -3297,7 +3401,7 @@ table.closedissue {
          via an SMTP server.
          
       </p>
-      <div><a name="rfc.section.7.2.p.2"></a></div>
+      <div class="noprint" title="rfc.section.7.2.p.2"><a name="rfc.section.7.2.p.2"></a></div>
       <p>
          Applications should prevent dereference of a URI that specifies a
          TCP port number within the "well-known port" range (0 - 1023) unless
@@ -3307,7 +3411,7 @@ table.closedissue {
          user-configurable to avoid preventing the deployment of new services.
          
       </p>
-      <div><a name="rfc.section.7.2.p.3"></a></div>
+      <div class="noprint" title="rfc.section.7.2.p.3"><a name="rfc.section.7.2.p.3"></a></div>
       <p>
          When a URI contains percent-encoded octets that match the delimiters for
          a given resolution or dereference protocol (for example, CR and LF characters
@@ -3318,8 +3422,8 @@ table.closedissue {
          triggering an unexpected and possibly harmful remote operation.
          
       </p>
-      <h2><a name="rfc.section.7.3">7.3</a>&nbsp;<a name="security-transcoding">Back-end Transcoding</a></h2>
-      <div><a name="rfc.section.7.3.p.1"></a></div>
+      <h2><a name="rfc.section.7.3" href="#rfc.section.7.3">7.3</a>&nbsp;<a name="security-transcoding" href="#security-transcoding">Back-end Transcoding</a></h2>
+      <div class="noprint" title="rfc.section.7.3.p.1"><a name="rfc.section.7.3.p.1"></a></div>
       <p>
          When a URI is dereferenced, the data within it is often parsed by both
          the user agent and one or more servers.  In HTTP, for example, a typical
@@ -3334,7 +3438,7 @@ table.closedissue {
          and percent-encodings within that URI.
          
       </p>
-      <div><a name="rfc.section.7.3.p.2"></a></div>
+      <div class="noprint" title="rfc.section.7.3.p.2"><a name="rfc.section.7.3.p.2"></a></div>
       <p>
          Percent-encoded octets must be decoded at some point during the
          dereference process.  Applications must split the URI into its
@@ -3346,7 +3450,7 @@ table.closedissue {
          to receive raw data within a component.
          
       </p>
-      <div><a name="rfc.section.7.3.p.3"></a></div>
+      <div class="noprint" title="rfc.section.7.3.p.3"><a name="rfc.section.7.3.p.3"></a></div>
       <p>
          Special care should be taken when the URI path interpretation process
          involves the use of a back-end filesystem or related system functions.
@@ -3363,8 +3467,8 @@ table.closedissue {
          the use of data obtained from URI components accordingly.
          
       </p>
-      <h2><a name="rfc.section.7.4">7.4</a>&nbsp;<a name="security-ipv4">Rare IP Address Formats</a></h2>
-      <div><a name="rfc.section.7.4.p.1"></a></div>
+      <h2><a name="rfc.section.7.4" href="#rfc.section.7.4">7.4</a>&nbsp;<a name="security-ipv4" href="#security-ipv4">Rare IP Address Formats</a></h2>
+      <div class="noprint" title="rfc.section.7.4.p.1"><a name="rfc.section.7.4.p.1"></a></div>
       <p>
          Although the URI syntax for IPv4address only allows the common,
          dotted-decimal form of IPv4 address literal, many implementations that
@@ -3375,7 +3479,7 @@ table.closedissue {
          <a href="#host" title="Host">Section&nbsp;3.2.2</a>.
          
       </p>
-      <div><a name="rfc.section.7.4.p.2"></a></div>
+      <div class="noprint" title="rfc.section.7.4.p.2"><a name="rfc.section.7.4.p.2"></a></div>
       <p>
          For example, many implementations allow dotted forms of three numbers,
          wherein the last part is interpreted as a 16-bit quantity and placed in
@@ -3390,7 +3494,7 @@ table.closedissue {
          a leading 0 implies octal; otherwise, the number is interpreted as decimal).
          
       </p>
-      <div><a name="rfc.section.7.4.p.3"></a></div>
+      <div class="noprint" title="rfc.section.7.4.p.3"><a name="rfc.section.7.4.p.3"></a></div>
       <p>
          These additional IP address formats are not allowed in the URI syntax
          due to differences between platform implementations.  However, they
@@ -3401,8 +3505,8 @@ table.closedissue {
          suffix of the string form.
          
       </p>
-      <h2><a name="rfc.section.7.5">7.5</a>&nbsp;<a name="security-sensitive">Sensitive Information</a></h2>
-      <div><a name="rfc.section.7.5.p.1"></a></div>
+      <h2><a name="rfc.section.7.5" href="#rfc.section.7.5">7.5</a>&nbsp;<a name="security-sensitive" href="#security-sensitive">Sensitive Information</a></h2>
+      <div class="noprint" title="rfc.section.7.5.p.1"><a name="rfc.section.7.5.p.1"></a></div>
       <p>
          URI producers should not provide a URI that contains a username or
          password which is intended to be secret: URIs are frequently
@@ -3413,8 +3517,9 @@ table.closedissue {
          rare cases where the 'password' parameter is intended to be public.
          
       </p>
-      <h2><a name="rfc.section.7.6">7.6</a>&nbsp;<a name="security-semantic">Semantic Attacks</a></h2>
+      <h2><a name="rfc.section.7.6" href="#rfc.section.7.6">7.6</a>&nbsp;<a name="security-semantic" href="#security-semantic">Semantic Attacks</a></h2>
       <div><a name="rfc.figure.u.38"></a></div>
+      <div class="noprint" title="rfc.section.7.6.p.1"><a name="rfc.section.7.6.p.1"></a></div>
       <p>
          Because the userinfo subcomponent is rarely used and appears before the
          host in the authority component, it can be used to construct a URI
@@ -3429,7 +3534,7 @@ table.closedissue {
          subcomponent could be much longer than the example above.
          
       </p>
-      <div><a name="rfc.section.7.6.p.2"></a></div>
+      <div class="noprint" title="rfc.section.7.6.p.2"><a name="rfc.section.7.6.p.2"></a></div>
       <p>
          A misleading URI, such as the one above, is an attack on the user's
          preconceived notions about the meaning of a URI, rather than an attack
@@ -3449,8 +3554,8 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.section.8">8</a>&nbsp;<a name="IANA">IANA Considerations</a></h1>
-      <div><a name="rfc.section.8.p.1"></a></div>
+      <h1><a name="rfc.section.8" href="#rfc.section.8">8</a>&nbsp;<a name="IANA" href="#IANA">IANA Considerations</a></h1>
+      <div class="noprint" title="rfc.section.8.p.1"><a name="rfc.section.8.p.1"></a></div>
       <p>
          URI scheme names, as defined by &lt;scheme&gt; in <a href="#scheme" title="Scheme">Section&nbsp;3.1</a>,
          form a registered name space that is managed by IANA according to the
@@ -3466,8 +3571,8 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.section.9">9</a>&nbsp;<a name="ack">Acknowledgments</a></h1>
-      <div><a name="rfc.section.9.p.1"></a></div>
+      <h1><a name="rfc.section.9" href="#rfc.section.9">9</a>&nbsp;<a name="ack" href="#ack">Acknowledgments</a></h1>
+      <div class="noprint" title="rfc.section.9.p.1"><a name="rfc.section.9.p.1"></a></div>
       <p>
          This specification is derived from RFC 2396 <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>,
          RFC 1808 <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a>, and RFC 1738 <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a>;
@@ -3495,11 +3600,11 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.references"><a name="rfc.section.10">10</a>&nbsp;
-            References
-            </a></h1>
-      <h2><a name="rfc.references.1"><a name="rfc.section.10.1">10.1</a>&nbsp;
-            Normative References</a></h2>
+      <h1><a name="rfc.section.10">10</a>&nbsp;
+         <a name="rfc.references">References</a></h1>
+      <h2><a name="rfc.references.1"></a><a name="rfc.section.10.1"></a>10.1&nbsp;
+         Normative References
+      </h2>
       <table summary="Normative References" border="0" cellpadding="2">
          
          
@@ -3530,8 +3635,9 @@ table.closedissue {
             <td class="top">International Organization for Standardization,&nbsp;"Information Technology - Universal Multiple-Octet Coded Character Set (UCS)", ISO/IEC&nbsp;10646:2003, December&nbsp;2003.</td>
          </tr>
       </table>
-      <h2><a name="rfc.references.2"><a name="rfc.section.10.2">10.2</a>&nbsp;
-            Informative References</a></h2>
+      <h2><a name="rfc.references.2"></a><a name="rfc.section.10.2"></a>10.2&nbsp;
+         Informative References
+      </h2>
       <table summary="Informative References" border="0" cellpadding="2">
          
          
@@ -3824,8 +3930,9 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.section.A">A</a>&nbsp;<a name="collected-abnf">Collected ABNF for URI</a></h1>
-      <div><a name="rfc.figure.u.39"></a></div><pre> URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+      <h1><a name="rfc.section.A" href="#rfc.section.A">A</a>&nbsp;<a name="collected-abnf" href="#collected-abnf">Collected ABNF for URI</a></h1>
+      <div><a name="rfc.figure.u.39"></a></div>
+      <div class="noprint" title="rfc.section.A.p.1"><a name="rfc.section.A.p.1"></a></div><pre> URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 
  hier-part     = "//" authority path-abempty
                / path-absolute
@@ -3852,7 +3959,7 @@ table.closedissue {
 
  IP-literal    = "[" ( IPv6address / IPvFuture  ) "]"
 
- IPvFuture     = "v" 1*HEXDIG "." 1*( unreserved / sub-delims / ":" <span class="toowide">)</span>
+ IPvFuture     = "v" 1*HEXDIG "." 1*( unreserved / sub-delims / ":" )
 
  IPv6address   =                            6( h16 ":" ) ls32
                /                       "::" 5( h16 ":" ) ls32
@@ -3913,8 +4020,8 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.section.B">B</a>&nbsp;<a name="regexp">Parsing a URI Reference with a Regular Expression</a></h1>
-      <div><a name="rfc.section.B.p.1"></a></div>
+      <h1><a name="rfc.section.B" href="#rfc.section.B">B</a>&nbsp;<a name="regexp" href="#regexp">Parsing a URI Reference with a Regular Expression</a></h1>
+      <div class="noprint" title="rfc.section.B.p.1"><a name="rfc.section.B.p.1"></a></div>
       <p>
          Since the "first-match-wins" algorithm is identical to the "greedy"
          disambiguation method used by POSIX regular expressions, it is
@@ -3922,15 +4029,16 @@ table.closedissue {
          potential five components of a URI reference.
          
       </p>
-      <div><a name="rfc.section.B.p.2"></a></div>
+      <div class="noprint" title="rfc.section.B.p.2"><a name="rfc.section.B.p.2"></a></div>
       <p>
          The following line is the regular expression for breaking-down a
          well-formed URI reference into its components.
          
       </p>
-      <div><a name="rfc.figure.u.40"></a></div><pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
+      <div><a name="rfc.figure.u.40"></a></div>
+      <div class="noprint" title="rfc.section.B.p.3"><a name="rfc.section.B.p.3"></a></div><pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
     12            3  4          5       6  7        8 9
-</pre><div><a name="rfc.section.B.p.4"></a></div>
+</pre><div class="noprint" title="rfc.section.B.p.4"><a name="rfc.section.B.p.4"></a></div>
       <p>
          The numbers in the second line above are only to assist readability;
          they indicate the reference points for each subexpression (i.e., each
@@ -3938,13 +4046,15 @@ table.closedissue {
          &lt;n&gt; as $&lt;n&gt;.  For example, matching the above expression to
          
       </p>
-      <div><a name="rfc.figure.u.41"></a></div><pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
-</pre><div><a name="rfc.section.B.p.6"></a></div>
+      <div><a name="rfc.figure.u.41"></a></div>
+      <div class="noprint" title="rfc.section.B.p.5"><a name="rfc.section.B.p.5"></a></div><pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
+</pre><div class="noprint" title="rfc.section.B.p.6"><a name="rfc.section.B.p.6"></a></div>
       <p>
          results in the following subexpression matches:
          
       </p>
-      <div><a name="rfc.figure.u.42"></a></div><pre>   $1 = http:
+      <div><a name="rfc.figure.u.42"></a></div>
+      <div class="noprint" title="rfc.section.B.p.7"><a name="rfc.section.B.p.7"></a></div><pre>   $1 = http:
    $2 = http
    $3 = //www.ics.uci.edu
    $4 = www.ics.uci.edu
@@ -3953,19 +4063,20 @@ table.closedissue {
    $7 = &lt;undefined&gt;
    $8 = #Related
    $9 = Related
-</pre><div><a name="rfc.section.B.p.8"></a></div>
+</pre><div class="noprint" title="rfc.section.B.p.8"><a name="rfc.section.B.p.8"></a></div>
       <p>
          where &lt;undefined&gt; indicates that the component is not present, as is
          the case for the query component in the above example.  Therefore, we
          can determine the value of the four components and fragment as
          
       </p>
-      <div><a name="rfc.figure.u.43"></a></div><pre>   scheme    = $2
+      <div><a name="rfc.figure.u.43"></a></div>
+      <div class="noprint" title="rfc.section.B.p.9"><a name="rfc.section.B.p.9"></a></div><pre>   scheme    = $2
    authority = $4
    path      = $5
    query     = $7
    fragment  = $9
-</pre><div><a name="rfc.section.B.p.10"></a></div>
+</pre><div class="noprint" title="rfc.section.B.p.10"><a name="rfc.section.B.p.10"></a></div>
       <p>
          and, going in the opposite direction, we can recreate a URI reference
          from its components using the algorithm of <a href="#recomposition" title="Component Recomposition">Section&nbsp;5.3</a>.
@@ -3977,8 +4088,8 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.section.C">C</a>&nbsp;<a name="delimiting">Delimiting a URI in Context</a></h1>
-      <div><a name="rfc.section.C.p.1"></a></div>
+      <h1><a name="rfc.section.C" href="#rfc.section.C">C</a>&nbsp;<a name="delimiting" href="#delimiting">Delimiting a URI in Context</a></h1>
+      <div class="noprint" title="rfc.section.C.p.1"><a name="rfc.section.C.p.1"></a></div>
       <p>
          URIs are often transmitted through formats that do not provide a clear
          context for their interpretation.  For example, there are many
@@ -3989,27 +4100,28 @@ table.closedissue {
          punctuation marks that might be mistaken for part of the URI.
          
       </p>
-      <div><a name="rfc.section.C.p.2"></a></div>
+      <div class="noprint" title="rfc.section.C.p.2"><a name="rfc.section.C.p.2"></a></div>
       <p>
          In practice, URIs are delimited in a variety of ways, but usually
          within double-quotes "http://example.com/", angle brackets
          &lt;http://example.com/&gt;, or just using whitespace
          
       </p>
-      <div><a name="rfc.figure.u.44"></a></div><pre>   http://example.com/
-</pre><div><a name="rfc.section.C.p.4"></a></div>
+      <div><a name="rfc.figure.u.44"></a></div>
+      <div class="noprint" title="rfc.section.C.p.3"><a name="rfc.section.C.p.3"></a></div><pre>   http://example.com/
+</pre><div class="noprint" title="rfc.section.C.p.4"><a name="rfc.section.C.p.4"></a></div>
       <p>
          These wrappers do not form part of the URI.
          
       </p>
-      <div><a name="rfc.section.C.p.5"></a></div>
+      <div class="noprint" title="rfc.section.C.p.5"><a name="rfc.section.C.p.5"></a></div>
       <p>
          In some cases, extra whitespace (spaces, line-breaks, tabs, etc.) may
          need to be added to break a long URI across lines. The whitespace
          should be ignored when extracting the URI.
          
       </p>
-      <div><a name="rfc.section.C.p.6"></a></div>
+      <div class="noprint" title="rfc.section.C.p.6"><a name="rfc.section.C.p.6"></a></div>
       <p>
          No whitespace should be introduced after a hyphen ("-") character.
          Because some typesetters and printers may (erroneously) introduce a
@@ -4019,13 +4131,13 @@ table.closedissue {
          that the hyphen may or may not actually be part of the URI.
          
       </p>
-      <div><a name="rfc.section.C.p.7"></a></div>
+      <div class="noprint" title="rfc.section.C.p.7"><a name="rfc.section.C.p.7"></a></div>
       <p>
          Using &lt;&gt; angle brackets around each URI is especially recommended as
          a delimiting style for a reference that contains embedded whitespace.
          
       </p>
-      <div><a name="rfc.section.C.p.8"></a></div>
+      <div class="noprint" title="rfc.section.C.p.8"><a name="rfc.section.C.p.8"></a></div>
       <p>
          The prefix "URL:" (with or without a trailing space) was formerly
          recommended as a way to help distinguish a URI from other bracketed
@@ -4033,13 +4145,14 @@ table.closedissue {
          no longer recommended.
          
       </p>
-      <div><a name="rfc.section.C.p.9"></a></div>
+      <div class="noprint" title="rfc.section.C.p.9"><a name="rfc.section.C.p.9"></a></div>
       <p>
          For robustness, software that accepts user-typed URI should attempt
          to recognize and strip both delimiters and embedded whitespace.
          
       </p>
       <div><a name="rfc.figure.u.45"></a></div>
+      <div class="noprint" title="rfc.section.C.p.10"><a name="rfc.section.C.p.10"></a></div>
       <p>
          For example, the text:
          
@@ -4047,12 +4160,13 @@ table.closedissue {
    but you can probably pick it up from &lt;ftp://foo.example.
    com/rfc/&gt;.  Note the warning in &lt;http://www.ics.uci.edu/pub/
    ietf/uri/historical.html#WARNING&gt;.
-</pre><div><a name="rfc.section.C.p.11"></a></div>
+</pre><div class="noprint" title="rfc.section.C.p.11"><a name="rfc.section.C.p.11"></a></div>
       <p>
          contains the URI references
          
       </p>
-      <div><a name="rfc.figure.u.46"></a></div><pre>   http://www.w3.org/Addressing/
+      <div><a name="rfc.figure.u.46"></a></div>
+      <div class="noprint" title="rfc.section.C.p.12"><a name="rfc.section.C.p.12"></a></div><pre>   http://www.w3.org/Addressing/
    ftp://foo.example.com/rfc/
    http://www.ics.uci.edu/pub/ietf/uri/historical.html#WARNING
 </pre><hr class="noprint">
@@ -4061,9 +4175,9 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.section.D">D</a>&nbsp;<a name="changes">Summary of Non-editorial Changes</a></h1>
-      <h2><a name="rfc.section.D.1">D.1</a>&nbsp;<a name="additions">Additions</a></h2>
-      <div><a name="rfc.section.D.1.p.1"></a></div>
+      <h1><a name="rfc.section.D" href="#rfc.section.D">D</a>&nbsp;<a name="changes" href="#changes">Summary of Non-editorial Changes</a></h1>
+      <h2><a name="rfc.section.D.1" href="#rfc.section.D.1">D.1</a>&nbsp;<a name="additions" href="#additions">Additions</a></h2>
+      <div class="noprint" title="rfc.section.D.1.p.1"><a name="rfc.section.D.1.p.1"></a></div>
       <p>
          IPv6 (and later) literals have been added to the list of possible identifiers
          for the host portion of a authority component, as described by
@@ -4077,7 +4191,7 @@ table.closedissue {
          rather than be defined in terms of uric.
          
       </p>
-      <div><a name="rfc.section.D.1.p.2"></a></div>
+      <div class="noprint" title="rfc.section.D.1.p.2"><a name="rfc.section.D.1.p.2"></a></div>
       <p>
          Since <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a> defers to <a href="#RFC3513" title="Internet Protocol Version 6 (IPv6) Addressing Architecture">[RFC3513]</a>
          for definition of an IPv6 literal address, which unfortunately lacks
@@ -4088,28 +4202,28 @@ table.closedissue {
          octet to the range 0-255.
          
       </p>
-      <div><a name="rfc.section.D.1.p.3"></a></div>
+      <div class="noprint" title="rfc.section.D.1.p.3"><a name="rfc.section.D.1.p.3"></a></div>
       <p>
          <a href="#comparison">Section 6</a> on URI normalization and comparison
          has been completely rewritten and extended using input from Tim Bray
          and discussion within the W3C Technical Architecture Group.
          
       </p>
-      <div><a name="rfc.section.D.1.p.4"></a></div>
+      <div class="noprint" title="rfc.section.D.1.p.4"><a name="rfc.section.D.1.p.4"></a></div>
       <p>
          An ABNF rule for URI has been introduced to correspond to one
          common usage of the term: an absolute URI with optional fragment.
          
       </p>
-      <h2><a name="rfc.section.D.2">D.2</a>&nbsp;<a name="modifications">Modifications from RFC 2396</a></h2>
-      <div><a name="rfc.section.D.2.p.1"></a></div>
+      <h2><a name="rfc.section.D.2" href="#rfc.section.D.2">D.2</a>&nbsp;<a name="modifications" href="#modifications">Modifications from RFC 2396</a></h2>
+      <div class="noprint" title="rfc.section.D.2.p.1"><a name="rfc.section.D.2.p.1"></a></div>
       <p>
          The ad-hoc BNF syntax has been replaced with the ABNF of
          <a href="#RFC2234" title="Augmented BNF for Syntax Specifications: ABNF">[RFC2234]</a>.  This change required all rule names that
          formerly included underscore characters to be renamed with a dash instead.
          
       </p>
-      <div><a name="rfc.section.D.2.p.2"></a></div>
+      <div class="noprint" title="rfc.section.D.2.p.2"><a name="rfc.section.D.2.p.2"></a></div>
       <p>
          Section 2 on characters has been rewritten to explain what characters
          are reserved, when they are reserved, and why they are reserved even
@@ -4126,7 +4240,7 @@ table.closedissue {
          respectively, to reduce confusion with other forms of escape mechanisms.
          
       </p>
-      <div><a name="rfc.section.D.2.p.3"></a></div>
+      <div class="noprint" title="rfc.section.D.2.p.3"><a name="rfc.section.D.2.p.3"></a></div>
       <p>
          The ABNF for URI and URI-reference has been redesigned to make them
          more friendly to LALR parsers and reduce complexity.
@@ -4142,7 +4256,7 @@ table.closedissue {
          through the use of five separate path matching rules.
          
       </p>
-      <div><a name="rfc.section.D.2.p.4"></a></div>
+      <div class="noprint" title="rfc.section.D.2.p.4"><a name="rfc.section.D.2.p.4"></a></div>
       <p>
          The fragment identifier has been moved back into the section on
          generic syntax components and within the URI and relative-ref
@@ -4151,7 +4265,7 @@ table.closedissue {
          as a result of reintegrating the fragment syntax.
          
       </p>
-      <div><a name="rfc.section.D.2.p.5"></a></div>
+      <div class="noprint" title="rfc.section.D.2.p.5"><a name="rfc.section.D.2.p.5"></a></div>
       <p>
          The ABNF has been corrected to allow the path component to be empty.
          This also allows an absolute-URI to consist of nothing after the "scheme:",
@@ -4161,7 +4275,7 @@ table.closedissue {
          eliminated through the use of five separate path matching rules.
          
       </p>
-      <div><a name="rfc.section.D.2.p.6"></a></div>
+      <div class="noprint" title="rfc.section.D.2.p.6"><a name="rfc.section.D.2.p.6"></a></div>
       <p>
          Registry-based naming authorities that use the generic syntax are now
          defined within the host rule.
@@ -4177,7 +4291,7 @@ table.closedissue {
          rules have been removed.
          
       </p>
-      <div><a name="rfc.section.D.2.p.7"></a></div>
+      <div class="noprint" title="rfc.section.D.2.p.7"><a name="rfc.section.D.2.p.7"></a></div>
       <p>
          The resolving relative references algorithm of <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>
          has been rewritten using pseudocode for this revision to improve clarity
@@ -4237,8 +4351,8 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.section.E">E</a>&nbsp;<a name="RFC-editor">Instructions to RFC Editor</a></h1>
-      <div><a name="rfc.section.E.p.1"></a></div>
+      <h1><a name="rfc.section.E" href="#rfc.section.E">E</a>&nbsp;<a name="RFC-editor" href="#RFC-editor">Instructions to RFC Editor</a></h1>
+      <div class="noprint" title="rfc.section.E.p.1"><a name="rfc.section.E.p.1"></a></div>
       <p>
          Prior to publication as an RFC, please remove this section and
          the "Editorial Note" that appears after the Abstract.  If
@@ -4255,7 +4369,7 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.ipr">Intellectual Property Statement</a></h1>
+      <h1><a name="rfc.ipr" href="#rfc.ipr">Intellectual Property Statement</a></h1>
       <p>
          The IETF takes no position regarding the validity or scope of any
          Intellectual Property Rights or other rights that might be claimed to
@@ -4284,7 +4398,7 @@ table.closedissue {
          <a href="mailto:ietf-ipr@ietf.org">ietf-ipr@ietf.org</a>.
          
       </p>
-      <h1><a name="rfc.disclaimer">Disclaimer of Validity</a></h1>
+      <h1><a name="rfc.disclaimer" href="#rfc.disclaimer">Disclaimer of Validity</a></h1>
       <p>
          This document and the information contained herein are provided on an
          "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
@@ -4295,7 +4409,7 @@ table.closedissue {
          WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
          
       </p>
-      <h1><a name="rfc.copyright">Copyright Statement</a></h1>
+      <h1><a name="rfc.copyright" href="#rfc.copyright">Copyright Statement</a></h1>
       <p>
          Copyright (C) The Internet Society (2004).
          This document is subject to the rights, licenses and restrictions
@@ -4315,12 +4429,11 @@ table.closedissue {
             <td style="background-color: #990000; text-align: center; height: 1.5em;"><a href="#rfc.toc"><b class="link2">&nbsp;TOC&nbsp;</b></a></td>
          </tr>
       </table>
-      <h1><a name="rfc.index"></a>Index
-         
-      </h1>
+      <h1><a name="rfc.index" href="#rfc.index">Index</a></h1>
+      <p class="noprint"><a href="#rfc.index.A">A </a><a href="#rfc.index.B">B </a><a href="#rfc.index.C">C </a><a href="#rfc.index.D">D </a><a href="#rfc.index.F">F </a><a href="#rfc.index.G">G </a><a href="#rfc.index.H">H </a><a href="#rfc.index.I">I </a><a href="#rfc.index.L">L </a><a href="#rfc.index.M">M </a><a href="#rfc.index.N">N </a><a href="#rfc.index.P">P </a><a href="#rfc.index.Q">Q </a><a href="#rfc.index.R">R </a><a href="#rfc.index.S">S </a><a href="#rfc.index.T">T </a><a href="#rfc.index.U">U </a></p>
       <table summary="Index">
          <tr>
-            <td><a name="rfc.index.A"><b>A</b></a></td>
+            <td><a name="rfc.index.A" href="#rfc.index.A"><b>A</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4366,7 +4479,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.66"><b>3.2</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.B"><b>B</b></a></td>
+            <td><a name="rfc.index.B" href="#rfc.index.B"><b>B</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4376,7 +4489,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.144"><b>5.1</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.C"><b>C</b></a></td>
+            <td><a name="rfc.index.C" href="#rfc.index.C"><b>C</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4407,7 +4520,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.2"><b>1</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.D"><b>D</b></a></td>
+            <td><a name="rfc.index.D" href="#rfc.index.D"><b>D</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4431,7 +4544,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.117"><b>3.3</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.F"><b>F</b></a></td>
+            <td><a name="rfc.index.F" href="#rfc.index.F"><b>F</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4442,7 +4555,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.121"><b>3.5</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.G"><b>G</b></a></td>
+            <td><a name="rfc.index.G" href="#rfc.index.G"><b>G</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4459,7 +4572,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.7"><b>1.1.1</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.H"><b>H</b></a></td>
+            <td><a name="rfc.index.H" href="#rfc.index.H"><b>H</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4490,7 +4603,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.73"><b>3.2.2</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.I"><b>I</b></a></td>
+            <td><a name="rfc.index.I" href="#rfc.index.I"><b>I</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4542,7 +4655,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.80"><b>3.2.2</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.L"><b>L</b></a></td>
+            <td><a name="rfc.index.L" href="#rfc.index.L"><b>L</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4559,7 +4672,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.78"><b>3.2.2</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.M"><b>M</b></a></td>
+            <td><a name="rfc.index.M" href="#rfc.index.M"><b>M</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4569,7 +4682,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.145"><b>5.2.3</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.N"><b>N</b></a></td>
+            <td><a name="rfc.index.N" href="#rfc.index.N"><b>N</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4586,7 +4699,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.129"><b>4.2</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.P"><b>P</b></a></td>
+            <td><a name="rfc.index.P" href="#rfc.index.P"><b>P</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4688,7 +4801,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.95"><b>3.2.3</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.Q"><b>Q</b></a></td>
+            <td><a name="rfc.index.Q" href="#rfc.index.Q"><b>Q</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4699,7 +4812,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.118"><b>3.4</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.R"><b>R</b></a></td>
+            <td><a name="rfc.index.R" href="#rfc.index.R"><b>R</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4781,7 +4894,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.16"><b>1.2.2</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.S"><b>S</b></a></td>
+            <td><a name="rfc.index.S" href="#rfc.index.S"><b>S</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4841,7 +4954,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.141"><b>4.5</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.T"><b>T</b></a></td>
+            <td><a name="rfc.index.T" href="#rfc.index.T"><b>T</b></a></td>
          </tr>
          <tr>
             <td>
@@ -4851,7 +4964,7 @@ table.closedissue {
                &nbsp;<a href="#rfc.iref.12"><b>1.2.1</b></a></td>
          </tr>
          <tr>
-            <td><a name="rfc.index.U"><b>U</b></a></td>
+            <td><a name="rfc.index.U" href="#rfc.index.U"><b>U</b></a></td>
          </tr>
          <tr>
             <td>
