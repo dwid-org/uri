@@ -2077,9 +2077,9 @@ that is intended to mislead a human user by appearing to identify one
 (trusted) naming authority while actually identifying a different
 authority hidden behind the noise.  For example
 </preamble><artwork>
-   http://www.example.com&amp;story=breaking_news@10.0.0.1/top_story.htm
+   ftp://trusted.example.com&amp;story=breaking_news@10.0.0.1/top_story.htm
 </artwork><postamble>
-might lead a human user to assume that the host is 'www.example.com',
+might lead a human user to assume that the host is 'trusted.example.com',
 whereas it is actually '10.0.0.1'.  Note that the misleading userinfo
 could be much longer than the example above.
 </postamble></figure>
