@@ -916,23 +916,36 @@ some local domain.
    reg-name    = 0*255( unreserved / pct-encoded / sub-delims )
 </artwork><postamble>
 If the host component is defined and the registered name is empty
-(zero length), then the registered name defaults to "localhost"
+(zero length), then the name defaults to "localhost"
 (<xref target="normalize-scheme"/> discusses how this should be normalized).
-The reg-name syntax allows for percent-encoded octets, which is necessary
-to enable internationalized domain names to be provided in URIs; such octets
-must represent characters encoded in the UTF-8 character encoding prior
-to being percent-encoded.
+If "localhost" is not determined by a host name lookup, then it should be
+interpreted to mean the machine on which the URI is being resolved.
 </postamble></figure>
 <t>
 This specification does not mandate a particular registered name lookup
 technology and therefore does not restrict the syntax of reg-name beyond
-that necessary for interoperability.  A URI resolution implementation might
-use DNS, host tables, yellow pages, NetInfo, WINS, or any other system
-for lookup of host and service names.  However, a globally-scoped naming
-system, such as DNS fully-qualified domain names, is necessary for URIs
-that are intended to have global scope. URI producers should use host names
-that conform to the DNS syntax, even when use of DNS is not immediately
-apparent.
+that necessary for interoperability.  Instead, it delegates the issue of
+host name syntax conformance to the operating system of each application
+performing URI resolution, and that operating system decides what it will
+allow for the purpose of host identification.
+A URI resolution implementation might use DNS, host tables, yellow pages,
+NetInfo, WINS, or any other system for lookup of host and service names.
+However, a globally-scoped naming system, such as
+DNS fully-qualified domain names, is necessary for URIs that are intended
+to have global scope. URI producers should use host names that conform to
+the DNS syntax, even when use of DNS is not immediately apparent.
+</t>
+<t>
+The reg-name syntax allows percent-encoded octets in order to represent
+non-ASCII host or service names in a uniform way that is independent of
+the underlying name resolution technology; such octets must represent
+characters encoded in the UTF-8 character encoding prior to being
+percent-encoded.  When a non-ASCII host name represents an internationalized
+domain name intended for resolution via DNS, the name must be transformed
+to the IDNA encoding <xref target="RFC3490"/> prior to name lookup.
+URI producers should provide such host names in the IDNA encoding, rather
+than a percent-encoding, if they wish to maximize interoperability with
+legacy URI resolvers.
 </t>
 <t>
 The presence of host within a URI does not imply that the scheme
@@ -1502,7 +1515,7 @@ simple method using a two string buffers.
 <list style="numbers">
 <t>
 The input buffer is initialized with the now-appended path components
-and the outbut buffer is initialized to the empty string.
+and the output buffer is initialized to the empty string.
 </t>
 <t>
 Replace any prefix of "./" or "../" at the beginning of the input buffer
@@ -1809,7 +1822,7 @@ bit-for-bit basis.
 </t>
 <t>
 Unicode defines a character as being identified by number
-("codepoint") with an associated bundle of visual and other semantics.
+(codepoint) with an associated bundle of visual and other semantics.
 At the software level, it is not practical to compare semantic bundles,
 so in practical terms, character-by-character comparisons are done
 codepoint-by-codepoint.
@@ -2028,7 +2041,7 @@ Applications should prevent dereference of a URI that specifies a
 TCP port number within the "well-known port" range (0 - 1023) unless
 the protocol being used to dereference that URI is compatible with the
 protocol expected on that well-known port. Although IANA maintains a
-registy of well-known ports, applications should make such restrictions
+registry of well-known ports, applications should make such restrictions
 user-configurable to avoid preventing the deployment of new services.
 </t>
 <t>
@@ -2039,6 +2052,46 @@ before transmission across that protocol.  Transfer of the percent-encoding,
 which might violate the protocol, is less harmful than allowing decoded
 octets to be interpreted as additional operations or parameters, perhaps
 triggering an unexpected and possibly harmful remote operation.
+</t>
+</section>
+<section title="Back-end Transcoding" anchor="security-transcoding">
+<t>
+When a URI is dereferenced, the data within it is often parsed by both
+the user agent and one or more servers.  In HTTP, for example, a typical
+user agent will parse a URI into its five major components, access the
+authority's server, and send it the data within the authority, path, and
+query components.  A typical server will take that information, parse
+the path into segments and the query into key/value pairs, and then
+invoke implementation-specific handlers to respond to the request.
+As a result, a common security concern for server implementations that
+handle a URI, either as a whole or split into separate components,
+is proper interpretation of the octet data represented by the characters
+and percent-encodings within that URI.
+</t>
+<t>
+Percent-encoded octets must be decoded at some point during the
+dereference process.  Applications must split the URI into its
+components and sub-components prior to decoding the octets, since
+otherwise the decoded octets might be mistaken for delimiters.  Security
+checks of the data within a URI should be applied after decoding the
+octets.  Note, however, that the "%00" percent-encoding (NUL) may require
+special handling and should be rejected if the application is not expecting
+to receive raw data within a component.
+</t>
+<t>
+Special care should be taken when the URI path interpretation process
+involves the use of a back-end filesystem or related system functions.
+Filesystems typically assign an operational meaning to special characters,
+such as the "/", "\", ":", "[", and "]" characters, and
+special device names like ".", "..", "...", "aux", "lpt", etc.
+In some cases, merely testing for the existence of such a name will
+cause the operating system to pause or invoke unrelated system calls,
+leading to significant security concerns regarding denial of service
+and unintended data transfer.  It would be impossible for this specification
+to list all such significant characters and device names; implementers
+should research the reserved names and characters for the types of
+storage device that may be attached to their application and restrict
+the use of data obtained from URI components accordingly.
 </t>
 </section>
 <section title="Rare IP Address Formats" anchor="security-ipv4">
@@ -2324,6 +2377,21 @@ are gratefully acknowledged.
 <date month='October' year='1989'></date></front>
 <seriesInfo name='STD' value='3' />
 <seriesInfo name='RFC' value='1123' />
+</reference>
+
+<reference anchor='RFC3490'>
+<front>
+<title>Internationalizing Domain Names in Applications (IDNA)</title>
+<author initials='P.' surname='Faltstrom' fullname='P. Faltstrom'>
+<organization /></author>
+<author initials='P.' surname='Hoffman' fullname='P. Hoffman'>
+<organization /></author>
+<author initials='A.' surname='Costello' fullname='A. Costello'>
+<organization /></author>
+<date month='March' year='2003' />
+</front>
+<seriesInfo name='RFC' value='3490' />
+<format type='TXT' octets='51943' target='http://www.ietf.org/rfc/rfc3490.txt' />
 </reference>
 
 <reference anchor='RFC1808'>

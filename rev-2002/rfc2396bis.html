@@ -532,6 +532,7 @@ is available at
 
 
 
+
 <b>&nbsp;&nbsp;3.2.3&nbsp;
             <a href="#port">Port</a></b>
 <br>
@@ -864,7 +865,7 @@ is available at
 
 
 <b>&nbsp;7.3&nbsp;
-            <a href="#security-ipv4">Rare IP Address Formats</a></b>
+            <a href="#security-transcoding">Back-end Transcoding</a></b>
 <br>
 
 
@@ -872,12 +873,20 @@ is available at
 
 
 <b>&nbsp;7.4&nbsp;
+            <a href="#security-ipv4">Rare IP Address Formats</a></b>
+<br>
+
+
+
+
+
+<b>&nbsp;7.5&nbsp;
             <a href="#security-sensitive">Sensitive Information</a></b>
 <br>
 
 
 
-<b>&nbsp;7.5&nbsp;
+<b>&nbsp;7.6&nbsp;
             <a href="#security-semantic">Semantic Attacks</a></b>
 <br>
 
@@ -1842,7 +1851,7 @@ restrictions, the scheme-specific URI resolution process should flag
 the reference as an error rather than ignore the unused parts; doing so
 reduces the number of equivalent URIs and helps detect abuses of the
 generic syntax that might indicate the URI has been constructed to
-mislead the user (<a href="#security-semantic">section&nbsp;7.5</a>).
+mislead the user (<a href="#security-semantic">section&nbsp;7.6</a>).
 </p>
 <h3>
 <a name="rfc.iref.57"></a><a name="rfc.section.3.2.1">3.2.1</a>&nbsp;
@@ -1887,7 +1896,7 @@ as in graphical hypertext browsing, should render userinfo in a way
 that is distinguished from the rest of a URI, when feasible.  Such
 rendering will assist the user in cases where the userinfo has been
 misleadingly crafted to look like a trusted domain name
-(<a href="#security-semantic">section&nbsp;7.5</a>).
+(<a href="#security-semantic">section&nbsp;7.6</a>).
 </p>
 <h3>
 <a name="rfc.iref.59"></a><a name="rfc.section.3.2.2">3.2.2</a>&nbsp;
@@ -1989,7 +1998,7 @@ dotted-decimal notation (a sequence of four decimal numbers in the
 range 0 to 255, separated by "."), as described in <a href="#RFC1123" title="Requirements for Internet Hosts - Application and Support">[RFC1123]</a>
 by reference to <a href="#RFC0952" title="DoD Internet host table specification">[RFC0952]</a>.  Note that other forms of
 dotted notation may be interpreted on some platforms, as described in
-<a href="#security-ipv4">section&nbsp;7.3</a>, but only the dotted-decimal form of
+<a href="#security-ipv4">section&nbsp;7.4</a>, but only the dotted-decimal form of
 four octets is allowed by this grammar.
 <a name="rfc.iref.76"></a>
 <a name="rfc.iref.77"></a>
@@ -2029,12 +2038,10 @@ some local domain.
 </pre>
 <p>
 If the host component is defined and the registered name is empty
-(zero length), then the registered name defaults to "localhost"
+(zero length), then the name defaults to "localhost"
 (<a href="#normalize-scheme">section&nbsp;6.2.3</a> discusses how this should be normalized).
-The reg-name syntax allows for percent-encoded octets, which is necessary
-to enable internationalized domain names to be provided in URIs; such octets
-must represent characters encoded in the UTF-8 character encoding prior
-to being percent-encoded.
+If "localhost" is not determined by a host name lookup, then it should be
+interpreted to mean the machine on which the URI is being resolved.
 </p>
 <div>
 <a name="rfc.section.3.2.2.p.6"></a>
@@ -2042,16 +2049,34 @@ to being percent-encoded.
 <p>
 This specification does not mandate a particular registered name lookup
 technology and therefore does not restrict the syntax of reg-name beyond
-that necessary for interoperability.  A URI resolution implementation might
-use DNS, host tables, yellow pages, NetInfo, WINS, or any other system
-for lookup of host and service names.  However, a globally-scoped naming
-system, such as DNS fully-qualified domain names, is necessary for URIs
-that are intended to have global scope. URI producers should use host names
-that conform to the DNS syntax, even when use of DNS is not immediately
-apparent.
+that necessary for interoperability.  Instead, it delegates the issue of
+host name syntax conformance to the operating system of each application
+performing URI resolution, and that operating system decides what it will
+allow for the purpose of host identification.
+A URI resolution implementation might use DNS, host tables, yellow pages,
+NetInfo, WINS, or any other system for lookup of host and service names.
+However, a globally-scoped naming system, such as
+DNS fully-qualified domain names, is necessary for URIs that are intended
+to have global scope. URI producers should use host names that conform to
+the DNS syntax, even when use of DNS is not immediately apparent.
 </p>
 <div>
 <a name="rfc.section.3.2.2.p.7"></a>
+</div>
+<p>
+The reg-name syntax allows percent-encoded octets in order to represent
+non-ASCII host or service names in a uniform way that is independent of
+the underlying name resolution technology; such octets must represent
+characters encoded in the UTF-8 character encoding prior to being
+percent-encoded.  When a non-ASCII host name represents an internationalized
+domain name intended for resolution via DNS, the name must be transformed
+to the IDNA encoding <a href="#RFC3490" title="Internationalizing Domain Names in Applications (IDNA)">[RFC3490]</a> prior to name lookup.
+URI producers should provide such host names in the IDNA encoding, rather
+than a percent-encoding, if they wish to maximize interoperability with
+legacy URI resolvers.
+</p>
+<div>
+<a name="rfc.section.3.2.2.p.8"></a>
 </div>
 <p>
 The presence of host within a URI does not imply that the scheme
@@ -2785,7 +2810,7 @@ simple method using a two string buffers.
 
 <li>
 The input buffer is initialized with the now-appended path components
-and the outbut buffer is initialized to the empty string.
+and the output buffer is initialized to the empty string.
 </li>
 
 <li>
@@ -3203,7 +3228,7 @@ bit-for-bit basis.
 </div>
 <p>
 Unicode defines a character as being identified by number
-("codepoint") with an associated bundle of visual and other semantics.
+(codepoint) with an associated bundle of visual and other semantics.
 At the software level, it is not practical to compare semantic bundles,
 so in practical terms, character-by-character comparisons are done
 codepoint-by-codepoint.
@@ -3503,7 +3528,7 @@ Applications should prevent dereference of a URI that specifies a
 TCP port number within the "well-known port" range (0 - 1023) unless
 the protocol being used to dereference that URI is compatible with the
 protocol expected on that well-known port. Although IANA maintains a
-registy of well-known ports, applications should make such restrictions
+registry of well-known ports, applications should make such restrictions
 user-configurable to avoid preventing the deployment of new services.
 </p>
 <div>
@@ -3520,10 +3545,61 @@ triggering an unexpected and possibly harmful remote operation.
 </p>
 <h2>
 <a name="rfc.section.7.3">7.3</a>&nbsp;
-    <a name="security-ipv4">Rare IP Address Formats</a>
+    <a name="security-transcoding">Back-end Transcoding</a>
 </h2>
 <div>
 <a name="rfc.section.7.3.p.1"></a>
+</div>
+<p>
+When a URI is dereferenced, the data within it is often parsed by both
+the user agent and one or more servers.  In HTTP, for example, a typical
+user agent will parse a URI into its five major components, access the
+authority's server, and send it the data within the authority, path, and
+query components.  A typical server will take that information, parse
+the path into segments and the query into key/value pairs, and then
+invoke implementation-specific handlers to respond to the request.
+As a result, a common security concern for server implementations that
+handle a URI, either as a whole or split into separate components,
+is proper interpretation of the octet data represented by the characters
+and percent-encodings within that URI.
+</p>
+<div>
+<a name="rfc.section.7.3.p.2"></a>
+</div>
+<p>
+Percent-encoded octets must be decoded at some point during the
+dereference process.  Applications must split the URI into its
+components and sub-components prior to decoding the octets, since
+otherwise the decoded octets might be mistaken for delimiters.  Security
+checks of the data within a URI should be applied after decoding the
+octets.  Note, however, that the "%00" percent-encoding (NUL) may require
+special handling and should be rejected if the application is not expecting
+to receive raw data within a component.
+</p>
+<div>
+<a name="rfc.section.7.3.p.3"></a>
+</div>
+<p>
+Special care should be taken when the URI path interpretation process
+involves the use of a back-end filesystem or related system functions.
+Filesystems typically assign an operational meaning to special characters,
+such as the "/", "\", ":", "[", and "]" characters, and
+special device names like ".", "..", "...", "aux", "lpt", etc.
+In some cases, merely testing for the existence of such a name will
+cause the operating system to pause or invoke unrelated system calls,
+leading to significant security concerns regarding denial of service
+and unintended data transfer.  It would be impossible for this specification
+to list all such significant characters and device names; implementers
+should research the reserved names and characters for the types of
+storage device that may be attached to their application and restrict
+the use of data obtained from URI components accordingly.
+</p>
+<h2>
+<a name="rfc.section.7.4">7.4</a>&nbsp;
+    <a name="security-ipv4">Rare IP Address Formats</a>
+</h2>
+<div>
+<a name="rfc.section.7.4.p.1"></a>
 </div>
 <p>
 Although the URI syntax for IPv4address only allows the common,
@@ -3535,7 +3611,7 @@ process a much larger set of formats than those described in
 <a href="#host">section&nbsp;3.2.2</a>.
 </p>
 <div>
-<a name="rfc.section.7.3.p.2"></a>
+<a name="rfc.section.7.4.p.2"></a>
 </div>
 <p>
 For example, many implementations allow dotted forms of three numbers,
@@ -3551,7 +3627,7 @@ the C language (i.e., a leading 0x or 0X implies hexadecimal; otherwise,
 a leading 0 implies octal; otherwise, the number is interpreted as decimal).
 </p>
 <div>
-<a name="rfc.section.7.3.p.3"></a>
+<a name="rfc.section.7.4.p.3"></a>
 </div>
 <p>
 These additional IP address formats are not allowed in the URI syntax
@@ -3563,11 +3639,11 @@ be converted to numeric form and filtered based on the numeric value,
 rather than a prefix or suffix of the string form.
 </p>
 <h2>
-<a name="rfc.section.7.4">7.4</a>&nbsp;
+<a name="rfc.section.7.5">7.5</a>&nbsp;
     <a name="security-sensitive">Sensitive Information</a>
 </h2>
 <div>
-<a name="rfc.section.7.4.p.1"></a>
+<a name="rfc.section.7.5.p.1"></a>
 </div>
 <p>
 It is clearly unwise to use a URI that contains a username or
@@ -3579,7 +3655,7 @@ should be considered an error (or simply ignored) except in those
 rare cases where the 'password' parameter is intended to be public.
 </p>
 <h2>
-<a name="rfc.section.7.5">7.5</a>&nbsp;
+<a name="rfc.section.7.6">7.6</a>&nbsp;
     <a name="security-semantic">Semantic Attacks</a>
 </h2>
 <div>
@@ -3600,7 +3676,7 @@ whereas it is actually '10.0.0.1'.  Note that a misleading userinfo
 sub-component could be much longer than the example above.
 </p>
 <div>
-<a name="rfc.section.7.5.p.2"></a>
+<a name="rfc.section.7.6.p.2"></a>
 </div>
 <p>
 A misleading URI, such as the one above, is an attack on the user's
@@ -3727,6 +3803,8 @@ are gratefully acknowledged.
 
 
 
+
+
 <tr>
 <td class="topnowrap"><b><a name="RFC0952">[RFC0952]</a></b></td><td class="top">Harrenstien, K.,&nbsp;Stahl, M. and Feinler, E.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc952.txt">DoD Internet host table specification</a>", RFC&nbsp;952, October&nbsp;1985.</td>
 </tr>
@@ -3790,6 +3868,9 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
 </tr>
 <tr>
 <td class="topnowrap"><b><a name="RFC3305">[RFC3305]</a></b></td><td class="top">Mealling, M. and Denenberg, R.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc3305.txt">Report from the Joint W3C/IETF URI Planning Interest Group: Uniform Resource Identifiers (URIs), URLs, and Uniform Resource Names (URNs): Clarifications and Recommendations</a>", RFC&nbsp;3305, August&nbsp;2002.</td>
+</tr>
+<tr>
+<td class="topnowrap"><b><a name="RFC3490">[RFC3490]</a></b></td><td class="top">Faltstrom, P.,&nbsp;Hoffman, P. and Costello, A.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc3490.txt">Internationalizing Domain Names in Applications (IDNA)</a>", RFC&nbsp;3490, March&nbsp;2003.</td>
 </tr>
 <tr>
 <td class="topnowrap"><b><a name="RFC3513">[RFC3513]</a></b></td><td class="top"><a title="Nokia">Hinden, R.</a> and <a title="Cisco Systems, Inc.">Deering, S.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc3513.txt">Internet Protocol Version 6 (IPv6) Addressing Architecture</a>", RFC&nbsp;3513, April&nbsp;2003.</td>
