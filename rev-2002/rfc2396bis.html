@@ -3568,18 +3568,18 @@ rare cases where the 'password' parameter is intended to be public.
 <a name="rfc.figure.u.39"></a>
 </div>
 <p>
-Because the userinfo component is rarely used and appears before the
+Because the userinfo sub-component is rarely used and appears before the
 host in the authority component, it can be used to construct a URI
 that is intended to mislead a human user by appearing to identify one
 (trusted) naming authority while actually identifying a different
 authority hidden behind the noise.  For example
 </p>
-<pre>   http://www.example.com&amp;story=breaking_news@10.0.0.1/top_story.htm
+<pre>   ftp://ftp.example.com&amp;story=breaking_news@10.0.0.1/top_story.htm
 </pre>
 <p>
-might lead a human user to assume that the host is 'www.example.com',
-whereas it is actually '10.0.0.1'.  Note that the misleading userinfo
-could be much longer than the example above.
+might lead a human user to assume that the host is 'trusted.example.com',
+whereas it is actually '10.0.0.1'.  Note that a misleading userinfo
+sub-component could be much longer than the example above.
 </p>
 <div>
 <a name="rfc.section.7.5.p.2"></a>

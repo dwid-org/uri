@@ -2071,17 +2071,17 @@ rare cases where the 'password' parameter is intended to be public.
 </section>
 <section title="Semantic Attacks" anchor="security-semantic">
 <figure><preamble>
-Because the userinfo component is rarely used and appears before the
+Because the userinfo sub-component is rarely used and appears before the
 host in the authority component, it can be used to construct a URI
 that is intended to mislead a human user by appearing to identify one
 (trusted) naming authority while actually identifying a different
 authority hidden behind the noise.  For example
 </preamble><artwork>
-   ftp://trusted.example.com&amp;story=breaking_news@10.0.0.1/top_story.htm
+   ftp://ftp.example.com&amp;story=breaking_news@10.0.0.1/top_story.htm
 </artwork><postamble>
 might lead a human user to assume that the host is 'trusted.example.com',
-whereas it is actually '10.0.0.1'.  Note that the misleading userinfo
-could be much longer than the example above.
+whereas it is actually '10.0.0.1'.  Note that a misleading userinfo
+sub-component could be much longer than the example above.
 </postamble></figure>
 <t>
 A misleading URI, such as the one above, is an attack on the user's
