@@ -729,6 +729,7 @@ table.closedissue {
          
          
          
+         
          <b>&nbsp;5.3&nbsp;
             <a href="#recomposition">Component Recomposition</a></b><br>
          
@@ -2626,7 +2627,7 @@ table.closedissue {
          was relative, in order to remove any invalid or extraneous
          dot-segments prior to forming the target URI.  Although there
          are many ways to accomplish this removal process, we describe a
-         simple method using a two string buffers.
+         simple method using two string buffers.
          
       </p>
       <ol>
@@ -2638,33 +2639,42 @@ table.closedissue {
          </li>
          
          <li>
-            Replace any prefix of "./" or "../" at the beginning of the input buffer
-            with "/".
-            
-         </li>
-         
-         <li>
             While the input buffer is not empty, loop:
             
             <ol style="list-style-type: lower-alpha">
                
                <li>
+                  If the input buffer begins with a prefix of "../" or "./", then remove
+                  that prefix from the input buffer; otherwise,
+                  
+               </li>
+               
+               <li>
                   If the input buffer begins with a prefix of "/./" or "/.", where "." is
-                  a complete path segment, then replace that prefix with "/"; otherwise
+                  a complete path segment, then replace that prefix with "/" in the input
+                  buffer; otherwise,
                   
                </li>
                
                <li>
                   If the input buffer begins with a prefix of "/../" or "/..", where ".." is
-                  a complete path segment, then replace that prefix with "/" and
-                  remove the last segment and its preceding "/" (if any) from the
-                  output buffer; otherwise
+                  a complete path segment, then replace that prefix with "/" in the
+                  input buffer and remove the last segment and its preceding "/" (if any)
+                  from the output buffer; otherwise,
                   
                </li>
                
                <li>
-                  Remove the first segment and its preceding "/" (if any) from the
-                  input buffer and append them to the output buffer.
+                  If the input buffer consists only of "." or "..", then remove that from
+                  the input buffer; otherwise,
+                  
+               </li>
+               
+               <li>
+                  Move the first path segment in the input buffer to the end of the output
+                  buffer, including the initial "/" character (if any) and any subsequent
+                  characters up to, but not including, the next "/" character or the end
+                  of the input buffer.
                   
                </li>
                
@@ -2681,6 +2691,15 @@ table.closedissue {
       <p>
          
       </p>
+      <div><a name="rfc.section.5.2.4.p.2"></a></div>
+      <p>
+         Note that dot-segments are intended for use in URI references to express
+         an identifier relative to the hierarchy of names in the base URI.  The
+         remove_dot_segments algorithm respects that hierarchy by removing
+         extra dot-segments rather than treating them as an error or leaving
+         them to be misinterpreted by dereference implementations.
+         
+      </p>
       <div><a name="rfc.figure.u.25"></a></div>
       <p>
          The following illustrates how the above steps are applied for two example
@@ -2689,27 +2708,27 @@ table.closedissue {
       </p><pre>   STEP   OUTPUT BUFFER         INPUT BUFFER
 
     1 :                         /a/b/c/./../../g
-    3c:   /a                    /b/c/./../../g
-    3c:   /a/b                  /c/./../../g
-    3c:   /a/b/c                /./../../g
-    3a:   /a/b/c                /../../g
-    3b:   /a/b                  /../g
-    3b:   /a                    /g
-    3c:   /a/g
+    2e:   /a                    /b/c/./../../g
+    2e:   /a/b                  /c/./../../g
+    2e:   /a/b/c                /./../../g
+    2b:   /a/b/c                /../../g
+    2c:   /a/b                  /../g
+    2c:   /a                    /g
+    2e:   /a/g
 
    STEP   OUTPUT BUFFER         INPUT BUFFER
 
     1 :                         mid/content=5/../6
-    3c:   mid                   /content=5/../6
-    3c:   mid/content=5         /../6
-    3b:   mid                   /6
-    3c:   mid/6
+    2e:   mid                   /content=5/../6
+    2e:   mid/content=5         /../6
+    2c:   mid                   /6
+    2e:   mid/6
 </pre><p>
          Some applications may find it more efficient to implement the
          remove_dot_segments algorithm using two segment stacks rather than strings.
          
       </p>
-      <div><a name="rfc.section.5.2.4.p.3"></a></div>
+      <div><a name="rfc.section.5.2.4.p.4"></a></div>
       <p>
          
       </p>

@@ -162,11 +162,11 @@ sub remove_dot_segments
     local($_) = @_;
     local($buf) = "";
 
-    # replace any prefix of "../" or "./" with "/"
-    #
-    s/^\.\.?\//\//;
-
     while ($_) {
+
+        # remove any prefix of "../" or "./"
+        #
+        next if s/^\.\.?\///;
 
         # replace any prefix segment of "/./" or "/." with "/"
         #
@@ -179,6 +179,9 @@ sub remove_dot_segments
             $buf =~ s/\/?[^\/]*$//;
             next;
         }
+
+        # remove a trailing dot-segment if nothing else is left
+        last if s/^\.\.?$//;
 
         # otherwise, remove the first segment and append it to buffer
         #
