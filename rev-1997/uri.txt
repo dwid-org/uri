@@ -1,10 +1,10 @@
 Network Working Group                            T. Berners-Lee, MIT/LCS
 INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
-draft-fielding-uri-syntax-01              L. Masinter, Xerox Corporation
-Expires six months after publication date              November 18, 1997
+draft-fielding-uri-syntax-02              L. Masinter, Xerox Corporation
+Expires six months after publication date                  March 4, 1997
 
 
-    Uniform Resource Identifiers (URI): Generic Syntax and Semantics
+          Uniform Resource Identifiers (URI): Generic Syntax
 
 
 Status of this Memo
@@ -26,18 +26,23 @@ Status of this Memo
    (Europe), munnari.oz.au (Pacific Rim), ds.internic.net (US East
    Coast), or ftp.isi.edu (US West Coast).
 
+   Instructions to RFC Editor: This document will obsolete RFC 1738 and
+   RFC 1808.  If the new version of the MHTML proposed standard is
+   ready for publication at the same time as this document, please
+   change all references to RFC 2110 to refer to its new version.
+
 Copyright Notice
 
-   Copyright (C) The Internet Society (1997).  All Rights Reserved.
+   Copyright (C) The Internet Society (1998).  All Rights Reserved.
 
 Abstract
 
-   A Uniform Resource Identifier (URI) is a compact string
-   representation of a location (URL) or name (URN) for use in
-   identifying an abstract or physical resource.  This document defines
-   the general syntax and semantics of URIs, including both absolute and
+   A Uniform Resource Identifier (URI) is a compact string of characters
+   for identifying an abstract or physical resource.  This document
+   defines the general syntax of URIs, including both absolute and
    relative forms, and guidelines for their use; it revises and replaces
    the generic definitions in RFC 1738 and RFC 1808.
+
 
 1. Introduction
 
@@ -58,8 +63,8 @@ Abstract
    individual URL schemes; those portions will be updated as separate
    documents, as will the process for registration of new URI schemes.
    This document does not discuss the issues and recommendation for
-   dealing with characters outside of the US-ASCII character set;
-   those recommendations are discussed in a separate document.
+   dealing with characters outside of the US-ASCII character set
+   [ASCII]; those recommendations are discussed in a separate document.
 
    All significant changes from the prior RFCs are noted in Appendix G.
 
@@ -68,15 +73,17 @@ Abstract
    URIs are characterized by the following definitions:
 
       Uniform
-         Uniformity of syntax and semantics allows the mechanism for
-         referencing resources to be independent of the mechanism used
-         to locate those resources and the operations applied to those
-         resources once they have been located.  New types of resources,
-         access mechanisms, and operations can be introduced without
-         changing the protocols and data formats that use URIs.
-         Uniformity of syntax means that the same identifier is used
-         independent of the locale, character representation, or
-         system type of the user entering the URI.
+         Uniformity provides several benefits: it allows different types
+         of resource identifiers to be used in the same context, even
+         when the mechanisms used to access those resources may differ;
+         it allows uniform semantic interpretation of common syntactic
+         conventions across different types of resource identifiers; it
+         allows introduction of new types of resource identifiers
+         without interfering with the way that existing identifiers are
+         used; and, it allows the identifiers to be reused in many
+         different contexts, thus permitting new applications or
+         protocols to leverage a pre-existing, large, and widely-used
+         set of resource identifiers.
 
       Resource
          A resource can be anything that has identity.  Familiar
@@ -96,29 +103,24 @@ Abstract
       Identifier
          An identifier is an object that can act as a reference to
          something that has identity.  In the case of URIs, the object
-         is a sequence of characters with a restricted syntax.  An
-         absolute identifier refers to a resource independent of the
-         context in which the identifier is used, whereas a relative
-         identifier refers to a resource by describing the difference
-         within a hierarchical namespace between the current context
-         and an absolute identifier of the resource.
-         
+         is a sequence of characters with a restricted syntax.
+
    Having identified a resource, a system may perform a variety of
    operations on the resource, as might be characterized by such words
    as `access', `update', `replace', or `find attributes'.
 
 1.2. URI, URL, and URN
 
-   A URI can be further classified as a locator, a name, or both.
-   Uniform Resource Locators (URL) is the subset of URI that can be used
-   to `locate' resources by providing an abstract identification of the
-   resource location within the identifier (i.e., by using common
-   network name resolution mechanisms to identify the mechanisms for
-   accessing a resource).  Uniform Resource Names (URN) is the subset
-   of URI that are intended to remain globally unique and persistent
-   even when the resource ceases to exist or becomes unavailable.
+   A URI can be further classified as a locator, a name, or both.  The
+   term "Uniform Resource Locator" (URL) refers to the subset of URI
+   that identify resources via a representation of their primary access
+   mechanism (e.g., their network "location"), rather than identifying
+   the resource by name or by some other attribute(s) of that resource.
+   The term "Uniform Resource Name" (URN) refers to the subset of URI
+   that are required to remain globally unique and persistent even when
+   the resource ceases to exist or becomes unavailable.
 
-   The URI scheme (Section 4.1) defines the namespace of the URI, and
+   The URI scheme (Section 3.1) defines the namespace of the URI, and
    thus may further restrict the syntax and semantics of identifiers
    using that scheme.  This specification defines those elements of the
    URI syntax which are either required of all URI schemes or are common
@@ -138,9 +140,13 @@ Abstract
    to access an "http" URL's resource when it can't be found in a local
    cache).
 
-   The "urn" scheme has been reserved to establish the requirements for
-   a standardized URN namespace, as defined in "URN Syntax" [RFC2141]
-   and its related specifications.
+   A URN differs from a URL in that it's primary purpose is persistent
+   labeling of a resource with an identifier.  That identifier is drawn
+   from one of a set of defined namespaces, each of which has its own
+   set name structure and assignment procedures.  The "urn" scheme has
+   been reserved to establish the requirements for a standardized URN
+   namespace, as defined in "URN Syntax" [RFC2141] and its related
+   specifications.
 
    Most of the examples in this specification demonstrate URLs, since
    they allow the most varied use of the syntax and often have a
@@ -174,13 +180,19 @@ Abstract
 
 1.4. Hierarchical URIs and Relative Forms
 
-   URI schemes may support a hierarchical naming system, where the
+   An absolute identifier refers to a resource independent of the
+   context in which the identifier is used.  In contrast, a relative
+   identifier refers to a resource by describing the difference within a
+   hierarchical namespace between the current context and an absolute
+   identifier of the resource.
+         
+   Some URI schemes support a hierarchical naming system, where the
    hierarchy of the name is denoted by a "/" delimiter separating the
-   components in the scheme. There is a `relative' form of URI reference
-   which is used in conjunction with a `base' URI (of a hierarchical
-   scheme) to produce another URI. The syntax of hierarchical URIs is
-   described in Section 4, and the relative URI calculation is described
-   in Section 5.
+   components in the scheme. This document defines a scheme-independent
+   `relative' form of URI reference that can be used in conjunction with
+   a `base' URI (of a hierarchical scheme) to produce another URI. The
+   syntax of hierarchical URIs is described in Section 3; the relative
+   URI calculation is described in Section 5.
 
 1.5. URI Transcribability
 
@@ -229,9 +241,8 @@ Abstract
 1.6. Syntax Notation and Common Elements
 
    This document uses two conventions to describe and define the syntax
-   for Uniform Resource Locators.  The first, called the layout form, is
-   a general description of the order of components and component
-   separators, as in
+   for URI.  The first, called the layout form, is a general description
+   of the order of components and component separators, as in
 
       <first>/<second>;<third>?<fourth>
 
@@ -291,36 +302,59 @@ Abstract
    Within a URI, characters are either used as delimiters, or to
    represent strings of data (octets) within the delimited portions.
    Octets are either represented directly by a character (using the
-   US-ASCII character for that octet) or by an escape encoding.  This
-   representation is elaborated below.
-   
+   US-ASCII character for that octet [ASCII]) or by an escape encoding.
+   This representation is elaborated below.
+
 2.1 URIs and non-ASCII characters   
-   
-   While URIs are sequences of characters and those characters are
-   used (within delimited sections) to represent sequences of octets,
-   in some cases those sequences of octets are used (via a 'charset'
-   or character encoding scheme) to represent sequences of characters:
-   
-   URI char. sequence <-> octet sequence <-> original char. sequence
-   
-   In cases where the original character sequence contains characters
-   that are strictly within the set of characters defined in the
-   US-ASCII character set, the mapping is simple: each original
-   character is translated into the US-ASCII code for it, and
-   subsequently represented either as the same character, or as an
-   escape sequence.
 
-   In general practice, many different character encoding schemes are
-   used in the second mapping (between sequences of represented
-   characters and sequences of octets) and there is generally no
-   representation in the URI itself of which mapping was used unless
-   the URI scheme requires a specific mapping.  While there is a strong
-   desire to provide for a general and uniform mapping between more
-   general scripts and URIs, the standard for such use is outside of the
-   scope of this document.
+   The relationship between URIs and characters has been a source of
+   confusion for characters that are not part of US-ASCII. To describe
+   the relationship, it is useful to distinguish between a "character"
+   (as a distinguishable semantic entity) and an "octet" (an 8-bit
+   byte). There are two mappings, one from URI characters to octets,
+   and a second from octets to original characters:
 
-   More systematic treatment of character encoding within URIs is
-   currently under development.
+   URI character sequence->octet sequence->original character sequence
+
+   A URI is represented as a sequence of characters, not as a sequence
+   of octets. That is because URIs might be "transported" by means that
+   are not through a computer network, e.g., printed on paper, read
+   over the radio, etc.
+
+   A URI scheme may define a mapping from URI characters to octets;
+   whether this is done depends on the scheme. Commonly, within a
+   delimited component of a URI, a sequence of characters may be
+   used to represent a sequence of octets. For example, the character
+   "a" represents the octet 97 (decimal), while the character sequence
+   "%", "0", "a" represents the octet 10 (decimal).
+
+   There is a second translation for some resources: the sequence of
+   octets defined by a component of the URI is subsequently used to
+   represent a sequence of characters. A 'charset' defines this
+   mapping. There are many charsets in use in Internet protocols. For
+   example, UTF-8 [UTF-8] defines a mapping from sequences of octets to
+   sequences of characters in the repertoire of ISO 10646.
+
+   In the simplest case, the original character sequence contains
+   only characters that are defined in US-ASCII, and the two levels of
+   mapping are simple and easily invertible: each 'original character'
+   is represented as the octet for the US-ASCII code for it, which is,
+   in turn, represented as either the US-ASCII character, or else the
+   "%" escape sequence for that octet.
+
+   For original character sequences that contain non-ASCII characters,
+   however, the situation is more difficult. Internet protocols that
+   transmit octet sequences intended to represent character sequences
+   are expected to provide some way of identifying the charset used,
+   if there might be more than one [RFC2277].  However, there is
+   currently no provision within the generic URI syntax to accomplish
+   this identification. An individual URI scheme may require a single
+   charset, define a default charset, or provide a way to indicate the
+   charset used.
+
+   It is expected that a systematic treatment of character encoding
+   within URIs will be developed as a future modification of this
+   specification.
 
 2.2. Reserved Characters
 
@@ -330,13 +364,14 @@ Abstract
    purpose.  If the data for a URI component would conflict with the
    reserved purpose, then the conflicting data must be escaped before
    forming the URI.
-   
-      reserved    = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+"
+
+      reserved    = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
+                    "$" | ","
 
    The "reserved" syntax class above refers to those characters which
    are allowed within a URI, but which may not be allowed within a
    particular component of the generic URI syntax; they are used as
-   delimiters of the components described in Section 4.3.
+   delimiters of the components described in Section 3.
 
    Characters in the "reserved" set are not reserved in all contexts.
    The set of characters actually reserved within any given URI
@@ -353,8 +388,7 @@ Abstract
 
       unreserved  = alphanum | mark
 
-      mark        = "$" | "-" | "_" | "." | "!" | "~" |
-                    "*" | "'" | "(" | ")" | ","
+      mark        = "-" | "_" | "." | "!" | "~" | "*" | "'" | "(" | ")"
 
    Unreserved characters can be escaped without changing the semantics
    of the URI, but this should not be done unless the URI is being used
@@ -367,14 +401,14 @@ Abstract
    to a printable character of the US-ASCII coded character set, or
    that corresponds to any US-ASCII character that is disallowed, as
    explained below.
-   
+
 2.4.1. Escaped Encoding
 
    An escaped octet is encoded as a character triplet, consisting
    of the percent character "%" followed by the two hexadecimal digits
    representing the octet code. For example, "%20" is the escaped
    encoding for the US-ASCII space character.
-   
+
       escaped     = "%" hex hex
       hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
                             "a" | "b" | "c" | "d" | "e" | "f"
@@ -425,19 +459,19 @@ Abstract
    transcribed or typeset or subjected to the treatment of
    word-processing programs.  Whitespace is also used to delimit URIs
    in many contexts.
-   
+
    space       = <US-ASCII coded character 20 hexadecimal>
 
    The angle-bracket "<" and ">" and double-quote (") characters are
    excluded because they are often used as the delimiters around URIs
    in text documents and protocol fields.  The character "#" is
    excluded because it is used to delimit a URI from a fragment
-   identifier in URI references (Section 3). The percent character "%"
+   identifier in URI references (Section 4). The percent character "%"
    is excluded because it is used for the encoding of escaped
    characters.
 
    delims      = "<" | ">" | "#" | "%" | <">
-   
+
    Other characters are excluded because gateways and other transport
    agents are known to sometimes modify such characters, or they are
    used as delimiters.
@@ -447,61 +481,10 @@ Abstract
    Data corresponding to excluded characters must be escaped in order
    to be properly represented within a URI.
 
-3. URI References
+3. URI Syntactic Components
 
-   The term "URI-reference" is used here to denote the common usage of
-   a resource identifier.  A URI reference may be absolute or relative,
-   and may have additional information attached in the form of a
-   fragment identifier.  However, "the URI" which results from such a
-   reference includes only the absolute URI after the fragment
-   identifier (if any) is removed and after any relative URI is
-   resolved to its absolute form.  Although it is possible to limit
-   the discussion of URI syntax and semantics to that of the absolute
-   result, most usage of URIs is within general URI references, and it
-   is impossible to obtain the URI from such a reference without also
-   parsing the fragment and resolving the relative form.
-
-      URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
-
-   The syntax for relative URIs is a shortened form of that for absolute
-   URIs, where some prefix of the URI is missing and certain path
-   components ("." and "..") have a special meaning when interpreting a
-   relative path.
-
-   When a URI reference is used to perform a retrieval action on the
-   identified resource, the optional fragment identifier, separated from
-   the URI by a crosshatch ("#") character, consists of additional
-   reference information to be interpreted by the user agent after the
-   retrieval action has been successfully completed.  As such, it is not
-   part of a URI, but is often used in conjunction with a URI.  The
-   format and interpretation of fragment identifiers is dependent on the
-   media type of the retrieval result.
-
-      fragment      = *uric
-
-   A URI reference which does not contain a URI is a reference to the
-   current document.  In other words, an empty URI reference within a
-   document is interpreted as a reference to the start of that document,
-   and a reference containing only a fragment identifier is a reference
-   to the identified fragment of that document.  Traversal of such a
-   reference should not result in an additional retrieval action.
-   However, if the URI reference occurs in a context that is always
-   intended to result in a new request, as in the case of HTML's FORM
-   element, then an empty URI reference represents the base URI of the
-   current document and should be replaced by that URI when transformed
-   into a request.
-
-4. Generic URI Syntax
-
-4.1. Scheme
-
-   Just as there are many different methods of access to resources,
-   there are a variety of schemes for identifying such resources.  The
-   URI syntax consists of a sequence of components separated by reserved
-   characters, with the first component defining the semantics for the
-   remainder of the URI string.
-
-   In general, absolute URIs are written as follows:
+   The URI syntax is dependent upon the scheme.  In general, absolute
+   URIs are written as follows:
 
       <scheme>:<scheme-specific-part>
 
@@ -509,25 +492,17 @@ Abstract
    followed by a colon (":") and then a string (the <scheme-specific-
    part>) whose interpretation depends on the scheme.
 
-   Scheme names consist of a sequence of characters.  The lower case
-   letters "a"--"z", digits, and the characters plus ("+"), period
-   ("."), and hyphen ("-") are allowed.  For resiliency, programs
-   interpreting URIs should treat upper case letters as equivalent to
-   lower case in scheme names (e.g., allow "HTTP" as well as "http").
-
-      scheme        = 1*( alpha | digit | "+" | "-" | "." )
-
-   Relative URI references are distinguished from absolute URIs in that
-   they do not begin with a scheme name.  Instead, the scheme is
-   inherited from the base URI, as described in Section 5.2.
-
-4.2. Opaque and Hierarchical URIs
-
    The URI syntax does not require that the scheme-specific-part have
    any general structure or set of semantics which is common among all
    URIs.  However, a subset of URIs do share a common syntax for
-   representing hierarchical relationships within the namespace.
-   This generic-URI syntax is used in interpreting relative URIs.
+   representing hierarchical relationships within the namespace.  This
+   "generic-URI" syntax consists of a sequence of four main components:
+
+      <scheme>://<authority><path>?<query>
+
+   each of which, except <scheme>, may be absent from a particular URI.
+   For example, some URI schemes do not allow an <authority> component,
+   and others do not use a <query> component.
 
       absoluteURI   = generic-URI | opaque-URI
 
@@ -550,42 +525,60 @@ Abstract
    the resource is a file or that the URI maps to an actual filesystem
    pathname.
 
-4.3. URI Syntactic Components
+3.1. Scheme Component
 
-   The URI syntax is dependent upon the scheme.  Some schemes use
-   reserved characters like "?" and ";" to indicate special components,
-   while others just consider them to be part of the path.  However,
-   most URI schemes use a common sequence of four main components:
+   Just as there are many different methods of access to resources,
+   there are a variety of schemes for identifying such resources.  The
+   URI syntax consists of a sequence of components separated by reserved
+   characters, with the first component defining the semantics for the
+   remainder of the URI string.
 
-      <scheme>://<site><path>?<query>
+   Scheme names consist of a sequence of characters beginning with a
+   lower case letter and followed by any combination of lower case
+   letters, digits, plus ("+"), period ("."), or hyphen ("-").  For
+   resiliency, programs interpreting URIs should treat upper case
+   letters as equivalent to lower case in scheme names (e.g., allow
+   "HTTP" as well as "http").
 
-   each of which, except <scheme>, may be absent from a particular URI.
-   For example, some URI schemes do not allow a <site> component, and
-   others do not use a <query> component.
+      scheme        = alpha *( alpha | digit | "+" | "-" | "." )
 
-4.3.1. Site Component
+   Relative URI references are distinguished from absolute URIs in that
+   they do not begin with a scheme name.  Instead, the scheme is
+   inherited from the base URI, as described in Section 5.2.
+
+3.2. Authority Component
 
    Many URI schemes include a top hierarchical element for a naming
    authority, such that the namespace defined by the remainder of the
-   URI is governed by that authority.  This <site> component is
+   URI is governed by that authority.  This authority component is
    typically defined by an Internet-based server or a scheme-specific
    registry of naming authorities.
 
-      site          = server | authority
+      authority     = server | reg_name
 
-   The <site> component is preceded by a double slash "//" and is
+   The authority component is preceded by a double slash "//" and is
    terminated by the next slash "/", question-mark "?", or by the end of
-   the URI.  Within the <site> component, the characters ":", "@", "?",
-   and "/" are reserved.
+   the URI.  Within the authority component, the characters ";", ":",
+   "@", "?", and "/" are reserved.
+
+   An authority component is not required for a URI scheme to make use
+   of relative references.  A base URI without an authority component
+   implies that any relative reference will also be without an authority
+   component.
+
+3.2.1. Registry-based Naming Authority
 
    The structure of a registry-based naming authority is specific to the
-   URI scheme, but constrained to the allowed characters for <site>.
+   URI scheme, but constrained to the allowed characters for an
+   authority component.
 
-      authority     = *( unreserved | escaped |
-                         ";" | ":" | "@" | "&" | "=" | "+" )
+      reg_name      = 1*( unreserved | escaped | "$" | "," |
+                          ";" | ":" | "@" | "&" | "=" | "+" )
+
+3.2.2. Server-based Naming Authority
 
    URL schemes that involve the direct use of an IP-based protocol to a
-   specified server on the Internet use a common syntax for the <site>
+   specified server on the Internet use a common syntax for the server
    component of the URI's scheme-specific data:
 
         <userinfo>@<host>:<port>
@@ -594,19 +587,19 @@ Abstract
    scheme-specific information about how to gain authorization to access
    the server.  The parts "<userinfo>@" and ":<port>" may be omitted.
 
-      server        = [ [ userinfo ] "@" ] hostport ]
+      server        = [ [ userinfo "@" ] hostport ]
 
    The user information, if present, is followed by a commercial
    at-sign "@".
 
       userinfo      = *( unreserved | escaped |
-                         ";" | ":" | "&" | "=" | "+" )
+                         ";" | ":" | "&" | "=" | "+" | "$" | "," )
 
-   Some URL schemes use the format "user:password" in the <userinfo>
+   Some URL schemes use the format "user:password" in the userinfo
    field. This practice is NOT RECOMMENDED, because the passing of
    authentication information in clear text (such as URIs) has proven to
    be a security risk in almost every case where it has been used.
-   
+
    The host is a domain name of a network host, or its IPv4 address as
    a set of four decimal digit groups separated by ".".  Literal IPv6
    addresses are not supported.
@@ -641,15 +634,11 @@ Abstract
    host by a colon.  If the port is omitted, the default port number is
    assumed.
 
-   A site component is not required for a URI scheme to make use of
-   relative references.  A base URI without a site component implies
-   that any relative reference will also be without a site component.
+3.3. Path Component
 
-4.3.2. Path Component
-
-   The path component contains data, specific to the site (or the scheme
-   if there is no site component), identifying the resource within the
-   scope of that scheme and site.
+   The path component contains data, specific to the authority (or the
+   scheme if there is no authority component), identifying the resource
+   within the scope of that scheme and authority.
 
       path          = [ "/" ] path_segments
 
@@ -657,7 +646,8 @@ Abstract
       segment       = *pchar *( ";" param )
       param         = *pchar
 
-      pchar         = unreserved | escaped | ":" | "@" | "&" | "=" | "+"
+      pchar         = unreserved | escaped |
+                      ":" | "@" | "&" | "=" | "+" | "$" | ","
 
    The path may consist of a sequence of path segments separated by a
    single slash "/" character.  Within a path segment, the characters
@@ -666,17 +656,77 @@ Abstract
    The parameters are not significant to the parsing of relative
    references.
 
-4.3.3. Query Component
+3.4. Query Component
 
    The query component is a string of information to be interpreted by
    the resource.
 
       query         = *uric
 
-   Within a query component, the characters "/", "&", "=", and "+" are
-   reserved.
+   Within a query component, the characters ";", "/", "?", ":", "@",
+   "&", "=", "+", ",", and "$" are reserved.
 
-4.4. Parsing a URI Reference
+4. URI References
+
+   The term "URI-reference" is used here to denote the common usage of
+   a resource identifier.  A URI reference may be absolute or relative,
+   and may have additional information attached in the form of a
+   fragment identifier.  However, "the URI" which results from such a
+   reference includes only the absolute URI after the fragment
+   identifier (if any) is removed and after any relative URI is
+   resolved to its absolute form.  Although it is possible to limit
+   the discussion of URI syntax and semantics to that of the absolute
+   result, most usage of URIs is within general URI references, and it
+   is impossible to obtain the URI from such a reference without also
+   parsing the fragment and resolving the relative form.
+
+      URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
+
+   The syntax for relative URIs is a shortened form of that for absolute
+   URIs, where some prefix of the URI is missing and certain path
+   components ("." and "..") have a special meaning when interpreting a
+   relative path.  The relative URI syntax is defined in Section 5.
+
+4.1. Fragment Identifier
+
+   When a URI reference is used to perform a retrieval action on the
+   identified resource, the optional fragment identifier, separated from
+   the URI by a crosshatch ("#") character, consists of additional
+   reference information to be interpreted by the user agent after the
+   retrieval action has been successfully completed.  As such, it is not
+   part of a URI, but is often used in conjunction with a URI.
+
+      fragment      = *uric
+
+   The semantics of a fragment identifier is a property of the data
+   resulting from a retrieval action, regardless of the type of URI used
+   in the reference.  Therefore, the format and interpretation of
+   fragment identifiers is dependent on the media type [RFC2046] of the
+   retrieval result.  The character restrictions described in Section 2
+   for URIs also apply to the fragment in a URI-reference.  Individual
+   media types may define additional restrictions or structure within
+   the fragment for specifying different types of "partial views" that
+   can be identified within that media type.
+
+   A fragment identifier is only meaningful when a URI reference is
+   intended for retrieval and the result of that retrieval is a document
+   for which the identified fragment is consistently defined.
+
+4.2. Same-document References
+
+   A URI reference which does not contain a URI is a reference to the
+   current document.  In other words, an empty URI reference within a
+   document is interpreted as a reference to the start of that document,
+   and a reference containing only a fragment identifier is a reference
+   to the identified fragment of that document.  Traversal of such a
+   reference should not result in an additional retrieval action.
+   However, if the URI reference occurs in a context that is always
+   intended to result in a new request, as in the case of HTML's FORM
+   element, then an empty URI reference represents the base URI of the
+   current document and should be replaced by that URI when transformed
+   into a request.
+
+4.3. Parsing a URI Reference
 
    A URI reference is typically parsed according to the four main
    components and fragment identifier in order to determine what
@@ -687,12 +737,12 @@ Abstract
    later processes.
 
    Although the BNF defines what is allowed in each component, it is
-   ambiguous in terms of differentiating between a site component and
-   a path component that begins with two slash characters.  The greedy
-   algorithm is used for disambiguation: the left-most matching rule
-   soaks up as much of the URI reference string as it is capable of
-   matching.  In other words, the site component wins.
-   
+   ambiguous in terms of differentiating between an authority component
+   and a path component that begins with two slash characters.  The
+   greedy algorithm is used for disambiguation: the left-most matching
+   rule soaks up as much of the URI reference string as it is capable of
+   matching.  In other words, the authority component wins.
+
    Readers familiar with regular expressions should see Appendix B for a
    concrete parsing example and test oracle.
 
@@ -700,7 +750,7 @@ Abstract
 
    It is often the case that a group or "tree" of documents has been
    constructed to serve a common purpose; the vast majority of URIs in
-   these documents point to locations within the tree rather than
+   these documents point to resources within the tree rather than
    outside of it.  Similarly, documents located at a particular site
    are much more likely to refer to other resources at that site than
    to resources at remote sites.
@@ -720,7 +770,7 @@ Abstract
    A relative reference beginning with two slash characters is termed a
    network-path reference.  Such references are rarely used.
 
-      net_path      = "//" site [ abs_path ]
+      net_path      = "//" authority [ abs_path ]
 
    A relative reference beginning with a single slash character is
    termed an absolute-path reference.
@@ -841,7 +891,7 @@ Abstract
    to define the base URI using one of the other methods may result in
    the same content being interpreted differently by different types of
    application.
-   
+
    It is the responsibility of the distributor(s) of a document
    containing relative URIs to ensure that the base URI for that
    document can be established.  It must be emphasized that relative
@@ -854,35 +904,35 @@ Abstract
    references which might be relative to a given base URI.
 
    The base URI is established according to the rules of Section 5.1 and
-   parsed into the four main components as described in Section 4.4.
+   parsed into the four main components as described in Section 3.
    Note that only the scheme component is required to be present in the
    base URI; the other components may be empty or undefined.  A
    component is undefined if its preceding separator does not appear in
    the URI reference; the path component is never undefined, though it
    may be empty.  The base URI's query component is not used by the
    resolution algorithm and may be discarded.
-   
+
    For each URI reference, the following steps are performed in order:
 
    1) The URI reference is parsed into the potential four components and
-      fragment identifier, as described in Section 4.4.
+      fragment identifier, as described in Section 4.3.
 
-   2) If the path component is empty and the scheme, site, and query
-      components are undefined, then it is a reference to the current
-      document and we are done.  Otherwise, the reference URI's query
-      and fragment components are defined as found (or not found) within
-      the URI reference and not inherited from the base URI.
+   2) If the path component is empty and the scheme, authority, and
+      query components are undefined, then it is a reference to the
+      current document and we are done.  Otherwise, the reference URI's
+      query and fragment components are defined as found (or not found)
+      within the URI reference and not inherited from the base URI.
 
    3) If the scheme component is defined, indicating that the reference
       starts with a scheme name, then the reference is interpreted as an
       absolute URI and we are done.  Otherwise, the reference URI's
       scheme is inherited from the base URI's scheme component.
 
-   4) If the site component is defined, then the reference is a
+   4) If the authority component is defined, then the reference is a
       network-path and we skip to step 7.  Otherwise, the reference
-      URI's site is inherited from the base URI's site component,
-      which will also be undefined if the URI scheme does not use a
-      site component.
+      URI's authority is inherited from the base URI's authority
+      component, which will also be undefined if the URI scheme does not
+      use an authority component.
 
    5) If the path component begins with a slash character ("/"), then
       the reference is an absolute-path and we skip to step 7.
@@ -936,9 +986,9 @@ Abstract
              append scheme to result
              append ":" to result
 
-         if site is defined then
+         if authority is defined then
              append "//" to result
-             append site to result
+             append authority to result
 
          append path to result
 
@@ -980,11 +1030,11 @@ Abstract
    equivalent to <http://www.xerox.com>. In general, the rules for
    equivalence and definition of a normal form, if any, are scheme
    dependent. When a scheme uses elements of the common syntax, it
-   will also use the common syntax equivalence rules, namely that host
-   name is case independent, and a URL with an explicit ":port", where
-   the port is the default for the scheme, is equivalent to one
-   where the port is elided.
-   
+   will also use the common syntax equivalence rules, namely that the
+   scheme and hostname are case insensitive and a URL with an explicit
+   ":port", where the port is the default for the scheme, is equivalent
+   to one where the port is elided.
+
 7. Security Considerations
 
    A URI does not in itself pose a security threat.  Users should beware
@@ -992,7 +1042,7 @@ Abstract
    located a given resource, will continue to do so.  Nor is there any
    guarantee that a URL will not locate a different resource at some
    later point in time, due to the lack of any constraint on how a given
-   site apportions its namespace.  Such a guarantee can only be
+   authority apportions its namespace.  Such a guarantee can only be
    obtained from the person(s) controlling that namespace and the
    resource in question.  A specific URI scheme may include additional
    semantics, such as name persistence, if those semantics are required
@@ -1009,7 +1059,7 @@ Abstract
    interpreted according to this other protocol, cause an unexpected
    operation.  An example has been the use of gopher URLs to cause an
    unintended or impersonating message to be sent via a SMTP server.
-   
+
    Caution should be used when using any URL which specifies a port
    number other than the default for the protocol, especially when it
    is a number within the reserved space.
@@ -1024,7 +1074,7 @@ Abstract
 
    It is clearly unwise to use a URL that contains a password which is
    intended to be secret. In particular, the use of a password within
-   the "site" component of a URL is strongly disrecommended except
+   the 'userinfo' component of a URL is strongly disrecommended except
    in those rare cases where the 'password' parameter is intended
    to be public.
 
@@ -1032,60 +1082,62 @@ Abstract
 
    This document was derived from RFC 1738 [RFC1738] and RFC 1808
    [RFC1808]; the acknowledgements in those specifications still
-   apply.  In addition, contributions by Lauren Wood, Martin Duerst,
-   Gisle Aas, Martijn Koster, Ryan Moats, Foteos Macrides, Dave Kristol,
-   and Daniel LaLiberte are gratefully acknowledged.
-   
+   apply.  In addition, contributions by Gisle Aas, Martin Beet,
+   Martin Duerst, Jim Gettys, Martijn Koster, Dave Kristol,
+   Daniel LaLiberte, Foteos Macrides, James Marshall, Ryan Moats,
+   Keith Moore, and Lauren Wood are gratefully acknowledged.
+
 9. References
 
-[RFC1630] Berners-Lee, T., "Universal Resource Identifiers in WWW: A
+[RFC2277] Alvestrand, H. "IETF Policy on Character Sets and Languages",
+   BCP 18, RFC 2277, UNINETT, January 1998.
+
+[RFC1630] Berners-Lee, T. "Universal Resource Identifiers in WWW: A
    Unifying Syntax for the Expression of Names and Addresses of
    Objects on the Network as used in the World-Wide Web", RFC 1630,
    CERN, June 1994.
 
-[RFC1738] Berners-Lee, T., Masinter, L., and M. McCahill, Editors,
+[RFC1738] Berners-Lee, T., Masinter, L., and M. McCahill, Editors.
    "Uniform Resource Locators (URL)", RFC 1738, CERN, Xerox
    Corporation, University of Minnesota, December 1994.
 
-[RFC1866] Berners-Lee T., and D. Connolly, "HyperText Markup Language
+[RFC1866] Berners-Lee T., and D. Connolly. "HyperText Markup Language
    Specification -- 2.0", RFC 1866, MIT/W3C, November 1995.
 
-[RFC1123] Braden, R., Editor, "Requirements for Internet Hosts --
+[RFC1123] Braden, R., Editor. "Requirements for Internet Hosts --
    Application and Support", STD 3, RFC 1123, IETF, October 1989.
 
-[RFC822] Crocker, D., "Standard for the Format of ARPA Internet Text
+[RFC822]  Crocker, D. "Standard for the Format of ARPA Internet Text
    Messages", STD 11, RFC 822, UDEL, August 1982.
 
-[RFC1808] Fielding, R., "Relative Uniform Resource Locators", RFC 1808,
+[RFC1808] Fielding, R. "Relative Uniform Resource Locators", RFC 1808,
    UC Irvine, June 1995.
 
-[RFC2045] N. Freed & N. Borenstein, "Multipurpose Internet Mail
-   Extensions (MIME) Part One: Format of Internet Message Bodies," RFC
-   2045, November 1996.
+[RFC2046] Freed, N., and N. Borenstein. "Multipurpose Internet Mail
+   Extensions (MIME) Part Two: Media Types", RFC 2046, Innosoft,
+   First Virtual, November 1996.
 
-[RFC2046] Freed, N., and N. Freed, "Multipurpose Internet Mail
-   Extensions (MIME): Part Two: Media Types", RFC 2046, Innosoft,
-   Bellcore, November 1996.
-
-[RFC1736] Kunze, J., "Functional Recommendations for Internet Resource
+[RFC1736] Kunze, J. "Functional Recommendations for Internet Resource
    Locators", RFC 1736, IS&T, UC Berkeley, February 1995.
 
-[RFC2141] Moats, R., "URN Syntax", RFC 2141, AT&T, May 1997.
+[RFC2141] Moats, R. "URN Syntax", RFC 2141, AT&T, May 1997.
 
-[RFC1034] Mockapetris, P., "Domain Names - Concepts and Facilities",
-   STD 13, RFC 1034, USC/Information Sciences Institute, November
-   1987.
+[RFC1034] Mockapetris, P. "Domain Names - Concepts and Facilities",
+   STD 13, RFC 1034, USC/Information Sciences Institute, November 1987.
 
-[RFC2110] Palme, J., Hopmann, A. "MIME E-mail Encapsulation of 
+[RFC2110] Palme, J., and A. Hopmann. "MIME E-mail Encapsulation of 
    Aggregate Documents, such as HTML (MHTML)", RFC 2110, Stockholm
    University/KTH, Microsoft Corporation, March 1997.
 
-[RFC1737] Sollins, K., and L. Masinter, "Functional Requirements for
+[RFC1737] Sollins, K., and L. Masinter. "Functional Requirements for
    Uniform Resource Names", RFC 1737, MIT/LCS, Xerox Corporation,
    December 1994.
 
 [ASCII] US-ASCII. "Coded Character Set -- 7-bit American Standard Code
    for Information Interchange", ANSI X3.4-1986.
+
+[UTF-8] Yergeau, F. "UTF-8, a transformation format of ISO 10646",
+   RFC 2279, Alis Technologies, January 1998.
 
 10. Authors' Addresses
 
@@ -1127,20 +1179,21 @@ A. Collected BNF for URIs
       generic-URI   = scheme ":" relativeURI
 
       relativeURI   = net_path | abs_path | rel_path
-      net_path      = "//" site [ abs_path ]
+      net_path      = "//" authority [ abs_path ]
       abs_path      = "/"  rel_path
       rel_path      = [ path_segments ] [ "?" query ]
 
-      scheme        = 1*( alpha | digit | "+" | "-" | "." )
+      scheme        = alpha *( alpha | digit | "+" | "-" | "." )
 
-      site          = server | authority
+      authority     = server | reg_name
 
-      authority     = *( unreserved | escaped |
-                         ";" | ":" | "@" | "&" | "=" | "+" )
+      reg_name      = 1*( unreserved | escaped | "$" | "," |
+                          ";" | ":" | "@" | "&" | "=" | "+" )
 
-      server        = [ [ userinfo ] "@" ] hostport ]
+      server        = [ [ userinfo "@" ] hostport ]
       userinfo      = *( unreserved | escaped |
-                         ";" | ":" | "&" | "=" | "+" )
+                         ";" | ":" | "&" | "=" | "+" | "$" | "," )
+
       hostport      = host [ ":" port ]
       host          = hostname | IPv4address
       hostname      = *( domainlabel "." ) toplabel [ "." ]
@@ -1153,17 +1206,19 @@ A. Collected BNF for URIs
       path_segments = segment *( "/" segment )
       segment       = *pchar *( ";" param )
       param         = *pchar
-      pchar         = unreserved | escaped | ":" | "@" | "&" | "=" | "+"
+      pchar         = unreserved | escaped |
+                      ":" | "@" | "&" | "=" | "+" | "$" | ","
 
       query         = *uric
 
       fragment      = *uric
 
       uric          = reserved | unreserved | escaped
-      reserved      = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+"
+      reserved      = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
+                      "$" | ","
       unreserved    = alphanum | mark
-      mark          = "$" | "-" | "_" | "." | "!" | "~" |
-                      "*" | "'" | "(" | ")" | ","
+      mark          = "-" | "_" | "." | "!" | "~" | "*" | "'" |
+                      "(" | ")"
 
       escaped       = "%" hex hex
       hex           = digit | "A" | "B" | "C" | "D" | "E" | "F" |
@@ -1184,7 +1239,7 @@ A. Collected BNF for URIs
 
 B. Parsing a URI Reference with a Regular Expression
 
-   As described in Section 4.4, the generic-URI syntax is not sufficient
+   As described in Section 4.3, the generic-URI syntax is not sufficient
    to disambiguate the components of some forms of URI.  Since the
    "greedy algorithm" described in that section is identical to the
    disambiguation method used by POSIX regular expressions, it is
@@ -1220,11 +1275,11 @@ B. Parsing a URI Reference with a Regular Expression
    the case for the query component in the above example.  Therefore, we
    can determine the value of the four components and fragment as
 
-      scheme   = $2
-      site     = $4
-      path     = $5
-      query    = $7
-      fragment = $9
+      scheme    = $2
+      authority = $4
+      path      = $5
+      query     = $7
+      fragment  = $9
 
    and, going in the opposite direction, we can recreate a URI reference
    from its components using the algorithm in step 7 of Section 5.2.
@@ -1276,7 +1331,7 @@ C.2.  Abnormal Examples
    Parsers must be careful in handling the case where there are more
    relative path ".." segments than there are hierarchical levels in
    the base URI's path.  Note that the ".." syntax cannot be used to
-   change the site component of a URI.
+   change the authority component of a URI.
 
       ../../../g    =  http://a/../g
       ../../../../g =  http://a/../../g
@@ -1315,8 +1370,8 @@ C.2.  Abnormal Examples
    hierarchy ("/") character, and the query component is not normally
    used within relative references.
 
-      g?y/./x       =  http://a/b/c/g?y/x
-      g?y/../x      =  http://a/b/c/x
+      g?y/./x       =  http://a/b/c/g?y/./x
+      g?y/../x      =  http://a/b/c/g?y/../x
       g#s/./x       =  http://a/b/c/g#s/./x
       g#s/../x      =  http://a/b/c/g#s/../x
 
@@ -1402,7 +1457,7 @@ E. Recommendations for Delimiting URIs in Context
    The prefix "URL:" (with or without a trailing space) was
    recommended as a way to used to help distinguish a URL from other
    bracketed designators, although this is not common in practice.
-   
+
    For robustness, software that accepts user-typed URIs should
    attempt to recognize and strip both delimiters and embedded
    whitespace.
@@ -1428,7 +1483,8 @@ F. Abbreviated URLs
    identification and usage have become commonplace, traditional media
    (television, radio, newspapers, billboards, etc.) have increasingly
    used abbreviated URL references.  That is, a reference consisting of
-   only the site and path portions of the identified resource, such as
+   only the authority and path portions of the identified resource,
+   such as
 
       www.w3.org/Addressing/
 
@@ -1453,7 +1509,7 @@ G. Summary of Non-editorial Changes
 
 G.1. Additions
 
-   Section 3 (URI References) was added to stem the confusion
+   Section 4 (URI References) was added to stem the confusion
    regarding "what is a URI" and how to describe fragment identifiers
    given that they are not part of the URI, but are part of the URI
    syntax and parsing concerns.  In addition, it provides a reference
@@ -1471,7 +1527,7 @@ G.1. Additions
 
 G.2. Modifications from both RFC 1738 and RFC 1808
 
-   Changed to URI syntax and semantics instead of just URL.
+   Changed to URI syntax instead of just URL.
 
    Confusion regarding the terms "character encoding", the URI
    "character set", and the escaping of characters with %<hex><hex>
@@ -1492,8 +1548,9 @@ G.2. Modifications from both RFC 1738 and RFC 1808
    dependent on the resource, not just the URI scheme.  The
    description of reserved characters has been changed accordingly.
 
-   The plus "+" character was added to those in the "reserved" set,
-   since it is treated as reserved within some URI components.
+   The plus "+", dollar "$", and comma "," characters have been added to
+   those in the "reserved" set, since they are treated as reserved
+   within the query component.
 
    The tilde "~" character was added to those in the "unreserved" set,
    since it is extensively used on the Internet in spite of the
@@ -1505,11 +1562,16 @@ G.2. Modifications from both RFC 1738 and RFC 1808
    of passwords in the clear is not even suggested by the syntax.
 
    The question-mark "?" character was removed from the set of allowed
-   characters for the userinfo in the site component, since
+   characters for the userinfo in the authority component, since
    testing showed that many applications treat it as reserved for
    separating the query component from the rest of the URI.
 
-   RFC 1738 specified that the path was separated from the site
+   The semicolon ";" character was added to those stated as being
+   reserved within the authority component, since several new schemes
+   are using it as a separator within userinfo to indicate the type
+   of user authentication.
+
+   RFC 1738 specified that the path was separated from the authority
    portion of a URI by a slash.  RFC 1808 followed suit, but with a
    fudge of carrying around the separator as a "prefix" in order to
    describe the parsing algorithm.  RFC 1630 never had this problem,
@@ -1548,11 +1610,11 @@ G.4. Modifications from RFC 1808
    is for the user agent to change its view of the current document to
    the beginning of the specified fragment within that document, not to
    make an additional request of the resource, a description of how to
-   correctly interpret an empty reference has been added in Section 3.
+   correctly interpret an empty reference has been added in Section 4.
 
    The description of the mythical Base header field has been replaced
-   with a reference to the Content-Base and Content-Location header
-   fields defined by MHTML [RFC2110].
+   with a reference to the Content-Location header field defined by
+   MHTML [RFC2110].
 
    RFC 1808 described various schemes as either having or not having the
    properties of the generic-URI syntax.  However, the only requirement
@@ -1561,9 +1623,9 @@ G.4. Modifications from RFC 1808
    the URI scheme, so the associated description has been updated to
    reflect that.
 
-   The BNF term <net_loc> has been replaced with <site>, since the
+   The BNF term <net_loc> has been replaced with <authority>, since the
    latter more accurately describes its use and purpose.  Likewise, the
-   site is no longer restricted to the IP server syntax.
+   authority is no longer restricted to the IP server syntax.
 
    Extensive testing of current client applications demonstrated that
    the majority of deployed systems do not use the ";" character to
@@ -1578,7 +1640,7 @@ G.4. Modifications from RFC 1808
 
 H. Full Copyright Statement
 
-   Copyright (C) The Internet Society (1997).  All Rights Reserved.
+   Copyright (C) The Internet Society (1998).  All Rights Reserved.
 
    This document and translations of it may be copied and furnished to
    others, and derivative works that comment on or otherwise explain it
