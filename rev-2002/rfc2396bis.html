@@ -1699,7 +1699,7 @@ table.closedissue {
       </p><pre>   URI         = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 
    hier-part   = "//" authority path-abempty
-               / path-abs
+               / path-absolute
                / path-rootless
                / path-empty
 </pre><p>
@@ -2076,20 +2076,21 @@ table.closedissue {
          <a name="rfc.iref.116"></a>
          
       </p><pre>   path          = path-abempty    ; begins with "/" or is empty
-                 / path-abs        ; begins with "/" but not "//"
+                 / path-absolute   ; begins with "/" but not "//"
                  / path-noscheme   ; begins with a non-colon segment
                  / path-rootless   ; begins with a segment
                  / path-empty      ; zero characters
 
    path-abempty  = *( "/" segment )
-   path-abs      = "/" [ segment-nz *( "/" segment ) ]
-   path-noscheme = segment-nzc *( "/" segment )
+   path-absolute = "/" [ segment-nz *( "/" segment ) ]
+   path-noscheme = segment-nz-nc *( "/" segment )
    path-rootless = segment-nz *( "/" segment )
    path-empty    = 0&lt;pchar&gt;
 
    segment       = *pchar
    segment-nz    = 1*pchar
-   segment-nzc   = 1*( unreserved / pct-encoded / sub-delims / "@" )
+   segment-nz-nc = 1*( unreserved / pct-encoded / sub-delims / "@" )
+                 ; non-zero-length segment without any colon ":"
 
    pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 </pre><div><a name="rfc.section.3.3.p.3"></a></div>
@@ -2306,7 +2307,7 @@ table.closedissue {
       </p><pre>   relative-URI  = relative-part [ "?" query ] [ "#" fragment ]
 
    relative-part = "//" authority path-abempty
-                 / path-abs
+                 / path-absolute
                  / path-noscheme
                  / path-empty
 </pre><p>
@@ -3765,7 +3766,7 @@ table.closedissue {
       <div><a name="rfc.figure.u.39"></a></div><pre> URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 
  hier-part     = "//" authority path-abempty
-               / path-abs
+               / path-absolute
                / path-rootless
                / path-empty
 
@@ -3776,7 +3777,7 @@ table.closedissue {
  relative-URI  = relative-part [ "?" query ] [ "#" fragment ]
 
  relative-part = "//" authority path-abempty
-               / path-abs
+               / path-absolute
                / path-noscheme
                / path-empty
 
@@ -3815,20 +3816,21 @@ table.closedissue {
  reg-name      = 0*255( unreserved / pct-encoded / sub-delims )
 
  path          = path-abempty    ; begins with "/" or is empty
-               / path-abs        ; begins with "/" but not "//"
+               / path-absolute   ; begins with "/" but not "//"
                / path-noscheme   ; begins with a non-colon segment
                / path-rootless   ; begins with a segment
                / path-empty      ; zero characters
 
  path-abempty  = *( "/" segment )
- path-abs      = "/" [ segment-nz *( "/" segment ) ]
- path-noscheme = segment-nzc *( "/" segment )
+ path-absolute = "/" [ segment-nz *( "/" segment ) ]
+ path-noscheme = segment-nz-nc *( "/" segment )
  path-rootless = segment-nz *( "/" segment )
  path-empty    = 0&lt;pchar&gt;
 
  segment       = *pchar
  segment-nz    = 1*pchar
- segment-nzc   = 1*( unreserved / pct-encoded / sub-delims / "@" )
+ segment-nz-nc = 1*( unreserved / pct-encoded / sub-delims / "@" )
+               ; non-zero-length segment without any colon ":"
 
  pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 
@@ -4520,7 +4522,7 @@ table.closedissue {
          </tr>
          <tr>
             <td>
-               &nbsp;&nbsp;&nbsp;&nbsp;path-abs&nbsp;
+               &nbsp;&nbsp;&nbsp;&nbsp;path-absolute&nbsp;
                
                
                &nbsp;<a href="#rfc.iref.99"><b>3.3</b></a></td>
@@ -4555,7 +4557,7 @@ table.closedissue {
          </tr>
          <tr>
             <td>
-               &nbsp;&nbsp;path-abs&nbsp;
+               &nbsp;&nbsp;path-absolute&nbsp;
                
                
                &nbsp;<a href="#rfc.iref.46">3</a></td>
@@ -4736,7 +4738,7 @@ table.closedissue {
          </tr>
          <tr>
             <td>
-               &nbsp;&nbsp;&nbsp;&nbsp;segment-nzc&nbsp;
+               &nbsp;&nbsp;&nbsp;&nbsp;segment-nz-nc&nbsp;
                
                
                &nbsp;<a href="#rfc.iref.105"><b>3.3</b></a></td>
@@ -4965,7 +4967,7 @@ table.closedissue {
          </tr>
          <tr>
             <td>
-               &nbsp;&nbsp;&nbsp;&nbsp;path-abs&nbsp;
+               &nbsp;&nbsp;&nbsp;&nbsp;path-absolute&nbsp;
                
                
                &nbsp;<a href="#rfc.iref.61">3</a>, 
@@ -5075,7 +5077,7 @@ table.closedissue {
          </tr>
          <tr>
             <td>
-               &nbsp;&nbsp;&nbsp;&nbsp;segment-nzc&nbsp;
+               &nbsp;&nbsp;&nbsp;&nbsp;segment-nz-nc&nbsp;
                
                
                &nbsp;<a href="#rfc.iref.115"><b>3.3</b></a></td>
