@@ -63,7 +63,7 @@
     </address>
   </author>
 
-  <date month='June' year='2003'></date>
+  <date month='September' year='2003'></date>
 
   <area>Applications</area>
   <keyword>uniform resource identifier</keyword>
@@ -220,22 +220,14 @@ of all URI schemes.
 The following examples illustrate URIs that are in common use.
 </preamble><artwork>
    ftp://ftp.is.co.za/rfc/rfc1808.txt
-      -- ftp scheme for File Transfer Protocol services
-
-   gopher://gopher.tc.umn.edu:70/11/Mailing%20Lists/
-      -- gopher scheme for Gopher and Gopher+ Protocol services
 
    http://www.ietf.org/rfc/rfc2396.txt
-      -- http scheme for Hypertext Transfer Protocol services
 
    mailto:John.Doe@example.com
-      -- mailto scheme for electronic mail addresses
 
    news:comp.infosystems.www.servers.unix
-      -- news scheme for USENET news groups and articles
 
    telnet://melvyl.ucop.edu/
-      -- telnet scheme for interactive TELNET services
 </artwork></figure>
 </section>
 
@@ -1967,13 +1959,15 @@ specifying a port number other than that reserved for the network protocol
 in question.  The client unwittingly contacts a site that is running a
 different protocol service.  The content of the URI contains instructions
 that, when interpreted according to this other protocol, cause an
-unexpected operation.  An example has been the use of a gopher URI to
-cause an unintended or impersonating message to be sent via a SMTP server.
+unexpected operation.
 </t>
 <t>
 Caution should be used when dereferencing a URI that specifies a TCP port
 number other than the default for the scheme, especially when it is
-a number within the reserved space.
+a number within the reserved space.  A frequent example of abuse has
+been the use of a network protocol-based scheme with a port component
+of "25", thereby fooling user agent software into sending an 
+unintended or impersonating message via an SMTP server.
 </t>
 <t>
 Care should be taken when a URI contains escaped delimiters for a

@@ -235,7 +235,7 @@ table.resolution
         Standards Track&nbsp;</td><td class="header">Adobe&nbsp;</td>
 </tr>
 <tr>
-<td class="header">Expires: December 2003&nbsp;</td><td class="header">June 2003&nbsp;</td>
+<td class="header">Expires: March 2004&nbsp;</td><td class="header">September 2003&nbsp;</td>
 </tr>
 </table>
 <p class="title">Uniform Resource Identifier (URI): Generic Syntax<br>
@@ -268,7 +268,7 @@ table.resolution
         <a href="http://www.ietf.org/shadow.html">http://www.ietf.org/shadow.html</a>.
       </p>
 <p>
-        This Internet-Draft will expire in December 2003.
+        This Internet-Draft will expire in March 2004.
       </p>
 <h1>Copyright Notice</h1>
 <p>
@@ -1173,22 +1173,14 @@ of all URI schemes.
 The following examples illustrate URIs that are in common use.
 </p>
 <pre>   ftp://ftp.is.co.za/rfc/rfc1808.txt
-      -- ftp scheme for File Transfer Protocol services
-
-   gopher://gopher.tc.umn.edu:70/11/Mailing%20Lists/
-      -- gopher scheme for Gopher and Gopher+ Protocol services
 
    http://www.ietf.org/rfc/rfc2396.txt
-      -- http scheme for Hypertext Transfer Protocol services
 
    mailto:John.Doe@example.com
-      -- mailto scheme for electronic mail addresses
 
    news:comp.infosystems.www.servers.unix
-      -- news scheme for USENET news groups and articles
 
    telnet://melvyl.ucop.edu/
-      -- telnet scheme for interactive TELNET services
 </pre>
 <h3>
 <a name="rfc.iref.5"></a><a name="rfc.iref.6"></a><a name="rfc.iref.7"></a><a name="rfc.iref.8"></a><a name="rfc.section.1.1.3">1.1.3</a>&nbsp;
@@ -3447,8 +3439,7 @@ specifying a port number other than that reserved for the network protocol
 in question.  The client unwittingly contacts a site that is running a
 different protocol service.  The content of the URI contains instructions
 that, when interpreted according to this other protocol, cause an
-unexpected operation.  An example has been the use of a gopher URI to
-cause an unintended or impersonating message to be sent via a SMTP server.
+unexpected operation.
 </p>
 <div>
 <a name="rfc.section.7.2.p.2"></a>
@@ -3456,7 +3447,10 @@ cause an unintended or impersonating message to be sent via a SMTP server.
 <p>
 Caution should be used when dereferencing a URI that specifies a TCP port
 number other than the default for the scheme, especially when it is
-a number within the reserved space.
+a number within the reserved space.  A frequent example of abuse has
+been the use of a network protocol-based scheme with a port component
+of "25", thereby fooling user agent software into sending an 
+unintended or impersonating message via an SMTP server.
 </p>
 <div>
 <a name="rfc.section.7.2.p.3"></a>
