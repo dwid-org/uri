@@ -246,7 +246,7 @@ table.closedissue {
       <meta name="DC.Creator" content="Fielding, R.">
       <meta name="DC.Creator" content="Masinter, L.">
       <meta name="DC.Identifier" content="urn:ietf:id:draft-fielding-uri-rfc2396bis-07">
-      <meta name="DC.Date.Issued" scheme="ISO8601" content="2004-07">
+      <meta name="DC.Date.Issued" scheme="ISO8601" content="2004-09">
       <meta name="DC.Relation.Replaces" content="urn:ietf:rfc:2732">
       <meta name="DC.Relation.Replaces" content="urn:ietf:rfc:2396">
       <meta name="DC.Relation.Replaces" content="urn:ietf:rfc:1808">
@@ -299,8 +299,8 @@ table.closedissue {
             <td class="header-r">Adobe&nbsp;</td>
          </tr>
          <tr>
-            <td class="header-l">Expires: January 2005&nbsp;</td>
-            <td class="header-r">July 2004&nbsp;</td>
+            <td class="header-l">Expires: March 2005&nbsp;</td>
+            <td class="header-r">September 2004&nbsp;</td>
          </tr>
       </table>
       <p class="title">Uniform Resource Identifier (URI): Generic Syntax<br><span class="filename">draft-fielding-uri-rfc2396bis-07</span></p>
@@ -337,7 +337,7 @@ table.closedissue {
          
       </p>
       <p>
-         This Internet-Draft will expire in January 2005.
+         This Internet-Draft will expire in March 2005.
          
       </p>
       <h1><a name="rfc.copyrightnotice">Copyright Notice</a></h1>
@@ -3211,14 +3211,17 @@ table.closedissue {
          Some schemes define additional subcomponents that consist of
          case-insensitive data, giving an implicit license to normalizers
          to convert such data to a common case (e.g., all lowercase).
-         For example, the "mailto" URI contains mailbox address data that is
-         defined to be case-insensitive, and therefore "mailto:Joe@Example.com"
-         is required to be equivalent to "mailto:joe@example.com".
+         For example, URI schemes that define a subcomponent of path to
+         contain an Internet hostname, such as the "mailto" URI scheme,
+         cause that subcomponent to be case-insensitive and thus subject
+         to case normalization (e.g., "mailto:Joe@Example.COM" is equivalent
+         to "mailto:Joe@example.com" even though the generic syntax considers
+         the path component to be case-sensitive).
          
       </p>
       <div><a name="rfc.section.6.2.3.p.5"></a></div>
       <p>
-         Other scheme-specific normalizations are possible.  
+         Other scheme-specific normalizations are possible.
          
       </p>
       <h3><a name="rfc.section.6.2.4">6.2.4</a>&nbsp;<a name="normalize-protocol">Protocol-based Normalization</a></h3>

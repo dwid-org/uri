@@ -65,7 +65,7 @@
     </address>
   </author>
 
-  <date month='July' year='2004'></date>
+  <date month='September' year='2004'></date>
 
   <area>Applications</area>
   <keyword>uniform resource identifier</keyword>
@@ -2184,12 +2184,15 @@ by the suffix "#" are considered different regardless of the scheme.
 Some schemes define additional subcomponents that consist of
 case-insensitive data, giving an implicit license to normalizers
 to convert such data to a common case (e.g., all lowercase).
-For example, the "mailto" URI contains mailbox address data that is
-defined to be case-insensitive, and therefore "mailto:Joe@Example.com"
-is required to be equivalent to "mailto:joe@example.com".
+For example, URI schemes that define a subcomponent of path to
+contain an Internet hostname, such as the "mailto" URI scheme,
+cause that subcomponent to be case-insensitive and thus subject
+to case normalization (e.g., "mailto:Joe@Example.COM" is equivalent
+to "mailto:Joe@example.com" even though the generic syntax considers
+the path component to be case-sensitive).
 </t>
 <t>
-Other scheme-specific normalizations are possible.  
+Other scheme-specific normalizations are possible.
 </t>
 </section>
 
