@@ -3,13 +3,13 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <?rfc toc="yes" ?>
 <?rfc symrefs="yes" ?>
-<?rfc sortrefs="no"?>
+<?rfc sortrefs="yes"?>
 <?rfc toc="yes"?>
 <?rfc linkmailto="no"?>
 <?rfc editing="no"?>
 <?rfc-ext parse-xml-in-artwork="yes" ?>
 <rfc obsoletes="2732, 2396, 1808" updates="1738" category="std"
-     ipr="full2026" docName="draft-fielding-uri-rfc2396bis-03">
+     ipr="full2026" docName="draft-fielding-uri-rfc2396bis-0x">
 
 <front>
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifier (URI): Generic Syntax</title>
@@ -510,7 +510,7 @@ character's glyph or by use of an escape triplet (<xref target="escaped"/>).
 When a URI scheme defines a component that represents textual data
 consisting of characters from the Unicode (ISO 10646) character
 set, we recommend that the data be encoded first as octets according
-to the UTF-8 <xref target="UTF-8"/> character encoding, and then
+to the UTF-8 <xref target="RFC2279"/> character encoding, and then
 escaping only those octets that are not in the unreserved character set.
 </t>
 </section>
@@ -2594,7 +2594,8 @@ Science, University of California, Irvine</organization>
 <seriesInfo name='RFC' value='2717' />
 </reference>
 
-<reference anchor='Siedzik'>
+<reference anchor='Siedzik'
+   target='http://www.giac.org/practical/gsec/Richard_Siedzik_GSEC.pdf'>
 <front>
 <title>Semantic Attacks: What's in a URL?</title>
 <author initials='R.' surname='Siedzik' fullname='Richard Siedzik'>
@@ -2602,10 +2603,10 @@ Science, University of California, Irvine</organization>
 </author>
 <date day='6' month='April' year='2001'></date>
 </front>
-<format type='HTML' target='http://www.sans.org/rr/threats/semantic.php' />
+<format type='PDF' target='http://www.giac.org/practical/gsec/Richard_Siedzik_GSEC.pdf' />
 </reference>
 
-<reference anchor='UTF-8'>
+<reference anchor='RFC2279'>
 <front>
 <title abbrev='UTF-8'>UTF-8, a transformation format of ISO 10646</title>
 <author initials='F.' surname='Yergeau' fullname='Francois Yergeau'>
