@@ -2376,11 +2376,6 @@ to be a resource.  None of the other suggestions do that.
   21 Apr 2003,
   URI-WG mailing list:
   <pre>
-I am writing to you as editor of the forthcoming document intended to
-replace RFC 2396, and more broadly to the URI WG, in order to comment on
-this issue and to request that you and/or the WG clarify the intended
-meanings of some of the introductory definitions.
-
 1. I appeal to the WG to please explain in more detail what the word
 "resource" is intended to refer to, if only in broad outline. In particular,
 If there is an intent to limit the meaning of "resource" to some subset of
@@ -2562,6 +2557,60 @@ A few principles apply:
 
 - Ambiguity in the characterization of what resource a URI identifies is always
   undesirable and reduces the utility of both the resource and the URI.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  23 Apr 2003,
+  issues list:
+  <pre>
+A ridiculous amount of discussion took place on the mailing list regarding
+this issue without illuminating it further, so I won't copy it here
+except by reference to the main threads:
+   <a href="http://lists.w3.org/Archives/Public/uri/2003Apr/0028.html">
+   http://lists.w3.org/Archives/Public/uri/2003Apr/0028.html</a>
+   <a href="http://lists.w3.org/Archives/Public/uri/2003Apr/0041.html">
+   http://lists.w3.org/Archives/Public/uri/2003Apr/0041.html</a>
+   <a href="http://lists.w3.org/Archives/Public/uri/2003Apr/0062.html">
+   http://lists.w3.org/Archives/Public/uri/2003Apr/0062.html</a>
+
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:joshuaa_AT_microsoft.com">Joshua Allen</a>,
+  23 Apr 2003,
+  URI-WG mailing list:
+  <pre>
+As far as I can tell, it is only the differing choice of words
+that makes everyone appear to be disagreeing.  As long as the words
+chosen are clearly defined, I see no point in getting hung up over
+*which* word is used.
+
+We divide the world up like this:
+
+A. There are things.  Everything is a "thing".  There are no exceptions.
+B. There are things which *might* have a URI bound to them.
+C. There are things which *do* have a URI bound to them.
+
+Is B the same thing as A?  *That* question is irrelevant and not worth
+arguing about IMO.  It seems like the only *legitimate* confusion is
+around the names for A/B and C.
+
+I personally have always thought that:
+A="thing", B="resource", and C="resource with a URI".
+
+You (MM) are saying that:
+A="thing", B="thing", C="Resource"
+
+I personally have no problem accepting your naming for "C", so long as
+it is very clear that this is different than A or B.  I would also
+(personally) suggest that terminology be kept clear by using:
+
+A="thing", B="thing which hasn't been bound to a URI", C="Resource".
 </pre>
 </td>
 </tr>
