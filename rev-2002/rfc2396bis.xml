@@ -1474,7 +1474,7 @@ which the representation is encapsulated.
 <t>
 A mechanism for embedding a base URI within MIME container types
 (e.g., the message and multipart types) is defined by MHTML
-<xref target="RFC2110"/>.  Protocols that do not use the MIME message
+<xref target="RFC2557"/>.  Protocols that do not use the MIME message
 header syntax, but do allow some form of tagged metadata to be included
 within messages, may define their own syntax for defining a base
 URI as part of a message.
@@ -2864,37 +2864,47 @@ Science, University of California, Irvine</organization>
 <seriesInfo name='RFC' value='1034' />
 </reference>
 
-<reference anchor='RFC2110'>
+<reference anchor='RFC2557'>
 <front>
-<title abbrev='MHTML'>MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)</title>
-<author initials='J.' surname='Palme' fullname='Jacob Palme'>
+<title abbrev='MIME Encapsulation of Aggregate Documents'>MIME Encapsulation of Aggregate Documents, such as HTML (MHTML)</title>
+<author initials='F.' surname='Palme' fullname='Jacob Palme'>
 <organization>Stockholm University and KTH</organization>
 <address>
 <postal>
 <street>Electrum 230</street>
 <street>S-164 40 Kista</street>
-<country>Sweden</country></postal>
-<phone>+46-8-16 16 67</phone>
-<facsimile>+46-8-783 08 29</facsimile>
+<country>SE</country></postal>
+<phone>+46 8 161667</phone>
+<facsimile>+46 8 7830829</facsimile>
 <email>jpalme@dsv.su.se</email></address></author>
 <author initials='A.' surname='Hopmann' fullname='Alex Hopmann'>
 <organization>Microsoft Corporation</organization>
 <address>
 <postal>
-<street>3590 North First Street</street>
-<street>Suite 300</street>
-<street>San Jose</street>
-<street>CA 95134</street>
-<street>Working group chairman:</street></postal>
+<street>One Microsoft Way</street>
+<city>Redmond</city>
+<region>WA</region>
+<code>98052</code>
+<country>US</country></postal>
+<phone>+1 425 703 8238</phone>
 <email>alexhop@microsoft.com</email></address></author>
-<date month='March' year='1997'></date>
-<area>Applications</area>
-<keyword>encapsulate</keyword>
-<keyword>hypertext markup language</keyword>
-<keyword>mail</keyword>
-<keyword>multipurpose internet mail extensions</keyword>
+<author initials='N.' surname='Shelness' fullname='Nick Shelness'>
+<organization>Lotus Development Corporation</organization>
+<address>
+<postal>
+<street>55 Cambridge Parkway</street>
+<city>Cambridge</city>
+<region>MA</region>
+<code>02142-1295</code>
+<country>US</country></postal>
+<email>Shelness@lotus.com</email></address></author>
+<author initials='E.' surname='Stefferud' fullname='Einar Stefferud'>
+<organization />
+<address>
+<email>stef@nma.com</email></address></author>
+<date month='March' year='1999' />
 </front>
-<seriesInfo name='RFC' value='2110' />
+<seriesInfo name='RFC' value='2557' />
 </reference>
 
 <reference anchor='RFC2717'>
