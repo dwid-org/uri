@@ -1,19 +1,8 @@
-ietf url/uri overview draft paper (long)
-
-"Clifford Lynch" <CALUR@UCCMVSA.bitnet>
-
-   Mail folder: uri-93q1
-   Next message: John Curran: "Re: URI agenda "
-   Previous message: Mitra: "Re: URI agenda"
-   Reply: John Curran: "Re: ietf url/uri overview draft paper (long) "
-   Reply: Larry Masinter: "Re: ietf url/uri overview draft paper (long)"
-
 Message-id: <9303251943.AA27089@mocha.bunyip.com>
 Date: Thu, 25 Mar 93 11:41:36 PST
 From: "Clifford Lynch" <CALUR@UCCMVSA.bitnet>
 To: URI@BUNYIP.COM
 Subject:  ietf url/uri overview draft paper (long)
-Status: O
 
 Attached is the background paper that I promised to prepare for
 the URI/URL/etc discussions at the upcoming IETF meeting. It is
