@@ -5,6 +5,7 @@
 <?rfc symrefs="yes" ?>
 <?rfc sortrefs="no"?>
 <?rfc toc="yes"?>
+<?rfc linkmailto="no"?>
 <?rfc editing="no"?>
 <?rfc-ext parse-xml-in-artwork="yes" ?>
 <rfc obsoletes="2732, 2396, 1808" updates="1738" category="std"
@@ -1854,7 +1855,7 @@ are gratefully acknowledged.
 
   </references>
 
-  <references title="Non-normative References">
+  <references title="Informative References">
   
 <reference anchor='RFC2277'>
 <front>
