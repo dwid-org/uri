@@ -446,7 +446,7 @@ are compelling reasons to forbid relative referencing within that scheme.
 <t>
 All URIs are parsed by generic syntax parsers when used. A URI scheme that
 wishes to remain opaque to hierarchical processing must disallow the use
-of slash or question mark characters.  However, since a non-relative URI
+of slash and question mark characters.  However, since a non-relative URI
 reference is only modified by the generic parser if it contains complete
 path segments of "." or ".." (see <xref target="path"/>), URIs may safely
 use "/" for other purposes if they do not allow dot-segments.
@@ -1182,7 +1182,8 @@ relative to the name space of another hierarchical URI.
 </preamble><artwork type="abnf">
    relative-URI  = ["//" authority] path ["?" query] ["#" fragment]
 </artwork><postamble>
-The URI referred to by a relative reference is obtained by applying
+The URI referred to by a relative reference, also known as the target URI,
+is obtained by applying
 the reference resolution algorithm of <xref target="reference-resolution"/>.
 </postamble></figure>
 <t>
