@@ -1467,10 +1467,11 @@ next component separator or the end of the reference.
 <section title="Acknowledgements">
 <t>
    This document is derived from RFC 2396 <xref target="RFC2396"/>,
-   RFC 1738 <xref target="RFC1738"/> and RFC 1808 <xref target="RFC1808"/>;
+   RFC 1808 <xref target="RFC1808"/>, and RFC 1738 <xref target="RFC1738"/>;
    the acknowledgements in those specifications still apply.
    In addition, contributions by Reese Anschultz, Adam M. Costello,
-   Bruce Lilly, Julian Reschke, Ronald Tschalaer, and Henry Zongaro
+   Jason Diamond, Henry Holtzman, Bruce Lilly, Julian Reschke,
+   Miles Sabin, Ronald Tschalaer, and Henry Zongaro
    are gratefully acknowledged.
 </t>
 </section>
