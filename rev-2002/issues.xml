@@ -8,6 +8,7 @@
 
 <links>
  <a href="rfc2396bis.html">Draft in-progress</a>
+ <a href="draft-fielding-uri-rfc2396bis-01.txt">Draft 01</a>
  <a href="draft-fielding-uri-rfc2396bis-00.txt">Draft 00</a>
  <a href="../rfc/rfc2396.html">RFC 2396</a>
  <a href="http://cvs.apache.org/viewcvs.cgi/ietf-uri/rev-2002/">CVS web view of editor revisions</a>

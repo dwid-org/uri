@@ -8,7 +8,7 @@
 <?rfc editing="no"?>
 <?rfc-ext parse-xml-in-artwork="yes" ?>
 <rfc obsoletes="2732, 2396, 1808" updates="1738" category="std"
-     ipr="full2026" docName="draft-fielding-uri-rfc2396bis-0x">
+     ipr="full2026" docName="draft-fielding-uri-rfc2396bis-01">
 
 <front>
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifier (URI): Generic Syntax</title>
@@ -30,7 +30,7 @@
       <uri>http://www.w3.org/People/Berners-Lee/</uri>
     </address>
   </author>
-  <author initials='R.T.' surname='Fielding' fullname='Roy T. Fielding'>
+  <author initials='R.' surname='Fielding' fullname='Roy T. Fielding'>
     <organization abbrev="Day Software">Day Software</organization>
     <address>
       <postal>
@@ -40,7 +40,7 @@
         <code>92660</code>
         <country>USA</country>
       </postal>
-      <phone>+1-949-644-2557</phone>
+      <phone>+1-949-999-2523</phone>
       <facsimile>+1-949-644-5064</facsimile>
       <email>roy.fielding@day.com</email>
       <uri>http://www.apache.org/~fielding/</uri>
@@ -62,7 +62,7 @@
     </address>
   </author>
 
-  <date month='October' year='2002'></date>
+  <date month='March' year='2003'></date>
 
   <area>Applications</area>
   <keyword>uniform resource identifier</keyword>
@@ -599,7 +599,7 @@ URI character sequence->octet sequence->original character sequence
 <section title="URI Syntactic Components">
 <t>
    The URI syntax is dependent upon the scheme.  In general, absolute
-   URI are written as follows:
+   URIs are written as follows:
 </t>
 <figure><artwork>
    &lt;scheme&gt;:&lt;scheme-specific-part&gt;
