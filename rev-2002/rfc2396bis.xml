@@ -9,7 +9,7 @@
 <?rfc editing="no"?>
 <?rfc-ext parse-xml-in-artwork="yes" ?>
 <rfc obsoletes="2732, 2396, 1808" updates="1738" category="std"
-     ipr="full3667" docName="draft-fielding-uri-rfc2396bis-0x">
+     ipr="full3667" docName="draft-fielding-uri-rfc2396bis-05">
 
 <front>
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifier (URI): Generic Syntax</title>
@@ -63,7 +63,7 @@
     </address>
   </author>
 
-  <date month='March' year='2004'></date>
+  <date month='April' year='2004'></date>
 
   <area>Applications</area>
   <keyword>uniform resource identifier</keyword>
@@ -726,9 +726,9 @@ URIs using an overly-simplistic raw octet mapping, then the result would
 be a URI containing "%D3%81%87%A4%95%81@%C2%85%81%83%88".  An internal
 transcoding interface fixes that problem by transcoding the local name
 to a superset of US-ASCII prior to producing the URI.  Naturally,
-proper interpretion of an incoming URI on such an interface requires
-that percent-encoded octets be decoded before the reverse transcoding
-is applied to obtain the local name.
+proper interpretation of an incoming URI on such an interface requires
+that percent-encoded octets be decoded (e.g., "%20" to SP) before the
+reverse transcoding is applied to obtain the local name.
 </t>
 <t>
 In some cases, the internal interface between a URI component and the
