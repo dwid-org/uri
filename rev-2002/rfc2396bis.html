@@ -491,6 +491,7 @@ is available at
 
 
 
+
 <b>&nbsp;2.5&nbsp;
             <a href="#excluded">Excluded Characters</a></b>
 <br>
@@ -1662,7 +1663,8 @@ excluded from any use within a URI (<a href="#excluded">section&nbsp;2.5</a>).
 An escaped octet is encoded as a character triplet, consisting of the
 percent character "%" followed by the two hexadecimal digits representing
 that octet's numeric value.  For example, "%20" is the escaped encoding
-for the US-ASCII space character (SP).  This is sometimes referred to as
+for the binary octet "00100000" (ABNF: %x20), which corresponds to the
+US-ASCII space character (SP).  This is sometimes referred to as
 "percent-encoding" the octet.
 <a name="rfc.iref.37"></a>
 
@@ -1717,6 +1719,23 @@ without changing the interpretation of the URI.
 </p>
 <div>
 <a name="rfc.section.2.4.2.p.4"></a>
+</div>
+<p>
+In all cases, a URI character is equivalent to its corresponding
+ASCII-encoded octet, even when that octet is represented as a percent-escape.
+URI characters are provided as an external ASCII interface for identification
+between systems.  A system that internally provides identifiers in the
+form of a different character encoding, such as EBCDIC, will generally
+perform character translation of textual identifiers to UTF-8 at some
+internal interface, thus providing meaningful identifiers in ASCII even
+though the back-end identifiers are in a different encoding.  Escaped
+octets must be unescaped before such a transcoding is applied.  Although
+this specification does not define the character encoding of escaped
+octets outside the ASCII range, the general principle of unescaping
+before transcoding should be applied for all character encodings.
+</p>
+<div>
+<a name="rfc.section.2.4.2.p.5"></a>
 </div>
 <p>
 Because the percent ("%") character serves as the escape indicator,

@@ -605,7 +605,8 @@ excluded from any use within a URI (<xref target="excluded"/>).
 An escaped octet is encoded as a character triplet, consisting of the
 percent character "%" followed by the two hexadecimal digits representing
 that octet's numeric value.  For example, "%20" is the escaped encoding
-for the US-ASCII space character (SP).  This is sometimes referred to as
+for the binary octet "00100000" (ABNF: %x20), which corresponds to the
+US-ASCII space character (SP).  This is sometimes referred to as
 "percent-encoding" the octet.
 <iref item="URI grammar" subitem="escaped" primary="true"/>
 </preamble><artwork type="abnf">
@@ -645,6 +646,20 @@ normalizer may unescape escaped octets that are represented by characters
 in the unreserved set.  For example, "%7E" is sometimes used instead
 of tilde ("~") in an "http" URI path and can be converted to "~"
 without changing the interpretation of the URI.
+</t>
+<t>
+In all cases, a URI character is equivalent to its corresponding
+ASCII-encoded octet, even when that octet is represented as a percent-escape.
+URI characters are provided as an external ASCII interface for identification
+between systems.  A system that internally provides identifiers in the
+form of a different character encoding, such as EBCDIC, will generally
+perform character translation of textual identifiers to UTF-8 at some
+internal interface, thus providing meaningful identifiers in ASCII even
+though the back-end identifiers are in a different encoding.  Escaped
+octets must be unescaped before such a transcoding is applied.  Although
+this specification does not define the character encoding of escaped
+octets outside the ASCII range, the general principle of unescaping
+before transcoding should be applied for all character encodings.
 </t>
 <t>
 Because the percent ("%") character serves as the escape indicator,
