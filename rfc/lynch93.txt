@@ -1,0 +1,1199 @@
+ietf url/uri overview draft paper (long)
+
+"Clifford Lynch" <CALUR@UCCMVSA.bitnet>
+
+   Mail folder: uri-93q1
+   Next message: John Curran: "Re: URI agenda "
+   Previous message: Mitra: "Re: URI agenda"
+   Reply: John Curran: "Re: ietf url/uri overview draft paper (long) "
+   Reply: Larry Masinter: "Re: ietf url/uri overview draft paper (long)"
+
+Message-id: <9303251943.AA27089@mocha.bunyip.com>
+Date: Thu, 25 Mar 93 11:41:36 PST
+From: "Clifford Lynch" <CALUR@UCCMVSA.bitnet>
+To: URI@BUNYIP.COM
+Subject:  ietf url/uri overview draft paper (long)
+Status: O
+
+Attached is the background paper that I promised to prepare for
+the URI/URL/etc discussions at the upcoming IETF meeting. It is
+a somewhat revised version of the material that was distributed on
+the URMARC list in January; however, it is still rough and the
+citations are still incomplete. Comments welcome.
+
+I hope that I have correctly covered the question of standards
+formulation for cataloging, which has been added in this version.
+corrections to this, if needed, would be appreciated.
+
+
+This is being posted to uri and also to urmarc, and to z3950iw (for
+information). I apologize for the multiple copies to those one more
+than one list.
+
+See some of you at IETF next week.
+
+Clifford
+
+
+
+
+A Framework for Identifying, Locating, and Describing
+Networked Information Resources
+
+
+Clifford A. Lynch
+Director, Library Automation
+University of California Office of the President
+300 Lakeside Drive, 8th floor
+Oakland, CA 94612-3550
+calur@uccmvsa.ucop.edu
+or
+calur@uccmvsa.bitnet
+
+
+March 24, 1993
+
+DRAFT FOR DISCUSSION AT MARCH-APRIL 1993 IETF MEETING
+
+Introduction
+
+As networked information resources proliferate on the
+Internet, systematic, standard means for identifying,
+locating, and describing these resources become increasingly
+necessary. While motivations for developing such schemes have
+been diverse, there are at least three major classes of
+applications that have been driving developments. First, the
+library community needs to extend traditional descriptive
+catalog practices to networked resources -- in essence, to
+permit bibliographic description and control of such
+resources in order to incorporate them integrally into
+library collections (in the sense that libraries are shifting
+from collections to access, and increasingly view their
+catalogs and other databases as bibliographies of materials
+to which they are prepared to provide, and perhaps subsidize,
+access) and to improve access to them. As networked
+information resources become critical to scholarship and
+research, and come to represent significant investments by
+institutions, it also becomes essential to apply the
+practices of information management to this new class of
+resources.
+
+The second applications area is the development of a series
+of network-based services that build upon and attempt to
+organize or add value to existing networked resources. These
+systems have required ways to identify, locate, and describe
+networked information resources: The archie system [1], which
+indexes file transfer archives, needs to be able to determine
+when two files stored at two different archive sites contain
+the same information. The Worldwide Web [2], an experimental
+networked hypertext system, needs to be able to embed a
+pointer to an arbitrary networked information object with a
+file stored on another computer to permit the expression of
+hypertext linkages. The Wide Area Information Server (WAIS)
+system [3] provides access to databases that index documents
+on the network; thus, a WAIS server must be able to return
+pointers to electronic objects housed in other servers on the
+network. The MIME [4] Multimedia mail standard needs the
+ability to point to a file on the network as a message body
+part, incorporating that file by reference into a MIME
+message.
+
+A related series of developments are emerging within the
+library community and the abstracting and indexing (A&I)
+database world. Traditional A&I databases provide in-depth
+access to print literature in a given subject -- usually with
+primary emphasis on journal articles, but sometimes including
+books, book chapters, or technical reports. They have long
+been available through commercial online services and more
+recently through CD-ROMs or tape licenses that permit local
+mounting by an institution, typically as an adjunct to the
+institution's online catalog. Recently, organizations ranging
+from the National Agriculture Library to various secondary
+information providers have been building very large databases
+of bit-mapped images of printed pages and offering them on
+network servers. Additionally, publishers such as Elsevier,
+with its TULIP project in materials science, are beginning to
+distribute bit-mapped images of printed journals as a
+supplement to print subscriptions. Links need to be encoded
+between the descriptive records in the A&I databases and the
+electronic images of the primary material.
+
+The third motivating application has a more diffuse
+constituency, but is equally important, and equally a
+consequence of the growing legitimacy and importance of
+networked information resources to scholarship and research:
+Citations used in printed or electronic scholarly discourse
+to describe networked information need to be extended to
+include references to a document or other resources available
+through the network [5].
+
+The initial attempts to meet the needs of each of these
+applications were relatively simple, ad hoc mechanisms [6]
+which generally attempted to solve specific problems, both
+because the full scope of the functional requirements were
+not well understood (indeed, they could not be without
+prototypes to provide insight into the requirements) and
+because many of the designers of these mechanisms were under
+pressure to produce operational systems. In some cases, these
+mechanisms also incorporated other functions needed by the
+applications that provided the context for their development.
+While inclusion of such functions meant that the mechanisms
+were well-tailored for the immediate needs of the motivating
+applications, comparison and generalization were made
+somewhat confusing.
+
+At this point, developments have coalesced into two major
+streams. Within the Internet Engineering Task Force (IETF)
+Working Group on Document Identifiers<1>, developers have
+achieved at least a basic consensus on the structure of a
+system for identifying and locating (in a particular, limited
+sense to be described later) such resources. Some of the
+specifics of this architecture are still being refined.
+Concurrently, the library community has been working with
+extensions to the Anglo-American Cataloging Rules and the
+MARC Bibliographic Format that permit the description of
+networked resources [7] and have conducted some limited
+experiments in applying these draft rules to create
+cataloging records [8]. Organizations such as the Library of
+Congress, the American Library Association's MARBI committee,
+and OCLC (with the assistance of a Department of Education
+grant) have been active in this area.
+
+This paper attempts to provide a critical overview of both
+streams of development and proposes what I believe to be
+appropriate relationships and divisions of function between
+them. Without going into great detail, I will try to
+establish definitions and a frame of reference, and to
+synthesize an overall architecture for managing networked
+information in the three contexts described above, subject to
+the recognition that, in fact, descriptions of a resource
+will differ based on the particular purposes of the various
+groups describing it. Issues that remain, at least in my
+view, unresolved, are also identified. Hopefully, the paper
+will further discussion and convergence between the
+approaches currently being pursued to locate, identify, and
+describe networked information resources.
+
+Everything discussed here builds upon previous work by many
+other people, and few of the ideas put forward are original.
+While a number of the key contributions are referenced in the
+text, I want to state explicitly that most of these ideas are
+products of a series of intensive and extensive discussions
+among various individuals active in this area over the past
+year (most of whom I hope I have listed in the
+acknowledgments and/or the citations).
+
+Definitions
+
+Networked information resources, in the context of this
+paper, are broadly construed. They include documents -- text,
+images, or compound multimedia objects -- stored on network
+hosts, as well as data files, databases, objects stored in
+databases, interactive services, news groups, LISTSERV lists,
+interactive information retrieval services, electronic sensor
+feeds, and, hopefully, new electronic information resources
+and formats yet to be developed. Associated with each
+resource is an access mechanism that returns an object of a
+given type -- a database record, a file, access to an
+interactive (TELNET) service, etc. A single service can be
+viewed in multiple ways: One might reference an entire
+database, or a specific record stored within it; each would
+be a different object. A particular problem, which remains
+poorly understood and which will be discussed in more detail
+later, is the need to make reference to a specific location
+or locations within a given object, such as a hypertext link
+from one long document to another, where the source document
+needs to make reference to a specific paragraph within the
+target document, but where the target document's granularity
+as a networked information object may be at the level of a
+file rather than of a database of paragraphs.
+
+A client host on the network must communicate with a service-
+providing host to invoke and execute an access mechanism.
+What is important is not where the object sought is stored,
+but rather where the server machine resides which a client
+needs to contact and what it needs to tell this service
+provider to retrieve the object.<2>
+
+The notion that two instances of a networked information
+resource are identical is subjective, based on the judgment
+of some external agency. One agency might consider as
+identical two documents with the same content but in two
+different word processor formats, or ASCII and Postscript
+versions of one document. Another agency might view
+alternative versions of the same document in multiple
+languages such as English, French, and Spanish as identical.
+Yet another might insist that only if the two documents are
+bit by bit the same should they be viewed as identical. Even
+a simple ASCII-to-EBCDIC code translation would then produce
+a "different," distinct document. Various organizations and
+communities will define identity differently, and to suit
+different purposes. The means by which agencies express their
+sense of object identity is discussed later.
+
+Two or more instances of the same (from some perspective)
+object may exist on different hosts in the network. This is a
+common occurrence with file archives, at least from the
+generally accepted view of file equivalence. Over time,
+objects may move from one host to another as computers come
+and go and material is redistributed around the network. The
+"same" object may change its location without changing its
+content; thus, the "identity" of an object is clearly
+different from its location.
+
+A locator (typically referenced by the acronym URL by the
+IETF Working Group, standing for Universal/Unique/Uniform
+Resource Locator) provides the information needed to retrieve
+a specific instance of an object at a specific point in time.
+The object, of course, may outlast the validity of a given
+locator. As discussed, it might be moved from one machine to
+another without any change to its content, thus invalidating
+the locator but not the existence of the object. A library
+analogy might be a shelf location in a given library. An
+identifier (typically referenced by the acronym URN by the
+IETF Working Group, standing for Universal/Unique/Uniform
+Resource Number) identifies an object uniquely by its content
+(according to some agency's identification assignment scheme
+and concept of content uniqueness). An object may reside at
+multiple locations, and these locations might change over
+time. The traditional library analogy for an identifier might
+be an International Standard Book Number (ISBN), a national
+library number, or a call number within a given library's
+collection. The ISBN is perhaps the better parallel since
+most call number schemes also group works on similar subjects
+together within the call number space, which is not one of
+the key functions of an identifier. The concepts of locator
+and identifier are the heart of the IETF scheme for managing
+reference to and retrieval of networked information
+resources.
+
+Standards for Resource Locators
+
+A standard for resource locators is conceptually quite simple
+(although the details become fairly messy). A resource
+locator has two components: a service identifier and a
+parameter to be passed to the identified service. The service
+identifier simply identifies some service such as FTP,
+TELNET, remote database access, Z39.50, etc., which a host
+would invoke. The service parameter, the syntax of which is
+specific to the service identified by the service identifier,
+tells the service what to do to retrieve the particular
+object. It is important to recognize that it is an abuse of
+language to refer to protocols such as Z39.50 or FTP as
+services. What is really happening is that a service defined
+as part of the definition of the parameters specific to a
+given service identifier uses the specified protocol to
+obtain the desired object. In the case of FTP, the parameters
+would include the desired remote host, login information
+(such as "use anonymous FTP with your electronic mail address
+preferred as password"), path information needed to identify
+the file to be accessed, and perhaps some additional
+information, like "use binary-mode transfer." With Z39.50,
+the specification might be to open a Z39.50 connection to a
+given host and then issue a specific query and a present on
+specific record(s) from the result set that the query
+produced, perhaps even in a given record syntax.
+
+LISTSERVs illustrate the distinction between protocol and
+service. A LISTSERV is a network service. One communicates
+with it using SMTP (or other electronic mail protocols) but,
+in fact, it supports a particular, precisely defined, and
+well-structured set of commands to subscribe to a list or to
+transfer files associated with a list. I believe that it
+makes sense to define both LISTSERV subscription and file
+retrieval from a LISTSERV as services, and not simply as a
+set of parameters that are passed to a very general
+electronic mail service. Electronic Data Interchange (EDI)
+services perhaps provide another example.
+
+The major issues addressed in a locator standard, then, are
+the enumeration of services, operation specifications of the
+services that are defined by the service identifiers, the
+syntax of the parameters that are passed to each of these
+services, and, of course, the interaction of these parameters
+with the service operation. It is likely that an IETF
+standard for locators will include a registry process for
+additional services not covered in the initial standard, and
+will also place some responsibility on the IETF standards
+groups responsible for the definition of service protocols to
+address the operation of services and the definition of
+parameter syntaxes for these future services. The IETF
+Working Group is preparing a document which describes their
+work on this standard, based largely on [9].
+
+A few of the axioms and desiderata of locator syntax and
+semantics will further clarify the idea of locators.
+
+A locator is presumed to be representable in the standard
+ASCII character set so that it can be included in a printed
+document or placed in an electronic text in a format suitable
+for "cut-and-paste" retrieval using an appropriate network
+navigation and information retrieval tool. This syntax should
+be relatively insensitive to typesetting conventions such as
+line breaks and the insertion of white space. A locator
+should be semantically self-contained and should not depend
+on context; a user should be able to find the object from the
+locator information. There has been considerable discussion
+of "partial" locators which would abbreviate part of the
+context, either to permit internal, self-referential links
+within a complex document, or to minimize the size of the
+locator. Logically, however, with the possible exception of
+self-reference<3>, locators should be viewed as self-contained.
+It seems likely that partial locators would be expanded to
+full self-contained locators when objects containing these
+locators are exported outside specific environments (such as
+the WorldWide Web) that can track, attribute, and expand
+context for partial locators.
+
+A client's attempt to evaluate a locator by invoking the
+specified service with the specified parameter may fail if
+the object is no longer available through that service at a
+given site. This does not mean that the referenced document
+no longer exists (if indeed it ever did), but only that the
+locator is no longer valid. Thus, it would be more
+appropriate to use identifiers (discussed below), or locators
+supplemented with identifiers, whenever long-lasting
+references to a networked information resource are desired,
+such as in journal article citations. The use of identifiers,
+however, presupposes better standardization, more code in the
+clients, and a more sophisticated infrastructure. A number of
+systems are using ad hoc forms of locators, as it seems that
+identifiers will only supplant locators in common use
+gradually, as acceptance of an identifier architecture grows.
+
+If two locators are identical, either the objects they
+reference are identical, or one of the locators is obsolete
+(e.g. a file has been replaced with a current version). But
+if two locators are not identical, the objects are not
+necessarily different. The locators could simply reference
+two copies of the same object.
+
+A given service identifier will permit the user of a locator
+to identify what will result in evaluating the locator (i.e.,
+a file, a database record, an interactive connection, the
+subscription information for a LISTSERV). But this result
+typing is only on a very gross level. The service identifier
+enables a client to determine when it is opening an
+interactive connection or learning where a database exists
+that supports Z39.50 connections, as opposed to obtaining a
+database record or a file. The client will not know (from the
+locator) that a file is in TIFF or PICT format, or simple
+ASCII text. This is a serious problem (further discussed
+later) that is beyond the scope of the basic
+locator/identifier scheme.
+
+Standards for Resource Identifiers
+
+A resource identifier is a pair comprised of an identifying
+authority designation and an identifier string specific to
+that identifying authority, which the identifying authority
+uses to refer to, or identify, the resource. Identifying
+authorities are registered with some ancillary information
+such as the name of the authority and perhaps the location of
+one or more resolution services it provides. Hopefully, a
+directory of identifying authorities would be hosted at
+multiple Internet sites and become part of the basic support
+structure of the Internet, much as have root servers for the
+domain name system. For scalability, it may be advisable to
+introduce a hierarchic structure into the identifying
+authority designator, again paralleling the existing domain
+name system. This structure would allow distributed registry
+of these authorities, and this approach would make it easy to
+graft the system for registering and locating identifying
+authorities on top of the existing domain name system. (This
+method would not preclude the construction of other databases
+of identifying authorities that could be accessed by other
+means.)
+
+The identifier string itself is simply an alphanumeric string
+assigned by the identifying authority. This alphanumeric
+string has no required semantics other than that the
+identifier assigning authority has the option of supporting
+versioning by appending a version number as a logically
+distinguished subpart of the identifier. Identifying
+authorities are not required to support versioning, but if
+versioning is used, it is assumed that version numbers are
+monotonically increasing, and that a larger version number
+represents a more recent version than a smaller one.
+Obviously, specialized syntax can also be provided to refer
+to the most recent version number.
+
+An identifying authority decides whether two objects are
+equivalent (that is, they have been assigned the same
+identifier). The level at which objects are judged to be
+identical will be highly dependent on the objectives of this
+identifying authority, however, and it is quite possible for
+one identifying authority to judge two objects to be
+equivalent, and another to view them as distinct, as
+discussed earlier.
+
+Identifying authorities may offer services that permit
+network clients to get a current list of locators for an
+object to which that identifying authority has assigned an
+identifier. But the identifying authority may not know where
+all instances of an object it has identified exist. The
+analogy in the print world may help clarify this: A publisher
+can tell you how to order a book based on the ISBN (and the
+ISBN structure allows you to identify a publisher for a given
+work from the ISBN, which is in fact an authority-ID pair
+much like a networked information identifier). However, at
+some point the book goes out of print, and the publisher will
+just tell you it is no longer available from the publisher,
+despite the fact that a number of libraries may have the
+book, and, given the ISBN, you may be able to use other
+databases to identify these libraries. Thus, resolution from
+an identifier to a locator, while it is a service we might
+reasonably expect from an identifying agency, is also a
+service that other classes of organizations may offer.3
+
+Mechanisms for permitting an identifying agency (or other
+service provider) to map an identifier to a set of locators
+in response to a client request need to be defined as
+adjuncts to the standard under development by the IETF, along
+with the syntax of identifiers. A number of such mechanisms
+are currently under consideration, including WHOIS++ and
+specialized protocols for this approach. One could also use
+general-purpose protocols such as Z39.50 and model such a
+mapping as a database. The identifying agency can reasonably
+provide a client with additional information along with a set
+of locators; this is discussed later. The current status of
+one IETF proposal on identifiers is given by Simon Spero
+[10], and other proposals are expected soon.
+
+It seems likely that identifying authorities will be
+publishers in the electronic environment, as will libraries
+or organizations serving the library community such as
+national libraries or bibliographic utilities. Archives,
+museums, photographic collection centers, and libraries
+housing special collections might also serve as identifying
+authorities. References might be constructed by authors
+needing to cite other work, or by bibliographers.  In this
+paper I will use the term "electronic reference" for the more
+restrictive construct that allows an object to be located and
+retrieved (i.e., the list of identifiers and optionally
+associated locators) and will reserve the term "electronic
+citation" for a more general construct (discussed in more
+detail below) that offers the full set of functions analogous
+to a print-publication citation. An electronic reference
+defined here is something substantially less powerful than a
+traditional reference or citation as it has developed in the
+print world: It does not provide any information about the
+name, authorship, date of publication, or similar
+characteristics of the referenced object -- information that
+enables readers to determine if they are familiar with a
+cited work, and whether they wish to examine a copy of it.
+
+A view of at least one part of an electronic "reference"
+would be that it is a wrapper syntax allowing specification
+of an ordered list of one or more identifiers, each
+optionally qualified by a set of locators associated with
+each identifier. The client would try to evaluate locators
+(viewing this as cached location information); if that
+failed, the client would attempt to obtain current location
+information from one or more of the identification-assigning
+authorities (or third party brokers analogous to the case of
+libraries indicating whether they have material based on the
+ISBN) based on the identifier appearing in the reference.
+Because some identification assignment authorities may be
+more specific than others in assigning identifiers to
+objects, the list of identifiers should be ordered from
+greater to lesser specificity, and a client must recognize
+that if it is unable to transform the first identifier to a
+valid locator, it may be obtaining an approximation (i.e., a
+different format or version or other variant form of the
+object) of the precise object defined by the electronic
+reference. An extension to the wrapper format for electronic
+references might allow the entity constructing the reference
+to specify whether multiple identifiers are in fact precisely
+equivalent, or whether passing from one identifier in the
+list to the next actually implies such an approximation.
+
+Versions, Version Integrity, and Version Verification
+
+A number of proposals for locating and identifying networked
+information resources have addressed various aspects of the
+problem of versions. Like much other terminology, there is
+not even consensus on the definition of version. Some view a
+version as an object fixed in a specific format: Thus TIFF
+and GIF forms of an image would be different versions of the
+same object. Others conceptualize a version as inhabiting a
+temporal dimension: The creator of an object may issue a
+series of versions of the object, each one in some sense
+"superseding" the previous versions (at least for some
+purposes). Of course, one organization's versions can be
+another organization's distinct objects. An information
+provider might only be concerned with the current version of
+an object, and referral to it by that information provider's
+identifier would always identify the current version. A
+library or archive might want to distinguish each distinct
+version by assigning it a different identifier, if distinct
+versions exist. There is no reason why a server can't compute
+a new version of an object each time it is requested, and no
+server is obliged to provide access to old versions of an
+object. Spero has proposed a syntax that allows identifiers
+to include temporal version numbers. What is unclear is how a
+server would process a request for an object by an identifier
+that included a version number, particularly if it did not
+support access to historical versions, or could not provide
+that specific version.
+
+Indeed, at least one early proposal suggested that
+identifiers be linked to objects (and object versions) at the
+lowest level of bit equivalence by using an MD-5 [11]
+document digest as an identifier. Any user of an identifier
+could immediately determine whether the object retrieved were
+really the same object that the identifier specified. There
+is nothing to prohibit an identifying authority from using
+such a message digest to construct identifiers. Using the
+optional structure for versions, such an identifying
+authority could also support a temporal sequence of objects
+since the property that the more recent version be larger
+than older ones applies only to the version, and not to the
+identifier. As a general approach, however, the use of a
+message digest, which verifies binary equivalence of objects,
+is far too limited. As discussed earlier, some identifying
+authorities will want to define objects as equivalent based
+on various notions of logical, as distinct from bit-for-bit,
+equality. For some applications, it may be desirable to
+include a data element in the electronic reference or
+citation structure (but probably not in the identifier or
+locator itself) which can optionally be used to carry a
+message digest signature for such validation of objects
+retrieved. Further, research is needed on various forms of a
+"logical" message digest which might be used to serve a
+similar function to algorithms such as MD-5 under much
+higher-level notions of object equivalence.
+
+Standards for Cataloging
+
+This section provides a brief summary of some of the key
+components and organizations to those in the IETF unfamiliar
+with the standards used for cataloging all types of
+materials.
+
+The Anglo-American Cataloging Rules (second edition), [12],
+usually referred to as AACR2, defines data elements to be
+extracted from various types of media as part of the process
+of cataloging them. Revisions to this document are managed by
+the CCDA committee of the American Library Association. These
+rules are used in both the US and in Britain.
+
+Cataloging records are exchanged in machine-readable form
+using two standards. The first is NISO Z39.2 (and its
+international analog ISO 2709), which defines a record format
+for the interchange of fielded data without reference to the
+content and semantics of that data. The second relevant
+"standard" (which in fact does not, to the best of my
+knowledge, have the imprimatur of any format standards-making
+body) is the MARC (machine-readable cataloging) standard.
+This standard, maintained by the MARBI committee of the
+American Library Association and edited by the Library of
+Congress, defines field labels, structures, and semantics for
+encoding of the information elements defined by the AACR
+rules into a Z39.2 record structure. It is possible to encode
+the elements defined by MARC into other record transfer
+syntaxes besides MARC (for example, ASN.1 structures),
+although this is not commonly done. It should be noted that
+sometimes MARBI defines MARC fields (at least in tentative
+form) prior to action by the CCDA group, that relationships
+among MARBI, CCDA, NISO, and other agencies are not always
+clearly defined or delineated, and that many people refer to
+MARC for the entire suite of standards Z39.2-MARC-AACR2.
+
+Z39.2/MARC is strictly an interchange format between
+computers. There are many methods and conventions for
+displaying MARC records, including the various display
+formats used in online catalogs, which typically summarize
+the MARC record into a more general bibliographic "citation"
+familiar to non-librarians, but also sometimes offer complex
+formatted displays of all of the MARC fields with tags. But
+while bibliographic displays look much like citations, they
+often do not contain precisely the same information elements
+and serve different functions.
+
+MARC is a US standard, and there exist several other national
+bibliographic formats, particularly in Europe. These other
+formats generally rely on rules similar to the AACR2 rules
+but define somewhat different tag sets and field definitions.
+Such fields are usually encoded in ISO 2709 (Z39.2) for
+interchange. Programs have been developed that map between
+the various USMARC and other MARC formats used by other
+nations with little or no loss of information.
+
+Cataloging Networked Information Resources
+
+Since the widespread deployment of online catalogs in the
+1980s, cataloging practice even for traditional library
+materials has been in a state of flux. Many of the long-
+standing assumptions about how to catalog material, developed
+for an environment in which printed catalog cards were filed
+sequentially in card drawers, no longer make sense. The
+computer-based online catalog permits a rich set of multiple
+access points to bibliographic records that are far more
+extensive and flexible than the sequential filing methods
+used for catalog cards. Techniques such as keyword access
+largely eliminate the need to include permuted headings in
+catalog records. And as we gain experience with online
+catalogs, it is becoming clear that users employ them
+differently than the older card and book catalogs, and that
+their research needs are not entirely satisfied by existing
+cataloging practice [13].
+
+The cataloging of networked information resources confronts
+traditional catalogers with a series of foundational
+questions about the actual purpose of cataloging. Some
+elements of the existing mix of content, format, and physical
+description in traditional cataloging need to be re-
+evaluated. Professor Michael Buckland [14] asks catalogers to
+focus on identifying data elements whose presence or content
+might convince a user to choose one resource over another.
+The developing world of cataloging of networked information
+resources, in which workstation-based software mediates on a
+user's behalf to select, locate, and organize information
+from multiple sources, really requires a deeper form of
+cataloging that incorporates machine-parsable knowledge
+representations about content and coverage [15].
+
+The networked environment seems to demand more content than
+physical description in cataloging. (For example, in print
+one cataloged the physical dimensions of a book; in the
+electronic environment one should probably not catalog the
+type of machine that houses each instance of an electronic
+document.) The inclusion of identifiers, and, secondarily,
+locators, eliminates the need for much of the access
+information that has been proposed for cataloging networked
+information resources. I propose that the emphasis be on
+describing content (despite several troubling issues
+surrounding representation variations, to be discussed later)
+rather than access mechanisms, which should simply be
+relegated to the locators and identifiers that would be
+included in bibliographic records. The most recent MARBI
+proposal [16] points towards such a division of function, as
+it views its proposed 856 field (Electronic Location and
+Access) as transitional and likely to be replaced eventually
+by a collection of data elements somewhere between what has
+been defined earlier in this paper as an electronic reference
+and the more complex electronic citation objects discussed in
+the next section. Of the many difficulties presented by the
+proposed 856 field, there is a primary problem: It is really
+a collection of encoded instructions for accessing a
+resource. The instructions will be very difficult to
+interpret without human intervention, because they do not
+incorporate a service model, but rather frame access in terms
+of protocols and information that would be needed to use a
+program that implements the protocol. This is similar to the
+encoding problems encountered in early proposals for locator
+syntaxes.
+
+The current MARBI proposal does not attempt to address the
+full spectrum of networked information resources. It
+concentrates on resources such as computer files (including
+electronic journals and newsletters), and improves the
+precision of the descriptive taxonomy used to define the
+nature of such resources, which offers the possibility of
+enhanced retrieval accuracy. This is a valuable and welcome
+access enhancement.
+
+Some data elements included in a traditional cataloging
+record become more troublesome as they are extended to apply
+to networked information resources. This issue is not really
+addressed by the current MARBI proposal, at least as I
+understand it. Format is clearly useful in a physical
+artifact environment -- it is helpful to know that something
+is in microfilm, or is a printed book, for example. This
+makes a difference to the user trying to decide whether to
+obtain the material. At the gross level, the analog of format
+for networked information is the resource type (derivable
+from the service identifier in a locator).
+
+At a more detailed level, however, it is useful to know
+whether an image is in PICT, TIFF, GIF, or some other format.
+The image is useless unless the individual retrieving it has
+access to the appropriate software. Similarly, it is useful
+to know whether a file is in ASCII, TeX, Troff, a specific
+SGML encoding, or ODA. The possibilities here are numerous,
+and ill-defined in several dimensions. Some would argue that
+simply specifying TIFF is insufficient, for example. The
+client would like to know the compression scheme used, and
+whether the image is monochromatic, greyscale, or color (as
+well as the number of bits of greyscale or color used).
+Indeed, without some knowledge of the format of a file coming
+back from a file transfer archive, a client will have
+difficulty interpreting the collection of bits. Worse, for
+physical artifacts formats are relatively fixed: A library
+will typically have, and thus catalog, material in a specific
+format like microfiche. (The fact that microfiche can be
+converted to paper through use of a printing microfiche
+reader is considered irrelevant.)
+
+A file server may either physically house multiple formats of
+the same document or be willing to compute such multiple
+variant forms on demand for a client through the use of
+format converters. There may be one or more "canonical" or
+"authoritative" formats, in the sense that conversion to any
+other format is likely to cause some loss of document
+integrity. Here, requesting clients should be made aware of
+such potential information loss. In some cases, the
+identifier assigning authority may regard these different
+forms as different objects, and to obtain a specific object a
+client must ask for it through a locator with ancillary
+parameters specifying the format desired. Other identifier-
+assigning authorities may regard all of the various available
+formats for a document as essentially equivalent (viewing the
+information loss from a format translation as insignificant),
+and leave it to the client to request the format it finds
+most suitable from among those available through the server.
+Of course compound multimedia documents introduce additional,
+hideous complexities.
+
+The MARBI proposal takes the perspective that a bibliographic
+description of a file would include an 856 field for each
+instance of a given file where an instance is, for example, a
+copy on a specific host that is compressed in a specific way.
+It does not address multiple formats for a file, and does not
+seem to accommodate the possibility that a server could offer
+a file in multiple formats and with multiple types of
+compression, perhaps because of the very strong influence of
+LISTSERVs and FTP archives as the test cases in developing
+the proposal. These are services that don't make format
+translations.
+
+Careful consideration must be given to the variation between
+instances of an object as currently viewed by the MARBI
+proposal (which is fixed and, in my view, overly sensitive
+since it distinguishes two versions of an object that may, in
+fact, be byte-isomorphic to each other -- for example, an
+uncompressed file and a compressed version obtained by
+application of a lossless compression algorithm) and the much
+more relativistic notion of object equivalence implicit in
+the IETF identifier schemes.
+
+The number of pages is both part of the physical description
+and also an indication of the size of the work that is
+helpful in evaluating whether one really wants to see it. An
+electronic analog to page count is still helpful, but it is
+unclear how to define it, since it is a function of the
+object's format. It is also unclear what units are most
+helpful. In some cases, the most practical solution will be
+to provide approximate size indicators in units such as bytes
+and pages that break with the notion of precise description
+(as one would do with a fixed physical article) and merely
+provide a clue about the nature of the work being described.
+Indeed, in cases where a dynamic resource (such as a
+constantly changing database) is being described, a
+cataloging record could not offer anything other than an
+approximation, or a precise size at some specific snapshot in
+time. The current MARBI proposal permits a file size as part
+of the 856 Location and Access field and seems to suggest
+that this should be the physical size of a file as it resides
+on the remote host.
+
+Cataloging of such networked information resources begs other
+issues that go well beyond the scope of this discussion. One
+is the distinction between content and holdings. For example,
+the ERIC database from the US Department of Education is
+mounted on a number of service providers. Should one catalog
+implementations, or catalog the database and view the various
+service providers as the electronic analog of holding
+locations? This question is complicated by the fact that no
+two implementations seem to offer quite the same search
+capabilities, and further, different implementations also
+support different associated physical access to the
+information described in the database.
+
+Electronic Citations
+
+Electronic references in the form of sets of identifiers and
+associated locators serve one function of a citation. They
+permit a referenced document to be retrieved. However, as
+already discussed, they fail to provide other functions that
+the citation has traditionally served in print literature,
+such as helping the reader determine what is actually being
+cited, and whether the citation is of interest. To meet these
+needs, it will be necessary to supplement the locators and
+identifiers with other human-reader-oriented information such
+as title, author, and publication date. These additions could
+be derived, in many instances, from cataloging information.
+Indeed, citations and catalog records share many common data
+elements. There are a number of other (optional) data
+elements that, it has been suggested, would be useful in the
+electronic analog of a citation that do not have obvious
+parallels in a cataloging record. These include such data
+elements as intellectual property rights clearing information
+(i.e., this is public domain; or, this is freely
+distributable for educational purposes; or, this is
+copyrighted, there is a fee due, here is the address of the
+server to which you send billing information, and this is the
+fee (or, the server will tell you the appropriate fee)).
+
+Such rights clearing information is important not only for
+the operational workings of various retrieval systems, but
+also because situations will occur in the electronic
+environment where, because of the replacement of copyright by
+licensing, free copies of cited material will not be
+available through the library system or other information
+providers. Instead, the user will be faced with a pay-per-
+view situation, and this will likely have a major bearing on
+whether he or she wishes to inspect the material cited in a
+given reference. Also, inclusion of cost information (as
+opposed to an indication of whether the material is freely
+accessible or not, which is unlikely to be highly volatile)
+is problematic because prices in an electronic environment
+may change frequently. Thus, one might wish to include the
+fact that there is a price associated with the object and an
+"indicator price" (i.e. the price as of a specific date). A
+user's client would have to negotiate with the server that
+can fetch the document to obtain current pricing information
+if the user is interested. Of course, syntax needs to be
+developed to express these intellectual property rights
+parameters.
+
+It may be premature to address the inclusion of such
+intellectual property rights information, since the broader
+area of rights clearing in a distributed computer network is
+still an active research area [17], and simply developing an
+analog of the existing rights management structure, which is
+poorly matched to automated processing, may be shortsighted
+and counterproductive. It's clear that we don't understand
+the long-term solution, and it remains unresolved whether
+implementing an interim "placeholder" solution really helps
+or hurts.
+
+Logically, it would seem that any data elements that are
+appropriate for a full-function electronic citation should
+also be valid (and indeed reasonable for inclusion) as data
+elements within a cataloging record, and that an electronic
+citation would be an electronic reference supplemented with a
+set of optional data elements from the cataloging record.
+They simply would be reformatted from MARC to some other
+syntax (yet to be defined) that is conveniently representable
+in eye-readable and, at the same time, computer-processable
+ASCII. Just as has taken place in the print world, practices,
+conventions, and standards will develop to guide citation
+constructors in which data elements prove to be most useful
+and should be included. These practices will vary from
+context to context, just as occurs with citations to printed
+publications today. One practical issue here is that while
+there is no conceptual problem in devising an ASCII
+representation of electronic references or citations which is
+unambiguous and readily processed by computer, such citations
+may be difficult to construct correctly without an automated
+citation construction program, and are likely to fall far
+short of the ideal of being easily readable by the human eye.
+
+At least some of the service providers that offer conversion
+of identifiers to locators may also offer additional services
+that provide an electronic citation when passed an identifier
+or a locator. Such a service could be used to determine which
+formats for a document are available from a given server, and
+which of the available formats fully preserve the integrity
+of the document.
+
+Other Factual Descriptions of Networked Information Resources
+
+For completeness, we should recognize that while cataloging
+descriptions of networked information resources are intended
+to serve one purpose, and the electronic references are
+intended to support another, but closely related, one, these
+two examples do not exhaust the approaches being taken or
+proposed for describing networked information resources. Some
+of the approaches here are not really intended for inter-host
+transport, but as descriptions of resources to be used within
+the context of a particular application. Others are intended
+as generally distributed descriptions of resources, but have
+not yet made the necessary changes to accommodate the
+locator/identifier structures proposed by the IETF as a means
+of encoding that set of functions into the descriptions.
+
+In general, these descriptions are less detailed than the
+MARC formats intended to be created by trained catalogers;
+and while intended to describe specific classes of resources,
+such as documents, they lack the precision of standard
+library cataloging. Their primary advantage is that they are
+simple -- they can be entered with very simple software
+(often just a text editor); they can be created by relatively
+untrained people; and for many applications they can be
+processed using very simple software. This means that these
+alternative descriptive formats can be mapped into MARC
+records, but at the expense of making somewhat arbitrary
+choices of MARC fields in many cases and thus producing a
+record which, while it may display reasonably well in an
+online catalog, would be considered by a cataloger to be
+somewhat incorrect. Further, in order to obtain correct
+subfield tagging in some cases, either human analysis or
+heuristic algorithms in a purely automated mapping program
+would be needed. Conversely, MARC records could be mapped
+(non-reversibly) into these formats in the sense that some
+information from the MARC record would be discarded. In other
+cases, algorithms would be used to select the "primary" field
+for inclusion in the non-MARC record from among several
+fields that might be presented in the MARC record, much as
+such algorithms are employed in online catalogs to provide
+displays for the normal library user based on data elements
+present in MARC.
+
+Two examples of such formats are the IAFA templates [18] (a
+set of simple schemas for describing FTP archives) and the
+simple format for the exchange of descriptive information
+about computer science technical reports developed by Danny
+Cohen [19]. The format in RFC 1357 has been explicitly
+analyzed to ensure that it can be mapped reasonably to and
+from the MARC format, subject to the constraints discussed
+above.
+
+Beyond these simple descriptive formats that might be entered
+by people or in some cases algorithmically derived (for
+example, from technical reports using specific macros in some
+markup language, or a specific known SGML DTD with
+appropriate tagging), there are other factual representations
+of specific types of networked information objects that are
+generated purely by computer programs without human
+intervention. These include the representations that systems
+such as WAIS develop for documents, or the document summaries
+that are created by Mike Schwartz's ESSENCE system [20]. As
+indicated, most of these computer-derived representations
+currently are not being interchanged from one host to another
+as a means of distributing descriptions of networked
+resources, but this seems likely to change as technology and
+standards mature and the need to perform such exchanges
+becomes better recognized. It is also interesting that there
+are not currently any fields defined in the MARC format for
+the storage of many of the data elements computed by system
+such as ESSENCE.
+
+Referencing Parts of Objects
+
+A number of the applications described need to make reference
+to a networked information resource as well as to a specific
+"place" within that resource. Clearly, this only makes sense
+for certain types of resources, such as documents. It may not
+make sense to reference a "part" of an interactive service
+accessible through TELNET. Reference to such document
+"fragments" raises a number of problems. Perhaps most
+seriously, there is the difficulty in developing ways to
+reference parts of an object independent of the object
+representation. In most cases, simple approaches such as byte
+offsets from the start of a document will thus be
+insufficient, and the language for describing fragments will
+depend on the object type and probably the representation.
+This set of problems can be viewed as outside of the scope of
+locators, identifiers, and cataloging, although for
+references and citations it would clearly be useful at least
+to have a standard syntax for identifying a specific location
+within an object described by a locator or an identifier (at
+least in a given format), even if the accompanying semantics
+are not well-understood and may remain, to some extent,
+implementation-specific at present. A number of proposals
+have been made for such syntaxes [21].
+
+There is a modeling issue, however, through which the need to
+specify fragments interacts with the definition of resource
+locators. The question is whether a service provider
+understands and implements fragment specifications, or
+whether the interpretation of such specifications should be
+modeled strictly as a client function. There are compelling
+options for assigning the function to the service provider:
+If only a small part of a large object is needed by a client,
+it needn't transfer the entire object across the network.
+When charges are required for retrieving, it will probably
+cost less for retrieving a fragment than for the entire
+object. Assigning the function to the server offers much more
+flexibility in implementing charging schemes without the
+requirement that clients be trusted to discard everything but
+the fragment. Implementation of this function division,
+however, requires that fragment specification be passed to
+the locator service provider as an additional parameter.
+This complicates the service definitions and requires the
+service providers to return a much more complex series of
+error conditions pertaining to invalid or unsupported
+fragment specifications. It potentially calls for a system
+where responsibility may be divided between the server (doing
+as much of the fragment extraction processing as possible,
+indicating to the client what it has and has not been able to
+do) and the client (then postprocessing the return from the
+server and the fragment specification to complete the
+fragment extraction process).
+
+Conclusions
+
+The structure of locators and identifiers developed by the
+IETF provides a workable basis for meeting the operational
+needs of the new networked information services. It can also
+address some of the problems in current catalog practice as
+we attempt to extend such practice to networked information
+resources. While there are still syntactic details to be
+worked out and much precise definition still needed for
+various information access services, this will be the easy
+part, relatively speaking. A number of other questions remain
+unanswered, such as appropriate handling of versions,
+fragments, and multiple formats for the same object. These
+will require more study, and probably considerably more
+practical experience, before the most effective approaches
+and their relationships to the practices of cataloging on one
+hand and the identifier locater structure on the other are
+clear.
+
+The influence of the relatively function-impoverished current
+FTP protocol and its implementation has dominated many
+concerns. Within the FTP context, one can typically only
+learn about file formats, semantics, versions, and other
+parameters through external descriptive information such as
+cataloging records or directory entries for files, or, to a
+lesser extent, through file-naming conventions, or, in some
+cases, by actually moving the file to one's own machine and
+performing computations and analysis upon it. One cannot
+obtain such information dynamically within the context of the
+FTP protocol interchanges<4>. Even beyond the difficulty in
+obtaining information about a file, the FTP world view is
+defined in terms of information having a fixed form, unless
+the creator of this information, in his or her wisdom, has
+explicitly provided it in a limited set of multiple formats
+(in which case, of course, the information user has only his
+or her faith in the responsible and meticulous behavior of
+the creator in keeping the multiple formats of the
+information synchronized). I believe that in the future the
+ability to obtain not only objects, but meta-information
+about objects, will be a common protocol function, and that
+servers will commonly implement conversions from one
+information format to another. Indeed, they will often
+provide the same information through multiple protocol
+interfaces as well. Our ideas about versions, identifiers,
+and objects need to be sufficiently flexible to accommodate
+these new protocol functions from the perspectives of
+multiple applications and organizations that employ the
+protocols.
+
+Networked information resources raise basic questions about
+the purpose of cataloging and will encourage re-examination
+of the assumptions that have guided the cataloging of
+traditional, primarily printed, library materials for access
+through card or book catalogs. A number of new data elements
+will have to be defined to address issues related to
+electronic content, including formats and object size. The
+definition of these elements will be an evolutionary process
+since it depends, in large measure, on other developing
+standards for electronic information objects.
+
+A set of "wrapper" formats will need to be defined for
+electronic references and citations. The contents of these
+wrappers will be drawn both from the work on locators and
+identifiers and from a mapping of traditional and new
+cataloging data elements. In defining these wrappers and the
+data elements that are normally included within them, a
+difficult balance between the needs of the human reader and
+of the computer programs that assist that reader in
+navigating and browsing networked information will have to be
+struck. This task can be undertaken now, with the caveat that
+extensibility is an essential design criterion.
+Acknowledgments
+
+My thanks to John Kunze, George Brett, Tim Berners-Lee,
+Michael Buckland, Peter Deutsch, Alan Emtage, Chris Weider,
+Jim Fullton, Simon Spero, Mitra, Cecilia Preston, and many
+others, including other members of the IETF Working Group,
+the Z39.50 Implementor's Group, and the participants in the
+1992 seminar on Networked Information Retrieval at the
+University of California Berkeley School of Library and
+Information Studies, for their contributions to the ideas
+described here.
+
+References
+
+[Note: These references are still being revised.
+Corrections/updates are appreciated.]
+
+[1] Deutsch, Peter and Alan Emtage. "The  archie  System: An
+Internet Electronic Directory Service." Connexions 6(2)
+(1992): 2-9.
+
+[2] Overview document on WWW.
+
+[3] Overview document on WAIS.
+
+[4] MIME reference.
+[5] Postings on PACS-L and other LISTSERVs, and practices for
+various electronic journals.
+
+[6] Kahle, Brewster. "Document IDs: An ISBN for the
+Electronic Age." [title? unpublished? appeared in WAIS
+Digest]. Also: other proposals for WWW,  archie d, etc.
+
+[7] Various LC working papers. Also: Guenther, Rebecca.
+"Access to Electronic Information Resources within USMARC."
+Proceedings ASIS 1992 Midyear Meeting, Albuquerque, NM, May
+27-30, 1992. (1992): 22-23. Also: Moen, William. "Organizing
+Networked Resources for Effective Use: Classification and
+Other Issues in Developing Navigational Tools." Proceedings
+ASIS 1992 Midyear Meeting, Albuquerque, NM, May 27-30, 1992.
+(1992): 10-21.
+
+[8] Jul, Erik. Report on OCLC Internet Cataloging Project.
+Also: Report on CNI TopNode project.
+
+[9] Berners-Lee, Tim. Paper on URLs. Also: Emtage, Alan.
+Summary of IETF Meeting in Washington, DC, November 1992.
+
+[10] Spero, Simon. Paper on URNs [posted to list].
+
+[11] MD-5
+
+[12] AACR2
+
+[13] Lynch, Clifford A. "Cataloging Practices and the Online
+Catalog." Proceedings 48th ASIS Annual Meeting (1985).
+
+[14] Buckland, Michael. Personal communication.
+
+[15] Lynch, Clifford A. and Cecilia M. Preston. "Describing
+and Classifying Networked Information Resources." Electronic
+Networking: Research, Applications, and Policy (ENRAP) 2(1).
+(Spring 1992):
+
+[16] Current MARBI Proposal.
+
+[17] Kahn and Cerf. Digital Libraries Volume 1: The World of
+Knowbots. Also: Workshop on the Protection of Intellectual
+Property Rights in a Digital System: Knowbots in the Real
+World (CNRI; 1989).
+[18] IAFA
+
+[19] (RFC 1357, reference "A Format for Emailing
+Bibliographic Records," Danny Cohen (ed.), July 1992)
+
+[20] ESSENCE
+
+[21] Kunze, John A. "Nonbibliographic Applications of
+Z39.50." The Public-Access Computer Systems Review 3(5)
+(1992): 4-30. To retrieve this refereed article, send the
+email message GET KUNZE PRV3N5 F=MAIL to LISTSERV@UHUPVM1 or
+LISTSERV@UHUPVM1.UH.EDU.
+
+
+FOOTNOTES
+
+<1>  This working group and its predecessor birds-of-a-feather sessions
+have had many names, e.g., "Living documents BOF," "URL WG," etc.
+<2>  It is possible that for some access mechanisms, alternate service
+providers will appear, similar to multiple long-distance service
+providers.
+<3>  Self-reference is particularly useful in conjunction with a
+supplementary syntax (as discussed later) to allow identification of a
+specific place within an object. This allows an object to contain
+internal links without regard to where the object is stored or how it is
+retrieved.
+3 The ISSN or ISBN also offers an example of the very relative nature of identif
+iers.
+Some works that are simultaneously published in multiple countries, or in both
+hardcover and paperback, have multiple ISGNs even though content is identical. O
+n the
+other hand, some periodicals are published in multiple editions with differeng c
+ongent
+(such as regioual editons) with the same ISSN.
+<4> I understand that work is underway within the IETF to develop
+protocol extensions to FTP to permit some file meta-information
+to be obtained through FTP. However, it will be a long time, I
+fear, before one can assume that this is widely implemented as
+part of FTP services.
+
+
+
