@@ -1,10 +1,10 @@
-Uniform Resource Identifiers Working Group                R.T. Fielding
+Uniform Resource Identifiers Working Group               R. T. Fielding
 INTERNET-DRAFT                                                UC Irvine
-Expires April 28, 1995                                 October 28, 1994
+Expires May 27, 1995                                  November 27, 1994
 
 
                   Relative Uniform Resource Locators
-                 <draft-ietf-uri-relative-url-01.txt>
+                 <draft-ietf-uri-relative-url-02.txt>
 
 
 Status of this Memo
@@ -27,7 +27,7 @@ Status of this Memo
    munnari.oz.au (Pacific Rim).
 
    Distribution of this document is unlimited.  Please send comments
-   to the editor, Roy T. Fielding <fielding@ics.uci.edu>, or to the
+   to the author, Roy T. Fielding <fielding@ics.uci.edu>, or to the
    URI working group (URI-WG) of the Internet Engineering Task Force
    (IETF) at <uri@bunyip.com>. Discussions of the group are archived at
    <URL:http://www.acl.lanl.gov/URI/archive/uri-archive.index.html>.
@@ -70,37 +70,37 @@ Abstract
    those URLs which obtain global scope only when interpreted relative
    to a separate base URL.
 
-   A primary use for Uniform Resource Locators is to embed them within
+   A common use for Uniform Resource Locators is to embed them within
    a document (referred to as the "base" document) for the purpose of
-   identifying other Internet-accessible resources.  This is
-   particularly true of hypertext documents, where URLs can serve as
-   the identifiers for hypertext link destinations. 
-
-   It is often the case that, where a group or "tree" of documents
-   serves a common purpose, the vast majority of URLs within those
-   documents point to locations within that tree rather than outside
-   of it.  Similarly, documents located at a particular Internet site
-   are much more likely to refer to other resources at that site than
-   to resources at remote sites.
+   identifying other Internet-accessible resources.  For example, in
+   hypertext documents, URLs can be used as the identifiers for
+   hypertext link destinations. 
 
    Absolute URLs contain a great deal of information which may already
    be known from the context of the base document's retrieval, 
    including the access scheme, network location, and parts of the
    URL path.  In situations where the base URL is well-defined and
-   known to the parser (human or machine), it is useful to be able to
-   embed a URL reference which inherits that context rather than
-   re-specifying it within each instance.
+   known, it is useful to be able to embed a URL reference which
+   inherits that context rather than re-specifying it within each
+   instance.
 
-   In addition to the space saved, relative addressing of URLs allows
-   document trees to be partially independent of their location and/or
-   access scheme.  For instance, if they refer to each other using
-   relative URLs, it is possible for a single set of documents to be
-   simultaneously accessible and, if hypertext, traversable via each
-   of the "file", "http", and "ftp" access schemes. Furthermore,
-   document trees can be moved, as a whole, without changing any of
-   the embedded URLs.  Experience within the World-Wide Web has
-   demonstrated that the ability to perform relative referencing is
-   necessary for the long-term usability of embedded URLs.
+   It is often the case that a group or "tree" of documents has been
+   constructed to serve a common purpose; the vast majority of URLs
+   within these documents point to locations within the tree rather
+   than outside of it.  Similarly, documents located at a particular
+   Internet site are much more likely to refer to other resources at
+   that site than to resources at remote sites.
+
+   Relative addressing of URLs allows document trees to be partially
+   independent of their location and/or access scheme.  For instance,
+   if they refer to each other using relative URLs, it is possible for
+   a single set of documents to be simultaneously accessible and, if
+   hypertext, traversable via each of the "file", "http", and "ftp"
+   access schemes. Furthermore, document trees can be moved, as a whole,
+   without changing any of the embedded URLs. Experience within the
+   World-Wide Web has demonstrated that the ability to perform relative
+   referencing is necessary for the long-term usability of embedded
+   URLs.
 
 2.  Relative URL Syntax
 
@@ -112,13 +112,6 @@ Abstract
    necessary in order to describe the parsing of relative URLs.
 
 2.1.  URL Syntactic Components
-
-   The relative form relies on a property of the URL syntax that
-   certain characters ("/") and certain path segments ("..", ".") have
-   a significance reserved for representing a hierarchical space.
-   Additional reserved characters are sometimes used to separate the
-   URL path from other components, including object parameters (";"),
-   query information ("?"), and fragment identifiers ("#").
 
    Like absolute URLs, relative URL syntax is dependent upon the access
    scheme.  Some schemes use "?" and ";" to indicate special reserved
@@ -174,7 +167,7 @@ Abstract
    relativeURL = [ absoluteURL | location | abs_path | rel_path ]
                  [ "#" fragment ]
 
-   absoluteURL = scheme ":" [ location | abs_path | rel_path ]
+   absoluteURL = scheme ":" *[ uchar | reserved ]
    location    = "//" net_loc [ "/" rel_path ]
    abs_path    = "/"  rel_path
    rel_path    = [ path ] [ ";" params ] [ "?" query ]
@@ -187,10 +180,10 @@ Abstract
 
    scheme      = 1*[ alpha | digit | "+" | "-" | "." ]
    net_loc     =  *[ pchar | ";" ]
-   query       =  *[ uchar | reserved | "#" ]
+   query       =  *[ uchar | reserved ]
    fragment    =  *[ uchar | reserved ]
 
-   pchar       = [ uchar | "?" | ":" | "@" | "&" | "=" | "#" ]
+   pchar       = [ uchar | "?" | ":" | "@" | "&" | "=" ]
    uchar       = unreserved | escape
    unreserved  = alpha | digit | safe | extra | national
 
@@ -630,7 +623,8 @@ Abstract
        draft-ietf-uri-url-08.txt>, October 1994.
 
    [3] Postel, J. and Reynolds, J.K., "File Transfer Protocol (FTP)",
-       RFC 959, <URL:ftp://ds.internic.net/rfc/rfc959.txt>, October 1985.
+       STD 9, RFC 959, <URL:ftp://ds.internic.net/rfc/rfc959.txt>,
+       October 1985.
 
    [4] Berners-Lee, T ., "Hypertext Transfer Protocol (HTTP)" ,
        CERN, <URL:ftp://info.cern.ch/pub/www/doc/http-spec.txt.Z>,
@@ -649,8 +643,8 @@ Abstract
        /pub/gopher/gopher_protocol/Gopher+/Gopher+.txt>, July 1993.
 
    [7] Crocker, D. H., "Standard for the Format of ARPA Internet Text
-       Messages", RFC 822, <URL:ftp://ds.internic.net/rfc/rfc822.txt>,
-       April 1982.
+       Messages", STD 11, RFC 822,
+       <URL:ftp://ds.internic.net/rfc/rfc822.txt>, August 1982.
 
    [8] Horton, M. and Adams, R., "Standard For Interchange of USENET
        messages", RFC 1036, <URL:ftp://ds.internic.net/rfc/rfc1036.txt>,
@@ -661,7 +655,7 @@ Abstract
        RFC977, <URL:ftp://ds.internic.net/rfc/rfc977.txt>,
        February 1986.
 
-  [10] Postel, J. and Reynolds, J., "TELNET Protocol Specification",
+  [10] Postel, J. and Reynolds, J.K., "TELNET Protocol Specification",
        RFC 854, <URL:ftp://ds.internic.net/rfc/rfc854.txt>, May 1983.
 
   [11] Davis, F., Kahle, B., Morris, H., Salem, J., Shen, T., Wang, R.,
@@ -681,8 +675,8 @@ Abstract
        June 1993.
 
   [14] Berners-Lee, T., Connolly, D., et al. "HyperText Markup Language
-       Specification -- 2.0", HTML-WG draft (work in progress),
-       <URL:ftp://www.ics.uci.edu/pub/ietf/html/>, October 1994.
+       Specification -- 2.0", Internet-Draft (work in progress),
+       <URL:ftp://www.ics.uci.edu/pub/ietf/html/>, November 1994.
 
   [15] Kunze, J., "Functional Requirements for Internet Resource
        Locators", Internet-Draft (work in progress),
@@ -701,7 +695,7 @@ Abstract
    Fax: +1 (714) 824-4056
    Email: fielding@ics.uci.edu
 
-   This Internet-Draft expires April 28, 1995.
+   This Internet-Draft expires May 27, 1995.
 
 
 10.  Appendix - Embedding the Base URL in HTML documents.
