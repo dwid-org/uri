@@ -792,7 +792,7 @@ for the port, where http://63.197.151.31:0000000080/ accesses port 80).
  <type>syntax: IPv6</type>
  <name>011-IPv6-literal</name>
  <title>integrate IPv6 syntax of RFC 2732</title>
- <status>accepted</status>
+ <status>added 00</status>
  <report>
   <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="19991201">01 Dec 1999</date>
@@ -803,15 +803,27 @@ http://www.ietf.org/rfc/rfc2732.txt
  </report>
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
-  <date sort="20021022">22 Oct 2002</date>
-  <where>URI-WG mailing list</where>
+  <date sort="20021026">26 Oct 2002</date>
+  <where>draft 00</where>
 <pre>
-I've been trying to integrate the RFC 2732 update and have so far
-found it to be a complete time-sink.  That RFC doesn't define the
-actual IPv6 literal syntax, and the ABNF provided by RFC 2373 is
-not even remotely correct.
+IPv6 literals have been added to the list of possible identifiers
+for the host portion of a server component, as described by RFC 2732,
+with the addition of "[" and "]" to the reserved, uric, and
+uric_no_slash sets.  Square brackets are now specified as reserved
+for the authority component, allowed within the opaque part of an
+opaque URI, and not allowed in the hierarchical syntax except for
+their use as delimiters for an IPv6reference within host.  In order
+to make this change without changing the technical definition of
+the path, query, and fragment components, those rules were redefined
+to directly specify the characters allowed rather than continuing
+to be defined in terms of uric.
 
-Does anyone know of a correct BNF for the IPv6 literal?
+Since RFC 2732 defers to RFC 2373 for definition of an IPv6 literal
+address, which unfortunately has an incorrect ABNF description of
+IPv6address, I created a new ABNF rule for IPv6address that matches
+the text representations defined by Section 2.2 of RFC 2373.
+Likewise, the definition of IPv4address has been improved in order to
+limit each decimal octet to the range 0-255.
 </pre>
  </action>
 </issue>
@@ -820,7 +832,7 @@ Does anyone know of a correct BNF for the IPv6 literal?
  <type>syntax: IPv6</type>
  <name>012-simplify-IPv6</name>
  <title>change BNF to incorporate IPv6 better than RFC 2732</title>
- <status>accepted</status>
+ <status>added 00</status>
  <report>
   <author email="jjc_AT_jclark.com">James Clark</author>
   <date sort="20010720">20 Jul 2001</date>
@@ -973,6 +985,24 @@ which is simply unwise (and why they were not allowed at all before).
 I can understand why IPv6 chose square brackets as delimiters, but
 allowing them in path, query, and fragment would cause too many
 interoperability issues with deployed systems.
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021026">26 Oct 2002</date>
+  <where>draft 00</where>
+<pre>
+IPv6 literals have been added to the list of possible identifiers
+for the host portion of a server component, as described by RFC 2732,
+with the addition of "[" and "]" to the reserved, uric, and
+uric_no_slash sets.  Square brackets are now specified as reserved
+for the authority component, allowed within the opaque part of an
+opaque URI, and not allowed in the hierarchical syntax except for
+their use as delimiters for an IPv6reference within host.  In order
+to make this change without changing the technical definition of
+the path, query, and fragment components, those rules were redefined
+to directly specify the characters allowed rather than continuing
+to be defined in terms of uric.
 </pre>
  </action>
 </issue>
@@ -1133,7 +1163,7 @@ Fixed by rewriting the algorithm as pseudocode.
  <type>syntax: hostname</type>
  <name>016-hostname-toplabel</name>
  <title>hostname toplabel syntax could be improved</title>
- <status>pending</status>
+ <status>accepted</status>
  <report>
   <author email="blilly_AT_erols.com">Bruce Lilly</author>
   <date sort="20020116">16 Jan 2002</date>
@@ -1467,7 +1497,7 @@ future?
  <type>syntax: IPv6</type>
  <name>018-IPv6-example</name>
  <title>RFC 2732 example bug</title>
- <status>accepted</status>
+ <status>added 00</status>
  <report>
   <author email="Robert.Graf_AT_ecetra.com">Robert Graf</author>
   <date sort="20020424">24 Apr 2002</date>
@@ -1518,13 +1548,30 @@ to
 because the IP4address is filled via the IPv6reference
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021026">26 Oct 2002</date>
+  <where>draft 00</where>
+<pre>
+IPv6 literals have been added to the list of possible identifiers
+for the host portion of a server component, as described by RFC 2732,
+but in the reverse order to reflect disambiguation rules.
+
+Since RFC 2732 defers to RFC 2373 for definition of an IPv6 literal
+address, which unfortunately has an incorrect ABNF description of
+IPv6address, I created a new ABNF rule for IPv6address that matches
+the text representations defined by Section 2.2 of RFC 2373.
+Likewise, the definition of IPv4address has been improved in order to
+limit each decimal octet to the range 0-255.
+</pre>
+ </action>
 </issue>
 
 <issue>
  <type>intro</type>
  <name>019-URI-URL-URN</name>
  <title>URI/URL/URN contemporary view</title>
- <status>pending</status>
+ <status>accepted</status>
  <report>
   <author email="michael_AT_neonym.net">Michael Mealling</author>
   <date sort="20020501">01 May 2002</date>
@@ -1539,7 +1586,7 @@ Especially the recommendation:
        described in section 1, and which considers the additional URI
        issues listed or alluded to in section 3.
 
-Just so you wont' have to go dig the draft up, this is the "Contemporary
+Just so you won't have to go dig the draft up, this is the "Contemporary
 View":
 
    Over time, the importance of this additional level of hierarchy

@@ -15,13 +15,10 @@
 <td nowrap="nowrap"><a href="#006-absoluteURIref">006-absoluteURIref</a></td><td>need BNF term for absolute URI with optional fragment</td><td>syntax</td><td>accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#011-IPv6-literal">011-IPv6-literal</a></td><td>integrate IPv6 syntax of RFC 2732</td><td>syntax: IPv6</td><td>accepted</td>
+<td nowrap="nowrap"><a href="#016-hostname-toplabel">016-hostname-toplabel</a></td><td>hostname toplabel syntax could be improved</td><td>syntax: hostname</td><td>accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#012-simplify-IPv6">012-simplify-IPv6</a></td><td>change BNF to incorporate IPv6 better than RFC 2732</td><td>syntax: IPv6</td><td>accepted</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>syntax: IPv6</td><td>accepted</td>
+<td nowrap="nowrap"><a href="#019-URI-URL-URN">019-URI-URL-URN</a></td><td>URI/URL/URN contemporary view</td><td>intro</td><td>accepted</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td>accepted</td>
@@ -39,13 +36,7 @@
 <td nowrap="nowrap"><a href="#010-gethostbyname">010-gethostbyname</a></td><td bgcolor="#FFFFCC">gethostbyname allows much more than hostname BNF</td><td>syntax: hostname</td><td>pending</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#016-hostname-toplabel">016-hostname-toplabel</a></td><td bgcolor="#FFFFCC">hostname toplabel syntax could be improved</td><td>syntax: hostname</td><td>pending</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#017-rdf-fragment">017-rdf-fragment</a></td><td bgcolor="#FFFFCC">RDF does not believe in same-document references</td><td>syntax: fragment</td><td>pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#019-URI-URL-URN">019-URI-URL-URN</a></td><td bgcolor="#FFFFCC">URI/URL/URN contemporary view</td><td>intro</td><td>pending</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#020-utf8-default">020-utf8-default</a></td><td bgcolor="#FFFFCC">Defaulting to UTF-8 for unknown encoding</td><td>syntax</td><td>pending</td>
@@ -78,6 +69,12 @@
 <td nowrap="nowrap"><a href="#009-nullable-netpath">009-nullable-netpath</a></td><td>syntax for netpath allows empty authority</td><td>syntax: netpath</td><td>closed</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#011-IPv6-literal">011-IPv6-literal</a></td><td>integrate IPv6 syntax of RFC 2732</td><td>syntax: IPv6</td><td>added 00</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#012-simplify-IPv6">012-simplify-IPv6</a></td><td>change BNF to incorporate IPv6 better than RFC 2732</td><td>syntax: IPv6</td><td>added 00</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#013-query-slash">013-query-slash</a></td><td>slash character should be forbidden in query</td><td>syntax: query</td><td>closed</td>
 </tr>
 <tr>
@@ -85,6 +82,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#015-fragment-handling">015-fragment-handling</a></td><td>clarify how URI processor is expected to handle fragment</td><td>syntax: fragment</td><td>fixed 00</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>syntax: IPv6</td><td>added 00</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#023-URI-plural">023-URI-plural</a></td><td>URI or URIs for plural</td><td>intro</td><td>fixed 00</td>
@@ -946,7 +946,7 @@ for the port, where http://63.197.151.31:0000000080/ accesses port 80).
       integrate IPv6 syntax of RFC 2732</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax: IPv6</th><th>accepted</th>
+<th width="40%">syntax: IPv6</th><th>added 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -961,15 +961,27 @@ http://www.ietf.org/rfc/rfc2732.txt
 <tr>
 <td colspan="2">action:
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
-  22 Oct 2002,
-  URI-WG mailing list:
+  26 Oct 2002,
+  draft 00:
   <pre>
-I've been trying to integrate the RFC 2732 update and have so far
-found it to be a complete time-sink.  That RFC doesn't define the
-actual IPv6 literal syntax, and the ABNF provided by RFC 2373 is
-not even remotely correct.
+IPv6 literals have been added to the list of possible identifiers
+for the host portion of a server component, as described by RFC 2732,
+with the addition of "[" and "]" to the reserved, uric, and
+uric_no_slash sets.  Square brackets are now specified as reserved
+for the authority component, allowed within the opaque part of an
+opaque URI, and not allowed in the hierarchical syntax except for
+their use as delimiters for an IPv6reference within host.  In order
+to make this change without changing the technical definition of
+the path, query, and fragment components, those rules were redefined
+to directly specify the characters allowed rather than continuing
+to be defined in terms of uric.
 
-Does anyone know of a correct BNF for the IPv6 literal?
+Since RFC 2732 defers to RFC 2373 for definition of an IPv6 literal
+address, which unfortunately has an incorrect ABNF description of
+IPv6address, I created a new ABNF rule for IPv6address that matches
+the text representations defined by Section 2.2 of RFC 2373.
+Likewise, the definition of IPv4address has been improved in order to
+limit each decimal octet to the range 0-255.
 </pre>
 </td>
 </tr>
@@ -980,7 +992,7 @@ Does anyone know of a correct BNF for the IPv6 literal?
       change BNF to incorporate IPv6 better than RFC 2732</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax: IPv6</th><th>accepted</th>
+<th width="40%">syntax: IPv6</th><th>added 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1143,6 +1155,26 @@ which is simply unwise (and why they were not allowed at all before).
 I can understand why IPv6 chose square brackets as delimiters, but
 allowing them in path, query, and fragment would cause too many
 interoperability issues with deployed systems.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  26 Oct 2002,
+  draft 00:
+  <pre>
+IPv6 literals have been added to the list of possible identifiers
+for the host portion of a server component, as described by RFC 2732,
+with the addition of "[" and "]" to the reserved, uric, and
+uric_no_slash sets.  Square brackets are now specified as reserved
+for the authority component, allowed within the opaque part of an
+opaque URI, and not allowed in the hierarchical syntax except for
+their use as delimiters for an IPv6reference within host.  In order
+to make this change without changing the technical definition of
+the path, query, and fragment components, those rules were redefined
+to directly specify the characters allowed rather than continuing
+to be defined in terms of uric.
 </pre>
 </td>
 </tr>
@@ -1325,7 +1357,7 @@ Fixed by rewriting the algorithm as pseudocode.
       hostname toplabel syntax could be improved</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax: hostname</th><th>pending</th>
+<th width="40%">syntax: hostname</th><th>accepted</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1673,7 +1705,7 @@ future?
       RFC 2732 example bug</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax: IPv6</th><th>accepted</th>
+<th width="40%">syntax: IPv6</th><th>added 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1729,6 +1761,25 @@ because the IP4address is filled via the IPv6reference
 </pre>
 </td>
 </tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  26 Oct 2002,
+  draft 00:
+  <pre>
+IPv6 literals have been added to the list of possible identifiers
+for the host portion of a server component, as described by RFC 2732,
+but in the reverse order to reflect disambiguation rules.
+
+Since RFC 2732 defers to RFC 2373 for definition of an IPv6 literal
+address, which unfortunately has an incorrect ABNF description of
+IPv6address, I created a new ABNF rule for IPv6address that matches
+the text representations defined by Section 2.2 of RFC 2373.
+Likewise, the definition of IPv4address has been improved in order to
+limit each decimal octet to the range 0-255.
+</pre>
+</td>
+</tr>
 </table>
 <br>
 <h2>
@@ -1736,7 +1787,7 @@ because the IP4address is filled via the IPv6reference
       URI/URL/URN contemporary view</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">intro</th><th>pending</th>
+<th width="40%">intro</th><th>accepted</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1753,7 +1804,7 @@ Especially the recommendation:
        described in section 1, and which considers the additional URI
        issues listed or alluded to in section 3.
 
-Just so you wont' have to go dig the draft up, this is the "Contemporary
+Just so you won't have to go dig the draft up, this is the "Contemporary
 View":
 
    Over time, the importance of this additional level of hierarchy
