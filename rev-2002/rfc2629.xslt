@@ -932,12 +932,6 @@
         <meta name="keywords" content="{$keyw}" />
       </xsl:if>
       
-      <!-- generator -->
-      <xsl:variable name="gen">
-        <xsl:call-template name="get-generator" />
-      </xsl:variable>
-      <meta name="generator" content="{$gen}" />
-      
       <!-- DC creator -->
       <xsl:variable name="creator">
         <xsl:call-template name="get-authors" />
@@ -2437,11 +2431,11 @@ table.resolution
   <xsl:variable name="gen">
     <xsl:text>http://greenbytes.de/tech/webdav/rfc2629.xslt, </xsl:text>
     <!-- when RCS keyword substitution in place, add version info -->
-    <xsl:if test="contains('$Revision: 1.11 $',':')">
-      <xsl:value-of select="concat('Revision ',normalize-space(translate(substring-after('$Revision: 1.11 $', 'Revision: '),'$','')),', ')" />
+    <xsl:if test="contains('$Revision: 1.12 $',':')">
+      <xsl:value-of select="concat('Revision ',normalize-space(translate(substring-after('$Revision: 1.12 $', 'Revision: '),'$','')),', ')" />
     </xsl:if>
-    <xsl:if test="contains('$Date: 2003/06/06 21:21:56 $',':')">
-      <xsl:value-of select="concat(normalize-space(translate(substring-after('$Date: 2003/06/06 21:21:56 $', 'Date: '),'$','')),', ')" />
+    <xsl:if test="contains('$Date: 2003/06/06 21:27:06 $',':')">
+      <xsl:value-of select="concat(normalize-space(translate(substring-after('$Date: 2003/06/06 21:27:06 $', 'Date: '),'$','')),', ')" />
     </xsl:if>
     <xsl:value-of select="concat('XSLT vendor: ',system-property('xsl:vendor'),' ',system-property('xsl:vendor-url'))" />
   </xsl:variable>
