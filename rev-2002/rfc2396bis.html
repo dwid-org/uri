@@ -216,7 +216,7 @@ table.resolution
 </tr>
 <tr>
 <td class="header">
-        &lt;draft-fielding-uri-rfc2396bis-0x&gt;
+        &lt;draft-fielding-uri-rfc2396bis-04&gt;
       &nbsp;</td><td class="header">R. Fielding&nbsp;</td>
 </tr>
 <tr>
@@ -239,7 +239,7 @@ table.resolution
 </tr>
 </table>
 <p class="title">Uniform Resource Identifier (URI): Generic Syntax<br>
-<span class="filename">draft-fielding-uri-rfc2396bis-0x</span>
+<span class="filename">draft-fielding-uri-rfc2396bis-04</span>
 </p>
 <h1>Status of this Memo</h1>
 <p>
@@ -1964,7 +1964,7 @@ explicitly rather than relying on heuristic determination.
 <a name="rfc.iref.69"></a>
 
 </p>
-<pre>   IP-literal = "[" ( IPv6address | IPvFuture  ) "]"
+<pre>   IP-literal = "[" ( IPv6address / IPvFuture  ) "]"
 
    IPvFuture  = "v" HEXDIG "." 1*( unreserved / sub-delims / ":" )
 </pre>
@@ -4038,7 +4038,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
  host          = IP-literal / IPv4address / reg-name
  port          = *DIGIT
 
- IP-literal    = "[" ( IPv6address | IPvFuture  ) "]"
+ IP-literal    = "[" ( IPv6address / IPvFuture  ) "]"
 
  IPvFuture     = "v" HEXDIG "." 1*( unreserved / sub-delims / ":" )
 

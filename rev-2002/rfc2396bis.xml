@@ -9,7 +9,7 @@
 <?rfc editing="no"?>
 <?rfc-ext parse-xml-in-artwork="yes" ?>
 <rfc obsoletes="2732, 2396, 1808" updates="1738" category="std"
-     ipr="full2026" docName="draft-fielding-uri-rfc2396bis-0x">
+     ipr="full2026" docName="draft-fielding-uri-rfc2396bis-04">
 
 <front>
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifier (URI): Generic Syntax</title>
@@ -841,7 +841,7 @@ explicitly rather than relying on heuristic determination.
 <iref item="URI grammar" subitem="IPv6address" primary="false"/>
 <iref item="URI grammar" subitem="IPvFuture" primary="true"/>
 </preamble><artwork type="abnf">
-   IP-literal = "[" ( IPv6address | IPvFuture  ) "]"
+   IP-literal = "[" ( IPv6address / IPvFuture  ) "]"
 
    IPvFuture  = "v" HEXDIG "." 1*( unreserved / sub-delims / ":" )
 </artwork><postamble>
@@ -2889,7 +2889,7 @@ Science, University of California, Irvine</organization>
  host          = IP-literal / IPv4address / reg-name
  port          = *DIGIT
 
- IP-literal    = "[" ( IPv6address | IPvFuture  ) "]"
+ IP-literal    = "[" ( IPv6address / IPvFuture  ) "]"
 
  IPvFuture     = "v" HEXDIG "." 1*( unreserved / sub-delims / ":" )
 

@@ -4241,7 +4241,7 @@ and path-segments.
  <type>relative</type>
  <name>045-double-slash</name>
  <title>inconsistent handling of .//g relative references</title>
- <status>pending</status>
+ <status>closed</status>
  <report>
   <author email="cameron_AT_cs.sfu.ca">Rob Cameron</author>
   <date sort="20030613">13 Jun 2003</date>
