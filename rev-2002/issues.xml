@@ -1,0 +1,1666 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- anybody know XSLT?   want to write a DTD?  go for it.
+<?xml-stylesheet type='text/xsl' href='issuelist.xslt' ?>
+<DOCTYPE issuelist SYSTEM "issuelist.dtd">
+ -->
+<issuelist>
+<issue>
+ <type>scheme-specific: file</type>
+ <name>001-file</name>
+ <title>file scheme implementations vary on use of authority component</title>
+ <status>postponed</status>
+ <report>
+  <author email="ccwf@bacchus.com">Charles C. Fu</author>
+  <date sort="19980715">15 Jul 1998</date>
+  <where>libwww-perl mailing list</where>
+<pre>
+
+   [under Windows] it's perfectly legal while on host "foo" to request
+   file://server/folder/item.  On Win32, and on other systems, this
+   requests the "item" stored in "folder" on the "server" machine.  On
+   Win32, it magically works.
+
+Actually, it is illegal but happens to work with Explorer, does not
+work with Netscape under Windows, and may or may not work with other
+Windows clients.
+
+In general, the exact details of file URL handling is up to the client
+you're using.  It's pretty uniform on UNIX systems but is NOT uniform
+amongst Windows clients.  In particular, Netscape and Explorer handle
+file URLs differently under Windows.  Here are some examples:
+
+- Netscape correctly handles escapes (like file:///c%3A/ for the
+  C drive), but Explorer does not.
+- Netscape allows file:/// (which is empty), but Explorer does not.
+- Explorer allows file:///\\remotehost\share\
+              and file:////remotehost/share/, but Netscape does not.
+
+I'm sure there are other differences.
+
+[Windows Examples]
+  	file://c:/temp/test.txt => open (FH, "c:/temp/test.txt");
+  	file://c:\temp\test.txt => open (FH, "c:\\temp\\test.txt");
+  	file://localhost/c:/temp/test.txt => open (FH, "c:/temp/test.txt");
+  	file://remotehost/c:/temp/test.txt is not legal
+
+Only the localhost example above is technically legal since host
+portions of file URLs must be fully qualified domain names,
+'localhost', or empty.  The second example is also illegal because a
+mandatory '/' must follow the host portion.  For the details, see
+RFC1738 (Uniform Resource Locators).
+
+The first two examples can be made legal by writing them as
+&lt;file:///c:/temp/test.txt&gt;.  This happens to work with both
+Explorer and Netscape.  Again, be warned that it may or may not work
+with other Windows clients.
+
+As for UNC paths, I am not aware of a legal way to use them in file
+URLs which works with both Netscape and Explorer.
+</pre>
+ </report>
+ <action>postpone until authors are found for new drafts</action>
+</issue>
+
+<issue>
+ <type>scheme-specific</type>
+ <name>002-undefined-schemes</name>
+ <title>schemes from RFC 1738 need their own specs</title>
+ <status>postponed</status>
+ <report>
+  <author email="LMM@acm.org">Larry Masinter</author>
+  <date sort="19980909">09 Sep 1998</date>
+  <where>URI-WG mailing list</where>
+<pre>
+RFC 2396 obsoletes 1738, which contained:
+
+   ftp                     File Transfer protocol
+   http                    Hypertext Transfer Protocol
+   gopher                  The Gopher protocol
+   mailto                  Electronic mail address
+   news                    USENET news
+   nntp                    USENET news using NNTP access
+   telnet                  Reference to interactive sessions
+   wais                    Wide Area Information Servers
+   file                    Host-specific file names
+   prospero                Prospero Directory Service
+
+Of these, 'http' and 'mailto' are covered by their own RFCs now,
+but 'ftp', 'news', 'telnet', 'file' should be re-issued. (It's OK
+with me if we leave 'gopher', 'wais', and 'prospero' behind.)
+
+'ftp' has never been properly specified, as actually implemented.
+'news' should be updated to merge 'news' and 'nttp' according
+to current practice, and 'file' needs a proper specification
+that handles things like volume names on the windows platform and
+suggests that other OS profiles should be developed for local
+name mapping.
+</pre>
+ </report>
+ <action>postpone until authors are found for new drafts</action>
+</issue>
+
+<issue>
+ <type>relativeURI</type>
+ <name>003-relative-query</name>
+ <title>inconsistent resolution of query-only relative URI</title>
+ <status>pending</status>
+ <report>
+  <author email="msabin@cromwellmedia.co.uk">Miles Sabin</author>
+  <date sort="19990323">23 Mar 1999</date>
+  <where>private mail</where>
+<pre>
+I've been working through the relative URI resolution
+mechanism in RFC 2396, and I've spotted something which 
+seems a little odd. The example resolution on p.29 for,
+
+  ?y
+
+from,
+
+  http://a/b/c/d;p?q
+
+is given as,
+
+  http://a/b/c/?y
+
+but as far as I can make out, the resolution algorithm
+suggests the result ought to be,
+
+  http://a/b/c/d;p?y
+
+which is the result that was given in RFC 1808. It's
+also the result that both Netscape 4 and IE 4 deliver.
+
+Given that this would be an observable change in
+behaviour between the two RFCs, I'm a little surprised 
+that it wasn't flagged up as such if the change really 
+was intended ...
+
+Strangely enough, Sun's badly broken java.net.URL class 
+_does_ give the result specified in 2396, which makes me 
+suspect that something must be wrong ;-)
+</pre>
+ </report>
+ <report>
+  <author email="holtzman@mit.edu">Henry Holtzman</author>
+  <date sort="20020709">09 Jul 2002</date>
+  <where>private mail</where>
+<pre>
+rfc2396 specifies a different browser behavior from rfc1808 in a particular
+situation that I believe may be unintentional.  IE &amp; Netscape implement the
+rfc1808 behavior while Opera implements the rfc2396 behavior.  As appendix
+G of rfc2396 makes no mention of this change, we would appreciate your
+opinion on the matter.
+
+In rfc1808, when the relative URL has no path component, but has a fragment
+or a query, the client is supposed to skip step 6 of forming the absolute
+URI.  In step 6, among other things, the base URI is stripped of all
+characters beyond the final "/".
+
+In rfc2396, when the relative URI has no path and has a fragment, it is
+specified that processing should be stopped as no new document should be
+loaded, but rather navigation within the document is specified.  This
+change is explained in appendix G.
+
+However, when there is no path component, but there is a query component,
+processing continues.  The instruction to skip stripping the
+post-final-/-characters is gone in rfc2396, which means that the final part
+of the base URI is stripped and so the query is not performed on the same
+page as was loaded (unless that page's URI ended with a "/".  Was this
+change between rfc1808 and rfc2396 intended?
+
+The following small php application illustrates the issue. You can run it
+at http://www.media.mit.edu/opera/r-url.php.  You will note that Opera
+(6.03) behaves very differently from Netscape and IE when executing this
+page. With IE and Netscape, you can navigate within the application.  With
+Opera, when you click on the links within the app, you get an index page of
+the directory containing the app.
+
+It is my belief that the final characters should *not* be stripped, and
+that rfc2396 should be amended to skip the stripping in the case of a
+relative URI with only a query component.
+
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Example application using empty path relative URLs&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h4&gt;Example application using empty path relative URLs&lt;/h4&gt;
+&lt;?php if ($action=="here") { ?&gt;
+           Thank you for clicking here!&lt;br&gt;&lt;br&gt;
+&lt;?php } else if ($action=="there") { ?&gt;
+           Hey, you weren't supposed to click there!&lt;br&gt;&lt;br&gt;
+&lt;?php } ?&gt;
+Please click &lt;a href="?action=here"&gt;here&lt;/a&gt;.&lt;br&gt;
+Please do not click &lt;a href="?action=there"&gt;there&lt;/a&gt;.&lt;br&gt;
+&lt;br&gt;
+Thank you.
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>relativeURI</type>
+ <name>004-pathless-base</name>
+ <title>resolution algorithm fails for base URI with no path</title>
+ <status>accepted</status>
+ <report>
+  <author email="ronald@innovation.ch">Ronald Tschalär</author>
+  <date sort="19990916">16 Sep 1999</date>
+<pre>
+I tried to follow the algorithm in my implementation, but it gives
+http://ab :-( 
+
+I'm doing:
+
+  Input: base: scheme = `http', authority = `a', path = `', query undefined
+	 reference: `b'
+
+  Step 1): path = `b'; scheme, authority, query are undefined
+  Step 2): is a nop
+  Step 3): scheme = `http'
+  Step 4): authority = `a'
+  Step 5): doesn't apply
+  Step 6): a) gives buffer = `'
+	   b) gives buffer = `b'
+	   c) - g) don't apply
+	   h) gives path = `b'
+  Step 7): says `http' + `:' + `//' + `a' + `b'
+</pre>
+ </report>
+ <report>
+  <author email="amc@cs.berkeley.edu">Adam M. Costello</author>
+  <date sort="20000421">21 Apr 2000</date>
+  <where>private mail</where>
+<pre>
+I think there's a slight bug in the relative URI resolution algorithm in
+RFC 2396.  Consider:
+
+    Base URI = http://foo.com
+    URI-reference = bar
+
+As far as I can tell, the algorithm yields:
+
+    http://foo.combar
+
+This base URI is allowed according to the statement in section 5.2:
+
+    Note that only the scheme component is required to be present in the
+    base URI; the other components may be empty or undefined.
+
+Here's a walk through the algorithm:
+
+step 1:  parse reference (no problem)
+step 2:  query/fragment not inherited from base (no problem)
+step 3:  scheme inherited from base (no problem)
+step 4:  authority inherited from base (no problem)
+step 5:  reference is not absolute (no problem)
+step 6a: base URI's path (which is undefined) is copied into buffer
+         (So the buffer is empty?  This may be part of the problem.)
+step 6b: "bar" is appended to the buffer (which now contains "bar")
+step 6c: remove ./ (no-op)
+step 6d: remove trailing . (no-op)
+step 6e: remove segment/../ (no-op)
+step 6f: remove trailing segment/.. (no-op)
+step 6g: check for leading .. (none found)
+step 6h: buffer is the new path ("bar")
+step 7:  result = ""
+         append "http"
+         append ":"
+         append "//"
+         append "foo.com"
+         append "bar"
+         (No check for initial slash, this may be part of the problem.)
+         return "http://foo.combar"
+
+Presumably the desired absolute URI is http://foo.com/bar.  Possible
+ways to achieve this include:
+
+ 1) Alter step 6a to initialize the buffer to "/" if the base URI has no
+    path.
+
+ 2) Alter step 7 to insert a slash before any path that does not begin
+    with a slash (including an empty path).
+
+ 3) Alter step 7 to insert a slash before any path that begins with a
+    non-slash (but not before an empty path).
+
+I think proposals 1 and 2 are equivalent, but I haven't considered it
+carefully.  Proposal 3 gives a different result if the reference is "./"
+and the base URI has no path.  Proposal 1 looks the cleanest to me.
+</pre>
+ </report>
+ <action>
+  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <date sort="19990917">17 Sep 1999</date>
+<pre>
+I guess step 6a should be
+
+      a) All but the last segment of the base URI's path component is
+         copied to the buffer.  In other words, any characters after the
+         last (right-most) slash character, if any, are excluded.
+         If the base URI's path component is the empty string, then
+         a single slash character ("/") is copied to the buffer.
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>scheme-specific: ftp</type>
+ <name>005-ftp</name>
+ <title>background on ftp extensions</title>
+ <status>postponed</status>
+ <report>
+  <author email="lundberg@wu-ftpd.org">Gregory A Lundberg</author>
+  <date sort="19991209">9 Dec 1999</date>
+  <where>Apache httpd dev mailing list</where>
+<pre>
+If you've already done any server-side commands, you should take a look at
+the current specification and consider re-implementing them if you want any
+clients to use them.
+
+  http://www.wu-ftpd.org/rfc/draft-ietf-ftpext-mlst-09.txt
+
+or
+
+  ftp://ftp.ietf.org/internet-drafts/draft-ietf-ftpext-mlst-09.txt
+
+MIME types are a "Standard Fact".  They may or may not be present.  If
+present, they must conform to the IANA-approved list of type names.
+
+While you're at it, you should notice that language negotiation is, too
+some extent, also possible.  For this, in addition to the MLST draft, you
+should also take a look at RFC 2640, "Internationalization of the File
+Transfer Protocol".
+
+The site
+
+  http://www.wu-ftpd.org/rfc/
+
+contains a complete list of the FTP RFCs.  (Well, nearly complete.  I'm
+told there's another URL RFC I should include.)  If you don't want to
+browse the site, or have a local mirror of the RFCs, the complete list of
+current RFCs which define the FTP is: 959, 1123, 1579, 1635, 1738, 1808,
+2228, 2415, 2428, 2577 and 2640.
+
+The MLST draft just underwent a major change (splitting a feature out for a
+separate draft).  Other than that, it is fairly mature and should be
+progressing to submission to the RFC Editor.  The other FTP-related IETF
+drafts have, by now, expired and are not expected to progress to
+submission.
+</pre>
+ </report>
+ <action>postpone until authors are found for new drafts</action>
+</issue>
+
+<issue>
+ <type>uri-syntax</type>
+ <name>006-absoluteURIref</name>
+ <title>need BNF term for absolute URI with optional fragment</title>
+ <status>accepted</status>
+ <report>
+  <author email="connolly@w3.org">Dan Connolly</author>
+  <date sort="20000110">10 Jan 2000</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I have recently spent a considerable amount of time studying the URI spec
+[1]	http://www.ietf.org/rfc/rfc2396.txt
+and I discovered, somewhat to my surprise, that it
+defines the terms "URI reference" and "absolute URI" very precisely,
+but
+        (a) it doesn't define the term "URI", syntactically (!!!)
+and
+        (b) it doesn't give a term for an
+absolute-URI-with-optional-fragment-id , i.e. the result of combining
+a URI reference with an absolute URI.
+
+This is pretty awkward, since an absolute-URI-with-optional-fragment-id is
+really what we meant when we wrote "URI reference" in:
+
+"An XML namespace is a collection of names, identified by a URI
+reference"
+-- http://www.w3.org/TR/1999/REC-xml-names-19990114/#sec-intro
+
+We used "URI reference" because "absolute URI" excludes fragment identifiers,
+and we wanted
+	http://example.net/#vocab
+to be a valid namespace identifier.
+
+But
+	../xyz/
+isn't a namespace identifier, until you combine it with a base absoluteURI.
+
+Another example:
+
+"The locator attribute provides a URI-reference that identifies a remote
+resource (or sub-resource)"
+-- http://www.w3.org/TR/1999/WD-xlink-19991220/#Local Resources for an
+Extended Link
+
+URI-references don't identify remote resources; absoluteURIs do. The
+"or sub-resource" makes it clear that the author intends to allow #fragids.
+So again, what's needed is a term for absolute-URI-with-optional-fragment-id.
+
+It was called fragmentaddress in RFC1630.
+
+If formal systems float your boat, you can take a look at my formalism
+of this stuff in larch:
+        http://www.w3.org/XML/9711theory/URI
+        http://www.w3.org/XML/9711theory/URI.html (HTML version with
+                nasty hacks for math symbols)
+        http://www.w3.org/XML/9711theory/URI.lsl (original ascii LSL version)
+
+part of
+        "Specifying Web Architecture with Larch"
+        http://www.w3.org/XML/9711theory/
+
+which gives pointers explaining larch etc.
+
+I used the term URIwf for absolute-URI-with-optional-fragment-id, and
+I used absoluteURI and URI_reference with their rfc2396 meanings.
+</pre>
+ </report>
+ <action>
+  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <date sort="20020827">27 Aug 2002</date>
+<pre>
+Something like absoluteURIref will be added to the BNF.
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>uri-syntax: relative</type>
+ <name>007-empty-rel_path</name>
+ <title>relative URI syntax does not allow empty path</title>
+ <status>accepted</status>
+ <report>
+  <author email="ranschultz@symantec.com">Reese Anschultz</author>
+  <date sort="20000217">17 Feb 2000</date>
+  <where>private mail</where>
+<pre>
+I have an observation regarding section -- "C. Examples of Resolving
+Relative URI References" -- within this document.
+
+The document cites that given the well-defined base URI of
+
+    http://a/b/c/d;p?q
+
+relative URI
+
+    ?y
+
+would be resolved as follows:
+
+    http://a/b/c/?y
+
+By my interpretation from the BNF, a query can exist as either
+
+    relativeURI = ( net_path | abs_path | rel_path ) [ "?" query ]
+
+or
+
+    hier_part = ( net_path | abs_path ) [ "?" query ]
+
+Since net_path, abs_path and rel_path must each be a least one character in
+length, I believe that the example "?y" is not a valid URI because no
+characters proceed the question mark (?).
+</pre>
+ </report>
+ <report>
+  <author email="zongaro@ca.ibm.com">Henry Zongaro</author>
+  <date sort="20011112">12 Nov 2001</date>
+  <where>RFC editor</where>
+<pre>
+     Appendix C shows an example of a relative URI Reference of "?y" with 
+respect to the base URI "http://a/b/c/d;p?q".  However, according to the 
+collected syntax that appears in Appendix A, "?y" doesn't appear to be a 
+valid relative URI reference.  The syntactic category URI-reference must 
+begin with an absoluteURI, a relativeURI or a pound sign.  An absoluteURI 
+begins with a scheme, which cannot begin with a question mark; a 
+relativeURI begins with a net_path or abs_path, both of which begin with a 
+slash, or with a rel_path.  A rel_path begins with a non-empty 
+rel_segment, which again cannot begin with a question mark.
+</pre>
+ </report>
+ <report>
+  <author email="blilly@erols.com">Bruce Lilly</author>
+  <date sort="20020116">16 Jan 2002</date>
+  <where>private mail</where>
+<pre>
+Section C.2 mentions an empty reference, but the
+formal syntax does not provide for that. There are
+several possible changes to the formal syntax which
+would permit it, e.g. change 1* to * in the
+definition of rel_segment, which would permit an
+empty rel_path and therefore relativeURI (however,
+it would then permit a relativeURI consisting of
+"?" query, which might not be desired).
+Alternatively, the entire RHS of the relativeURI
+definition could be bracketed, i.e. made optional,
+which would permit an empty relativeURI without
+permitting a lone delimited query.
+</pre>
+ </report>
+ <action>
+  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <date sort="20000323">20 Mar 2000</date>
+<pre>
+I don't even remember making this change, but it was broken
+when draft-fielding-uri-syntax-02.txt changed from
+
+      rel_path      = [ path_segments ] [ "?" query ]
+
+to (in 03):
+
+      rel_path      = rel_segment [ abs_path ]
+
+      rel_segment   = 1*( unreserved | escaped |
+                          ";" | "@" | "&amp;" | "=" | "+" | "$" | "," )
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>uri</type>
+ <name>008-URIvsURIref</name>
+ <title>URI versus URI Reference</title>
+ <status>pending</status>
+ <report>
+  <author email="LMM@acm.org">Larry Masinter</author>
+  <date sort="20000526">26 May 2000</date>
+  <where>xml-uri mailing list</where>
+<pre>
+When we update RFC 2396, I suggest we add an introductory paragraph
+explaining that the term "URI" is used ambiguiously in the community
+to mean "a URI reference" (corresponding to the URI-reference BNF entity)
+or "an absolute URI", and that for this reason, the term "URI" itself
+is not defined in the document.
+
+I'd probably fix the Abstract correspondingly, e.g.,
+
+"Informally, a Uniform Resource Identifier is a compact string...."
+
+so that people don't think that the abstract is normative.
+</pre>
+ </report>
+ <report>
+  <author email="Jeff.Hodges@kingsmountain.com">Jeff Hodges</author>
+  <date sort="20010601">01 Jun 2001</date>
+  <where>URI-WG mailing list</where>
+<pre>
+It seems to me, in considering points raised in the "Are URI-References bound 
+to resources?" thread, that some subtleties might be a bit more clear if  
+changes along the following lines were made to RFC 2396 (i.e. in a future 
+revision of that doc, if any)..
+
+4. URI References
+
+   The term "URI-reference" is used here to denote the common usage of a
+       ^^^^                 ^^^^^^^^^^^^^^^       ^
+     production                 (delete)          s
+
+   resource identifier.  A URI reference may be absolute or relative,
+                       ^
+       The term "URI reference" is a casual (i.e. natural
+       language) description for artifacts that are parsable
+       using the "URI-reference" production.
+
+
+   and may have additional information attached in the form of a
+   fragment identifier.  However, "the URI" that results from such a
+   reference includes only the absolute URI after the fragment
+   identifier (if any) is removed and after any relative URI is resolved
+   to its absolute form.  Although it is possible to limit the
+   discussion of URI syntax and semantics to that of the absolute
+   result, most usage of URI is within general URI references, and it is
+   impossible to obtain the URI from such a reference without also
+   parsing the fragment and resolving the relative form.
+
+      URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                               (delete)
+
+
+add:             URI = absoluteURI | relativeURI
+
+add:   URI-reference = [ URI ] [ "#" fragment ]
+
+                                  .
+                                  .
+                                  .
+ 
+It seems to me that the above suggested re-write of the URI-reference 
+production, and the additions to the preceding text, would make it easier and 
+clearer to talk about "URI" artifacts and "URI-reference" artifacts and their 
+different abstract semantics.
+
+Also, the _term_ "URI reference" isn't defined prior to section 4 (wherein it 
+is only tangentially defined, imho). Terms that are also used in sections 
+prior to section 4 whose explicit definition would help the document convey 
+it's rather abstract notions to the reader are: "document" and "reference". 
+Explicitly defining how those terms are used and what their semantics are in 
+the context of URI and URI-reference artifacts are, would be immensely helpful 
+to readers.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>uri-syntax: netpath</type>
+ <name>009-nullable-netpath</name>
+ <title>syntax for netpath allows bad URI to be considered valid</title>
+ <status>pending</status>
+ <report>
+  <author email="kohsuke.kawaguchi@eng.sun.com">Kohsuke Kawaguchi</author>
+  <date sort="20010315">15 Mar 2001</date>
+  <where>private mail</where>
+<pre>
+I found that according to BNF of RFC 2396 "URI Generic Syntax", the
+following string is accepted as a valid URI.
+
+"http://12345.678/"
+
+I assumed this should be rejected because substring "12345.678" does not
+match hostname production of BNF.
+
+However, actually this string is accepted by the following derivation.
+
+   absoluteURI
+ - scheme ":" hier_part
+ - "http" ":" abs_path
+ - "http:" "/" path_segments
+ - "http:/"    segment "/" segment "/"
+ - "http:/"    *pchar  "/" *pchar "/"
+ - "http:/"            "/" "12345.678" /"
+ - "http://12345.678/"
+
+As you see, the fact that segment is nullable makes net_path
+production meaningless.
+
+Is this the intention of authors? Or should it be considered as a bug in
+BNF? If so, is it appropriate to fix this bug by changing segment as
+follows?
+
+   segment = 1*pchar *( ";" param )
+</pre>
+ </report>
+ <report>
+  <author email="jjc@jclark.com">James Clark</author>
+  <date sort="20010720">20 Jul 2001</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Is "foo://" a legal URI in RFC 2396? If so, is the path componebnt "//" or 
+empty?
+
+On the one hand, "//" doesn't parse as net_path so it parses unambigously 
+as an abs_path, so the disambiguating rule in 4.3 is arguably not 
+applicable. This would suggest it is legal, and the path component is "//".
+
+On the other hand, if you use the regex in appendix B, the // will be 
+treated as an empty authority component (which is not legal) rather than as 
+a path component.  Maybe the regex should use
+
+//([^/?#]+)
+
+instead of
+
+//([^/?#]*)
+
+so that the regex splits things consistently with the grammar.
+
+Alternatively, reg_name could be changed so that it matches the empty 
+string, so that // would parse as a net_path, and hence there would be an 
+ambiguity to which 4.3 could be applied, and the existing regex would be 
+consistent.
+</pre>
+ </report>
+ <report>
+  <author email="LMM@acm.org">Larry Masinter</author>
+  <date sort="20010811">11 Aug 2001</date>
+  <where>private mail</where>
+<pre>
+I just looked at this again, and an empty authority is fine;
+it turns out to look like an empty 'server', rather than an empty 'regname'.
+
+      server        = [ [ userinfo "@" ] hostport ]
+
+So "//" does parse as net_path, and the regex in appendix B is fine.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>uri-syntax: hostname</type>
+ <name>010-gethostbyname</name>
+ <title>gethostbyname allows much more than hostname BNF</title>
+ <status>pending</status>
+ <report>
+  <author email="rokicki@instantis.com">Tomas Rokicki</author>
+  <date sort="20010602">02 Jun 2001</date>
+  <where>URI-WG mailing list</where>
+<pre>
+RFC 2396 contains the following BNF for the host part of a URI:
+
+       host          = hostname | IPv4address
+       hostname      = *( domainlabel "." ) toplabel [ "." ]
+       domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+       toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+       IPv4address   = 1*digit "." 1*digit "." 1*digit "." 1*digit
+       port          = *digit
+
+Typical implementations use // and / to locate the hostport part, and
+break things apart and use gethostbyname() to resolve the IP address.
+Gethostbyname() has quite a different syntax, however, allowing IP
+addresses such as
+
+    http://63.197.151.31/  (as above; class C syntax)
+    http://63.197.151.037/ (leading zero means octal, but still within
+                            the BNF of above)
+    http://63.197.38687/   (two-dot notation; class B syntax)
+    http://63.12949279/    (one-dot notation; class A syntax)
+    http://1069913887/     (numeric IP syntax)
+
+and of course all combinations of above, including
+
+    http://07761313437/    (octal)
+    http://000000077.0000000305.000000000227.00000000037/ (leading zeros)
+
+I have two points.  First, the implementations are out of sync with the
+specification.  Does this matter?  Secondly, one can argue that the
+implied semantics of the BNF given above for a four-dot representation
+is a decimal interpretation, where the implementations use octal of any
+component of the IP address begins with a leading zero (unlike what happens
+for the port, where http://63.197.151.31:0000000080/ accesses port 80).
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>uri-syntax: IPv6</type>
+ <name>011-IPv6-literal</name>
+ <title>integrate IPv6 syntax of RFC 2732</title>
+ <status>accepted</status>
+ <report>
+  <author email="LMM@acm.org">Larry Masinter</author>
+  <date sort="19991201">01 Dec 1999</date>
+  <where>private mail</where>
+<pre>
+http://www.ietf.org/rfc/rfc2732.txt
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>uri-syntax: IPv6</type>
+ <name>012-simplify-IPv6</name>
+ <title>change BNF to incorporate IPv6 better than RFC 2732</title>
+ <status>pending</status>
+ <report>
+  <author email="jjc@jclark.com">James Clark</author>
+  <date sort="20010720">20 Jul 2001</date>
+  <where>URI-WG mailing list</where>
+<pre>
+The XML schema anyURI simple type allows any string which after escaping 
+disallowed characters as described in Section 5.4 of XLink is a URI 
+reference as defined in RFC 2396, as amended by RFC 2732. This raises the 
+question of what exactly it takes for an implementation to check this.
+
+Putting on one side the RFC 2732 amendments (and the consequent 
+non-escaping of square brackets by the XLink algorithm), I believe it's 
+very simple.  To check a string, do the following:
+
+1. Check that every % is followed by two hex digits.
+
+2. Check that there is at most one # character in the string.
+
+3. If the string contains a ":" character that precedes all "/", "?" and 
+"#" characters, then the string is an absolute URI and the substring 
+preceding the first such colon must match the regex [a-zA-Z][-+.a-zA-Z0-9]*.
+
+4. If the string is an absolute URI (as in 3), the the first colon must not 
+be immediately followed by a # or the end of the string. (For example, 
+"foo:" and "foo:#bar" are illegal.)
+
+I think that's it. It's not straightforwatd to deduce this from RFC 2396 
+and XLink, so I am not 100% confident.
+
+RFC 2732 seems to radically complicate things. It adds "[" and "]" to the 
+set of reserved characters and removes them from unwise. This has the 
+effect of allowing square brackets in the query component and the fragment 
+component.  The first problem arises with the path component.  Since pchar 
+is defined in RFC 2396 as
+
+unreserved | escaped |
+  ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+
+it is unaffected by RFC 2732 and thus square brackets are not allowed in 
+the path component.  This is a little bit strange, since intuitively pchar 
+is an any uric other than "/", "?" and ";", but it complicates checking 
+only a little.
+
+The big problem is with the authority component.  Before RFC 2732, checking 
+generic URI syntax did not require any complex parsing of the authority 
+component, because an authority can be a reg_name, which allows one or more 
+of any uric other than "/" and "?".  The problem is that because reg_name 
+is defined as:
+
+1*( unreserved | escaped | "$" | "," |
+    ";" | ":" | "@" | "&amp;" | "=" | "+" )
+
+it is unaffected by RFC 2732.  Thus square brackets are not allowed to 
+appear arbitrarily in the authority component, but can only appear if the 
+authority component matches the server production (as amended by RFC 2732). 
+This means that a generic URI checker now has to do a complex parse of the 
+authority component.
+
+This seems completely at variance with the intent of section 3.2.1 of RFC 
+2396:
+
+"The structure of a registry-based naming authority is specific to the URI 
+scheme, but constrained to the allowed characters for an authority 
+component."
+
+I would therefore suggest at a mininum that RFC 2732 should be fixed to 
+allow "[" and "]" in reg_name.  I also think it would be cleaner and more 
+in harmony with RFC 2396 to also allow them in the path component.  In 
+terms of the BNF I would suggest introducing an other_reserved symbol:
+
+other_reserved = "&amp;" | "=" | "+" | "$" | "," | "[" | "]"
+
+Then in each place in RFC 2396 replace occurrences of
+
+ "&amp;" | "=" | "+" | "$" | ","
+
+(specifically in uric_no_slash, rel_segment, reg_name, userinfo, pchar, 
+reserved) by a reference to other_reserved. I believe this would also make 
+the BNF in RFC 2396 easier to understand.
+</pre>
+ </report>
+ <report>
+  <author email="gvatry@grenoble.sema.slb.com">Grégoire Vatry</author>
+  <date sort="20020404">04 Apr 2002</date>
+  <where>private mail</where>
+<pre>
+I report what I suspect to be an error in RFC 2732 which updates RFC 2396.
+
+I suspect that 'uric_no_slash' set of characters has been forgotten
+in the list of changes made to the URI generic syntax by RFC 2732.
+
+Here is my line of argument:
+
+Since:
+
+    1. The set 'uric_no_slash' stands for "same as 'uric' BUT without slash";
+
+    2. The set 'uric' is defined as:
+
+        uric          = reserved | unreserved | escaped
+
+    3. Slash ("/") is part of 'reserved' set;
+
+    4. Set of 'reserved' characters is modified in RFC 2732.
+
+As a result, point (3) of section 3. in RFC 2732 should be:
+
+   (3) Add "[" and "]" to both the set of 'reserved' characters and
+   the 'uric_no_slash' set:
+
+      reserved      = ";" | "/" | "?" | ":" | "@" | "&amp;" | "=" | "+" |
+                      "$" | "," | "[" | "]"
+      uric_no_slash = unreserved | escaped | ";" | "?" | ":" | "@" |
+                      "&amp;" | "=" | "+" | "$" | "," | "[" | "]"
+
+   and remove them from the 'unwise' set:
+
+      unwise        = "{" | "}" | "|" | "\" | "^" | "`"
+</pre>
+ </report>
+ <action>
+  <author email="brian@hursley.ibm.com">Brian E. Carpenter</author>
+  <date sort="20020404">04 Apr 2002</date>
+  <where>private mail</where>
+<pre>
+This indeed appears to be an oversight, thanks. Larry Masinter is thinking about
+combining these two RFCs in their next update so this needs to go on his list. 
+</pre>
+ </action>
+ <action>
+  <author email="LMM@acm.org">Larry Masinter</author>
+  <date sort="20020404">04 Apr 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I agree that this is an error in RFC 2732, and should be
+folded in when we merge RFC 2732 with RFC 2396. We would
+need two independent interoperable implementations of
+RFC 2732 (with ipv6 addresses), though.
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>uri-syntax: query</type>
+ <name>013-query-slash</name>
+ <title>slash character should be forbidden in query</title>
+ <status>rejected</status>
+ <report>
+  <author email="aaron.douglas@fuse.net">A. Carl Douglas</author>
+  <date sort="20010426">26 Apr 2001</date>
+  <where>RFC editor</where>
+<pre>
+Section 3.4, "Query Component", of RFC2396 (URI syntax) refers to the 
+"/" character as being reserved.
+
+Reserving this character creates an inconsistency for some of today's 
+web servers, which confuse part of the Query Component as being part of 
+the Path Component when the "/" character is present in the Query
+Component.
+
+The "/" character should only be permitted in the Path Component of a 
+URI, and elsewhere in the URI it should be escaped by using it's hex
+value.
+</pre>
+ </report>
+ <action>
+  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <date sort="20010524">24 May 2001</date>
+<pre>
+This is not an error in the spec, though it could be useful as a note
+in future revisions.  The specification cannot disallow characters that
+commonly do appear in a URI query string, even if it is inadvisable
+for them to be used.  That is why they are listed as reserved in that
+context (i.e., should not be used unencoded except when the reserved
+meaning is intended).
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>uri-syntax: opaque_part</type>
+ <name>014-empty-opaque_part</name>
+ <title>syntax does not allow "dav:" or "about:" as URI</title>
+ <status>accepted</status>
+ <report>
+  <author email="julian.reschke@gmx.de">Julian Reschke</author>
+  <date sort="20011119">19 Nov 2001</date>
+  <where>WebDAV-WG mailing list</where>
+<pre>
+(1) RFC2518 (WebDAV) is based on XML + namespaces and has chosen to use the
+namespace name "DAV:" to identify it's elements. Note that "DAV:" *is* a
+properly registered URI scheme)
+
+(2) The XML namespaces recommendation says that an XML namespace is
+identified by a URI reference as defined in RFC2396.
+
+(3) RFC2396 gives the following grammar for absolute URIs:
+
+absoluteURI   = scheme ":" ( hier_part | opaque_part )
+opaque_part   = uric_no_slash *uric
+
+"DAV:" doesn't seem to be a valid "opaque_part", because "opaque_part" MUST
+start with "uric_no_slash", thus it may not be empty.
+
+(4) I became aware of this mismatch when trying to develop a RELAG NG schema
+for WebDAV. James Clark's JING validator rejects the namespace name "DAV:"
+as invalid URI. So this has become a real-world problem (maybe it was "just"
+academic before).
+</pre>
+ </report>
+ <action>
+  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <date sort="20010524">24 May 2001</date>
+<pre>
+will fix BNF
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>uri-syntax: fragment</type>
+ <name>015-fragment-handling</name>
+ <title>clarify how URI processor is expected to handle fragment</title>
+ <status>pending</status>
+ <report>
+  <author email="jason@injektilo.org">Jason Diamond</author>
+  <date sort="20020111">11 Jan 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+    I'm gathering you want resolveURI to take any URI ref and return an
+    absolute URI reference.
+
+    Instead, what I would do is define resolveURI as a function that
+    takes any URI-reference-up-to-but-not-including-the-fragment-id and
+    returns the appropriate absolute URI.  The fragment id part is never
+    sent to resolveURI and is always re-appended to what resolveURI returns.
+
+I based my implementation on the example algorithm in Section 5.2. Despite
+being titled "Resolving Relative References to Absolute Form", it does cover
+non-relative URI references (see step 3). Step 2 covers the case where the
+URI reference is the empty string or just a fragment identifier. In that
+case, it states the the reference is a "reference to the current document
+and we are done".
+
+Hmm. Looking at this paragraph again, I now think that it might be slightly
+flawed. It says "and we are done". It doesn't mention that the fragment
+identifier, if present, should be appended to the URI of the current
+document.
+
+    In this model, if resolveURI is handed a null string, it just returns
+    a null string and the calling code would know to use the fragment id
+    to access into the current resource without anyone having to talk
+    about a document URI (which may not exist if, say, you're working
+    on some in-memory view of a dynamic document--and even if there is
+    such a URI, you wouldn't want to use the URI to do a fetch of the
+    document that is the current one anyway).
+
+I'm fairly certain that my implementation will produce the correct result as
+would the model that you suggest above. It passes all of the tests in
+Appendix C. I'm actually working on an RDF parser (in XSLT) so am not
+fetching any resources but I do need to convert all URI references to their
+absolute form and would like that encapsulated into a single function.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>uri-syntax: hostname</type>
+ <name>016-hostname-toplabel</name>
+ <title>hostname toplabel syntax could be improved</title>
+ <status>pending</status>
+ <report>
+  <author email="blilly@erols.com">Bruce Lilly</author>
+  <date sort="20020116">16 Jan 2002</date>
+  <where>private mail</where>
+<pre>
+I believe that there is a discrepancy between 3.2.2
+and the DNS specifications referenced there. The
+definition in 3.2.2 for hostname is:
+
+      hostname      = *( domainlabel "." ) toplabel [ "." ]
+      domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+      toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+
+That permits a lone toplabel as the hostname, which
+could of course apply to the URI "http://localhost".
+The definitions of domainlabel and toplabel appear
+to be consistent with the DNS specifications, as
+amended by RFC 1123 (but with the proviso that the
+length limits specified by DNS are missing), but I
+believe that there are some problems with the
+definition of hostname in terms of those tokens. In
+particular, the semantics of the above example differ
+from what is implied by the name "toplabel". The
+syntax permits URIs like "http://localhost." and
+"http://edu", which don't seem quite right, and it
+forbids "http://1xyz", where "1xyz" is a valid
+unqualified host name (in the DNS sense). I believe
+that a more consistent (with DNS and the text of sect.
+3.2.2) definition of hostname syntax would be:
+
+      hostname      = domainlabel [ *( "." domainlabel ) "." toplabel [ "." ] ]
+
+Does that seem reasonable?
+
+The grouping within the specifications of domainlabel
+and toplabel could be clarified by parenthesization:
+
+      domainlabel   = alphanum | ( alphanum *( alphanum | "-" ) alphanum )
+      toplabel      = alpha | ( alpha *( alphanum | "-" ) alphanum )
+
+or equivalently but more compactly as:
+
+      domainlabel   = alphanum [ *( alphanum | "-" ) alphanum ]
+      toplabel      = alpha [ *( alphanum | "-" ) alphanum ]
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>uri-syntax: fragment</type>
+ <name>017-rdf-fragment</name>
+ <title>RDF does not believe in same-document references</title>
+ <status>pending</status>
+ <report>
+  <author email="jjc@hplb.hpl.hp.com">Jeremy Carroll</author>
+  <date sort="20020410">10 Apr 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+This is a comment about RFC 2396 that I have been actioned to send on behalf
+of the W3C RDF Core Working Group [1]
+
+The key issue concern resolving same document references and/or resolving
+against non-hierarchical URIs.
+
+These have been causing us difficulty in using xml:base
+
+As one of our deliverables we produce test cases [2].
+
+A summary table of our URI resolution problems is as follows;
+the answers we have agreed are in the attached HTML file.
+
+
+EASY:
+a "http://example.org/dir/file"      "../relfile"
+b "http://example.org/dir/file"      "/absfile"
+c "http://example.org/dir/file"      "//another.example.org/absfile"
+
+GETTING HARDER:
+d "http://example.org/dir/file"      "../../../relfile"
+e "http://example.org/dir/file"      ""
+f "http://example.org/dir/file"      "#frag"
+
+MASTER CLASS:
+g "http://example.org"               "relfile"
+
+h "http://example.org/dir/file#frag" "relfile"
+i "http://example.org/dir/file#frag" "#foo"
+j "http://example.org/dir/file#frag" ""
+
+k "mailto:Jeremy_Carroll@hp.com"     "#foo"
+l "mailto:Jeremy_Carroll@hp.com"     ""
+m "mailto:Jeremy_Carroll@hp.com"     "relfile"
+
+
+We have reached consensus on and approved all these tests except for the
+last which some of us consider an error and others resolve as indicated in
+the html file.
+
+The rationales for our views are approximately as follows:
+
+d "http://example.org/dir/file"      "../../../relfile"
+
+[[[RFC2396
+   In practice, some implementations strip leading relative symbolic
+   elements (".", "..") after applying a relative URI calculation, based
+   on the theory that compensating for obvious author errors is better
+   than allowing the request to fail.
+]]]
+Not permitted in RDF/XML.
+
+e,f,i,j,k,l
+Base does apply to same document references in RDF/XML
+
+g
+Failure to insert / is a bug with RFC 2396
+
+h,i,j
+Strip frag id from base uri ref before resolving.
+Notice j is particularly surprising.
+
+k,l
+Same document reference resolution even works for non-hierarchical uris.
+
+m
+- no consensus
+
+
+The test suite is structured as follows:
+
+The positive tests on the test cases web site show a usage of xml:base in
+RDF/XML and the resolution of that usage in terms of the RDF graph produced
+(with absolute URI ref labels). Each test consists of two files, an RDF/XML
+document and an n-triple file (substitute .rdf with .nt in the URL), being a
+list of the edges of the graph.
+
+The negative test case shows possibly illegal usage of xml:base in RDF/XML.
+
+[1] http://lists.w3.org/Archives/Public/w3c-rdfcore-wg/2002Apr/0008.html
+
+[2] http://www.w3.org/2000/10/rdf-tests/rdfcore/xmlbase/
+</pre>
+ </report>
+ <report>
+  <author email="jjc@hplb.hpl.hp.com">Jeremy Carroll</author>
+  <date sort="20020415">15 Apr 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I do not recall the RDF Core WG having resolved a justification of the
+decision in favour of the these test cases. Hence I will give my own
+justification.
+
+First:
+The actual decisions of the RDF Core WG reflect what 'same document
+references' mean within an RDF/XML document within the scope of an xml:base
+attribute. Primarily the WG decisions reflect the meaning of RDF/XML rather
+than XML Base of RFC 2396. However, these decisions do point to weaknesses
+in RFC 2396.
+
+The RDF Core WG has consistently (with or without xml:base) interpreted all
+uri references as absolute uri references. The decisions clarify that when
+the normal uri resolution mechanisms deliver a same document reference, we
+form the absolute uri ref using the currently in scope xml:base uri.
+
+Second:
+
+The definition of same-document references is unfortunately focussed on
+browsing:
+[[[
+4.2. Same-document References
+
+    A URI reference that does not contain a URI is a reference to the
+    current document.  In other words, an empty URI reference within a
+    document is interpreted as a reference to the start of that document,
+    and a reference containing only a fragment identifier is a reference
+    to the identified fragment of that document.  Traversal of such a
+    reference should not result in an additional retrieval action.
+    However, if the URI reference occurs in a context that is always
+    intended to result in a new request, as in the case of HTML's FORM
+    element, then an empty URI reference represents the base URI of the
+    current document and should be replaced by that URI when transformed
+    into a request.
+]]]
+
+line 3 "start of that document" is meaningless for an RDF document.
+RDF is a graph and is not a linear structure.
+
+line 6 "no additional retrieval action" All URIrefs in RDF are absolute, and
+none are retrieved accept when the application content "is always intended
+to result in a new request".
+
+The RDF Core is trying to clarify which absolute URI ref corresponds to a
+same document ref.
+
+line 9 The answer, at least for empty same document refs, it is the "base
+URI".
+
+We discover what a base URI is in section "5.1 Establishing a Base URI"
+[[[
+5.1. Establishing a Base URI
+
+   The term "relative URI" implies that there exists some absolute "base
+   URI" against which the relative reference is applied.  Indeed, the
+   base URI is necessary to define the semantics of any relative URI
+   reference; without it, a relative reference is meaningless.  In order
+   for relative URI to be usable within a document, the base URI of that
+   document must be known to the parser.
+]]]
+
+I note that the algorithm in
+5.2. Resolving Relative References to Absolute Form
+amongst its defects, does not implement line 9 of section 4.2.
+
+Once we are dynamically changing the xml:base from one element to the next,
+we are outside the design bounds of RFC 2396.
+
+If we consider only documents with a single xml:base on their outermost
+elements, then as far as RDF goes, the resolution of the same document test
+cases is consistent with section 4.2 of RFC 2396.  A same document
+reference, like any uri ref, in an RDF file means an absolute URI ref. The
+absolute URI ref is formed by taking "the base URI" of the document, as
+suggested in line 9 of 4.2. The fragment part if taken from the same
+document reference.
+</pre>
+ </report>
+ <report>
+  <author email="asgilman@iamdigex.net">Al Gilman</author>
+  <date sort="20020415">15 Apr 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+The bad news:
+
+In fact, "the same document" in fragment-only relative references should be
+taken even more locally and particularly than "the URI from which this
+representation was recovered."  The latter reading is inadequate, an error. 
+It should be read as "this representation."  So the type is known, and with
+it the semantics of #fragment references.  Without recourse to _even_ the
+URI from which it was recovered.  As Paul suggested.  For hyperlinks with
+goTo semantics, where the absolute URI equivalent of the reference is
+unnecessary, it is moot and therefore not defined.  The best available
+absolute reference (nearest to equivalent) would be base-ified using the
+URI from which this representation was recovered, but that question has
+no need and no standing in the case of following hyperlinks in browsing
+the same "recovered representation."  There is no general answer, absent
+a universal document type (see next).
+
+The good news:
+
+The semantics of #fragment in "the current document" is governed by the
+_type_ of the recovered represetation of the URI accessed.  So for RDF
+to apply the semantic constraint that a #fragment reference is equivalent
+to a given absolute URI -- within a representation which belongs to a type
+which by its type definition is bound to the constraints of the RDF
+model -- is entirely within the purview of the specification of the
+RDF model and the languages in which it is represented.
+
+This violates the universality goal that any URI-reference can be used
+in any place a URI-reference can be used, but that is a different matter. 
+This is also violated by having some references take anyURI and others
+limited to IDREF in the same document.  The RDF restriction to
+absolute-URI-reference senses for fragment-URI-reference signs does not
+violate RFC-2396, at least.  This is just that the RDF model only admits
+of 'absolute' references.  So references in any syntax binding of the
+RDF model will only contain 'absolute' URI-references.
+</pre>
+ </report>
+ <report>
+  <author email="bwm@hplb.hpl.hp.com">Brian McBride</author>
+  <date sort="20020415">15 Apr 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+First: the problem RDF is trying to solve.  The current RDF specs have 
+encouraged the use of the following idiom:
+
+   &lt;rdf:Description rdf:about="#foo"&gt;
+     ...
+
+The value of the rdf:about attribute is turned into an absolute URI 
+reference by concatenating the '#foo' with the URI of the containing document.
+
+This causes problems.  Folks copy the file from the web to their hard drive 
+so they can work on it in a plane, and the uri changes to something like 
+file:c:\temp\....rdf and this is really useless for rdf users.  Or folks 
+wish to include RDF in say a message protocol where  there is no base uri 
+of the document.
+This is the cause of one of, if not the, most frequent newbie problem with 
+DAML that we see on jena-dev.
+
+So we are looking for a way to retain this convenient syntax, but have the 
+uri's produced not change when the file is copied or mirrored.
+
+To appreciate what is happening here, we need to look at a semi-fictional 
+RDF processing pipeline:
+
+
+input xml document --
+          xml parser -- rfc2396 processor -- rdf parser -- rdf graph
+
+We start with an xml document and end up with a datastructure.  The 
+datastructure is not a DOM; its not a representation of an xml 
+document.  It is as far as xml is concerned, an application data structure.
+
+For each value of an rdf:about attribute, the rfc2396 processor outputs 
+either an absolute URI or a same document reference.  The absolute URI is 
+processed according to RFC2396.  Same document references are recognised 
+according to RFC 2396.
+
+All is in conformance with rfc 2396 at this point.
+
+Now the RDF parser comes in to play and it is required to transform the 
+value of each rdf:about attribute into an absolute uri reference.  If the 
+RFC 2396 processor has produced an absolute uri reference, it need do 
+nothing.  If however, it is a same document reference, then, just as a 
+browser will handle same document references specially, so does RDF.  It 
+transforms the same document reference into an absolute URI according to an 
+algorithm defined by the RDF specs.  The mimetype of an rdf document will 
+be text/xml+rdf.  As far as xml base and rfc 2396 are concerned, this is 
+application code over which they have no say.
+
+What I have tried to do here is to position RDF as an application built on 
+top of XML and to suggest that XML should not be allowed to express 
+constraints on how applications process it.
+
+There is a deal of sophistry in this argument :( but RFC 2396 doesn't 
+really meet our needs.  Are there any plans to update/refine it in the near 
+future?
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>uri-syntax: IPv6</type>
+ <name>018-IPv6-example</name>
+ <title>RFC 2732 example bug</title>
+ <status>accepted</status>
+ <report>
+  <author email="Robert.Graf@ecetra.com">Robert Graf</author>
+  <date sort="20020424">24 Apr 2002</date>
+  <where>private mail</where>
+<pre>
+On RFC 2732 Page 1 / Point 2
+you can find this example:
+
+http://[::192.9.5.5]/ipng
+
+1. When I take a look on the RFC 2373 logic (Page 21/Appendix B):
+
+      IPv6address = hexpart [ ":" IPv4address ]
+      IPv4address = 1*3DIGIT "." 1*3DIGIT "." 1*3DIGIT "." 1*3DIGIT
+
+      IPv6prefix  = hexpart "/" 1*2DIGIT
+
+      hexpart = hexseq | hexseq "::" [ hexseq ] | "::" [ hexseq ]
+      hexseq  = hex4 *( ":" hex4)
+      hex4    = 1*4HEXDIG
+
+2. When I take a look on the RFC 2732 logic update (Page 2):
+
+      host          = hostname | IPv4address | IPv6reference
+      ipv6reference = "[" IPv6address "]"
+
+3. Let's do the example.
+
+3.1. When we split the 'host' we land in 'IPv6reference' and then in
+'IPv6address'.
+
+3.2. In the 'hexpart' we land in the 3rd part with "::192" which is ok.
+
+But what should happen now with '.9.5.5'?
+It's definitly not a part of the description above but should be valid
+as described in RFC 2732.
+</pre>
+ </report>
+ <report>
+  <author email="Robert.Graf@ecetra.com">Robert Graf</author>
+  <date sort="20020426">26 Apr 2002</date>
+  <where>private mail</where>
+<pre>
+You should also change
+"host          = hostname | IPv4address | IPv6reference"
+to
+"host          = hostname | IPv6reference | IPv4address"
+because the IP4address is filled via the IPv6reference
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>uri-intro</type>
+ <name>019-URI-URL-URN</name>
+ <title>URI/URL/URN contemporary view</title>
+ <status>pending</status>
+ <report>
+  <author email="michael@neonym.net">Michael Mealling</author>
+  <date sort="20020501">01 May 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I think the consensus built in the IG and reported in 
+draft-mealling-uri-ig-02.txt is a good place to start.
+Especially the recommendation:
+
+  1.  The W3C and IETF should jointly develop and endorse a model for
+       URIs, URLs and URNs consistent with the '"Contemporary View"
+       described in section 1, and which considers the additional URI
+       issues listed or alluded to in section 3.
+
+Just so you wont' have to go dig the draft up, this is the "Contemporary
+View":
+
+   Over time, the importance of this additional level of hierarchy
+   seemed to lessen; the view became that an individual scheme does not
+   need to be cast into one of a discrete set of URI types such as
+   "URL", "URN", "URC", etc.  Web-identifer schemes are in general URI
+   schemes; a given URI scheme may define subspaces.  Thus "http:" is a
+   URI scheme.  "urn:" is also a URI scheme; it defines subspaces,
+   called "namespaces".  For example, the set of URNs of the form
+   "urn:isbn:n-nn-nnnnnn-n" is a URN namespace.  ("isbn" is an URN
+   namespace identifier.  It is not a "URN scheme" nor a "URI scheme").
+
+   Further according to the contemporary view, the term "URL" does not
+   refer to a formal partition of URI space; rather, URL is a useful but
+   informal concept: a URL is a type of URI that identifies a resource
+   via a representation of its primary access mechanism (e.g., its
+   network "location"), rather than by some other attributes it may
+   have.  Thus as we noted, "http:" is a URI scheme.  An http URI is a
+   URL.  The phrase "URL scheme" is now used infrequently, usually to
+   refer to some subclass of URI schemes which exclude URNs.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>uri-syntax</type>
+ <name>020-utf8-default</name>
+ <title>Defaulting to UTF-8 for unknown encoding</title>
+ <status>pending</status>
+ <report>
+  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <date sort="20020501">01 May 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+The only thing I want to include is the default: %xx means the character
+encoded as xx in UTF-8.  That is already the default for MSIE and should
+be for other browsers as well, and will simplify the specification.
+</pre>
+ </report>
+ <report>
+  <author email="derhoermi@gmx.net">Bjoern Hoehrmann</author>
+  <date sort="20020504">04 May 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I disagree. While it's the default in MSIE for URIs, the user enters
+into the address bar, it's not the default for the vast majority of
+%xx encoded octets requested by MSIE, they originate from HTML forms
+where MSIE uses the document or user selected character encoding scheme
+to generate the octets, hence most %xx encoded octets representing
+non-ASCII characters are not part of valid UTF-8 sequences. There is no
+facility to define any other encoding than UTF-8, hence applications
+assuming UTF-8 encoding are said to fail.
+</pre>
+ </report>
+ <report>
+  <author email="duerst@w3.org">Martin Duerst</author>
+  <date sort="20020529">29 May 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I would be extremely delighted if we could just go and say
+"it's UTF-8, and nothing else". Unfortunately, that's not
+possible. But I think it's a very good idea to make clear
+in the revision that UTF-8 is where things are moving,
+rather than just the current
+
+"For example, UTF-8 [UTF-8] defines a mapping from sequences
+of octets to sequences of characters in the repertoire of ISO 10646."
+
+While we are at it, what about changes due to Internationalized
+Domain Names?
+http://search.ietf.org/internet-drafts/draft-ietf-idn-uri-01.txt
+proposes to lift the restriction that %hh cannot be used in the
+host name part. [Currently, only %80 and higher are allowed,
+but I plan to change that because it would really be silly to
+keep it that way.]
+</pre>
+ </report>
+ <report>
+  <author email="duerst@w3.org">Martin Duerst</author>
+  <date sort="20020722">22 Jul 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Update the syntax of host names: Currently, this is one of the
+only places where %hh-escaping isn't allowed. Implementations
+are mixed, some browsers e.g. accept http://www.w%33.org while
+others don't. So this may go under "(b) document variations in
+current practice, as warnings to implementors." below.
+With Internationalized Domain Names, allowing %hh in host names
+is necessary for consistency.
+
+The actual text is currently in
+http://www.ietf.org/internet-drafts/draft-ietf-idn-uri-02.txt,
+and there is some chance that the IDN WG moves this forward.
+But in either way, it should be folded into the URI spec.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>uri-examples</type>
+ <name>021-relative-examples</name>
+ <title>relative URI examples could be improved</title>
+ <status>accepted</status>
+ <report>
+  <author email="LMM@acm.org">Larry Masinter</author>
+  <date sort="20020516">16 May 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+The example of resolving a relative URL could be improved.  It uses a
+base of http://a/b/c/d;p?q
+
+Not wanting to read the RFC end to end, it took me a bit of searching to
+find that the ;p part is a "parameter" and the ?q part is a "query".
+But I have no idea what their relevance is to this example.  It they are to be
+ignored when attaching the relative parts, it would be nice to say so.
+
+The basic expansion has one very confusing and not explained aspect.
+The relative path g is said to expand to http://a/b/c/g instead of
+http://a/b/c/d/g.  The other expansions are obvious once the "remove d"
+rule is applied.  Would a base of http://a/b/c/d/ plus g expand to
+http://a/b/c/d/g?
+
+The examples should have enough annotation to
+mostly stand on their own and to reinforce the concepts.
+</pre>
+ </report>
+ <report>
+  <author email="stefan.eissing@greenbytes.de">Stefan Eissing</author>
+  <date sort="20020517">17 May 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I found them to be very helpful in their current form. The
+only thing I would state differently is the handling of
+too many ../ in the resolved uri.
+
+The RFC currently states that
+
+base http://host/a/b
+ref  ../../c
+resolves to http://host/../c
+
+and continues that removing the /.. at the beginning is allowed.
+
+My observation is that removing /.. is the norm nowadays
+and therefore the example should be the other way with a
+note that keeping /.. is allowed.
+</pre>
+ </report>
+ <action>
+  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <date sort="20020517">17 May 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+The examples are intended to identify common bugs or deprecated features
+in software.  The role of ";" changed from RFC 1808, so the tests can be
+used to differentiate between an 1808-compliant parser and a 2396-compliant
+parser, thus identifying places where changes are needed.
+
+I'd like to expand the tests, particularly with other example base URI,
+since there is one errata that would have been discovered that way.
+More annotation is welcome.
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>uri-examples</type>
+ <name>022-definitions</name>
+ <title>definitions for operations on URIs</title>
+ <status>pending</status>
+ <report>
+  <author email="LMM@acm.org">Larry Masinter</author>
+  <date sort="20020713">13 Jul 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+http://lists.w3.org/Archives/Public/www-tag/2002Jul/0169.html
+
+These look like interesting possible additions to the URI specification.
+
+URI Resolution: 
+  The process of determining an access mechanism and 
+  appropriate parameters necessary to dereference a 
+  URI. e.g. in the case of an HTTP URI, this process 
+  resolves the URI into an IP address, a port number, 
+  a host name (possibly optional) and a request URI.
+
+  Resolution may require several iterations.
+
+URI Dereference: 
+  The process of using an access mechanism and 
+  parameters generated by URI resolution to create, 
+  inspect or modify resource state.
+
+URI Retrieval: 
+  The use of URI dereference to retrieve 
+  representations of resource state. 
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>uri-intro</type>
+ <name>023-URI-plural</name>
+ <title>URI or URIs for plural</title>
+ <status>accepted</status>
+ <report>
+  <author email="tbray@textuality.com">Tim Bray</author>
+  <date sort="20020809">09 Aug 2002</date>
+  <where>www-tag mailing list</where>
+<pre>
+I note that Roy of late has been using URI as its own plural.
+Elegant and defensible, but I prefer URIs as less surprising to the eye.
+Even more, I prefer consistency.  Clearly this is a subject on which 
+consensus is not remotely possible.
+</pre>
+ </report>
+ <action>
+  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <date sort="20020517">17 May 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I prefer whichever one is easier to say while speaking, since I do not
+believe in the theory that people expand acronyms as they read.
+
+I am fine with either one, provided I only have to change it once.
+</pre>
+ </action>
+</issue>
+</issuelist>
