@@ -48,9 +48,6 @@
 <tr>
 <td nowrap="nowrap"><a href="#019-URI-URL-URN">019-URI-URL-URN</a></td><td>URI/URL/URN contemporary view</td><td>terminology</td><td nowrap="nowrap">reopened</td>
 </tr>
-<tr>
-<td nowrap="nowrap"><a href="#033-dot-segments">033-dot-segments</a></td><td>relativising an absolute reference should be invertible</td><td>relative</td><td nowrap="nowrap">reopened</td>
-</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -152,6 +149,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#022-definitions">022-definitions</a></td><td>definitions for operations on URIs</td><td>terminology</td><td nowrap="nowrap">added 02</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#033-dot-segments">033-dot-segments</a></td><td>relativising an absolute reference should be invertible</td><td>relative</td><td nowrap="nowrap">fixed 03</td>
 </tr>
 </table>
 <br>
@@ -3356,7 +3356,7 @@ ignoring the actual syntax specification.]
 <th bgcolor="#FFFFCC"><font size="+2"><a name="033-dot-segments">033-dot-segments</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">relativising an absolute reference should be invertible</font></th>
 </tr>
 <tr>
-<th>reopened</th><th align="left">relative</th>
+<th bgcolor="lightgreen">fixed 03</th><th align="left">relative</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -3537,6 +3537,24 @@ The test program is available as well.
 <a href="http://www.cs.sfu.ca/~cameron/uri/bis2tests.py">
 http://www.cs.sfu.ca/~cameron/uri/bis2tests.py</a>
 
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  03 Jun 2003,
+  draft 03:
+  <pre>
+Separated the path merge routine into two routines: merge, for
+describing combination of the base URI path with a relative-path
+reference, and remove_dot_segments, for describing how to remove
+the special "." and ".." segments from a composed path.  The
+remove_dot_segments algorithm is now applied to all URI reference
+paths in order to match common implementations and improve the
+normalization of URIs in practice.  This change only impacts the
+parsing of abnormal references and same-scheme references wherein
+the base URI has a non-hierarchical path.
 </pre>
 </td>
 </tr>

@@ -2937,7 +2937,7 @@ ignoring the actual syntax specification.]
  <type>relative</type>
  <name>033-dot-segments</name>
  <title>relativising an absolute reference should be invertible</title>
- <status>reopened</status>
+ <status>fixed 03</status>
  <report>
   <author email="timbl_AT_w3.org">Tim Berners-Lee</author>
   <date sort="20021118">18 Nov 2002</date>
@@ -3103,6 +3103,22 @@ The test program is available as well.
 http://www.cs.sfu.ca/~cameron/uri/bis2tests.py</a>
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030603">03 Jun 2003</date>
+  <where>draft 03</where>
+<pre>
+Separated the path merge routine into two routines: merge, for
+describing combination of the base URI path with a relative-path
+reference, and remove_dot_segments, for describing how to remove
+the special "." and ".." segments from a composed path.  The
+remove_dot_segments algorithm is now applied to all URI reference
+paths in order to match common implementations and improve the
+normalization of URIs in practice.  This change only impacts the
+parsing of abnormal references and same-scheme references wherein
+the base URI has a non-hierarchical path.
+</pre>
+ </action>
 </issue>
 
 <issue>

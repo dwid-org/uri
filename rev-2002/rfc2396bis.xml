@@ -63,7 +63,7 @@
     </address>
   </author>
 
-  <date month='May' year='2003'></date>
+  <date month='June' year='2003'></date>
 
   <area>Applications</area>
   <keyword>uniform resource identifier</keyword>
@@ -76,16 +76,17 @@
   <abstract>
 <t>
 A Uniform Resource Identifier (URI) is a compact string of characters
-for identifying an abstract or physical resource.  This document
-defines the generic syntax of a URI, including both absolute and
-relative forms, and guidelines for their use.
+for identifying an abstract or physical resource.  This specification
+defines the generic URI syntax and a process for resolving URI references
+that might be in relative form, along with guidelines and security
+considerations for the use of URIs on the Internet.
 </t>
 <t>
-This document defines a grammar that is a superset of all valid URIs,
+The URI syntax defines a grammar that is a superset of all valid URIs,
 such that an implementation can parse the common components of a URI
 reference without knowing the scheme-specific requirements of every
-possible identifier type.  This document does not define a generative
-grammar for all URIs; that task will be performed by the individual
+possible identifier.  This specification does not define a generative
+grammar for URIs; that task is performed by the individual
 specifications of each URI scheme.
 </t></abstract>
 <note title='Editorial Note'>
@@ -316,7 +317,7 @@ another has been considered more important than having a URI consist of
 the most meaningful of components.  In local or regional contexts
 and with improving technology, users might benefit from being able to
 use a wider range of characters; such use is not defined in this
-document.
+specification.
 </t>
 </section>
 
@@ -405,17 +406,30 @@ identifiers through the consistent use of familiar syntax, this
 uniform representation of hierarchy across naming schemes allows
 scheme-independent references to be made relative to that hierarchy.
 </t>
-<iref item="absolute" primary="true"/>        
+<t>
+It is often the case that a group or "tree" of documents has been
+constructed to serve a common purpose; the vast majority of URIs in
+these documents point to resources within the tree rather than
+outside of it.  Similarly, documents located at a particular site are
+much more likely to refer to other resources at that site than to
+resources at remote sites.
+</t>
 <iref item="relative" primary="true"/>        
 <t>
-An "absolute" URI refers to a resource independent of the naming
-hierarchy in which the identifier is used.  In contrast, a
-"relative" URI refers to a resource by describing the difference within
-a hierarchical name space between the current context and an absolute
-URI of the resource.  <xref target="relative-uri"/> defines
-a scheme-independent form of relative URI reference that can be used
-in conjunction with a base URI of a hierarchical scheme to produce
-the absolute URI form of that reference.
+Relative referencing of URIs allows document trees to be partially
+independent of their location and access scheme.  For instance, it is
+possible for a single set of hypertext documents to be simultaneously
+accessible and traversable via each of the "file", "http", and "ftp"
+schemes if the documents refer to each other using relative references.
+Furthermore, such document trees can be moved, as a whole, without
+changing any of the relative references.
+</t>
+<t>
+A relative URI reference (<xref target="relative-uri"/>) refers to a
+resource by describing the difference within a hierarchical name space
+between the current context and the target URI.  The reference resolution
+algorithm, presented in <xref target="reference-resolution"/>, defines
+how such references are resolved.
 </t>
 </section>
 
@@ -424,7 +438,7 @@ the absolute URI form of that reference.
 <section title="Syntax Notation" anchor="notation">
 <iref item="ABNF" primary="true"/>        
 <t>
-This document uses the Augmented Backus-Naur Form (ABNF) notation of
+This specification uses the Augmented Backus-Naur Form (ABNF) notation of
 <xref target="RFC2234"/> to define the URI syntax.
 Although the ABNF defines syntax in terms of the US-ASCII character
 encoding <xref target="ASCII"/>, the URI syntax should be interpreted
@@ -1008,9 +1022,9 @@ relative position within the hierarchical tree of names, with a similar
 effect to how they are used within some operating systems' file directory
 structure to indicate the current directory and parent directory,
 respectively.  Unlike a file system, however, these dot-segments are
-only interpreted within the URI path hierarchy and must be removed
-as part of the URI normalization or resolution process, in accordance
-with the process described in <xref target="absolutize"/>.
+only interpreted within the URI path hierarchy and are removed
+as part of the URI normalization or resolution process, as described in
+<xref target="absolutize"/>.
 </t>
 </section>
 
@@ -1030,13 +1044,22 @@ and terminated by a crosshatch ("#") character or by the end of the URI.
 <t>
 The characters slash ("/") and question-mark ("?") are allowed to
 represent data within the query component, but such use is discouraged;
-incorrect implementations of relative URI resolution often fail to
+incorrect implementations of reference resolution often fail to
 distinguish them from hierarchical separators, thus resulting in
 non-interoperable results while parsing relative references.  However,
 since query components are often used to carry identifying information
 in the form of "key=value" pairs, and one frequently used value is a
 reference to another URI, it is sometimes better for usability to
 include those characters unescaped.
+<list>
+<t>
+Note: Some client applications will fail to separate a reference's
+query component from its path component before merging the base and
+reference paths (<xref target="absolutize"/>).  This may result in
+loss of information if the query component contains the strings
+"/../" or "/./".
+</t>
+</list>
 </t>
 </section>
 
@@ -1128,14 +1151,14 @@ resource identifier.
 </preamble><artwork type="abnf">
    URI-reference = URI / relative-URI
 </artwork><postamble>
-A URI-reference may be absolute or relative:
+A URI-reference may be relative:
 if the reference string's prefix matches the syntax of a scheme followed by
 its colon separator, then the reference is a URI rather than a relative-URI.
 </postamble></figure>
 <t>
 A URI-reference is typically parsed first into the five URI components,
-in order to determine what components are present and whether the
-reference is relative or absolute, and then each component is parsed for
+in order to determine what components are present and whether or not the
+reference is relative, and then each component is parsed for
 its subparts and their validation.  The ABNF of URI-reference, along with
 the "first-match-wins" disambiguation rule, is sufficient to define a
 validating parser for the generic syntax.  Readers familiar with
@@ -1161,8 +1184,8 @@ relative to the name space of another hierarchical URI.
 </preamble><artwork type="abnf">
    relative-URI  = hier-part [ "?" query ] [ "#" fragment ]
 </artwork><postamble>
-The URI referred to by a relative URI reference is obtained by applying
-the relative resolution algorithm of <xref target="relative"/>.
+The URI referred to by a relative reference is obtained by applying
+the reference resolution algorithm of <xref target="reference-resolution"/>.
 </postamble></figure>
 <t>
 A relative reference that begins with two slash characters is termed a
@@ -1174,13 +1197,14 @@ begin with a slash character is termed a relative-path reference.
 <t>
 A path segment that contains a colon character (e.g., "this:that")
 cannot be used as the first segment of a relative-path reference
-because it might be mistaken for a scheme name.  Such a segment must be
+because it would be mistaken for a scheme name.  Such a segment must be
 preceded by a dot-segment (e.g., "./this:that") to make a relative-path
 reference.
 </t>
 </section>
 
 <section title="Absolute URI" anchor="absolute-uri">
+<iref item="absolute" primary="true"/>
 <iref item="absolute-URI" primary="true"/>
 <figure><preamble>
 Some protocol elements allow only the absolute form of a URI without
@@ -1201,7 +1225,7 @@ does not allow a fragment.
 <t>
 When a URI reference occurring within a document or message refers
 to a URI that is, aside from its fragment component (if any),
-identical to the base URI (<xref target="relative"/>), that reference
+identical to the base URI (<xref target="base-uri"/>), that reference
 is called a "same-document" reference.  The most frequent examples
 of same-document references are relative references that are empty
 or include only the crosshatch ("#") separator followed by a fragment
@@ -1241,56 +1265,31 @@ particularly when new URI schemes are introduced.
 </t>
 <t>
 Since a URI suffix has the same syntax as a relative path reference, a
-suffix reference cannot be used in contexts where relative URIs are expected.
-This limits use of suffix references to those places where there is no
-defined base URI, such as dialog boxes and off-line advertisements.
+suffix reference cannot be used in contexts where a relative reference
+is expected.  As a result, suffix references are limited to those places where
+there is no defined base URI, such as dialog boxes and off-line advertisements.
 </t>
 </section>
 
 </section>
 
-<section title="Relative Resolution" anchor="relative">
+<section title="Reference Resolution" anchor="reference-resolution">
+<iref item="relative" primary="false"/>
+<iref item="resolution" primary="false"/>
 <t>
-It is often the case that a group or "tree" of documents has been
-constructed to serve a common purpose; the vast majority of URIs in
-these documents point to resources within the tree rather than
-outside of it.  Similarly, documents located at a particular site are
-much more likely to refer to other resources at that site than to
-resources at remote sites.
-</t>
-<t>
-Relative referencing of URIs allows document trees to be partially
-independent of their location and access scheme.  For instance, it is
-possible for a single set of hypertext documents to be simultaneously
-accessible and traversable via each of the "file", "http", and "ftp"
-schemes if the documents refer to each other using relative URIs.
-Furthermore, such document trees can be moved, as a whole, without
-changing any of the relative references.  Experience within the WWW
-has demonstrated that the ability to perform relative referencing is
-necessary for the long-term usability of embedded URIs.
+This section defines the process of resolving a URI reference within
+a context that allows relative references, such that the result is a
+string matching the "URI" syntax production of <xref target="components"/>.
 </t>
 
 <section title="Establishing a Base URI" anchor="base-uri">
+<iref item="base URI" primary="true"/>
 <t>
-The term "relative URI" implies that there exists some absolute "base
-URI" against which the relative reference is applied.  Indeed, the
-base URI is necessary to define the semantics of any relative URI
-reference; without it, a relative reference is meaningless.  In order
-for relative URI to be usable within a document, the base URI of that
-document must be known to the parser.
-</t>
-<t>
-A document that contains relative references must have a base URI that
-contains a hierarchical path component.  In other words, a relative-URI
-cannot be used within a document that has an unsuitable base URI.
-Some URI schemes do not allow a hierarchical path component and are
-thus restricted to full URI references.
-</t>
-<t>
-An authority component is not required for a URI scheme to make use
-of relative references.  A base URI without an authority component
-implies that any relative reference will also be without an authority
-component.
+The term "relative" implies that there exists some "base URI" against
+which the relative reference is applied.  Aside from same-document
+references (<xref target="same-document"/>, relative references are
+only usable if the base URI is known.  The base URI must be established
+by the parser prior to parsing URI references that might be relative.
 </t>
 <t>
 The base URI of a document can be established in one of four ways,
@@ -1320,69 +1319,69 @@ has the highest precedence.  This can be visualized graphically as:
 
 <section title="Base URI within Document Content" anchor="base-context">
 <t>
-   Within certain document media types, the base URI of the document can
-   be embedded within the content itself such that it can be readily
-   obtained by a parser.  This can be useful for descriptive documents,
-   such as tables of content, which may be transmitted to others through
-   protocols other than their usual retrieval context (e.g., E-Mail or
-   USENET news).
+Within certain document media types, the base URI of the document can
+be embedded within the content itself such that it can be readily
+obtained by a parser.  This can be useful for descriptive documents,
+such as tables of content, which may be transmitted to others through
+protocols other than their usual retrieval context (e.g., E-Mail or
+USENET news).
 </t>
 <t>
-   It is beyond the scope of this document to specify how, for each
-   media type, the base URI can be embedded.  It is assumed that user
-   agents manipulating such media types will be able to obtain the
-   appropriate syntax from that media type's specification.  An example
-   of how the base URI can be embedded in the Hypertext Markup Language
-   (HTML) <xref target="HTML"/> is provided in <xref target="html-base"/>.
+It is beyond the scope of this document to specify how, for each
+media type, the base URI can be embedded.  It is assumed that user
+agents manipulating such media types will be able to obtain the
+appropriate syntax from that media type's specification.  An example
+of how the base URI can be embedded in the Hypertext Markup Language
+(HTML) <xref target="HTML"/> is provided in <xref target="html-base"/>.
 </t>
 <t>
-   A mechanism for embedding the base URI within MIME container types
-   (e.g., the message and multipart types) is defined by MHTML
-   <xref target="RFC2110"/>.  Protocols that do not use the MIME message
-   header syntax, but do allow some form of tagged metadata to be included
-   within messages, may define their own syntax for defining the base
-   URI as part of a message.
+A mechanism for embedding the base URI within MIME container types
+(e.g., the message and multipart types) is defined by MHTML
+<xref target="RFC2110"/>.  Protocols that do not use the MIME message
+header syntax, but do allow some form of tagged metadata to be included
+within messages, may define their own syntax for defining the base
+URI as part of a message.
 </t>
 </section>
 
 <section title="Base URI from the Encapsulating Entity"
          anchor="base-encapsulated">
 <t>
-   If no base URI is embedded, the base URI of a document is defined by
-   the document's retrieval context.  For a document that is enclosed
-   within another entity (such as a message or another document), the
-   retrieval context is that entity; thus, the default base URI of the
-   document is the base URI of the entity in which the document is
-   encapsulated.
+If no base URI is embedded, the base URI of a document is defined by
+the document's retrieval context.  For a document that is enclosed
+within another entity (such as a message or another document), the
+retrieval context is that entity; thus, the default base URI of the
+document is the base URI of the entity in which the document is
+encapsulated.
 </t>
 </section>
 
 <section title="Base URI from the Retrieval URI" anchor="base-retrieval">
 <t>
-   If no base URI is embedded and the document is not encapsulated
-   within some other entity (e.g., the top level of a composite entity),
-   then, if a URI was used to retrieve the base document, that URI shall
-   be considered the base URI.  Note that if the retrieval was the
-   result of a redirected request, the last URI used (i.e., that which
-   resulted in the actual retrieval of the document) is the base URI.
+If no base URI is embedded and the document is not encapsulated
+within some other entity (e.g., the top level of a composite entity),
+then, if a URI was used to retrieve the base document, that URI shall
+be considered the base URI.  Note that if the retrieval was the
+result of a redirected request, the last URI used (i.e., that which
+resulted in the actual retrieval of the document) is the base URI.
 </t>
 </section>
 
 <section title="Default Base URI" anchor="base-default">
 <t>
-   If none of the conditions described in above apply,
-   then the base URI is defined by the context of the application.
-   Since this definition is necessarily application-dependent, failing
-   to define the base URI using one of the other methods may result in
-   the same content being interpreted differently by different types of
-   application.
+If none of the conditions described in above apply,
+then the base URI is defined by the context of the application.
+Since this definition is necessarily application-dependent, failing
+to define the base URI using one of the other methods may result in
+the same content being interpreted differently by different types of
+application.
 </t>
 <t>
-   It is the responsibility of the distributor(s) of a document
-   containing a relative URI to ensure that the base URI for that document
-   can be established.  It must be emphasized that a relative URI cannot
-   be used reliably in situations where the document's base URI is not
-   well-defined.
+It is the responsibility of the distributor(s) of a document
+containing a relative reference to ensure that the base URI for that document
+can be established.  It must be emphasized that a relative reference,
+aside from a same-document reference, cannot be used reliably in
+situations where the document's base URI is not well-defined.
 </t>
 </section>
 </section>
@@ -1403,31 +1402,34 @@ described in <xref target="components"/>.  Note that only the scheme
 component is required to be present in the base URI; the other components
 may be empty or undefined.  A component is undefined if its preceding
 separator does not appear in the URI reference; the path component is
-never undefined, though it may be empty.
+never undefined, though it may be empty.  The algorithm assumes that
+the base URI is well-formed and does not contain dot-segments in its path.
 </t>
 <figure><preamble>
 For each URI reference (R), the following pseudocode describes an
 algorithm for transforming R into its target URI (T):
 </preamble>
 <artwork>
+   -- The URI reference is parsed into the five URI components
+   --
    (R.scheme, R.authority, R.path, R.query, R.fragment) = parse(R);
-      -- The URI reference is parsed into the five URI components
 
-   if ((not validating) and (R.scheme == Base.scheme)) then
-      -- A non-validating parser may ignore a scheme in the
-      -- reference if it is identical to the base URI's scheme.
+   -- A non-strict parser may ignore a scheme in the reference
+   -- if it is identical to the base URI's scheme.
+   --
+   if ((not strict) and (R.scheme == Base.scheme)) then
       undefine(R.scheme);
    endif;
 
    if defined(R.scheme) then
       T.scheme    = R.scheme;
       T.authority = R.authority;
-      T.path      = R.path;
+      T.path      = remove_dot_segments(R.path);
       T.query     = R.query;
    else
       if defined(R.authority) then
          T.authority = R.authority;
-         T.path      = R.path;
+         T.path      = remove_dot_segments(R.path);
          T.query     = R.query;
       else
          if (R.path == "") then
@@ -1438,12 +1440,13 @@ algorithm for transforming R into its target URI (T):
                T.query = Base.query;
             endif;
          else
-            if (R.path starts-with "/") then
-               T.path = R.path;
+            if (R.path starts-with "/") then 
+               T.path = remove_dot_segments(R.path);
             else
                T.path = merge(Base.path, R.path);
+               T.path = remove_dot_segments(T.path);
             endif;
-            T.query = R.query;
+            T.query = R.query; 
          endif;
          T.authority = Base.authority;
       endif;
@@ -1452,92 +1455,99 @@ algorithm for transforming R into its target URI (T):
 
    T.fragment = R.fragment;
 </artwork></figure>
+<iref item="merge" primary="true"/>
 <t>
 The pseudocode above refers to a merge routine for merging a
-relative-path reference with the path of the base URI to obtain the
-target path.  Although there are many ways to do this, we will describe
-a simple method using a separate string buffer:
+relative-path reference with the path of the base URI.  This is
+accomplished as follows:
+<list style="symbols">
+<t>
+If the base URI's path is empty, then return a string consisting of "/"
+concatenated with the reference's path component; otherwise,
+</t>
+<t>
+If the base URI's path is non-hierarchical, as indicated by not beginning
+with a slash, then return a string consisting of the reference's path
+component; otherwise,
+</t>
+<t>
+Return a string consisting of the reference's path component appended to
+all but the last segment of the base URI's path (i.e., any characters
+after the right-most "/" in the base URI path are excluded).
+</t>
+</list>
+</t>
+<iref item="remove_dot_segments" primary="true"/>
+<t>
+The pseudocode also refers to a remove_dot_segments routine
+for interpreting and removing the special "." and ".." complete
+path segments from a referenced path.  This is done after the
+path is extracted from a reference, whether or not the path
+was relative, in order to remove any invalid or extraneous
+dot-segments prior to forming the target URI.  Although there
+are many ways to accomplish this removal process, we describe a
+simple method using a separate string buffer:
 <list style="numbers">
 <t>
-All but the last segment of the base URI's path component is
-copied to the buffer.  In other words, any characters after the
-last (right-most) slash character, if any, are excluded.
-If the base URI's path component is the empty string, then
-a single slash character ("/") is copied to the buffer.
+The buffer is initialized with the unprocessed path component.
 </t>
 <t>
-The reference's path component is appended to the buffer
-string.
+If the buffer begins with "./" or "../", the "." or ".." segment is removed.
 </t>
 <t>
-All occurrences of "./", where "." is a complete path segment,
-are removed from the buffer string.
+All occurrences of "/./" in the buffer are replaced with "/".
 </t>
 <t>
-If the buffer string ends with "." as a complete path segment,
-that "." is removed.
+If the buffer ends with "/.", the "." is removed.
 </t>
 <t>
-All occurrences of "&lt;segment&gt;/../", where &lt;segment&gt; is a
-complete path segment not equal to "..", are removed from the
-buffer string.  Removal of these path segments is performed
-iteratively, removing the leftmost matching pattern on each
-iteration, until no matching pattern remains.
+All occurrences of "/&lt;segment&gt;/../" in the buffer, where ".."
+and &lt;segment&gt; are complete path segments, are iteratively replaced
+with "/" in order from left to right until no matching pattern remains.
+If the buffer ends with "/&lt;segment&gt;/..", that is also replaced with "/".
+Note that &lt;segment&gt; may be empty.
 </t>
 <t>
-If the buffer string ends with "&lt;segment&gt;/..", where &lt;segment&gt;
-is a complete path segment not equal to "..", that
-"&lt;segment&gt;/.." is removed.
+All prefixes of "&lt;segment&gt;/../" in the buffer, where ".."
+and &lt;segment&gt; are complete path segments, are iteratively replaced
+with "/" in order from left to right until no matching pattern remains.
+If the buffer ends with "&lt;segment&gt;/..", that is also replaced with "/".
+Note that &lt;segment&gt; may be empty.
 </t>
 <t>
-If the resulting buffer string still begins with one or more
-complete path segments of "..", then the reference is
-considered to be in error.  Implementations may handle this error by
-removing them from the resolved path (i.e., discarding relative levels
-above the root) or by avoiding traversal of the reference.
+The remaining buffer is returned as the result of remove_dot_segments.
+</t>
+</list>
 </t>
 <t>
-The remaining buffer string is the target URI's path component.
-</t>
-  </list>
-</t>
-<t>
-Some systems may find it more efficient to implement the merge
-algorithm as a pair of path segment stacks being merged, rather
-than as a series of string pattern replacements.
-  <list>
-    <t>
-      Note: Some WWW client applications will fail to separate the
-      reference's query component from its path component before merging
-      the base and reference paths.  This may result in a loss of
-      information if the query component contains the strings "/../" or "/./".
-    </t>
-  </list>
+Some systems may find it more efficient to implement the remove_dot_segments
+algorithm as a stack of path segments being compressed, rather than as a
+series of string pattern replacements.
 </t>
 </section>
 
 <section title="Recomposition of a Parsed URI" anchor="recomposition">
 <figure><preamble>
-Parsed URI components can be recombined to obtain the referenced URI.
-Using pseudocode, this would be:
+Parsed URI components can be recomposed to obtain the corresponding
+URI reference string.  Using pseudocode, this would be:
 </preamble><artwork>
    result = ""
 
-   if defined(T.scheme) then
-      append T.scheme to result;
+   if defined(scheme) then
+      append scheme to result;
       append ":" to result;
    endif;
 
-   if defined(T.authority) then
+   if defined(authority) then
       append "//" to result;
-      append T.authority to result;
+      append authority to result;
    endif;
 
-   append T.path to result;
+   append path to result;
 
-   if defined(T.query) then
+   if defined(query) then
       append "?" to result;
-      append T.query to result;
+      append query to result;
    endif;
 
    if defined(fragment) then
@@ -1555,7 +1565,7 @@ next component separator or the end of the reference.
 </postamble></figure>
 </section>
 
-<section title="Examples of Relative Resolution" anchor="relative-examples">
+<section title="Reference Resolution Examples" anchor="reference-examples">
 <t>
 Within an object with a well-defined base URI of
 </t>
@@ -1616,7 +1626,7 @@ the authority component of a URI.
    "../../../../g" =  "http://a/g"
 </artwork></figure>
 <t>
-Similarly, parsers should remove the dot-segments "." and ".." when
+Similarly, parsers must remove the dot-segments "." and ".." when
 they are complete components of a path, but not when they are only
 part of a segment.
 </t>
@@ -1643,9 +1653,10 @@ nonsensical forms of the "." and ".." complete path segments.
 <t>
 Some applications fail to separate the reference's query and/or
 fragment components from a relative path before merging it with
-the base path.  This error is rarely noticed, since typical usage
-of a fragment never includes the hierarchy ("/") character, and the
-query component is not normally used within relative references.
+the base path and removing dot-segments.  This error is rarely noticed,
+since typical usage of a fragment never includes the hierarchy ("/")
+character, and the query component is not normally used within
+relative references.
 </t>
 <figure><artwork>
    "g?y/./x"       =  "http://a/b/c/g?y/./x"
@@ -1660,7 +1671,7 @@ loophole in prior specifications of partial URI <xref target="RFC1630"/>.
 Its use should be avoided, but is allowed for backward compatibility.
 </t>
 <figure><artwork>
-   "http:g"        =  "http:g"         ; for validating parsers
+   "http:g"        =  "http:g"         ; for strict parsers
                    /  "http://a/b/c/g" ; for backward compatibility
 </artwork></figure>
 </section>
@@ -1784,7 +1795,7 @@ could reasonably consider the following two URIs equivalent:
 Web user agents, such as browsers, typically apply this type of URI
 normalization when determining whether a cached response is available.
 Syntax-based normalization includes such techniques as case normalization,
-escape normalization, and removal of leftover relative path segments.
+escape normalization, and removal of dot-segments.
 </postamble></figure>
 
 <section title="Case Normalization" anchor="normalize-case">
@@ -1821,11 +1832,9 @@ the unreserved characters, as described in <xref target="unreserved"/>.
 <t>
 The complete path segments "." and ".." have a special meaning within
 hierarchical URI schemes.  As such, they should not appear in absolute
-URI paths; if they are found, they can be removed by splitting the URI
-just after the "/" that starts the path, using the left half as
-the base URI and the right as a relative reference, and normalizing
-the URI by merging the two in in accordance with the relative URI
-processing algorithm (<xref target="relative"/>).
+paths; if they are found, they can be removed by applying the
+remove_dot_segments algorithm to the path, as described in
+<xref target="absolutize"/>.
 </t>
 </section>
 
@@ -1881,7 +1890,7 @@ such comparisons.  Those who generate and make reference to URIs can
 reduce the cost of processing and the risk of false negatives by
 consistently providing them in a form that is reasonably canonical
 with respect to their scheme.  Specifically:
-<list>
+<list style="symbols">
   <t>Always provide the URI scheme in lowercase characters.</t>
   <t>Always provide the hostname, if any, in lowercase characters.</t>
   <t>Only perform percent-escaping where it is essential.</t>
@@ -1890,9 +1899,8 @@ with respect to their scheme.  Specifically:
 </list>
 </t>
 <t>
-The good practices listed above are motivated by observations that a high
-proportion of deployed software use these techniques for the purposes
-of normalization.
+The good practices listed above are motivated by deployed software
+that frequently use these techniques for the purposes of normalization.
 </t>
 </section>
 
@@ -1909,7 +1917,7 @@ to avoid including data that should not be revealed in plain text.
 <section title="Reliability and Consistency" anchor="security-reliability">
 <t>
 There is no guarantee that, having once used a given URI to retrieve
-some information, that the same information will be retrievable by
+some information, the same information will be retrievable by
 that URI in the future. Nor is there any guarantee that the information
 retrievable via that URI in the future will be observably similar to 
 that retrieved in the past.  The URI syntax does not constrain how a
@@ -2019,9 +2027,9 @@ More information on URI-based semantic attacks can be found in
 
 <section title="Acknowledgments" anchor="ack">
 <t>
-This document is derived from RFC 2396 <xref target="RFC2396"/>,
+This specification is derived from RFC 2396 <xref target="RFC2396"/>,
 RFC 1808 <xref target="RFC1808"/>, and RFC 1738 <xref target="RFC1738"/>;
-the acknowledgments in those specifications still apply.
+the acknowledgments in those documents still apply.
 It also incorporates the update (with corrections) for IPv6 literals
 in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
 and Larry Masinter in <xref target="RFC2732"/>.
@@ -2682,7 +2690,7 @@ considered as anything more than a descriptive example.
 HTML defines a special element "BASE" which, when present in the
 "HEAD" portion of a document, signals that the parser should use the
 BASE element's "HREF" attribute as the base URI for resolving any
-relative URI.  The "HREF" attribute must be an absolute URI.  Note
+relative URI.  The "HREF" attribute must be an absolute-URI.  Note
 that, in HTML, element and attribute names are case-insensitive.
 For example:
 </t>
@@ -2697,7 +2705,7 @@ For example:
 </artwork></figure>
 <t>
 A parser reading the example document should interpret the given
-relative URI "../x" as representing the absolute URI
+relative URI "../x" as representing the URI
 </t>
 <figure><artwork>
    &lt;http://www.example.com/Test/a/x&gt;
@@ -2856,8 +2864,8 @@ The ambiguity regarding the parsing of net-path, abs-path, and rel-path
 is now explained and disambiguated in the same section.
 </t>
 <t>
-Registry-based naming authorities that use the hierarchical authority
-syntax component are now limited to DNS hostnames, since those have
+Registry-based naming authorities that use the generic syntax
+authority component are now limited to DNS hostnames, since those have
 been the only such URIs in deployment.  This change was necessary to
 enable internationalized domain names to be processed in their native
 character encodings at the application layers above URI processing.
@@ -2875,23 +2883,35 @@ is now explained and disambiguated in the same section.
 The resolving relative references algorithm of <xref target="RFC2396"/>
 has been rewritten using pseudocode for this revision to improve clarity
 and fix the following issues:
-  <list style="symbols">
-  <t>
-    <xref target="RFC2396"/> section 5.2, step 6a, failed to account for
-    a base URI with no path.
-  </t>
-  <t>
-    Restored the behavior of <xref target="RFC1808"/> where, if the
-    reference contains an empty path and a defined query component,
-    then the target URI inherits the base URI's path component.
-  </t>
-  <t>
-    Removed the special-case treatment of same-document references
-    in favor of a section that explains that a new retrieval action
-    should not be made if the target URI and base URI, excluding
-    fragments, match.
-  </t>
-  </list>
+<list style="symbols">
+<t>
+<xref target="RFC2396"/> section 5.2, step 6a, failed to account for
+a base URI with no path.
+</t>
+<t>
+Restored the behavior of <xref target="RFC1808"/> where, if the
+reference contains an empty path and a defined query component,
+then the target URI inherits the base URI's path component.
+</t>
+<t>
+Removed the special-case treatment of same-document references
+in favor of a section that explains that a new retrieval action
+should not be made if the target URI and base URI, excluding
+fragments, match.  This change has no impact on user agent behavior
+aside from how the resolved reference might be described to the user.
+</t>
+<t>
+Separated the path merge routine into two routines: merge, for
+describing combination of the base URI path with a relative-path
+reference, and remove_dot_segments, for describing how to remove
+the special "." and ".." segments from a composed path.  The
+remove_dot_segments algorithm is now applied to all URI reference
+paths in order to match common implementations and improve the
+normalization of URIs in practice.  This change only impacts the
+parsing of abnormal references and same-scheme references wherein
+the base URI has a non-hierarchical path.
+</t>
+</list>
 </t>
 </section>
 </section>
