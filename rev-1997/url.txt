@@ -71,11 +71,11 @@ Abstract
 
       Resource
          A resource can be anything that has identity.  Familiar
-	 examples include an electronic document, an image, a service
-	 (e.g., "today's weather report for Los Angeles"), and a
-	 collection of other resources.  Not all resources are network
-	 "retrievable", such as human beings, corporations, and actual
-	 books in a library.
+         examples include an electronic document, an image, a service
+         (e.g., "today's weather report for Los Angeles"), and a
+         collection of other resources.  Not all resources are network
+         "retrievable", such as human beings, corporations, and actual
+         books in a library.
 
          The resource is the conceptual entity defined by the identity,
          not necessarily the thing which holds that identity at one
@@ -156,12 +156,12 @@ Abstract
       o  A URL may be transcribed from a non-network source, and thus
          should consist of characters which are most likely to be able
          to be typed into a computer, within the constraints imposed by
-	 keyboards (and related input devices) across nationalities and
-	 languages.
+         keyboards (and related input devices) across nationalities and
+         languages.
 
       o  A URL often needs to be remembered by people, and it is easier
-	 for people to remember a URL when it consists of meaningful
-	 components.
+         for people to remember a URL when it consists of meaningful
+         components.
 
    These design concerns are not always in alignment.  For example, it
    is often the case that the most meaningful name for a URL component
@@ -540,7 +540,7 @@ Abstract
         protocols that have a default port number.  Another port number
         may optionally be supplied, in decimal, separated from the
         host by a colon.  If the port is omitted, the default port
-	number is assumed.
+        number is assumed.
 
 3.3.2. Path Component
 
@@ -697,7 +697,7 @@ Abstract
       Content-Base      = "Content-Base" ":" absoluteURL
 
       Content-Location  = "Content-Location" ":"
-			  ( absoluteURL | relativeURL )
+                          ( absoluteURL | relativeURL )
 
    The field names are case-insensitive and any whitespace inside
    the field value (including that used for line folding) is ignored.
@@ -755,7 +755,7 @@ Abstract
 
    If none of the conditions described in Sections 3.1 -- 3.3 apply,
    then the base URL is considered to be the empty string and all
-   embedded URLs within that document are assumed to be absolute URLs.
+   URL references within that document are assumed to be absolute URLs.
 
    It is the responsibility of the distributor(s) of a document
    containing relative URLs to ensure that the base URL for that
@@ -920,11 +920,6 @@ Abstract
 
    The use of URLs containing passwords that should be secret is clearly
    unwise.
-
-   There are no security considerations in the use or parsing of
-   relative URLs.  However, once a relative URL has been resolved to its
-   absolute form, the same security considerations apply as those
-   described in RFC 1738 [2].
 
 
 9. Acknowledgements
@@ -1223,17 +1218,19 @@ E. Summary of Non-editorial Changes
 
 E.1. Additions
 
-   Section 2 on URL references was added to stem the confusion regarding
+   Section 1 (Introduction) is entirely new.  Design rationale for the
+   scope of URLs and the chosen URL character set has been added in
+   order to address common misconceptions about what would and would not
+   be appropriate for additional URL schemes, and why the allowed
+   character set is limited to US-ASCII characters.
+
+   Section 3 (URL References) was added to stem the confusion regarding
    "what is a URL" and how to describe fragment identifiers given that
    they are not part of the URL, but are part of the URL syntax and
    parsing concerns.  In addition, it provides a reference definition
    for use by other IETF specifications (HTML, HTTP, etc.) which have
    previously attempted to redefine the URL syntax in order to account
    for the presence of fragment identifiers in URL references.
-
-   Design rationale for the chosen URL character set has been added to
-   Section 3 in order to address common misconceptions about the lack
-   of non-US-ASCII characters in the allowed character set.
 
 E.2. Modifications from both RFC 1738 and RFC 1808
 
@@ -1255,6 +1252,13 @@ E.3. Modifications from RFC 1738
 
    The definition of specific URL schemes and their scheme-specific
    syntax and semantics has been moved to separate documents.
+
+   Confusion regarding the terms "character encoding", the URL
+   "character set", and the escaping of characters with %<hex><hex>
+   equivalents has (hopefully) been reduced.  Many of the BNF rule names
+   regarding the character sets have been changed to more accurately
+   describe their purpose.  Unless otherwise noted here, these
+   modifications do not affect the URL syntax.
 
    The URL port is now *digit instead of 1*digit, since systems are
    expected to handle the case where the ":" separator between host and
