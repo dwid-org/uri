@@ -41,12 +41,6 @@ Abstract
    including both absolute and relative locators, and guidelines for
    their use and for the definition of new URL schemes.
 
-   This document updates and merges RFC 1738 "Uniform Resource Locators"
-   and RFC 1808 "Relative Uniform Resource Locators" in order to define
-   a single, general syntax for all URLs.  It excludes those portions of
-   RFC 1738 that defined the specific syntax of individual URL schemes,
-   since those portions will be updated as separate documents.
-
 
 1. Introduction
 
@@ -57,7 +51,14 @@ Abstract
    objects dates from 1990 and is described in "Universal Resource
    Identifiers in WWW", RFC 1630 [1].  The specification of URLs is
    designed to meet the recommendations laid out in "Functional
-   Recommendations for Internet Resource Locators", RFC 1736 [12].
+   Recommendations for Internet Resource Locators", RFC 1736 [8].
+
+   This document updates and merges RFC 1738 "Uniform Resource Locators"
+   [2] and RFC 1808 "Relative Uniform Resource Locators" [7] in order to
+   define a single, general syntax for all URLs.  It excludes those
+   portions of RFC 1738 that defined the specific syntax of individual
+   URL schemes, since those portions will be updated as separate
+   documents.
 
    URLs are characterized by the following definitions:
 
@@ -185,7 +186,7 @@ Abstract
    the syntax requirements.
 
    The second convention is a BNF-like grammar, used to define the
-   formal URL syntax.  The grammar is that of RFC 822 [5], except that
+   formal URL syntax.  The grammar is that of RFC 822 [6], except that
    "|" is used to designate alternatives.  Briefly, rules are separated
    from definitions by an equal "=", indentation is used to continue a
    rule definition over more than one line, literals are quoted with "",
@@ -229,7 +230,7 @@ Abstract
    maximize their transcribability and usability across varying computer
    systems, natural languages, and nationalities.  This restricted set
    corresponds to a subset of the graphic printable characters of the
-   US-ASCII coded character set [14].
+   US-ASCII coded character set [10].
 
    The set of characters allowed for use within URLs can be described in
    three categories: reserved, unreserved, and escaped.
@@ -278,7 +279,7 @@ Abstract
    name and file names are such sequences of octets, represented by
    parts of the URL.  Within those parts, an octet may be represented by
    the character which has that octet as its code within the US-ASCII
-   [20] coded character set.
+   [10] coded character set.
 
    In addition, octets may be encoded by a character triplet consisting
    of the character "%" followed by the two hexadecimal digits (from
@@ -336,7 +337,7 @@ Abstract
    it will not be necessary to change the URL.
 
 
-2. URL References
+3. URL References
 
    A common source of confusion in the use and interpretation of Uniform
    Resource Locators is the distinction between a reference to a URL and
@@ -376,10 +377,18 @@ Abstract
    to the identified fragment of that document.  Traversal of such a
    reference should not result in an additional retrieval action.
 
+   When parsing a URL reference, the fragment identifier (if any) is
+   extracted first.  If the reference contains a crosshatch "#"
+   character, then the substring after the first (left-most) crosshatch
+   and up to the end of the parse string is the fragment identifier.  If
+   the crosshatch is the last character, or no crosshatch is present,
+   then the fragment identifier is empty.  The crosshatch separator is
+   discarded.
 
-3. Generic URL Syntax
 
-3.1. Scheme
+4. Generic URL Syntax
+
+4.1. Scheme
 
    Just as there are many different methods of access to resources,
    there are a variety of schemes for describing the location of such
@@ -403,11 +412,17 @@ Abstract
 
       scheme  =  1*( alpha | digit | "+" | "-" | "." )
 
+   When parsing a URL reference, the scheme (if any) is extracted after
+   the fragment.  If the reference contains a colon ":" after the first
+   character and before any characters not allowed as part of a scheme
+   name, the scheme of the URL is the substring of characters up to, but
+   not including, the first colon.  The colon separator is discarded.
+
    Relative URL references are distinguished from absolute URLs in that
    they do not begin with a scheme name.  Instead, the scheme is
-   inherited from the base URL, as described below.
+   inherited from the base URL, as described in Section 7.
 
-3.2. Opaque and Hierarchical URLs
+4.2. Opaque and Hierarchical URLs
 
    The URL syntax does not require that the scheme-specific-part have
    any general structure or set of semantics which is common among all
@@ -455,7 +470,7 @@ Abstract
    path will look similar to a file pathname.  This does NOT imply that
    the URL is a Unix pathname.
 
-3.3. URL Syntactic Components
+4.3. URL Syntactic Components
 
    The URL syntax is dependent upon the scheme.  Some schemes use
    reserved characters like "?" and ";" to indicate special components,
@@ -463,7 +478,7 @@ Abstract
    most URL schemes use a common sequence of five main components to
    define the location of a resource
 
-      <scheme>://<server>/<path>;<params>?<query>
+      <scheme>://<server>/<path>;<parameters>?<query>
 
    each of which, except <scheme>, may be absent from a particular URL.
 
@@ -471,13 +486,15 @@ Abstract
 
       net_path    = "//" server [ abs_path ]
       abs_path    = "/"  rel_path
-      rel_path    = [ path ] [ ";" params ] [ "?" query ]
+      rel_path    = [ path ] [ ";" parameters ] [ "?" query ]
 
-   The order of the components is important.  If both <params> and
+   The order of the components is important.  If both <parameters> and
    <query> are present, the <query> information must occur after the
-   <params>.
+   <parameters>.  A URL reference is parsed into its components from the
+   outside-in: fragment, scheme, server, query, parameters, and then
+   path.
 
-3.3.1. Server Component
+4.3.1. Server Component
 
    URL schemes that involve the direct use of an IP-based protocol to a
    specified host on the Internet use a common syntax for the server
@@ -519,9 +536,9 @@ Abstract
         The fully qualified domain name of a network host, or its IP
         address as a set of four decimal digit groups separated by
         ".".  Fully qualified domain names take the form as described
-        in Section 3.5 of RFC 1034 [13] and Section 2.1 of RFC 1123
-        [5]: a sequence of domain labels separated by ".", each domain
-        label starting and ending with an alphanumerical character and
+        in Section 3.5 of RFC 1034 [9] and Section 2.1 of RFC 1123 [5]:
+	a sequence of domain labels separated by ".", each domain label
+	starting and ending with an alphanumerical character and
         possibly also containing "-" characters.  The rightmost domain
         label will never start with a digit, though, which
         syntactically distinguishes all domain names from the IP
@@ -542,7 +559,15 @@ Abstract
         host by a colon.  If the port is omitted, the default port
         number is assumed.
 
-3.3.2. Path Component
+   When parsing a URL reference, the server component (if any) is
+   extracted after the scheme.  If the remaining reference begins with a
+   double-slash "//", then the substring of characters after the
+   double-slash and up to, but not including, the next slash "/"
+   character is the server component of the URL.  If no trailing slash
+   is present, the entire remaining reference is the server component.
+   The double-slash separator is discarded.
+
+4.3.2. Path Component
 
     path
         The rest of the locator consists of data specific to the
@@ -558,88 +583,44 @@ Abstract
    The path syntax depends on the scheme being used, as does the
    manner in which it is interpreted.
 
-3.3.3. Parameters Component
+   When parsing a URL reference, the path is extracted after all other
+   components.  The remaining reference is the URL path and the slash
+   "/" that might precede it.  Although the initial slash is not part of
+   the URL path, the parser must remember whether or not it was present
+   so that later processes can differentiate between relative and
+   absolute paths, as described in Section 7.
 
-      params      = param *( ";" param )
+   Authors should be aware that path names which contain a colon ":"
+   character cannot be used as the first component of a relative URL
+   path (e.g., "this:that") because they will likely be mistaken for a
+   scheme name.  It is therefore necessary to precede such cases with
+   other components (e.g., "./this:that") in order for them to be
+   referenced as a relative path.
+
+4.3.3. Parameters Component
+
+      parameters  = param *( ";" param )
       param       = *( pchar | "/" )
 
-3.3.4. Query Component
+   When parsing a URL reference, the parameters component (if any) is
+   extracted after the query component.  If the remaining reference
+   contains a semicolon ";" character, then the substring after the
+   first (left-most) semicolon and up to the end of the reference is the
+   parameters component.  If the semicolon is the last character, or no
+   semicolon is present, then the parameters component is empty.  The
+   semicolon separator is discarded.
+
+4.3.4. Query Component
 
       query       = *urlchar
 
-
-4. Parsing a URL Reference
-
-   An accepted method for parsing URL references is useful to clarify
-   the generic-URL syntax of Section 2.2 and to describe the algorithm
-   for resolving relative URLs presented in Section 4.  This section
-   describes the parsing rules for breaking down a URL (relative or
-   absolute) into the component parts described in Section 2.1.  The
-   rules assume that the URL has already been separated from any
-   surrounding text and copied to a "parse string".  The rules are
-   listed in the order in which they would be applied by the parser.
-
-4.1. Parsing the Fragment Identifier
-
-   If the parse string contains a crosshatch "#" character, then the
-   substring after the first (left-most) crosshatch "#" and up to the
-   end of the parse string is the <fragment> identifier.  If the
-   crosshatch is the last character, or no crosshatch is present, then
-   the fragment identifier is empty.  The matched substring, including
-   the crosshatch character, is removed from the parse string before
-   continuing.
-
-   Note that the fragment identifier is not considered part of the URL.
-   However, since it is often attached to the URL, parsers must be able
-   to recognize and set aside fragment identifiers as part of the
-   process.
-
-4.2. Parsing the Scheme
-
-   If the parse string contains a colon ":" after the first character
-   and before any characters not allowed as part of a scheme name (i.e.,
-   any not an alphanumeric, plus "+", period ".", or hyphen "-"), the
-   <scheme> of the URL is the substring of characters up to but not
-   including the first colon.  These characters and the colon are then
-   removed from the parse string before continuing.
-
-4.3. Parsing the Network Location/Login
-
-   If the parse string begins with a double-slash "//", then the
-   substring of characters after the double-slash and up to, but not
-   including, the next slash "/" character is the network location/login
-   (<server>) of the URL.  If no trailing slash "/" is present, the
-   entire remaining parse string is assigned to <server>.  The double-
-   slash and <server> are removed from the parse string before
-   continuing.
-
-4.4. Parsing the Query Information
-
-   If the parse string contains a question mark "?" character, then the
-   substring after the first (left-most) question mark "?" and up to the
-   end of the parse string is the <query> information.  If the question
-   mark is the last character, or no question mark is present, then the
-   query information is empty.  The matched substring, including the
-   question mark character, is removed from the parse string before
-   continuing.
-
-4.5. Parsing the Parameters
-
-   If the parse string contains a semicolon ";" character, then the
-   substring after the first (left-most) semicolon ";" and up to the end
-   of the parse string is the parameters (<params>).  If the semicolon
-   is the last character, or no semicolon is present, then <params> is
-   empty.  The matched substring, including the semicolon character, is
-   removed from the parse string before continuing.
-
-4.6. Parsing the Path
-
-   After the above steps, all that is left of the parse string is the
-   URL <path> and the slash "/" that may precede it.  Even though the
-   initial slash is not part of the URL path, the parser must remember
-   whether or not it was present so that later processes can
-   differentiate between relative and absolute paths.  Often this is
-   done by simply storing the preceding slash along with the path.
+   When parsing a URL reference, the query component (if any) is
+   extracted after the server component.  If the remaining reference
+   contains a question mark "?" character, then the substring after the
+   first (left-most) question mark and up to the end of the reference is
+   the query component.  If the question mark is the last character, or
+   no question mark is present, then the query component is empty.  The
+   question mark separator is discarded.
 
 
 5. Establishing a Base URL
@@ -690,7 +671,7 @@ Abstract
    Messages are considered to be composite documents.  The base URL of a
    message can be specified within the message headers (or equivalent
    tagged metainformation) of the message.  For protocols that make use
-   of message headers like those described in RFC 822 [5], the base URL
+   of message headers like those described in MIME [4], the base URL
    can be specified by the Content-Base or Content-Location header
    fields.
 
@@ -777,12 +758,12 @@ Abstract
    The following steps are performed in order:
 
    Step 1: The base URL is established according to the rules of
-           Section 3.  If the base URL is the empty string (unknown),
+           Section 5.  If the base URL is the empty string (unknown),
            the URL reference is interpreted as an absolute URL and
            we are done.
 
    Step 2: Both the base and URL reference are parsed into their
-           component parts as described in Section 2.4.
+           component parts as described in Section 4.
 
            a) If the URL reference is entirely empty, it inherits the
               entire base URL (i.e., is set equal to the base URL)
@@ -805,9 +786,9 @@ Abstract
            slash), then the URL reference inherits the base URL path,
            and
 
-           a) if the URL reference's <params> is non-empty, we skip to
-              step 7; otherwise, it inherits the <params> of the base
-              URL (if any) and
+           a) if the URL reference's <parameters> is non-empty, we skip
+	      to step 7; otherwise, it inherits the <parameters> of the
+	      base URL (if any) and
 
            b) if the URL reference's <query> is non-empty, we skip to
               step 7; otherwise, it inherits the <query> of the base
@@ -843,8 +824,7 @@ Abstract
    URL path and thus do not affect the resolving of relative paths.  In
    particular, the presence or absence of the ";type=d" parameter on an
    ftp URL does not affect the interpretation of paths relative to that
-   URL.  Fragment identifiers are only inherited from the base URL when
-   the entire URL reference is empty.
+   URL.
 
    The above algorithm is intended to provide an example by which the
    output of implementations can be tested -- implementation of the
@@ -924,28 +904,8 @@ Abstract
 
 9. Acknowledgements
 
-   This paper builds on the basic WWW design (RFC 1630) and much
-   discussion of these issues by many people on the network.  The
-   discussion was particularly stimulated by articles by Clifford Lynch,
-   Brewster Kahle [10] and Wengyik Yeong [18].  Contributions from John
-   Curran, Clifford Neuman, Ed Vielmetti and later the IETF URL BOF and
-   URI working group were incorporated.
-
-   Most recently, careful readings and comments by Dan Connolly, Ned
-   Freed, Roy Fielding, Guido van Rossum, Michael Dolan, Bert Bos, John
-   Kunze, Olle Jarnefors, Peter Svanberg and many others have helped
-   refine this RFC.
-
-   This work is derived from concepts introduced by Tim Berners-Lee and
-   the World-Wide Web global information initiative.  Relative URLs are
-   described as "Partial URLs" in RFC 1630 [1].
-
-   This document is intended to fulfill the recommendations for Internet
-   Resource Locators as stated in [6].  It has benefited greatly from
-   the comments of all those participating in the URI-WG.  Particular
-   thanks go to Larry Masinter, Michael A. Dolan, Guido van Rossum, Dave
-   Kristol, David Robinson, and Brad Barber for identifying
-   problems/deficiencies in earlier drafts.
+   Most of this document was derived from RFC 1738 [2] and RFC 1808 [7];
+   the acknowledgements in those specifications still apply.
 
 
 10. References
@@ -973,32 +933,18 @@ Abstract
    [6] Crocker, D., "Standard for the Format of ARPA Internet Text
        Messages", STD 11, RFC 822, UDEL, August 1982.
 
-   [7] Kunze, J., "Functional Recommendations for Internet Resource
+   [7] Fielding, R., "Relative Uniform Resource Locators", RFC 1808,
+       UC Irvine, June 1995.
+
+   [8] Kunze, J., "Functional Recommendations for Internet Resource
        Locators", RFC 1736, IS&T, UC Berkeley, February 1995.
 
-   [8] Huitema, C., "Naming: Strategies and Techniques", Computer
-       Networks and ISDN Systems 23 (1991) 107-110.
-
-   [9] Kahle, B., "Document Identifiers, or International Standard
-       Book Numbers for the Electronic Age", 1991.
-
-  [10] Mockapetris, P., "Domain Names - Concepts and Facilities",
+   [9] Mockapetris, P., "Domain Names - Concepts and Facilities",
        STD 13, RFC 1034, USC/Information Sciences Institute,
        November 1987.
 
-  [11] Sollins, K. and L. Masinter, "Functional Requirements for
-       Uniform Resource Names", RFC 1737, MIT/LCS, Xerox Corporation,
-       December 1994.
-
-  [12] Yeong, W. "Towards Networked Information Retrieval", Technical
-       report 91-06-25-01, Performance Systems International, Inc.,
-       June 1991.
-
-  [13] Yeong, W., "Representing Public Archives in the Directory",
-       Work in Progress, November 1991.
-
-  [14] "Coded Character Set -- 7-bit American Standard Code for
-       Information Interchange", ANSI X3.4-1986.
+  [10] US-ASCII. "Coded Character Set -- 7-bit American Standard Code
+       for Information Interchange", ANSI X3.4-1986.
 
 
 11. Editors' Addresses
@@ -1037,7 +983,10 @@ Appendices
 
 A. Collected BNF for URLs
 
-B. Recommendations for URLs in Context
+   # To be inserted when it is completed.
+
+
+B. Recommendations for Delimiting URLs in Context
 
    URIs, including URLs, are intended to be transmitted through
    protocols which provide a context for their interpretation.
@@ -1082,7 +1031,7 @@ B. Recommendations for URLs in Context
       net/instructions/overview.html#WARNING>.
 
 
-C. Examples and Recommended Practice
+C. Examples of Resolving Relative URLs
 
    Within an object with a well-defined base URL of
 
@@ -1092,30 +1041,30 @@ C. Examples and Recommended Practice
 
 C.1.  Normal Examples
 
-      g:h        = <g:h>
-      g          = <http://a/b/c/g>
-      ./g        = <http://a/b/c/g>
-      g/         = <http://a/b/c/g/>
-      /g         = <http://a/g>
-      //g        = <http://g>
-      ?y         = <http://a/b/c/d;p?y>
-      g?y        = <http://a/b/c/g?y>
-      g?y/./x    = <http://a/b/c/g?y/./x>
-      #s         = <http://a/b/c/d;p?q#s>
-      g#s        = <http://a/b/c/g#s>
-      g#s/./x    = <http://a/b/c/g#s/./x>
-      g?y#s      = <http://a/b/c/g?y#s>
-      ;x         = <http://a/b/c/d;x>
-      g;x        = <http://a/b/c/g;x>
-      g;x?y#s    = <http://a/b/c/g;x?y#s>
-      .          = <http://a/b/c/>
-      ./         = <http://a/b/c/>
-      ..         = <http://a/b/>
-      ../        = <http://a/b/>
-      ../g       = <http://a/b/g>
-      ../..      = <http://a/>
-      ../../     = <http://a/>
-      ../../g    = <http://a/g>
+      g:h        =  g:h
+      g          =  http://a/b/c/g
+      ./g        =  http://a/b/c/g
+      g/         =  http://a/b/c/g/
+      /g         =  http://a/g
+      //g        =  http://g
+      ?y         =  http://a/b/c/d;p?y
+      g?y        =  http://a/b/c/g?y
+      g?y/./x    =  http://a/b/c/g?y/./x
+      #s         =  http://a/b/c/d;p?q#s
+      g#s        =  http://a/b/c/g#s
+      g#s/./x    =  http://a/b/c/g#s/./x
+      g?y#s      =  http://a/b/c/g?y#s
+      ;x         =  http://a/b/c/d;x
+      g;x        =  http://a/b/c/g;x
+      g;x?y#s    =  http://a/b/c/g;x?y#s
+      .          =  http://a/b/c/
+      ./         =  http://a/b/c/
+      ..         =  http://a/b/
+      ../        =  http://a/b/
+      ../g       =  http://a/b/g
+      ../..      =  http://a/
+      ../../     =  http://a/
+      ../../g    =  http://a/g
 
 C.2.  Abnormal Examples
 
@@ -1123,63 +1072,43 @@ C.2.  Abnormal Examples
    normal practice, all URL parsers should be capable of resolving them
    consistently.  Each example uses the same base as above.
 
-   An empty reference resolves to the complete base URL:
+   An empty reference refers to the top of the current document.
 
-      <>            = <http://a/b/c/d;p?q#f>
+      <>            =  http://a/b/c/d;p?q
 
    Parsers must be careful in handling the case where there are more
    relative path ".." segments than there are hierarchical levels in the
    base URL's path.  Note that the ".." syntax cannot be used to change
    the <server> of a URL.
 
-      ../../../g    = <http://a/../g>
-      ../../../../g = <http://a/../../g>
+      ../../../g    =  http://a/../g
+      ../../../../g =  http://a/../../g
 
    Similarly, parsers must avoid treating "." and ".." as special when
    they are not complete components of a relative path.
 
-      /./g          = <http://a/./g>
-      /../g         = <http://a/../g>
-      g.            = <http://a/b/c/g.>
-      .g            = <http://a/b/c/.g>
-      g..           = <http://a/b/c/g..>
-      ..g           = <http://a/b/c/..g>
+      /./g          =  http://a/./g
+      /../g         =  http://a/../g
+      g.            =  http://a/b/c/g.
+      .g            =  http://a/b/c/.g
+      g..           =  http://a/b/c/g..
+      ..g           =  http://a/b/c/..g
 
    Less likely are cases where the relative URL uses unnecessary or
    nonsensical forms of the "." and ".." complete path segments.
 
-      ./../g        = <http://a/b/g>
-      ./g/.         = <http://a/b/c/g/>
-      g/./h         = <http://a/b/c/g/h>
-      g/../h        = <http://a/b/c/h>
+      ./../g        =  http://a/b/g
+      ./g/.         =  http://a/b/c/g/
+      g/./h         =  http://a/b/c/g/h
+      g/../h        =  http://a/b/c/h
 
    Finally, some older parsers allow the scheme name to be present in a
    relative URL if it is the same as the base URL scheme.  This is
    considered to be a loophole in prior specifications of partial URLs
    [1] and should be avoided by future parsers.
 
-      http:g        = <http:g>
-      http:         = <http:>
-
-C.3.  Recommended Practice
-
-   Authors should be aware that path names which contain a colon ":"
-   character cannot be used as the first component of a relative URL
-   path (e.g., "this:that") because they will likely be mistaken for a
-   scheme name.  It is therefore necessary to precede such cases with
-   other components (e.g., "./this:that"), or to escape the colon
-   character (e.g., "this%3Athat"), in order for them to be correctly
-   parsed.  The former solution is preferred because it does not affect
-   the absolute form of the URL.
-
-   There is an ambiguity in the semantics for the ftp URL scheme
-   regarding the use of a trailing slash ("/") character and/or a
-   parameter ";type=d" to indicate a resource that is an ftp directory.
-   If the result of retrieving that directory includes relative URL
-   references, it is necessary that the base URL path for that result
-   include a trailing slash.  For this reason, we recommend that the
-   ";type=d" parameter value not be used within contexts that allow
-   relative URLs.
+      http:g        =  http:g
+      http:         =  http:
 
 
 D. Embedding the Base URL in HTML documents
