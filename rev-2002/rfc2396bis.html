@@ -239,13 +239,13 @@ table.closedissue {
       <link rel="Appendix" title="C Delimiting a URI in Context" href="#rfc.section.C">
       <link rel="Appendix" title="D Summary of Non-editorial Changes" href="#rfc.section.D">
       <link rel="Appendix" title="E Instructions to RFC Editor" href="#rfc.section.E">
-      <meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.15, 2004/05/21 00:48:58, XSLT vendor: SAXON 7.8 from Michael Kay http://saxon.sf.net/">
+      <meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.16, 2004/07/17 22:29:58, XSLT vendor: SAXON 7.8 from Michael Kay http://saxon.sf.net/">
       <meta name="keywords" content="uniform resource identifier, URI, URL, URN, WWW, resource">
       <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
       <meta name="DC.Creator" content="Berners-Lee, T.">
       <meta name="DC.Creator" content="Fielding, R.">
       <meta name="DC.Creator" content="Masinter, L.">
-      <meta name="DC.Identifier" content="urn:ietf:id:draft-fielding-uri-rfc2396bis-06">
+      <meta name="DC.Identifier" content="urn:ietf:id:draft-fielding-uri-rfc2396bis-07">
       <meta name="DC.Date.Issued" scheme="ISO8601" content="2004-07">
       <meta name="DC.Relation.Replaces" content="urn:ietf:rfc:2732">
       <meta name="DC.Relation.Replaces" content="urn:ietf:rfc:2396">
@@ -272,7 +272,7 @@ table.closedissue {
          </tr>
          <tr>
             <td class="header-l">
-               &lt;draft-fielding-uri-rfc2396bis-06&gt;
+               &lt;draft-fielding-uri-rfc2396bis-07&gt;
                &nbsp;
             </td>
             <td class="header-r">R. Fielding&nbsp;</td>
@@ -303,7 +303,7 @@ table.closedissue {
             <td class="header-r">July 2004&nbsp;</td>
          </tr>
       </table>
-      <p class="title">Uniform Resource Identifier (URI): Generic Syntax<br><span class="filename">draft-fielding-uri-rfc2396bis-06</span></p>
+      <p class="title">Uniform Resource Identifier (URI): Generic Syntax<br><span class="filename">draft-fielding-uri-rfc2396bis-07</span></p>
       <h1><a name="rfc.status">Status of this Memo</a></h1>
       <p>
          By submitting this Internet-Draft, I certify that any applicable
@@ -640,7 +640,7 @@ table.closedissue {
          
          
          <b>&nbsp;4.2&nbsp;
-            <a href="#relative-uri">Relative URI</a></b><br>
+            <a href="#relative-ref">Relative Reference</a></b><br>
          
          
          
@@ -1377,8 +1377,8 @@ table.closedissue {
       <div><a name="rfc.section.1.2.3.p.3"></a></div>
       <p>
          It is often the case that a group or "tree" of documents has been
-         constructed to serve a common purpose, wherein the vast majority of URIs
-         in these documents point to resources within the tree rather than
+         constructed to serve a common purpose, wherein the vast majority of URI
+         references in these documents point to resources within the tree rather than
          outside of it.  Similarly, documents located at a particular site are
          much more likely to refer to other resources at that site than to
          resources at remote sites.
@@ -1393,7 +1393,7 @@ table.closedissue {
       </p>
       <div><a name="rfc.section.1.2.3.p.4"></a></div>
       <p>
-         A relative URI reference (<a href="#relative-uri" title="Relative URI">Section&nbsp;4.2</a>) refers to a
+         A relative reference (<a href="#relative-ref" title="Relative Reference">Section&nbsp;4.2</a>) refers to a
          resource by describing the difference within a hierarchical name space
          between the reference context and the target URI.  The reference resolution
          algorithm, presented in <a href="#reference-resolution" title="Reference Resolution">Section&nbsp;5</a>, defines
@@ -2088,8 +2088,8 @@ table.closedissue {
          either be empty or begin with a slash ("/") character.
          If a URI does not contain an authority component, then
          the path cannot begin with two slash characters ("//").
-         In addition, a URI reference (<a href="#uri-reference" title="URI Reference">Section&nbsp;4.1</a>) may begin
-         with a relative path, in which case the first path segment cannot
+         In addition, a URI reference (<a href="#uri-reference" title="URI Reference">Section&nbsp;4.1</a>) may be
+         a relative-path reference, in which case the first path segment cannot
          contain a colon (":") character.  The ABNF requires five separate rules
          to disambiguate these cases, only one of which will match the path
          substring within a given URI reference.  We use the generic term
@@ -2139,8 +2139,8 @@ table.closedissue {
       <p>
          The path segments "." and "..", also known as dot-segments, are defined for
          relative reference within the path name hierarchy.
-         They are intended for use at the beginning of a relative path reference
-         (<a href="#relative-uri" title="Relative URI">Section&nbsp;4.2</a>) for indicating
+         They are intended for use at the beginning of a relative-path reference
+         (<a href="#relative-ref" title="Relative Reference">Section&nbsp;4.2</a>) for indicating
          relative position within the hierarchical tree of names.  This is similar
          to their role within some operating systems' file directory structure to
          indicate the current directory and parent directory, respectively.
@@ -2305,11 +2305,11 @@ table.closedissue {
          <a name="rfc.iref.126"></a>
          <a name="rfc.iref.127"></a>
          
-      </p><pre>   URI-reference = URI / relative-URI
+      </p><pre>   URI-reference = URI / relative-ref
 </pre><p>
-         A URI-reference may be relative:
-         if the reference's prefix matches the syntax of a scheme followed by
-         its colon separator, then the reference is a URI rather than a relative-URI.
+         A URI-reference is either a URI or a relative reference.
+         If the URI-reference's prefix does not match the syntax of a scheme followed
+         by its colon separator, then the URI-reference is a relative reference.
          
       </p>
       <div><a name="rfc.section.4.1.p.2"></a></div>
@@ -2325,17 +2325,17 @@ table.closedissue {
          string and extract the URI components.
          
       </p>
-      <h2><a name="rfc.iref.128"></a><a name="rfc.iref.129"></a><a name="rfc.iref.130"></a><a name="rfc.iref.131"></a><a name="rfc.section.4.2">4.2</a>&nbsp;<a name="relative-uri">Relative URI</a></h2>
+      <h2><a name="rfc.iref.128"></a><a name="rfc.iref.129"></a><a name="rfc.iref.130"></a><a name="rfc.iref.131"></a><a name="rfc.section.4.2">4.2</a>&nbsp;<a name="relative-ref">Relative Reference</a></h2>
       <div><a name="rfc.figure.u.20"></a></div>
       <p>
-         A relative URI reference takes advantage of the hierarchical syntax
-         (<a href="#hierarchical" title="Hierarchical Identifiers">Section&nbsp;1.2.3</a>) in order to express a reference that is
+         A relative reference takes advantage of the hierarchical syntax
+         (<a href="#hierarchical" title="Hierarchical Identifiers">Section&nbsp;1.2.3</a>) in order to express a URI reference
          relative to the name space of another hierarchical URI.
          <a name="rfc.iref.132"></a>
          <a name="rfc.iref.133"></a>
          <a name="rfc.iref.134"></a>
          
-      </p><pre>   relative-URI  = relative-part [ "?" query ] [ "#" fragment ]
+      </p><pre>   relative-ref  = relative-part [ "?" query ] [ "#" fragment ]
 
    relative-part = "//" authority path-abempty
                  / path-absolute
@@ -2444,7 +2444,7 @@ table.closedissue {
       </p>
       <div><a name="rfc.section.4.5.p.5"></a></div>
       <p>
-         Since a URI suffix has the same syntax as a relative path reference, a
+         Since a URI suffix has the same syntax as a relative-path reference, a
          suffix reference cannot be used in contexts where a relative reference
          is expected.  As a result, suffix references are limited to those places where
          there is no defined base URI, such as dialog boxes and off-line advertisements.
@@ -2463,7 +2463,7 @@ table.closedissue {
       <p>
          This section defines the process of resolving a URI reference within
          a context that allows relative references, such that the result is a
-         string matching the "URI" syntax rule of <a href="#components" title="Syntax Components">Section&nbsp;3</a>.
+         string matching the &lt;URI&gt; syntax rule of <a href="#components" title="Syntax Components">Section&nbsp;3</a>.
          
       </p>
       <h2><a name="rfc.iref.144"></a><a name="rfc.section.5.1">5.1</a>&nbsp;<a name="base-uri">Establishing a Base URI</a></h2>
@@ -2777,21 +2777,21 @@ table.closedissue {
       </p><pre>   STEP   OUTPUT BUFFER         INPUT BUFFER
 
     1 :                         /a/b/c/./../../g
-    2e:   /a                    /b/c/./../../g
-    2e:   /a/b                  /c/./../../g
-    2e:   /a/b/c                /./../../g
-    2b:   /a/b/c                /../../g
-    2c:   /a/b                  /../g
-    2c:   /a                    /g
-    2e:   /a/g
+    2E:   /a                    /b/c/./../../g
+    2E:   /a/b                  /c/./../../g
+    2E:   /a/b/c                /./../../g
+    2B:   /a/b/c                /../../g
+    2C:   /a/b                  /../g
+    2C:   /a                    /g
+    2E:   /a/g
 
    STEP   OUTPUT BUFFER         INPUT BUFFER
 
     1 :                         mid/content=5/../6
-    2e:   mid                   /content=5/../6
-    2e:   mid/content=5         /../6
-    2c:   mid                   /6
-    2e:   mid/6
+    2E:   mid                   /content=5/../6
+    2E:   mid/content=5         /../6
+    2C:   mid                   /6
+    2E:   mid/6
 </pre><p>
          Some applications may find it more efficient to implement the
          remove_dot_segments algorithm using two segment stacks rather than strings.
@@ -2864,7 +2864,7 @@ table.closedissue {
       <div><a name="rfc.figure.u.27"></a></div><pre>   http://a/b/c/d;p?q
 </pre><div><a name="rfc.section.5.4.p.3"></a></div>
       <p>
-         a relative URI reference is transformed to its target URI as follows.
+         a relative reference is transformed to its target URI as follows.
          
       </p>
       <h3><a name="rfc.section.5.4.1">5.4.1</a>&nbsp;<a name="relative-normal">Normal Examples</a></h3>
@@ -2902,7 +2902,8 @@ table.closedissue {
       <div><a name="rfc.section.5.4.2.p.2"></a></div>
       <p>
          Parsers must be careful in handling cases where there are more
-         relative path ".." segments than there are hierarchical levels in the
+         ".." segments in a relative-path reference than there are hierarchical
+         levels in the
          base URI's path.  Note that the ".." syntax cannot be used to change
          the authority component of a URI.
          
@@ -2924,7 +2925,7 @@ table.closedissue {
    "..g"           =  "http://a/b/c/..g"
 </pre><div><a name="rfc.section.5.4.2.p.6"></a></div>
       <p>
-         Less likely are cases where the relative URI reference uses unnecessary or
+         Less likely are cases where the relative reference uses unnecessary or
          nonsensical forms of the "." and ".." complete path segments.
          
       </p>
@@ -2937,7 +2938,7 @@ table.closedissue {
 </pre><div><a name="rfc.section.5.4.2.p.8"></a></div>
       <p>
          Some applications fail to separate the reference's query and/or
-         fragment components from a relative path before merging it with
+         fragment components from the path component before merging it with
          the base path and removing dot-segments.  This error is rarely noticed,
          since typical usage of a fragment never includes the hierarchy ("/")
          character, and the query component is not normally used within
@@ -2950,7 +2951,7 @@ table.closedissue {
    "g#s/../x"      =  "http://a/b/c/g#s/../x"
 </pre><div><a name="rfc.section.5.4.2.p.10"></a></div>
       <p>
-         Some parsers allow the scheme name to be present in a relative URI reference if
+         Some parsers allow the scheme name to be present in a relative reference if
          it is the same as the base URI scheme.  This is considered to be a
          loophole in prior specifications of partial URI <a href="#RFC1630" title="Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web">[RFC1630]</a>.
          Its use should be avoided, but is allowed for backward compatibility.
@@ -3020,7 +3021,7 @@ table.closedissue {
       <div><a name="rfc.section.6.1.p.3"></a></div>
       <p>
          In testing for equivalence, applications should not directly compare
-         relative URI references; the references should be converted to their
+         relative references; the references should be converted to their
          target URI forms before comparison.  When URIs are being compared
          for the purpose of selecting (or avoiding) a network action, such as
          retrieval of a representation, the fragment components (if any) should
@@ -3222,7 +3223,7 @@ table.closedissue {
          
          <li>Always use uppercase A-through-F characters when percent-encoding.</li>
          
-         <li>Prevent dot-segments appearing in non-relative URI paths.</li>
+         <li>Prevent dot-segments from appearing in paths.</li>
          
          <li>For schemes that define a default authority, use an empty authority
             if the default is desired.
@@ -3820,11 +3821,11 @@ table.closedissue {
                / path-rootless
                / path-empty
 
- URI-reference = URI / relative-URI
+ URI-reference = URI / relative-ref
 
  absolute-URI  = scheme ":" hier-part [ "?" query ]
 
- relative-URI  = relative-part [ "?" query ] [ "#" fragment ]
+ relative-ref  = relative-part [ "?" query ] [ "#" fragment ]
 
  relative-part = "//" authority path-abempty
                / path-absolute
@@ -4085,7 +4086,7 @@ table.closedissue {
       </p>
       <div><a name="rfc.section.D.1.p.4"></a></div>
       <p>
-         An ABNF rule for URI has been introduced to correspond to the
+         An ABNF rule for URI has been introduced to correspond to one
          common usage of the term: an absolute URI with optional fragment.
          
       </p>
@@ -4123,15 +4124,17 @@ table.closedissue {
          abs_path, rel_path, path_segments, rel_segment, and mark rules.
          All references to "opaque" URIs have been replaced with a better
          description of how the path component may be opaque to hierarchy.
+         The relativeURI rule has been replaced with relative-ref to avoid
+         unnecessary confusion over whether or not they are a subset of URI.
          The ambiguity regarding the parsing of URI-reference as a URI or a
-         relative-URI with a colon in the first segment has been eliminated
+         relative-ref with a colon in the first segment has been eliminated
          through the use of five separate path matching rules.
          
       </p>
       <div><a name="rfc.section.D.2.p.4"></a></div>
       <p>
          The fragment identifier has been moved back into the section on
-         generic syntax components and within the URI and relative-URI
+         generic syntax components and within the URI and relative-ref
          rules, though it remains excluded from absolute-URI.
          The number sign ("#") character has been moved back to the reserved set
          as a result of reintegrating the fragment syntax.
@@ -4139,7 +4142,7 @@ table.closedissue {
       </p>
       <div><a name="rfc.section.D.2.p.5"></a></div>
       <p>
-         The ABNF has been corrected to allow a relative path to be empty.
+         The ABNF has been corrected to allow the path component to be empty.
          This also allows an absolute-URI to consist of nothing after the "scheme:",
          as is present in practice with the "dav:" namespace <a href="#RFC2518" title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</a>
          and the "about:" scheme used internally by many WWW browser implementations.
@@ -4718,7 +4721,7 @@ table.closedissue {
          </tr>
          <tr>
             <td>
-               &nbsp;&nbsp;relative-URI&nbsp;
+               &nbsp;&nbsp;relative-ref&nbsp;
                
                
                &nbsp;<a href="#rfc.iref.128"><b>4.2</b></a></td>
@@ -5108,7 +5111,7 @@ table.closedissue {
          </tr>
          <tr>
             <td>
-               &nbsp;&nbsp;&nbsp;&nbsp;relative-URI&nbsp;
+               &nbsp;&nbsp;&nbsp;&nbsp;relative-ref&nbsp;
                
                
                &nbsp;<a href="#rfc.iref.127">4.1</a>, 
