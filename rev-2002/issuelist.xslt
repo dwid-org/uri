@@ -108,7 +108,14 @@
   <xsl:value-of select="local-name()"/>:
   <a href="mailto:{author/@email}"><xsl:value-of select="author"/></a>,
   <xsl:value-of select="date"/>,
-  <xsl:value-of select="where"/>:
+  <xsl:choose>
+    <xsl:when test="./where/a">
+      <xsl:copy-of select="./where/a"/>:
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="where"/>:
+    </xsl:otherwise>
+  </xsl:choose>
   <xsl:copy-of select="pre"/>
   </td></tr>
 </xsl:template>

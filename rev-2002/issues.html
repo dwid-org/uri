@@ -15,6 +15,9 @@
              <a href="example_uri_refs.txt">input</a> and
              <a href="example_uri_refs.out">output</a>
 </li>
+<li>
+<a href="../test/index.html">Test Cases and Implementation Reports</a>
+</li>
 <li>Published drafts:
        <a href="draft-fielding-uri-rfc2396bis-05.txt">05.txt</a>,
        <a href="draft-fielding-uri-rfc2396bis-05.html">05.html</a>,
@@ -221,7 +224,7 @@
   <a href="mailto:ccwf_AT_bacchus.com">Charles C. Fu</a>,
   15 Jul 1998,
   libwww-perl mailing list:
-  <pre>
+    <pre>
 
    [under Windows] it's perfectly legal while on host "foo" to request
    file://server/folder/item.  On Win32, and on other systems, this
@@ -281,7 +284,7 @@ URLs which works with both Netscape and Explorer.
   <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
   09 Sep 1998,
   URI-WG mailing list:
-  <pre>
+    <pre>
 RFC 2396 obsoletes 1738, which contained:
 
    ftp                     File Transfer protocol
@@ -322,7 +325,7 @@ name mapping.
   <a href="mailto:msabin_AT_milessabin.com">Miles Sabin</a>,
   23 Mar 1999,
   private mail:
-  <pre>
+    <pre>
 I've been working through the relative URI resolution
 mechanism in RFC 2396, and I've spotted something which 
 seems a little odd. The example resolution on p.29 for,
@@ -361,7 +364,7 @@ suspect that something must be wrong ;-)
   <a href="mailto:holtzman_AT_mit.edu">Henry Holtzman</a>,
   09 Jul 2002,
   private mail:
-  <pre>
+    <pre>
 rfc2396 specifies a different browser behavior from rfc1808 in a particular
 situation that I believe may be unintentional.  IE &amp; Netscape implement the
 rfc1808 behavior while Opera implements the rfc2396 behavior.  As appendix
@@ -421,7 +424,7 @@ Thank you.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   14 Oct 2002,
   draft 00:
-  <pre>
+    <pre>
 Fixed by rewriting the algorithm as pseudocode and restoring the
 original RFC 1808 behavior, with the example changed accordingly.
 </pre>
@@ -441,7 +444,7 @@ original RFC 1808 behavior, with the example changed accordingly.
   <a href="mailto:ronald_AT_innovation.ch">Ronald Tschal&auml;r</a>,
   16 Sep 1999,
   private mail:
-  <pre>
+    <pre>
 I tried to follow the algorithm in my implementation, but it gives
 http://ab :-( 
 
@@ -468,7 +471,7 @@ I'm doing:
   <a href="mailto:amc_AT_cs.berkeley.edu">Adam M. Costello</a>,
   21 Apr 2000,
   private mail:
-  <pre>
+    <pre>
 I think there's a slight bug in the relative URI resolution algorithm in
 RFC 2396.  Consider:
 
@@ -532,7 +535,7 @@ and the base URI has no path.  Proposal 1 looks the cleanest to me.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   17 Sep 1999,
   private mail:
-  <pre>
+    <pre>
 I guess step 6a should be
 
       a) All but the last segment of the base URI's path component is
@@ -548,7 +551,7 @@ I guess step 6a should be
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   14 Sep 2002,
   draft 00:
-  <pre>
+    <pre>
 Fixed as described above.
 </pre>
 </td>
@@ -567,7 +570,7 @@ Fixed as described above.
   <a href="mailto:lundberg_AT_wu-ftpd.org">Gregory A Lundberg</a>,
   9 Dec 1999,
   Apache httpd dev mailing list:
-  <pre>
+    <pre>
 If you've already done any server-side commands, you should take a look at
 the current specification and consider re-implementing them if you want any
 clients to use them.
@@ -618,7 +621,7 @@ submission.
   <a href="mailto:connolly_AT_w3.org">Dan Connolly</a>,
   10 Jan 2000,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I have recently spent a considerable amount of time studying the URI spec
 [1]	http://www.ietf.org/rfc/rfc2396.txt
 and I discovered, somewhat to my surprise, that it
@@ -682,7 +685,7 @@ I used absoluteURI and URI_reference with their rfc2396 meanings.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   27 Oct 2002,
   draft 00:
-  <pre>
+    <pre>
 absolute-URI-reference has been added to the section on URI reference
 and the ABNF.
 </pre>
@@ -702,7 +705,7 @@ and the ABNF.
   <a href="mailto:ranschultz_AT_symantec.com">Reese Anschultz</a>,
   17 Feb 2000,
   private mail:
-  <pre>
+    <pre>
 I have an observation regarding section -- "C. Examples of Resolving
 Relative URI References" -- within this document.
 
@@ -737,7 +740,7 @@ characters proceed the question mark (?).
   <a href="mailto:zongaro_AT_ca.ibm.com">Henry Zongaro</a>,
   12 Nov 2001,
   RFC editor:
-  <pre>
+    <pre>
      Appendix C shows an example of a relative URI Reference of "?y" with 
 respect to the base URI "http://a/b/c/d;p?q".  However, according to the 
 collected syntax that appears in Appendix A, "?y" doesn't appear to be a 
@@ -755,7 +758,7 @@ rel_segment, which again cannot begin with a question mark.
   <a href="mailto:blilly_AT_erols.com">Bruce Lilly</a>,
   16 Jan 2002,
   private mail:
-  <pre>
+    <pre>
 Section C.2 mentions an empty reference, but the
 formal syntax does not provide for that. There are
 several possible changes to the formal syntax which
@@ -776,7 +779,7 @@ permitting a lone delimited query.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   20 Mar 2000,
   private mail:
-  <pre>
+    <pre>
 I don't even remember making this change, but it was broken
 when draft-fielding-uri-syntax-02.txt changed from
 
@@ -796,7 +799,7 @@ to (in 03):
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   14 Sep 2002,
   draft 00:
-  <pre>
+    <pre>
 Fixed by making the path optional in the ABNF:
 
 2396:
@@ -825,7 +828,7 @@ draft-00:
   <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
   26 May 2000,
   xml-uri mailing list:
-  <pre>
+    <pre>
 When we update RFC 2396, I suggest we add an introductory paragraph
 explaining that the term "URI" is used ambiguiously in the community
 to mean "a URI reference" (corresponding to the URI-reference BNF entity)
@@ -845,7 +848,7 @@ so that people don't think that the abstract is normative.
   <a href="mailto:Jeff.Hodges_AT_kingsmountain.com">Jeff Hodges</a>,
   01 Jun 2001,
   URI-WG mailing list:
-  <pre>
+    <pre>
 It seems to me, in considering points raised in the "Are URI-References bound 
 to resources?" thread, that some subtleties might be a bit more clear if  
 changes along the following lines were made to RFC 2396 (i.e. in a future 
@@ -907,7 +910,7 @@ to readers.
   <a href="mailto:timbl_AT_w3.org">Tim Berners-Lee</a>,
   23 Jan 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I would very much like us to take the opportunity to clean up the terminology
 on the URI spec which has confused people.  It is my considered opinion that
 this would be far preferable:
@@ -926,7 +929,7 @@ character sets, namespace prefixes, etc))
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   23 May 2003,
   draft 02:
-  <pre>
+    <pre>
 An ABNF production for URI has been introduced to correspond to the
 common usage of the term: an absolute URI with optional fragment. 
 The fragment identifier has been moved back into the section on
@@ -950,7 +953,7 @@ specification has been revised accordingly.
   <a href="mailto:kohsuke.kawaguchi_AT_eng.sun.com">Kohsuke Kawaguchi</a>,
   15 Mar 2001,
   private mail:
-  <pre>
+    <pre>
 I found that according to BNF of RFC 2396 "URI Generic Syntax", the
 following string is accepted as a valid URI.
 
@@ -986,7 +989,7 @@ follows?
   <a href="mailto:fielding_AT_apache.org">Roy Fielding</a>,
   17 Oct 2002,
   issues list:
-  <pre>
+    <pre>
 That URI is valid (maybe not for http, but for the URI syntax in general).
 The generic syntax requires that the components be extracted first in
 order to disambiguate these cases (the greedy rule).  Only after the
@@ -1000,7 +1003,7 @@ for correctness.
   <a href="mailto:jjc_AT_jclark.com">James Clark</a>,
   20 Jul 2001,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Is "foo://" a legal URI in RFC 2396? If so, is the path componebnt "//" or 
 empty?
 
@@ -1032,7 +1035,7 @@ consistent.
   <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
   11 Aug 2001,
   private mail:
-  <pre>
+    <pre>
 I just looked at this again, and an empty authority is fine;
 it turns out to look like an empty 'server', rather than an empty 'regname'.
 
@@ -1056,7 +1059,7 @@ So "//" does parse as net_path, and the regex in appendix B is fine.
   <a href="mailto:rokicki_AT_instantis.com">Tomas Rokicki</a>,
   02 Jun 2001,
   URI-WG mailing list:
-  <pre>
+    <pre>
 RFC 2396 contains the following BNF for the host part of a URI:
 
        host          = hostname | IPv4address
@@ -1097,7 +1100,7 @@ for the port, where http://63.197.151.31:0000000080/ accesses port 80).
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   01 Mar 2002,
   draft 01:
-  <pre>
+    <pre>
 Added to the Security Considerations for draft 01.
 </pre>
 </td>
@@ -1116,7 +1119,7 @@ Added to the Security Considerations for draft 01.
   <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
   01 Dec 1999,
   private mail:
-  <pre>
+    <pre>
 http://www.ietf.org/rfc/rfc2732.txt
 </pre>
 </td>
@@ -1126,7 +1129,7 @@ http://www.ietf.org/rfc/rfc2732.txt
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   26 Oct 2002,
   draft 00:
-  <pre>
+    <pre>
 IPv6 literals have been added to the list of possible identifiers
 for the host portion of a server component, as described by RFC 2732,
 with the addition of "[" and "]" to the reserved, uric, and
@@ -1162,7 +1165,7 @@ limit each decimal octet to the range 0-255.
   <a href="mailto:jjc_AT_jclark.com">James Clark</a>,
   20 Jul 2001,
   URI-WG mailing list:
-  <pre>
+    <pre>
 The XML schema anyURI simple type allows any string which after escaping 
 disallowed characters as described in Section 5.4 of XLink is a URI 
 reference as defined in RFC 2396, as amended by RFC 2732. This raises the 
@@ -1245,7 +1248,7 @@ the BNF in RFC 2396 easier to understand.
   <a href="mailto:gvatry_AT_grenoble.sema.slb.com">Gr&eacute;goire Vatry</a>,
   04 Apr 2002,
   private mail:
-  <pre>
+    <pre>
 I report what I suspect to be an error in RFC 2732 which updates RFC 2396.
 
 I suspect that 'uric_no_slash' set of characters has been forgotten
@@ -1286,7 +1289,7 @@ As a result, point (3) of section 3. in RFC 2732 should be:
   <a href="mailto:brian_AT_hursley.ibm.com">Brian E. Carpenter</a>,
   04 Apr 2002,
   private mail:
-  <pre>
+    <pre>
 This indeed appears to be an oversight, thanks. Larry Masinter is thinking about
 combining these two RFCs in their next update so this needs to go on his list. 
 </pre>
@@ -1297,7 +1300,7 @@ combining these two RFCs in their next update so this needs to go on his list.
   <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
   04 Apr 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I agree that this is an error in RFC 2732, and should be
 folded in when we merge RFC 2732 with RFC 2396. We would
 need two independent interoperable implementations of
@@ -1310,7 +1313,7 @@ RFC 2732 (with ipv6 addresses), though.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   22 Oct 2002,
   issues list:
-  <pre>
+    <pre>
 Adding square brackets to uric_no_slash is fine, since it only affects
 the opaque URI syntax.  However, adding it to the other places that
 James Clark suggested would allow square brackets to be used anywhere,
@@ -1326,7 +1329,7 @@ interoperability issues with deployed systems.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   26 Oct 2002,
   draft 00:
-  <pre>
+    <pre>
 IPv6 literals have been added to the list of possible identifiers
 for the host portion of a server component, as described by RFC 2732,
 with the addition of "[" and "]" to the reserved, uric, and
@@ -1355,7 +1358,7 @@ to be defined in terms of uric.
   <a href="mailto:aaron.douglas_AT_fuse.net">A. Carl Douglas</a>,
   26 Apr 2001,
   RFC editor:
-  <pre>
+    <pre>
 Section 3.4, "Query Component", of RFC2396 (URI syntax) refers to the 
 "/" character as being reserved.
 
@@ -1375,7 +1378,7 @@ value.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   24 May 2001,
   private mail:
-  <pre>
+    <pre>
 This is not an error in the spec, though it could be useful as a note
 in future revisions.  The specification cannot disallow characters that
 commonly do appear in a URI query string, even if it is inadvisable
@@ -1399,7 +1402,7 @@ meaning is intended).
   <a href="mailto:julian.reschke_AT_gmx.de">Julian Reschke</a>,
   19 Nov 2001,
   WebDAV-WG mailing list:
-  <pre>
+    <pre>
 (1) RFC2518 (WebDAV) is based on XML + namespaces and has chosen to use the
 namespace name "DAV:" to identify it's elements. Note that "DAV:" *is* a
 properly registered URI scheme)
@@ -1427,7 +1430,7 @@ academic before).
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   24 May 2001,
   private mail:
-  <pre>
+    <pre>
 will fix BNF
 </pre>
 </td>
@@ -1437,7 +1440,7 @@ will fix BNF
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   14 Sep 2002,
   draft 00:
-  <pre>
+    <pre>
 Fixed by making the path optional in the BNF
 </pre>
 </td>
@@ -1456,7 +1459,7 @@ Fixed by making the path optional in the BNF
   <a href="mailto:jason_AT_injektilo.org">Jason Diamond</a>,
   11 Jan 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
     I'm gathering you want resolveURI to take any URI ref and return an
     absolute URI reference.
 
@@ -1498,7 +1501,7 @@ absolute form and would like that encapsulated into a single function.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   14 Oct 2002,
   draft 00:
-  <pre>
+    <pre>
 Fixed by rewriting the algorithm as pseudocode.
 </pre>
 </td>
@@ -1517,7 +1520,7 @@ Fixed by rewriting the algorithm as pseudocode.
   <a href="mailto:blilly_AT_erols.com">Bruce Lilly</a>,
   16 Jan 2002,
   private mail:
-  <pre>
+    <pre>
 I believe that there is a discrepancy between 3.2.2
 and the DNS specifications referenced there. The
 definition in 3.2.2 for hostname is:
@@ -1565,7 +1568,7 @@ or equivalently but more compactly as:
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   28 Oct 2002,
   draft 00:
-  <pre>
+    <pre>
 Changed to reflect all of the suggestions:
 
    hostname      = domainlabel [ qualified ]
@@ -1581,7 +1584,7 @@ Changed to reflect all of the suggestions:
   <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
   10 Feb 2004,
   draft 04:
-  <pre>
+    <pre>
 All of these productions have been removed from draft 04 in favor
 of the reg-name production.
 </pre>
@@ -1601,7 +1604,7 @@ of the reg-name production.
   <a href="mailto:jjc_AT_hplb.hpl.hp.com">Jeremy Carroll</a>,
   10 Apr 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 This is a comment about RFC 2396 that I have been actioned to send on behalf
 of the W3C RDF Core Working Group [1]
 
@@ -1692,7 +1695,7 @@ The negative test case shows possibly illegal usage of xml:base in RDF/XML.
   <a href="mailto:jjc_AT_hplb.hpl.hp.com">Jeremy Carroll</a>,
   15 Apr 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I do not recall the RDF Core WG having resolved a justification of the
 decision in favour of the these test cases. Hence I will give my own
 justification.
@@ -1776,7 +1779,7 @@ document reference.
   <a href="mailto:asgilman_AT_iamdigex.net">Al Gilman</a>,
   15 Apr 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 The bad news:
 
 In fact, "the same document" in fragment-only relative references should be
@@ -1819,7 +1822,7 @@ RDF model will only contain 'absolute' URI-references.
   <a href="mailto:bwm_AT_hplb.hpl.hp.com">Brian McBride</a>,
   15 Apr 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 First: the problem RDF is trying to solve.  The current RDF specs have 
 encouraged the use of the following idiom:
 
@@ -1883,7 +1886,7 @@ future?
   <a href="mailto:bwm_AT_hplb.hpl.hp.com">Brian McBride</a>,
   30 Jan 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Please review the RDFCore last call working drafts which are linked from
 
   http://www.w3.org/2001/sw/RDFCore/#documents
@@ -1908,7 +1911,7 @@ The last call period for these documents ends on 21 Feb 2003.
   <a href="mailto:GK_AT_ninebynine.org">Graham Klyne</a>,
   05 Mar 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Is there a way to specify a fragment identifer relative to the document
 in the current base URI.  I can't see a way to do this.
 
@@ -1936,7 +1939,7 @@ cf. algorithm in section 5.2.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   07 Mar 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Note that this issue is a request to change the "current document"
 algorithm.  This can be accomplished by changing the spec to remove
 the bit about current document and instead replace the empty URI with
@@ -1950,7 +1953,7 @@ if the new URI differs from the base URI only by its fragment.
   <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
   05 May 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 In my implementation, I've assumed the following change in
 the pseudocode for the algorithm in 5.2
 
@@ -1982,7 +1985,7 @@ gives a clean, well-behaved algorithm.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   23 May 2003,
   draft 02:
-  <pre>
+    <pre>
 Removed the special-case treatment of same-document references in favor of a
 section that explains that a new retrieval action should not be made if the
 target URI and base URI, excluding fragments, match.
@@ -2003,7 +2006,7 @@ target URI and base URI, excluding fragments, match.
   <a href="mailto:Robert.Graf_AT_ecetra.com">Robert Graf</a>,
   24 Apr 2002,
   private mail:
-  <pre>
+    <pre>
 On RFC 2732 Page 1 / Point 2
 you can find this example:
 
@@ -2043,7 +2046,7 @@ as described in RFC 2732.
   <a href="mailto:Robert.Graf_AT_ecetra.com">Robert Graf</a>,
   26 Apr 2002,
   private mail:
-  <pre>
+    <pre>
 You should also change
 "host          = hostname | IPv4address | IPv6reference"
 to
@@ -2057,7 +2060,7 @@ because the IP4address is filled via the IPv6reference
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   26 Oct 2002,
   draft 00:
-  <pre>
+    <pre>
 IPv6 literals have been added to the list of possible identifiers
 for the host portion of a server component, as described by RFC 2732,
 but in the reverse order to reflect disambiguation rules.
@@ -2076,7 +2079,7 @@ limit each decimal octet to the range 0-255.
   <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
   10 Feb 2004,
   draft 04:
-  <pre>
+    <pre>
 A version flag has been added at the request of John Klensin.
 </pre>
 </td>
@@ -2095,7 +2098,7 @@ A version flag has been added at the request of John Klensin.
   <a href="mailto:michael_AT_neonym.net">Michael Mealling</a>,
   01 May 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I think the consensus built in the IG and reported in 
 draft-mealling-uri-ig-02.txt is a good place to start.
 Especially the recommendation:
@@ -2134,7 +2137,7 @@ View":
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   27 Oct 2002,
   draft 00:
-  <pre>
+    <pre>
 Fixed by rewriting the section on URI, URL, and URN, and changing
 all use of the term URL in the specification to URI.
 </pre>
@@ -2145,7 +2148,7 @@ all use of the term URL in the specification to URI.
   <a href="mailto:tbray_AT_textuality.com">Tim Bray</a>,
   21 Feb 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Sec 1.2 - the spec says it deprecates the terms URL and URN and
 I'm not sure it really does.  What it's really deprecating is the notion
 of a clean useful separation between locators and names.  I've never seen
@@ -2174,7 +2177,7 @@ Sec 1.2, fourth para; the phrase "just like any identifier" is superfluous.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   02 May 2002,
   draft 02:
-  <pre>
+    <pre>
 Done.
 </pre>
 </td>
@@ -2184,7 +2187,7 @@ Done.
   <a href="mailto:T.Hammond_AT_elsevier.com">Tony Hammond</a>,
   27 May 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Just a brief comment on the revised draft. This passage from end 2nd para,
 section 1.1.3, strikes me as very peculiar:
 
@@ -2207,7 +2210,7 @@ semantics - i.e. 'persistence'.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   06 Jun 2003,
   draft 03:
-  <pre>
+    <pre>
 Removed the two sentences on deprecation -- they are not worth the
 effort that has alredy been spent on it.
 </pre>
@@ -2227,7 +2230,7 @@ effort that has alredy been spent on it.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   01 May 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 The only thing I want to include is the default: %xx means the character
 encoded as xx in UTF-8.  That is already the default for MSIE and should
 be for other browsers as well, and will simplify the specification.
@@ -2239,7 +2242,7 @@ be for other browsers as well, and will simplify the specification.
   <a href="mailto:derhoermi_AT_gmx.net">Bjoern Hoehrmann</a>,
   04 May 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I disagree. While it's the default in MSIE for URIs, the user enters
 into the address bar, it's not the default for the vast majority of
 %xx encoded octets requested by MSIE, they originate from HTML forms
@@ -2256,7 +2259,7 @@ assuming UTF-8 encoding are said to fail.
   <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
   29 May 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I would be extremely delighted if we could just go and say
 "it's UTF-8, and nothing else". Unfortunately, that's not
 possible. But I think it's a very good idea to make clear
@@ -2273,7 +2276,7 @@ of octets to sequences of characters in the repertoire of ISO 10646."
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   02 Mar 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 More UTF-8 examples are given in draft 01.  That's all for now.
 </pre>
 </td>
@@ -2292,7 +2295,7 @@ More UTF-8 examples are given in draft 01.  That's all for now.
   <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
   16 May 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 The example of resolving a relative URL could be improved.  It uses a
 base of http://a/b/c/d;p?q
 
@@ -2317,7 +2320,7 @@ mostly stand on their own and to reinforce the concepts.
   <a href="mailto:stefan.eissing_AT_greenbytes.de">Stefan Eissing</a>,
   17 May 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I found them to be very helpful in their current form. The
 only thing I would state differently is the handling of
 too many ../ in the resolved uri.
@@ -2341,7 +2344,7 @@ note that keeping /.. is allowed.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   17 May 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 The examples are intended to identify common bugs or deprecated features
 in software.  The role of ";" changed from RFC 1808, so the tests can be
 used to differentiate between an 1808-compliant parser and a 2396-compliant
@@ -2358,7 +2361,7 @@ More annotation is welcome.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   23 May 2003,
   draft 02:
-  <pre>
+    <pre>
 The examples have been updated for the new treatment of dot-segments
 and double-quotes have been added as delimiters to prevent the RFC
 editing process from losing them during nroff processing.  The examples
@@ -2381,7 +2384,7 @@ since that is where the process is described.
   <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
   13 Jul 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 http://lists.w3.org/Archives/Public/www-tag/2002Jul/0169.html
 
 These look like interesting possible additions to the URI specification.
@@ -2411,7 +2414,7 @@ URI Retrieval:
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   06 May 2003,
   draft 02:
-  <pre>
+    <pre>
 I have added the definitions and reorganized the entire section 1.
 </pre>
 </td>
@@ -2430,7 +2433,7 @@ I have added the definitions and reorganized the entire section 1.
   <a href="mailto:tbray_AT_textuality.com">Tim Bray</a>,
   09 Aug 2002,
   www-tag mailing list:
-  <pre>
+    <pre>
 I note that Roy of late has been using URI as its own plural.
 Elegant and defensible, but I prefer URIs as less surprising to the eye.
 Even more, I prefer consistency.  Clearly this is a subject on which 
@@ -2443,7 +2446,7 @@ consensus is not remotely possible.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   17 May 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I prefer whichever one is easier to say while speaking, since I do not
 believe in the theory that people expand acronyms as they read.
 
@@ -2456,7 +2459,7 @@ I am fine with either one, provided I only have to change it once.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   17 Oct 2002,
   draft 00:
-  <pre>
+    <pre>
 Fixed by rewriting URI to "a URI" or URIs, as appropriate.
 </pre>
 </td>
@@ -2475,7 +2478,7 @@ Fixed by rewriting URI to "a URI" or URIs, as appropriate.
   <a href="mailto:msabin_AT_milessabin.com">Miles Sabin</a>,
   09 Sep 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 http://lists.w3.org/Archives/Public/uri/2002Sep/0016.html
 
 At issue is the first sentence of the informal definition of resource in 
@@ -2526,7 +2529,7 @@ qualification.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   12 Sep 2002,
   issues list:
-  <pre>
+    <pre>
 The sentence says "can be", which implies exactly what I meant it to
 imply: that anything with identity can be a resource but not necessarily
 is a resource.  I see no reason to change it.  The important bit is that
@@ -2543,7 +2546,7 @@ to be a resource.  None of the other suggestions do that.
   <a href="mailto:phayes@ai.uwf.edu">Pat Hayes</a>,
   21 Apr 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 1. I appeal to the WG to please explain in more detail what the word
 "resource" is intended to refer to, if only in broad outline. In particular,
 If there is an intent to limit the meaning of "resource" to some subset of
@@ -2672,7 +2675,7 @@ Again, it would be helpful if the apparent contradiction could be explained.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   22 Apr 2003,
   issues list:
-  <pre>
+    <pre>
 I explained rfc2396's usage of "identity" in
    <a href="http://lists.w3.org/Archives/Public/www-tag/2002Jul/0128.html">
    http://lists.w3.org/Archives/Public/www-tag/2002Jul/0128.html</a>
@@ -2685,7 +2688,7 @@ I explained rfc2396's usage of "identity" in
   <a href="mailto:tbray_AT_textuality.com">Tim Bray</a>,
   22 Apr 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I have a suggested wording change, because while I have been largely
 unimpressed by the philosophical jargon being thrown around here recently,
 I do agree that the current definition "A resource can be anything that has
@@ -2733,7 +2736,7 @@ A few principles apply:
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   23 Apr 2003,
   issues list:
-  <pre>
+    <pre>
 A ridiculous amount of discussion took place on the mailing list regarding
 this issue without illuminating it further, so I won't copy it here
 except by reference to the main threads:
@@ -2752,7 +2755,7 @@ except by reference to the main threads:
   <a href="mailto:joshuaa_AT_microsoft.com">Joshua Allen</a>,
   23 Apr 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 As far as I can tell, it is only the differing choice of words
 that makes everyone appear to be disagreeing.  As long as the words
 chosen are clearly defined, I see no point in getting hung up over
@@ -2787,7 +2790,7 @@ A="thing", B="thing which hasn't been bound to a URI", C="Resource".
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   27 Apr 2003,
   draft 02:
-  <pre>
+    <pre>
 I have rewritten the definitions.  It would be pointless to attempt to
 further define words that can be found in any dictionary.  Instead, I
 added more examples and chose words that are less likely to prick the
@@ -2810,7 +2813,7 @@ terminology will be addressed in issue 022-definitions.
   <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
   10 Oct 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Looking through the URI syntax in detail, I became aware
 of the following 'anomaly': parameters are not allowed
 in the first segment of a relative URI (if it doesn't start
@@ -2844,7 +2847,7 @@ Is this an error in the syntax, or can somebody explain this?
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   11 Oct 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 No, but I agree that it is confusing.  They are defined differently
 because rel_segment cannot be empty.  Syntactically they are equivalent.
 I'll find a better way to write it.
@@ -2856,7 +2859,7 @@ I'll find a better way to write it.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   28 Oct 2002,
   draft 00:
-  <pre>
+    <pre>
 Fixed by removing the rule for param and simply stating why ";" and "="
 are reserved within path segments.
 </pre>
@@ -2876,7 +2879,7 @@ are reserved within path segments.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   22 Oct 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 It also looks like we'll have to switch to the formal ABNF of
 RFC 2234 in order to define IPv4 addresses correctly.  At least
 that will make the IESG happier, but it sure is a pain in the
@@ -2889,7 +2892,7 @@ editorial fingers.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   28 Oct 2002,
   draft 00:
-  <pre>
+    <pre>
 The ad-hoc BNF syntax has been replaced with the ABNF of RFC 2234.
 This change required all rule names that formerly included underscore
 characters to be renamed with a dash instead.
@@ -2913,7 +2916,7 @@ and relative-URI, respectively, for consistency.
   <a href="mailto:dan_AT_dankohn.com">Dan Kohn</a>,
   09 Nov 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 draft 00 contains an obsolete reference to RFC 1866, which was obsoleted by
 RFC 2854.  This reference should be replaced with one to
 
@@ -2927,7 +2930,7 @@ RFC 2854.  This reference should be replaced with one to
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   28 Feb 2003,
   issues list:
-  <pre>
+    <pre>
 I replaced it with
 
    [HTML]  Raggett, D., Le Hors, A. and Jacobs, I.,
@@ -2952,7 +2955,7 @@ in draft 01.
   <a href="mailto:dan_AT_dankohn.com">Dan Kohn</a>,
   09 Nov 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I question whether a normative reference to RFC 952, status
 unknown (http://www.normos.org/en/summaries/ietf/rfc/rfc952.html), is
 appropriate for dotted-decimal notation, versus a normative reference to
@@ -2965,7 +2968,7 @@ RFC 791, or to section 2.1 of RFC 1123, which is already referenced.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   25 Feb 2003,
   issues list:
-  <pre>
+    <pre>
 I chose 952 because it was the only description of the notation, and
 is in fact referenced as such by 1123.  In any case, you are right that
 it should be non-normative, as should the other related references
@@ -2988,7 +2991,7 @@ I have fixed this in draft 01.
   <a href="mailto:dan_AT_dankohn.com">Dan Kohn</a>,
   09 Nov 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I would suggest adding a paragraph to the Security
 Considerations about how "malicious URLs" can be crafted combining
 misleading usernames/passwords with decimal IP addresses, such as
@@ -3009,7 +3012,7 @@ because regular users don't understand the URI spec (and never will).
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   25 Feb 2003,
   issues list:
-  <pre>
+    <pre>
 This is tied to the gethostbyname issue as well.
 </pre>
 </td>
@@ -3019,7 +3022,7 @@ This is tied to the gethostbyname issue as well.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   01 Mar 2002,
   draft 01:
-  <pre>
+    <pre>
 Added to the Security Considerations for draft 01.
 </pre>
 </td>
@@ -3038,7 +3041,7 @@ Added to the Security Considerations for draft 01.
   <a href="mailto:zefram_AT_fysh.org">Zefram</a>,
   22 Nov 2002,
   private mail:
-  <pre>
+    <pre>
 Finally, wherever the ABNF ends up, note that the ABNF given in
 rfc2396bis has several errors.  In summary: dec-octet matches "12345";
 dec-octet doesn't match "039" (convention does allow leading zeroes, up
@@ -3087,7 +3090,7 @@ embedded IPv4 addresses from those that don't.)
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   05 Dec 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 How about this one:
 
    IPv6address   =                          6( h4 ":" ) ls32
@@ -3119,7 +3122,7 @@ How about this one:
   <a href="mailto:hrvoje.simic_AT_zg.hinet.hr">Hrvoje Simic</a>,
   13 Nov 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 In section 3.4. RFC 2396 says: "The query component is a string of
 information to be interpreted by the resource." If the resource is
 identified before the query component is interpreted, why is the query a
@@ -3195,7 +3198,7 @@ mailto:hrvoje.simic@zg.hinet.hr
   <a href="mailto:mnot_AT_mnot.net">Mark Nottingham</a>,
   13 Nov 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Those feel like guidelines more than hard semantics; IIRC, the main
 distinction between URI path segments and URI parameters is that
 parameters aren't ordered, so that aspect doesn't distinguish queries.
@@ -3214,7 +3217,7 @@ of the located resource (which may be a new concept).
   <a href="mailto:GK_AT_ninebynine.org">Graham Klyne</a>,
   13 Nov 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 How they are interpreted is entirely up to the software that provides
 access to resources for the indicated authority.
 </pre>
@@ -3225,7 +3228,7 @@ access to resources for the indicated authority.
   <a href="mailto:hrvoje.simic_AT_zg.hinet.hr">Hrvoje Simic</a>,
   14 Nov 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 1) Should the query component be redefined, and how?
 
 Yes, but it's hard to think up a good definition. In the "classic" Web,
@@ -3275,7 +3278,7 @@ the hierarchy.
   <a href="mailto:mnot_AT_mnot.net">Mark Nottingham</a>,
   14 Nov 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 'Semantics' isn't the correct term to use; Graham pointed out that this
 implies too much. His suggestion was 'processing model', and that seems
 to capture it very well; When used as a locator, a URI has a processing
@@ -3331,7 +3334,7 @@ think, which is just as, if not more, important.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   15 May 2003,
   draft 02:
-  <pre>
+    <pre>
 The definition of query has been rewritten for draft 02:
 
    The query component contains non-hierarchical data that, along with
@@ -3369,7 +3372,7 @@ The definition of query has been rewritten for draft 02:
   <a href="mailto:tbray_AT_textuality.com">Tim Bray</a>,
   21 Feb 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Section 3 is awfully short of examples.  I would think the usefulness
 would be improved by including at least one example for each of 3.1,
 3.2.1, 3.2.2, 3.3, and 3.4.  If others agree, I would volunteer to
@@ -3382,7 +3385,7 @@ cook up the examples.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   25 Feb 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Sure.  It would be best if they covered the range of variance, so that the
 folks who try to implement according to examples (and not BNF) are not
 led too far astray.  [I have seen plenty of cases where implementers of
@@ -3396,7 +3399,7 @@ ignoring the actual syntax specification.]
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   06 Jun 2003,
   draft 03:
-  <pre>
+    <pre>
 I have added a couple examples to section 3 that illustrate the
 components.
 </pre>
@@ -3416,7 +3419,7 @@ components.
   <a href="mailto:timbl_AT_w3.org">Tim Berners-Lee</a>,
   18 Nov 2002,
   TAG meeting:
-  <pre>
+    <pre>
 RFC2396 doesn't say that xxx/./yyy is equivalnet to xxx/yyy for any
 xxx and yyy. However, the only tenable situation is that they are
 equivalent, because we require that any URI can be relative-ized and
@@ -3438,7 +3441,7 @@ URI, you get the same starting URI...
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   17 Apr 2003,
   issues list:
-  <pre>
+    <pre>
 I would rephrase that as:
 
 When you relativize an absolute URI (A) using base (B) producing
@@ -3452,7 +3455,7 @@ base B to produce an absolute reference A', then A' must equal A.
   <a href="mailto:timbl_AT_w3.org">Tim Berners-Lee</a>,
   23 Jan 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 The spec would do well to define the function from base and reference to
 URI and back again
 
@@ -3468,7 +3471,7 @@ circumstances.
   <a href="mailto:tbray_AT_textuality.com">Tim Bray</a>,
   25 Feb 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
       If I am given the URI http://example.com/a/./b/../c I will always,
       100% of the time, regard that as http://example.com/a/c. I have just
       verified that the first two randomly-picked web browsers I picked
@@ -3498,7 +3501,7 @@ regardless of whether it's relative or absolute.
   <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
   25 Feb 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Whether "a/./b/../c" in a path component is equivalent to
 "a/c" is entirely dependent on the definition of
 the URI scheme. Some schemes may define the two as
@@ -3536,7 +3539,7 @@ of all URIs.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   25 Feb 2003,
   issues list:
-  <pre>
+    <pre>
 I still get those segments in httpd access log files, but all we need
 are two independent implementations to justify a change.  I think it
 is safe to remove them based on the theory that "/" is reserved for
@@ -3551,7 +3554,7 @@ going to have ".." or "." as a DN.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   23 May 2003,
   draft 02:
-  <pre>
+    <pre>
 Defined "." and ".." path segments as being applicable to all URI and
 should be removed by resolvers and normalizers.  Clearly defined that
 a path segment including a colon cannot be used as the first segment
@@ -3567,7 +3570,7 @@ references to a relative form.
   <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
   25 May 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Following up on issue 033, the following equation is an
 important test of consistent implementations:
 resolve_relative_URI(compute_relative_URI(u, base), base) = u
@@ -3598,7 +3601,7 @@ http://www.cs.sfu.ca/~cameron/uri/bis2tests.py</a>
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   03 Jun 2003,
   draft 03:
-  <pre>
+    <pre>
 Separated the path merge routine into two routines: merge, for
 describing combination of the base URI path with a relative-path
 reference, and remove_dot_segments, for describing how to remove
@@ -3625,7 +3628,7 @@ the base URI has a non-hierarchical path.
   <a href="mailto:jak_AT_ckm.ucsf.edu">John A. Kunze</a>,
   23 Jan 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 If changes to basic terminology are up, consider how damaging it is that
 this seminal web spec defines an identifier as "a sequence of characters".
 It's then impossible to talk sensibly about a broken identifier (hmmm,
@@ -3658,7 +3661,7 @@ permanence a favor if it included this one definitional change.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   20 Mar 2003,
   URI BOF:
-  <pre>
+    <pre>
 The definition actually says
 
     An identifier is an object that can act as a reference to
@@ -3674,7 +3677,7 @@ and thus the suggestion seems to be based on something other than RFC 2396.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   27 Apr 2003,
   draft 02:
-  <pre>
+    <pre>
 The definition has been rewritten in response to issue 024-identity.
 </pre>
 </td>
@@ -3693,7 +3696,7 @@ The definition has been rewritten in response to issue 024-identity.
   <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
   30 Jan 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Doing careful readings of RFC 2396 for various purposes, I found
 the following paragraph in "2.1 URI and non-ASCII characters":
 
@@ -3723,7 +3726,7 @@ even in a data: URI, I should still be able to replace "A" by
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   02 Mar 2003,
   draft 01:
-  <pre>
+    <pre>
 I removed the misleading first sentence and replaced it with a later
 example of a scheme defined as requiring UTF-8.
 </pre>
@@ -3743,7 +3746,7 @@ example of a scheme defined as requiring UTF-8.
   <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
   22 Jul 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Update the syntax of host names: Currently, this is one of the
 only places where %hh-escaping isn't allowed. Implementations
 are mixed, some browsers e.g. accept http://www.w%33.org while
@@ -3764,7 +3767,7 @@ But in either way, it should be folded into the URI spec.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   26 Feb 2003,
   issues list:
-  <pre>
+    <pre>
 I do not think it is appropriate for the URI spec to suggest that users
 give hostnames in forms that are unacceptable to DNS.  This is better
 solved by using IDNA encoding without changing the URI syntax.
@@ -3776,7 +3779,7 @@ solved by using IDNA encoding without changing the URI syntax.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   20 Mar 2003,
   URI BOF:
-  <pre>
+    <pre>
 Further discussion with Martin revealed that the reason IRI processors
 could not convert to IDNA forms automatically was because of the potential
 for a reg-name syntax.  It was decided at the URI BOF that the best solution
@@ -3790,7 +3793,7 @@ the way for IRI conversion to take place prior to URI handling.
   <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
   10 Feb 2004,
   draft 04:
-  <pre>
+    <pre>
 Prior decision has been reversed for draft 04 and reg-name has replaced
 hostname due to multiple resolution mechanisms.  Percent-encoded octets are
 allowed in reg-name if and only if they represent UTF-8 encoded characters.
@@ -3811,7 +3814,7 @@ allowed in reg-name if and only if they represent UTF-8 encoded characters.
   <a href="mailto:tbray_AT_textuality.com">Tim Bray</a>,
   21 Feb 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 In connection with the work of the W3C TAG, I undertook the task of
 documenting in-the-field practices as to how software can and should
 go about the very common task of comparing URIs.  The latest draft of
@@ -3826,7 +3829,7 @@ http://www.textuality.com/tag/uri-comp-4.html
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   02 Mar 2003,
   draft 01:
-  <pre>
+    <pre>
 I have added most of the URI comparison document to section 6, with
 appropriate rewrites where necessary.  I also modified the descriptions
 of escaping and unreserved to be (hopefully) clearer.
@@ -3847,7 +3850,7 @@ of escaping and unreserved to be (hopefully) clearer.
   <a href="mailto:GK_AT_ninebynine.org">Graham Klyne</a>,
   02 Feb 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Ref:
 [[
    hostname      = domainlabel [ qualified ]
@@ -3880,7 +3883,7 @@ I think the production could be written thus:
   <a href="mailto:clive_AT_demon.net">Clive D.W. Feather</a>,
   02 Mar 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Is this the only place "qualified" is used? If so, then there's a further
 ambiguity - if a hostname consists only of a single domainlabel, is it
 followed by a zero-length qualified or not. I would suggest that the
@@ -3906,7 +3909,7 @@ or
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   03 Mar 2003,
   issues list:
-  <pre>
+    <pre>
 Fixed in draft 01.
 </pre>
 </td>
@@ -3916,7 +3919,7 @@ Fixed in draft 01.
   <a href="mailto:GK_AT_ninebynine.org">Graham Klyne</a>,
   05 Mar 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I have to say that the 'hostname' syntax as specified an RFC2396bis is a pain
 to parse accurately.  I think it's sufficiently difficult to get exactly
 right that it won't be correctly implemented as specified in many
@@ -3974,7 +3977,7 @@ s/alpha/ALPHA/ ?
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   18 Mar 2003,
   issues list:
-  <pre>
+    <pre>
 Reopened.  It would be best to have a syntax that was both unambiguous
 and easy for LALR parsers to process, but that may require too many changes.
 </pre>
@@ -3985,7 +3988,7 @@ and easy for LALR parsers to process, but that may require too many changes.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   14 May 2003,
   draft 02:
-  <pre>
+    <pre>
 Fixed as suggested:
 
   qualified = *( "." domainlabel ) [ "." ]
@@ -3999,7 +4002,7 @@ with additional text added for disambiguation of host.
   <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
   10 Feb 2004,
   draft 04:
-  <pre>
+    <pre>
 All of these productions have been removed from draft 04 in favor
 of the reg-name production.
 </pre>
@@ -4019,7 +4022,7 @@ of the reg-name production.
   <a href="mailto:GK_AT_ninebynine.org">Graham Klyne</a>,
   27 Feb 2002,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I'm finding there are a number of other areas in which the grammar is
 ambiguous.  Unfortunately, using a "greedy" parse approach doesn't always
 work, since some parts of the grammar fail if the previous sections are
@@ -4037,7 +4040,7 @@ messy patches to get the kind of behaviour I'd expect from a "normal" parser.)
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   10 Apr 2003,
   issues list:
-  <pre>
+    <pre>
 It would be best to have a syntax that was both unambiguous
 and easy for LALR parsers to process, but that may require too many changes.
 </pre>
@@ -4048,7 +4051,7 @@ and easy for LALR parsers to process, but that may require too many changes.
   <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
   05 May 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 The production rule for path is a bit problematic.
 
   path          = [ abs-path / opaque-part ]
@@ -4068,7 +4071,7 @@ The production rule for path is a bit problematic.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   23 May 2003,
   draft 02:
-  <pre>
+    <pre>
 The ABNF for URI and URI-reference has been redesigned to make them more
 friendly to LALR parsers and significantly reduce complexity. As a result,
 the layout form of syntax description has been removed, along with the
@@ -4097,7 +4100,7 @@ section defining relative-URI.
   <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
   20 Mar 2003,
   URI BOF:
-  <pre>
+    <pre>
 In order for internationalized characters in the authority component
 to be handled directly by an IRI processor, it must either
 
@@ -4114,7 +4117,7 @@ to be handled directly by an IRI processor, it must either
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   20 Mar 2003,
   URI BOF:
-  <pre>
+    <pre>
 Note that IDNA was created specifically to avoid (a), so that doesn't
 seem to be a viable alternative for the IETF.
 
@@ -4130,7 +4133,7 @@ convert to IDNA based on the presence of a hostname.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   27 Apr 2003,
   draft 02:
-  <pre>
+    <pre>
 Registry-based naming authorities that use the hierarchical authority
 syntax component are now limited to DNS hostnames, since those have
 been the only such URIs in deployment.  This change was necessary to
@@ -4146,7 +4149,7 @@ to simplify parsing of the URI syntax.
   <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
   10 Feb 2004,
   draft 04:
-  <pre>
+    <pre>
 Prior decision has been reversed for draft 04 and reg-name has replaced
 hostname due to multiple resolution mechanisms.  Percent-encoded octets are
 allowed in reg-name if and only if they represent UTF-8 encoded characters.
@@ -4167,7 +4170,7 @@ allowed in reg-name if and only if they represent UTF-8 encoded characters.
   <a href="mailto:stefan.eissing_AT_greenbytes.de">Stefan Eissing</a>,
   31 Jan 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 It is context dependant if '%61' can be considered equivalent
 to the charcter 'a' or not. The argument basically is that RFC 2396 allows
 other character encodings  than US-ASCII and that '%61' could denote
@@ -4197,7 +4200,7 @@ Accordings to this, my argument should be valid at least for HTTP URIs.
   <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
   22 Feb 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 The characters in a URI (the ones that are compared character-by-
 character in namespaces) are just that, characters. URIs are
 defined independent of any particular representation. The URI
@@ -4244,7 +4247,7 @@ Maybe this diagram should go into the new version of RFC 2396.
   <a href="mailto:Misha.Wolf_AT_reuters.com">Misha Wolf</a>,
   22 Feb 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 The one piece of terminology I have some trouble with, and which 
 is already in RFC 2396, is the phrase "original character sequence".
 Presumably, the sequence is "original" in the sense that the entity 
@@ -4265,7 +4268,7 @@ be clearer?
   <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
   24 Feb 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
     I repeat: if I'm on an EBCDIC computer, and the URI reads out as
     /dir/a, that is *different* from /dir/%61.  Yes, this is egregiously
     broken and stupid, but it's within the bounds set by RFC2396.
@@ -4334,7 +4337,7 @@ an as another octet if the octet is not escaped.
   <a href="mailto:tbray_AT_textuality.com">Tim Bray</a>,
   07 Mar 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 In explaining matters of character encoding, section 2.1 envisions
 something sort of standing behind the URI, the phrase original character
 is used (occasionally in quotes), as well as "original character sequences"
@@ -4452,7 +4455,7 @@ I think most of the rest of section 2 is pretty well OK.
   <a href="mailto:stefan.eissing_AT_greenbytes.de">Stefan Eissing</a>,
   10 Mar 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 There is also chapter 1.5 (Transcribability) which uses the term URI both for
 the thing on the side of a bus and a string conforming to the EBNF rules of the RFC.
 
@@ -4466,7 +4469,7 @@ recommends UTF-8 usage.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   02 May 2003,
   draft 02:
-  <pre>
+    <pre>
 Section 2.1 has been rewritten.  I started with the text provided by
 Tim Bray, but soon found that much of it was simply repeating information
 that is explained better in later sections.  So, I replaced it with the
@@ -4490,7 +4493,7 @@ clarifying the appropriate sections below it.
   <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
   17 Apr 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 During the discussion of temporal fragment identifiers,
 I've noted that some of the wording in RFC 2396 might
 need some minor tweaking:
@@ -4520,7 +4523,7 @@ to the appropriate page, using byte range retrieval.
   <a href="mailto:distobj_AT_acm.org">Mark Baker</a>,
   17 Apr 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 In the context of interpretation and not processing (which I'd
 classify the scroll action you describe as), I'd say that the fragid can
 be interpreted as soon as the (authoritative) media type of the
@@ -4533,7 +4536,7 @@ representation is determined.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   15 May 2003,
   draft 02:
-  <pre>
+    <pre>
 This has been fixed in the rewrite for draft 02.
 </pre>
 </td>
@@ -4552,7 +4555,7 @@ This has been fixed in the rewrite for draft 02.
   <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
   30 May 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 From [draft 02] section 4.1, I infer that the difference between a validating
 and non-validating parser is that the former confirms that the syntax
 of individual URI components precisely matches the specified
@@ -4593,7 +4596,7 @@ leaving the caveat on deprecated behaviour as a footnote.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   03 Jun 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Yes, that was a poor choice of words.  What I wanted to say was
 that an application testing for invalid links should consider
 those references to be invalid because their interpretation will
@@ -4636,7 +4639,7 @@ as meaning the scheme parts are ignored if they are the same.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   04 Jun 2003,
   issues list:
-  <pre>
+    <pre>
 The changes already made to draft 03 for the remove_dot_segments
 algorithm makes it possible to remove the exception altogether
 and define the "backward compatible" result as the standard.
@@ -4655,7 +4658,7 @@ and for all by specifying the loophole result as the standard.
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   06 Jun 2003,
   issues list:
-  <pre>
+    <pre>
 Closed due to lack of interest.
 </pre>
 </td>
@@ -4674,7 +4677,7 @@ Closed due to lack of interest.
   <a href="mailto:marktt_AT_excite.com">Mark Thomson</a>,
   08 Jun 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 "A path is always defined for a URI, though the defined path may
  be empty (zero length) or opaque (not containing any "/" delimiters)"
 
@@ -4694,7 +4697,7 @@ or is the above statement from the draft incorrect ?
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   08 Jun 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 The statement is correct, but I'll need to fix the ABNF so
 that it always ends up with a matching production.
 </pre>
@@ -4705,7 +4708,7 @@ that it always ends up with a matching production.
   <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
   11 Jun 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 I've been playing with an experimental grammar modification that
 addresses this problem and also addresses the following 
 additional wrinkle:   http://ABCD+y is a legal URI according to
@@ -4766,7 +4769,7 @@ literals.
   <a href="mailto:marktt_AT_excite.com">Mark Thomson</a>,
   12 Jun 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 One other simpler modification to the grammar to address the problem
 of the path being undefined is:
 
@@ -4784,7 +4787,7 @@ Of course, //ABCD+y in http://ABCD+y would still be parsed as a path.
   <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
   09 Feb 2004,
   draft 04:
-  <pre>
+    <pre>
 I have followed Rob Cameron's suggestion for draft 04, since it greatly
 simplifies the grammar (and the associated text that had to explain it).
 
@@ -4802,7 +4805,7 @@ and path-segments.
   <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
   02 Apr 2004,
   draft 05:
-  <pre>
+    <pre>
 Upon further review, the above change had to be reverted in favor
 of five separate definitions for path.
 
@@ -4854,7 +4857,7 @@ of five separate definitions for path.
   <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
   13 Jun 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 It appears that there is a semantic bug in the URI spec in the
 resolution of relative URIs.  Consider resolution of the
 relative URI ".//g" in the context of the base URI "f:/a".
@@ -4891,7 +4894,7 @@ authority is undefined and the path begins "//", then
   <a href="mailto:marktt_AT_excite.com">Mark Thomson</a>,
   14 Jun 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 In addition to the semantic bug, I think the assumption that the base URI
 doesn't contain dot-segments in its path should be dropped. If a URI has
 an absolute path beginning with a "//" and doesn't have an authority,
@@ -4915,7 +4918,7 @@ component is required to be present in the base URI" be dropped in this case?)
   <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
   17 Jun 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 Below I suggest modifications to section 5.3 that ensure correct URI 
 construction for all (scheme, authority, path, query, fragment) 5-tuples.
 
@@ -5003,7 +5006,7 @@ construction can be avoided.
   <a href="mailto:marktt_AT_excite.com">Mark Thomson</a>,
   18 Jun 2003,
   URI-WG mailing list:
-  <pre>
+    <pre>
 What about URIs that have paths beginning with // but can't be interperted
 as an authority (e.g., scheme://@@). Do we have to add a /. also?
 (Of course, not doing so complicates both the resolution and
@@ -5016,7 +5019,7 @@ recomposition algorithms)
   <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
   05 Feb 2004,
   issues list:
-  <pre>
+    <pre>
 I don't know if handling bad relative URI references is worth the hassle.
 </pre>
 </td>

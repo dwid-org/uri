@@ -12,6 +12,7 @@
  <li>Example <a href="uri_test.pl">URI reference parser</a> with
              <a href="example_uri_refs.txt">input</a> and
              <a href="example_uri_refs.out">output</a></li>
+ <li><a href="../test/index.html">Test Cases and Implementation Reports</a></li>
  <li>Published drafts:
        <a href="draft-fielding-uri-rfc2396bis-05.txt">05.txt</a>,
        <a href="draft-fielding-uri-rfc2396bis-05.html">05.html</a>,
