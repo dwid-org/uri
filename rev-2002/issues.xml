@@ -10,7 +10,7 @@
  <title>file scheme implementations vary on use of authority component</title>
  <status>postponed</status>
  <report>
-  <author email="ccwf@bacchus.com">Charles C. Fu</author>
+  <author email="ccwf_AT_bacchus.com">Charles C. Fu</author>
   <date sort="19980715">15 Jul 1998</date>
   <where>libwww-perl mailing list</where>
 <pre>
@@ -67,7 +67,7 @@ URLs which works with both Netscape and Explorer.
  <title>schemes from RFC 1738 need their own specs</title>
  <status>postponed</status>
  <report>
-  <author email="LMM@acm.org">Larry Masinter</author>
+  <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="19980909">09 Sep 1998</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -105,7 +105,7 @@ name mapping.
  <title>inconsistent resolution of query-only relative URI</title>
  <status>pending</status>
  <report>
-  <author email="msabin@cromwellmedia.co.uk">Miles Sabin</author>
+  <author email="msabin_AT_cromwellmedia.co.uk">Miles Sabin</author>
   <date sort="19990323">23 Mar 1999</date>
   <where>private mail</where>
 <pre>
@@ -142,7 +142,7 @@ suspect that something must be wrong ;-)
 </pre>
  </report>
  <report>
-  <author email="holtzman@mit.edu">Henry Holtzman</author>
+  <author email="holtzman_AT_mit.edu">Henry Holtzman</author>
   <date sort="20020709">09 Jul 2002</date>
   <where>private mail</where>
 <pre>
@@ -207,7 +207,7 @@ Thank you.
  <title>resolution algorithm fails for base URI with no path</title>
  <status>accepted</status>
  <report>
-  <author email="ronald@innovation.ch">Ronald Tschalär</author>
+  <author email="ronald_AT_innovation.ch">Ronald Tschalär</author>
   <date sort="19990916">16 Sep 1999</date>
 <pre>
 I tried to follow the algorithm in my implementation, but it gives
@@ -231,7 +231,7 @@ I'm doing:
 </pre>
  </report>
  <report>
-  <author email="amc@cs.berkeley.edu">Adam M. Costello</author>
+  <author email="amc_AT_cs.berkeley.edu">Adam M. Costello</author>
   <date sort="20000421">21 Apr 2000</date>
   <where>private mail</where>
 <pre>
@@ -293,7 +293,7 @@ and the base URI has no path.  Proposal 1 looks the cleanest to me.
 </pre>
  </report>
  <action>
-  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="19990917">17 Sep 1999</date>
 <pre>
 I guess step 6a should be
@@ -313,7 +313,7 @@ I guess step 6a should be
  <title>background on ftp extensions</title>
  <status>postponed</status>
  <report>
-  <author email="lundberg@wu-ftpd.org">Gregory A Lundberg</author>
+  <author email="lundberg_AT_wu-ftpd.org">Gregory A Lundberg</author>
   <date sort="19991209">9 Dec 1999</date>
   <where>Apache httpd dev mailing list</where>
 <pre>
@@ -361,7 +361,7 @@ submission.
  <title>need BNF term for absolute URI with optional fragment</title>
  <status>accepted</status>
  <report>
-  <author email="connolly@w3.org">Dan Connolly</author>
+  <author email="connolly_AT_w3.org">Dan Connolly</author>
   <date sort="20000110">10 Jan 2000</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -423,7 +423,7 @@ I used absoluteURI and URI_reference with their rfc2396 meanings.
 </pre>
  </report>
  <action>
-  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20020827">27 Aug 2002</date>
 <pre>
 Something like absoluteURIref will be added to the BNF.
@@ -437,7 +437,7 @@ Something like absoluteURIref will be added to the BNF.
  <title>relative URI syntax does not allow empty path</title>
  <status>accepted</status>
  <report>
-  <author email="ranschultz@symantec.com">Reese Anschultz</author>
+  <author email="ranschultz_AT_symantec.com">Reese Anschultz</author>
   <date sort="20000217">17 Feb 2000</date>
   <where>private mail</where>
 <pre>
@@ -470,7 +470,7 @@ characters proceed the question mark (?).
 </pre>
  </report>
  <report>
-  <author email="zongaro@ca.ibm.com">Henry Zongaro</author>
+  <author email="zongaro_AT_ca.ibm.com">Henry Zongaro</author>
   <date sort="20011112">12 Nov 2001</date>
   <where>RFC editor</where>
 <pre>
@@ -486,7 +486,7 @@ rel_segment, which again cannot begin with a question mark.
 </pre>
  </report>
  <report>
-  <author email="blilly@erols.com">Bruce Lilly</author>
+  <author email="blilly_AT_erols.com">Bruce Lilly</author>
   <date sort="20020116">16 Jan 2002</date>
   <where>private mail</where>
 <pre>
@@ -505,7 +505,7 @@ permitting a lone delimited query.
 </pre>
  </report>
  <action>
-  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20000323">20 Mar 2000</date>
 <pre>
 I don't even remember making this change, but it was broken
@@ -529,7 +529,7 @@ to (in 03):
  <title>URI versus URI Reference</title>
  <status>pending</status>
  <report>
-  <author email="LMM@acm.org">Larry Masinter</author>
+  <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="20000526">26 May 2000</date>
   <where>xml-uri mailing list</where>
 <pre>
@@ -547,7 +547,7 @@ so that people don't think that the abstract is normative.
 </pre>
  </report>
  <report>
-  <author email="Jeff.Hodges@kingsmountain.com">Jeff Hodges</author>
+  <author email="Jeff.Hodges_AT_kingsmountain.com">Jeff Hodges</author>
   <date sort="20010601">01 Jun 2001</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -614,7 +614,7 @@ to readers.
  <title>syntax for netpath allows bad URI to be considered valid</title>
  <status>pending</status>
  <report>
-  <author email="kohsuke.kawaguchi@eng.sun.com">Kohsuke Kawaguchi</author>
+  <author email="kohsuke.kawaguchi_AT_eng.sun.com">Kohsuke Kawaguchi</author>
   <date sort="20010315">15 Mar 2001</date>
   <where>private mail</where>
 <pre>
@@ -648,7 +648,7 @@ follows?
 </pre>
  </report>
  <report>
-  <author email="jjc@jclark.com">James Clark</author>
+  <author email="jjc_AT_jclark.com">James Clark</author>
   <date sort="20010720">20 Jul 2001</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -678,7 +678,7 @@ consistent.
 </pre>
  </report>
  <report>
-  <author email="LMM@acm.org">Larry Masinter</author>
+  <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="20010811">11 Aug 2001</date>
   <where>private mail</where>
 <pre>
@@ -698,7 +698,7 @@ So "//" does parse as net_path, and the regex in appendix B is fine.
  <title>gethostbyname allows much more than hostname BNF</title>
  <status>pending</status>
  <report>
-  <author email="rokicki@instantis.com">Tomas Rokicki</author>
+  <author email="rokicki_AT_instantis.com">Tomas Rokicki</author>
   <date sort="20010602">02 Jun 2001</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -744,7 +744,7 @@ for the port, where http://63.197.151.31:0000000080/ accesses port 80).
  <title>integrate IPv6 syntax of RFC 2732</title>
  <status>accepted</status>
  <report>
-  <author email="LMM@acm.org">Larry Masinter</author>
+  <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="19991201">01 Dec 1999</date>
   <where>private mail</where>
 <pre>
@@ -759,7 +759,7 @@ http://www.ietf.org/rfc/rfc2732.txt
  <title>change BNF to incorporate IPv6 better than RFC 2732</title>
  <status>pending</status>
  <report>
-  <author email="jjc@jclark.com">James Clark</author>
+  <author email="jjc_AT_jclark.com">James Clark</author>
   <date sort="20010720">20 Jul 2001</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -840,7 +840,7 @@ the BNF in RFC 2396 easier to understand.
 </pre>
  </report>
  <report>
-  <author email="gvatry@grenoble.sema.slb.com">Grégoire Vatry</author>
+  <author email="gvatry_AT_grenoble.sema.slb.com">Grégoire Vatry</author>
   <date sort="20020404">04 Apr 2002</date>
   <where>private mail</where>
 <pre>
@@ -879,7 +879,7 @@ As a result, point (3) of section 3. in RFC 2732 should be:
 </pre>
  </report>
  <action>
-  <author email="brian@hursley.ibm.com">Brian E. Carpenter</author>
+  <author email="brian_AT_hursley.ibm.com">Brian E. Carpenter</author>
   <date sort="20020404">04 Apr 2002</date>
   <where>private mail</where>
 <pre>
@@ -888,7 +888,7 @@ combining these two RFCs in their next update so this needs to go on his list.
 </pre>
  </action>
  <action>
-  <author email="LMM@acm.org">Larry Masinter</author>
+  <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="20020404">04 Apr 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -906,7 +906,7 @@ RFC 2732 (with ipv6 addresses), though.
  <title>slash character should be forbidden in query</title>
  <status>rejected</status>
  <report>
-  <author email="aaron.douglas@fuse.net">A. Carl Douglas</author>
+  <author email="aaron.douglas_AT_fuse.net">A. Carl Douglas</author>
   <date sort="20010426">26 Apr 2001</date>
   <where>RFC editor</where>
 <pre>
@@ -924,7 +924,7 @@ value.
 </pre>
  </report>
  <action>
-  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20010524">24 May 2001</date>
 <pre>
 This is not an error in the spec, though it could be useful as a note
@@ -943,7 +943,7 @@ meaning is intended).
  <title>syntax does not allow "dav:" or "about:" as URI</title>
  <status>accepted</status>
  <report>
-  <author email="julian.reschke@gmx.de">Julian Reschke</author>
+  <author email="julian.reschke_AT_gmx.de">Julian Reschke</author>
   <date sort="20011119">19 Nov 2001</date>
   <where>WebDAV-WG mailing list</where>
 <pre>
@@ -969,7 +969,7 @@ academic before).
 </pre>
  </report>
  <action>
-  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20010524">24 May 2001</date>
 <pre>
 will fix BNF
@@ -983,7 +983,7 @@ will fix BNF
  <title>clarify how URI processor is expected to handle fragment</title>
  <status>pending</status>
  <report>
-  <author email="jason@injektilo.org">Jason Diamond</author>
+  <author email="jason_AT_injektilo.org">Jason Diamond</author>
   <date sort="20020111">11 Jan 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1030,7 +1030,7 @@ absolute form and would like that encapsulated into a single function.
  <title>hostname toplabel syntax could be improved</title>
  <status>pending</status>
  <report>
-  <author email="blilly@erols.com">Bruce Lilly</author>
+  <author email="blilly_AT_erols.com">Bruce Lilly</author>
   <date sort="20020116">16 Jan 2002</date>
   <where>private mail</where>
 <pre>
@@ -1083,7 +1083,7 @@ or equivalently but more compactly as:
  <title>RDF does not believe in same-document references</title>
  <status>pending</status>
  <report>
-  <author email="jjc@hplb.hpl.hp.com">Jeremy Carroll</author>
+  <author email="jjc_AT_hplb.hpl.hp.com">Jeremy Carroll</author>
   <date sort="20020410">10 Apr 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1172,7 +1172,7 @@ The negative test case shows possibly illegal usage of xml:base in RDF/XML.
 </pre>
  </report>
  <report>
-  <author email="jjc@hplb.hpl.hp.com">Jeremy Carroll</author>
+  <author email="jjc_AT_hplb.hpl.hp.com">Jeremy Carroll</author>
   <date sort="20020415">15 Apr 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1254,7 +1254,7 @@ document reference.
 </pre>
  </report>
  <report>
-  <author email="asgilman@iamdigex.net">Al Gilman</author>
+  <author email="asgilman_AT_iamdigex.net">Al Gilman</author>
   <date sort="20020415">15 Apr 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1295,7 +1295,7 @@ RDF model will only contain 'absolute' URI-references.
 </pre>
  </report>
  <report>
-  <author email="bwm@hplb.hpl.hp.com">Brian McBride</author>
+  <author email="bwm_AT_hplb.hpl.hp.com">Brian McBride</author>
   <date sort="20020415">15 Apr 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1364,7 +1364,7 @@ future?
  <title>RFC 2732 example bug</title>
  <status>accepted</status>
  <report>
-  <author email="Robert.Graf@ecetra.com">Robert Graf</author>
+  <author email="Robert.Graf_AT_ecetra.com">Robert Graf</author>
   <date sort="20020424">24 Apr 2002</date>
   <where>private mail</where>
 <pre>
@@ -1402,7 +1402,7 @@ as described in RFC 2732.
 </pre>
  </report>
  <report>
-  <author email="Robert.Graf@ecetra.com">Robert Graf</author>
+  <author email="Robert.Graf_AT_ecetra.com">Robert Graf</author>
   <date sort="20020426">26 Apr 2002</date>
   <where>private mail</where>
 <pre>
@@ -1421,7 +1421,7 @@ because the IP4address is filled via the IPv6reference
  <title>URI/URL/URN contemporary view</title>
  <status>pending</status>
  <report>
-  <author email="michael@neonym.net">Michael Mealling</author>
+  <author email="michael_AT_neonym.net">Michael Mealling</author>
   <date sort="20020501">01 May 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1465,7 +1465,7 @@ View":
  <title>Defaulting to UTF-8 for unknown encoding</title>
  <status>pending</status>
  <report>
-  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20020501">01 May 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1475,7 +1475,7 @@ be for other browsers as well, and will simplify the specification.
 </pre>
  </report>
  <report>
-  <author email="derhoermi@gmx.net">Bjoern Hoehrmann</author>
+  <author email="derhoermi_AT_gmx.net">Bjoern Hoehrmann</author>
   <date sort="20020504">04 May 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1490,7 +1490,7 @@ assuming UTF-8 encoding are said to fail.
 </pre>
  </report>
  <report>
-  <author email="duerst@w3.org">Martin Duerst</author>
+  <author email="duerst_AT_w3.org">Martin Duerst</author>
   <date sort="20020529">29 May 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1513,7 +1513,7 @@ keep it that way.]
 </pre>
  </report>
  <report>
-  <author email="duerst@w3.org">Martin Duerst</author>
+  <author email="duerst_AT_w3.org">Martin Duerst</author>
   <date sort="20020722">22 Jul 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1539,7 +1539,7 @@ But in either way, it should be folded into the URI spec.
  <title>relative URI examples could be improved</title>
  <status>accepted</status>
  <report>
-  <author email="LMM@acm.org">Larry Masinter</author>
+  <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="20020516">16 May 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1562,7 +1562,7 @@ mostly stand on their own and to reinforce the concepts.
 </pre>
  </report>
  <report>
-  <author email="stefan.eissing@greenbytes.de">Stefan Eissing</author>
+  <author email="stefan.eissing_AT_greenbytes.de">Stefan Eissing</author>
   <date sort="20020517">17 May 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1584,7 +1584,7 @@ note that keeping /.. is allowed.
 </pre>
  </report>
  <action>
-  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20020517">17 May 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1606,7 +1606,7 @@ More annotation is welcome.
  <title>definitions for operations on URIs</title>
  <status>pending</status>
  <report>
-  <author email="LMM@acm.org">Larry Masinter</author>
+  <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="20020713">13 Jul 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -1641,7 +1641,7 @@ URI Retrieval:
  <title>URI or URIs for plural</title>
  <status>accepted</status>
  <report>
-  <author email="tbray@textuality.com">Tim Bray</author>
+  <author email="tbray_AT_textuality.com">Tim Bray</author>
   <date sort="20020809">09 Aug 2002</date>
   <where>www-tag mailing list</where>
 <pre>
@@ -1652,7 +1652,7 @@ consensus is not remotely possible.
 </pre>
  </report>
  <action>
-  <author email="fielding@apache.org">Roy T. Fielding</author>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20020517">17 May 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
