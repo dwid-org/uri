@@ -352,10 +352,6 @@ table.closedissue {
          defines the generic URI syntax and a process for resolving URI references
          that might be in relative form, along with guidelines and security
          considerations for the use of URIs on the Internet.
-         
-      </p>
-      
-      <p>
          The URI syntax defines a grammar that is a superset of all valid URIs,
          such that an implementation can parse the common components of a URI
          reference without knowing the scheme-specific requirements of every
@@ -397,6 +393,7 @@ table.closedissue {
          
          <b>&nbsp;1.1&nbsp;
             <a href="#overview">Overview of URIs</a></b><br>
+         
          
          
          
@@ -1028,25 +1025,21 @@ table.closedissue {
       <dl>
          
          <dd style="margin-top: .5em">
-            Anything that has been named or described can be a resource.
+            This specification does not limit the scope of what might be a resource;
+            rather, the term "resource" is used in a general sense for whatever
+            might be identified by a URI.
             Familiar examples include an electronic document, an image,
-            a service (e.g., "today's weather report for Los Angeles"),
-            and a collection of other resources.
+            a source of information with consistent purpose
+            (e.g., "today's weather report for Los Angeles"),
+            a service (e.g., an HTTP to SMS gateway),
+            a collection of other resources, and so on.
             A resource is not necessarily accessible via the Internet;
             e.g., human beings, corporations, and bound books in a library
             can also be resources.
-            Likewise, abstract concepts can be resources, such as the operators and
-            operands of a mathematical equation, the types of a relationship
-            (e.g., "parent" or "employee"), or numeric values (e.g., zero, one, and
-            infinity).
-            These things are called resources because they each can be considered
-            a source of supply or support, or an available means, for some system,
-            where such systems may be as diverse as the World Wide Web, a filesystem,
-            an ontological graph, a theorem prover, or some other form of system for
-            the direct or indirect observation and/or manipulation of resources.
-            Note that "supply" is not necessary for a thing to be considered a
-            resource: the ability to simply refer to that thing is often sufficient
-            to support the operation of a given system.
+            Likewise, abstract concepts can be resources, such as
+            the operators and operands of a mathematical equation,
+            the types of a relationship (e.g., "parent" or "employee"),
+            or numeric values (e.g., zero, one, and infinity).
             
          </dd>
          
@@ -1063,10 +1056,12 @@ table.closedissue {
          <dd style="margin-top: .5em">
             An identifier embodies the information required to distinguish what is
             being identified from all other things within its scope of identification.
-            Our use of the terms "identify" and "identifying" refer to this process of
-            distinguishing from many to one; they should not be mistaken as an assumption
-            that the identifier defines the identity of what is referenced, though that
-            may be the case for some identifiers.
+            Our use of the terms "identify" and "identifying" refer to distinguishing
+            one resource from all other resources; they should not be mistaken as an
+            assumption that an identifier defines or embodies the identity of what
+            is referenced, though that may be the case for some identifiers.  Likewise,
+            the "one" resource identified might not be singular in nature (e.g.,
+            a resource might be a named set, or a mapping that varies over time).
             
          </dd>
          
@@ -1076,18 +1071,32 @@ table.closedissue {
       </p>
       <div><a name="rfc.section.1.1.p.5"></a></div>
       <p>
-         A URI is an identifier that consists of a sequence of characters
-         matching the syntax rule named &lt;URI&gt; in <a href="#components" title="Syntax Components">Section&nbsp;3</a>.
-         A URI can be used to refer to a resource.
-         This specification does not place any
-         limits on the nature of a resource, the reasons why an application
-         might wish to refer to a resource, or the kinds of system that
-         might use URIs for the sake of identifying resources.
+         A URI is an identifier, consisting of a sequence of characters matching
+         the syntax rule named &lt;URI&gt; in <a href="#components" title="Syntax Components">Section&nbsp;3</a>, that
+         enables uniform identification of resources via a separately defined,
+         extensible set of naming schemes (<a href="#scheme" title="Scheme">Section&nbsp;3.1</a>).
+         How that identification is accomplished, assigned, or enabled is delegated
+         to each scheme specification.
          
       </p>
       <div><a name="rfc.section.1.1.p.6"></a></div>
       <p>
-         URIs have a global scope and must be interpreted consistently regardless
+         This specification does not place any limits on the nature of a resource,
+         the reasons why an application might wish to refer to a resource, or the
+         kinds of system that might use URIs for the sake of identifying resources.
+         This specification does not require that a URI persists in identifying the
+         same resource over all time, though that is a common goal of all URI schemes.
+         This specification does not provide a mechanism for determing or describing
+         the resource identified by a URI, nor does it require that everyone
+         making use of a given URI have a shared understanding of what it is actually
+         intended to identify.  Nevertheless, nothing in this specification prevents
+         an application from limiting itself to particular types of resources, or to
+         a subset of URIs that maintains characteristics desired by that application.
+         
+      </p>
+      <div><a name="rfc.section.1.1.p.7"></a></div>
+      <p>
+         URIs have a global scope and are interpreted consistently regardless
          of context, though the result of that interpretation may be in relation
          to the end-user's context.  For example, "http://localhost/" has the same
          interpretation for every user of that reference, even though the network
@@ -1098,7 +1107,7 @@ table.closedissue {
          globally unique thing must use a URI that distinguishes that resource
          from all other things.  URIs that identify in relation to the end-user's
          local context should only be used when the context itself is a defining
-         aspect of the resource, such as when an on-line Linux manual refers to a
+         aspect of the resource, such as when an on-line help manual refers to a
          file on the end-user's filesystem (e.g., "file:///etc/hosts").
          
       </p>
@@ -1122,7 +1131,9 @@ table.closedissue {
          scheme-dependent semantics are needed.  Likewise, protocols and data
          formats that make use of URI references can refer to this specification
          as defining the range of syntax allowed for all URIs, including those
-         schemes that have yet to be defined.
+         schemes that have yet to be defined, thus decoupling the evolution of
+         identification schemes from the evolution of protocols, data formats,
+         and implementations that make use of URIs.
          
       </p>
       <div><a name="rfc.section.1.1.1.p.3"></a></div>
@@ -1280,7 +1291,7 @@ table.closedissue {
       </p>
       <div><a name="rfc.section.1.2.2.p.3"></a></div>
       <p>
-         When URIs are used within information systems to identify sources
+         When URIs are used within information retrieval systems to identify sources
          of information, the most common form of URI dereference is "retrieval":
          making use of a URI in order to retrieve a representation of its associated
          resource.  A "representation" is a sequence of octets, along with
@@ -1297,7 +1308,7 @@ table.closedissue {
       </p>
       <div><a name="rfc.section.1.2.2.p.4"></a></div>
       <p>
-         URI references in information systems are designed to be late-binding:
+         URI references in information retrieval systems are designed to be late-binding:
          the result of an access is generally determined at the time it is accessed
          and may vary over time or due to other aspects of the interaction.
          Such references are created in order to be used in the future:
@@ -2062,7 +2073,7 @@ table.closedissue {
          contain a colon (":") character.  The ABNF requires five separate rules
          to disambiguate these cases, only one of which will match the path
          substring within a given URI reference.  We use the generic term
-         "path component" to describe the URI substring that is matched by the
+         "path component" to describe the URI substring matched by the
          parser to one of these rules.
          <a name="rfc.iref.107"></a>
          <a name="rfc.iref.108"></a>
@@ -2216,7 +2227,7 @@ table.closedissue {
       </p>
       <div><a name="rfc.section.3.5.p.5"></a></div>
       <p>
-         Fragment identifiers have a special role in information systems as
+         Fragment identifiers have a special role in information retrieval systems as
          the primary form of client-side indirect referencing, allowing
          an author to specifically identify those aspects of an existing
          resource that are only indirectly provided by the resource owner.
