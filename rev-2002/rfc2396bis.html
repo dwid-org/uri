@@ -189,7 +189,7 @@ table.resolution
 <link href="#rfc.section.5" title="5 Relative Resolution" rel="Chapter">
 <link href="#rfc.section.6" title="6 Normalization and Comparison" rel="Chapter">
 <link href="#rfc.section.7" title="7 Security Considerations" rel="Chapter">
-<link href="#rfc.section.8" title="8 Acknowledgements" rel="Chapter">
+<link href="#rfc.section.8" title="8 Acknowledgments" rel="Chapter">
 <link href="#rfc.section.A" title="A Collected ABNF for URI" rel="Appendix">
 <link href="#rfc.section.B" title="B Parsing a URI Reference with a Regular Expression" rel="Appendix">
 <link href="#rfc.section.C" title="C Embedding the Base URI in HTML documents" rel="Appendix">
@@ -216,7 +216,7 @@ table.resolution
 </tr>
 <tr>
 <td class="header">
-        &lt;draft-fielding-uri-rfc2396bis-0x&gt;
+        &lt;draft-fielding-uri-rfc2396bis-02&gt;
       &nbsp;</td><td class="header">R. Fielding&nbsp;</td>
 </tr>
 <tr>
@@ -239,7 +239,7 @@ table.resolution
 </tr>
 </table>
 <p class="title">Uniform Resource Identifier (URI): Generic Syntax<br>
-<span class="filename">draft-fielding-uri-rfc2396bis-0x</span>
+<span class="filename">draft-fielding-uri-rfc2396bis-02</span>
 </p>
 <h1>Status of this Memo</h1>
 <p>
@@ -370,7 +370,7 @@ is available at
 
 
 <b>&nbsp;&nbsp;1.2.1&nbsp;
-            <a href="#transcribability">Transcribability</a></b>
+            <a href="#transcription">Transcription</a></b>
 <br>        
         
 
@@ -897,7 +897,7 @@ is available at
 
 
 <b>8&nbsp;
-            <a href="#ack">Acknowledgements</a></b>
+            <a href="#ack">Acknowledgments</a></b>
 <br>
 
 
@@ -1224,13 +1224,13 @@ deprecates use of the term "URN" for anything but URIs in the "urn" scheme
 </h2>
 <h3>
 <a name="rfc.iref.9"></a><a name="rfc.section.1.2.1">1.2.1</a>&nbsp;
-    <a name="transcribability">Transcribability</a>
+    <a name="transcription">Transcription</a>
 </h3>
 <div>
 <a name="rfc.section.1.2.1.p.1"></a>
 </div>
 <p>
-The URI syntax has been designed with global transcribability as one of
+The URI syntax has been designed with global transcription as one of
 its main considerations.  A URI is a sequence of characters from a very
 limited set: the letters of the basic Latin alphabet, digits,
 and a few special characters.  A URI may be represented in a variety
@@ -1243,7 +1243,7 @@ represented in a network protocol.
 <a name="rfc.section.1.2.1.p.2"></a>
 </div>
 <p>
-The goal of transcribability can be described by a simple scenario.
+The goal of transcription can be described by a simple scenario.
 Imagine two colleagues, Sam and Kim, sitting in a pub at an
 international conference and exchanging research ideas.  Sam asks Kim
 for a location to get more information, so Kim writes the URI for the
@@ -1454,7 +1454,7 @@ The complete URI syntax is collected in Appendix A.
 </div>
 <p>
 A URI consists of a restricted set of characters, primarily chosen to
-aid transcribability and usability both in computer systems and in
+aid transcription and usability both in computer systems and in
 non-computer communications.  Characters used conventionally as
 delimiters around a URI are excluded.  The set of URI characters
 consists of digits, letters, and a few graphic symbols
@@ -1495,7 +1495,7 @@ store or transmit those characters.
 URI characters representing strings of data within a component may, if
 allowed by the component production, represent an arbitrary sequence of
 octets.  For example, portions of a given URI might correspond to a filename
-on a non-ASCII filesystem, a query on non-ASCII data, numeric coordinates
+on a non-ASCII file system, a query on non-ASCII data, numeric coordinates
 on a map, etc.  Some URI schemes define a specific encoding of raw data
 to US-ASCII characters as part of their scheme-specific requirements.
 Most URI schemes represent data octets by the US-ASCII character
@@ -1902,7 +1902,7 @@ The parts "&lt;userinfo&gt;@" and ":&lt;port&gt;" may be omitted.
 Some schemes do not allow the userinfo and/or port sub-components.
 When presented with a URI that violates one or more scheme-specific
 restrictions, the scheme-specific URI resolution process should flag
-the reference as an error rather than ignore the unusued parts; doing so
+the reference as an error rather than ignore the unused parts; doing so
 reduces the number of equivalent URIs and helps detect abuses of the
 generic syntax that might indicate the URI has been constructed to
 mislead the user (<a href="#security-semantic">section&nbsp;7.5</a>).
@@ -2034,7 +2034,7 @@ four octets is allowed by this grammar.
 <a name="rfc.iref.87"></a>
 <a name="rfc.iref.88"></a>
 A host identified by an IPv6 literal address <a href="#RFC3513" title="Internet Protocol Version 6 (IPv6) Addressing Architecture">[RFC3513]</a>
-is distinguished by enclosing the IPv6 literal within square-brakets
+is distinguished by enclosing the IPv6 literal within square-brackets
 ("[" and "]").  This is the only place where square-bracket characters
 are allowed in the URI syntax.
 <a name="rfc.iref.89"></a>
@@ -2193,7 +2193,7 @@ incorrect implementations of relative URI resolution often fail to
 distinguish them from hierarchical separators, thus resulting in
 non-interoperable results while parsing relative references.  However,
 since query components are often used to carry identifying information
-in the form of "key=value" pairs, and one frequenty used value is a
+in the form of "key=value" pairs, and one frequently used value is a
 reference to another URI, it is sometimes better for usability to
 include those characters unescaped.
 </p>
@@ -2349,7 +2349,7 @@ string and extract the URI components.
 <p>
 A relative URI reference takes advantage of the hier-part syntax
 (<a href="#components">section&nbsp;3</a>) in order to express a reference that is
-relative to the namespace of another hierarchical URI.
+relative to the name space of another hierarchical URI.
 <a name="rfc.iref.117"></a>
 <a name="rfc.iref.118"></a>
 <a name="rfc.iref.119"></a>
@@ -2603,8 +2603,8 @@ has the highest precedence.  This can be visualized graphically as:
 <p>
    A mechanism for embedding the base URI within MIME container types
    (e.g., the message and multipart types) is defined by MHTML
-   <a href="#RFC2110" title="MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)">[RFC2110]</a>.  Protocols that do not use the MIME message header syntax,
-   but which do allow some form of tagged metainformation to be included
+   <a href="#RFC2110" title="MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)">[RFC2110]</a>.  Protocols that do not use the MIME message
+   header syntax, but do allow some form of tagged metadata to be included
    within messages, may define their own syntax for defining the base
    URI as part of a message.
 </p>
@@ -3018,13 +3018,13 @@ query component is not normally used within relative references.
 Some parsers allow the scheme name to be present in a relative URI if
 it is the same as the base URI scheme.  This is considered to be a
 loophole in prior specifications of partial URI <a href="#RFC1630" title="Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web">[RFC1630]</a>.
-Its use should be avoided, but is allowed for backwards compatibility.
+Its use should be avoided, but is allowed for backward compatibility.
 </p>
 <div>
 <a name="rfc.figure.u.36"></a>
 </div>
 <pre>   "http:g"        =  "http:g"         ; for validating parsers
-                   /  "http://a/b/c/g" ; for backwards compatibility
+                   /  "http://a/b/c/g" ; for backward compatibility
 </pre>
 
 
@@ -3378,13 +3378,13 @@ to avoid including data that should not be revealed in plain text.
 </div>
 <p>
 There is no guarantee that, having once used a given URI to retrieve
-some information, that the same information will be retievable by
+some information, that the same information will be retrievable by
 that URI in the future. Nor is there any guarantee that the information
 retrievable via that URI in the future will be observably similar to 
 that retrieved in the past.  The URI syntax does not constrain how a
-given scheme or authority apportions its namespace or maintains it
+given scheme or authority apportions its name space or maintains it
 over time.  Such a guarantee can only be obtained from the person(s)
-controlling that namespace and the resource in question.  A specific
+controlling that name space and the resource in question.  A specific
 URI scheme may define additional semantics, such as name persistence,
 if those semantics are required of all naming authorities for that scheme.
 </p>
@@ -3529,7 +3529,7 @@ More information on URI-based semantic attacks can be found in
 </table>
 <h1>
 <a name="rfc.section.8">8</a>&nbsp;
-    <a name="ack">Acknowledgements</a>
+    <a name="ack">Acknowledgments</a>
 </h1>
 <div>
 <a name="rfc.section.8.p.1"></a>
@@ -3537,7 +3537,7 @@ More information on URI-based semantic attacks can be found in
 <p>
 This document is derived from RFC 2396 <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>,
 RFC 1808 <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a>, and RFC 1738 <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a>;
-the acknowledgements in those specifications still apply.
+the acknowledgments in those specifications still apply.
 It also incorporates the update (with corrections) for IPv6 literals
 in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
 and Larry Masinter in <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>.
@@ -4004,7 +4004,7 @@ reference, the fragment would be placed within the brackets as well
 <a name="rfc.section.D.p.6"></a>
 </div>
 <p>
-In some cases, extra whitespace (spaces, linebreaks, tabs, etc.) may
+In some cases, extra whitespace (spaces, line-breaks, tabs, etc.) may
 need to be added to break a long URI across lines. The whitespace
 should be ignored when extracting the URI.
 </p>
@@ -4664,7 +4664,7 @@ and fix the following issues:
 </tr>
 <tr>
 <td>
-              &nbsp;&nbsp;transcribability&nbsp;
+              &nbsp;&nbsp;transcription&nbsp;
                 
               
   &nbsp;<a href="#rfc.iref.9"><b>1.2.1</b></a></td>
