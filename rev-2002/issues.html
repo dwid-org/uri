@@ -55,9 +55,6 @@
 <tr>
 <th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
 </tr>
-<tr>
-<td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>terminology</td><td nowrap="nowrap">reopened</td>
-</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -171,6 +168,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#044-empty-path">044-empty-path</a></td><td>no path is defined for scheme://ABCD?query</td><td>bnf</td><td nowrap="nowrap">fixed 05</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>terminology</td><td nowrap="nowrap">fixed 06</td>
 </tr>
 </table>
 <br>
@@ -2471,7 +2471,7 @@ Fixed by rewriting URI to "a URI" or URIs, as appropriate.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="024-identity">024-identity</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Resource should not be defined as anything that has identity</font></th>
 </tr>
 <tr>
-<th>reopened</th><th align="left">terminology</th>
+<th bgcolor="lightgreen">fixed 06</th><th align="left">terminology</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2846,6 +2846,45 @@ Suggested change:
      electronic document, an image, a service (e.g., "today's weather
      report for Los Angeles"), and a collection of other resources,
      but there is no constraint on what is a resource.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  15 Jul 2004,
+  draft 06:
+    <pre>
+The definition has been updated to
+
+   Resource
+
+      This specification does not limit the scope of what might be a
+      resource; rather, the term "resource" is used in a general sense
+      for whatever might be identified by a URI.  Familiar examples
+      include an electronic document, an image, a source of information
+      with consistent purpose (e.g., "today's weather report for
+      Los Angeles"), a service (e.g., an HTTP to SMS gateway), a
+      collection of other resources, and so on.  A resource is not
+      necessarily accessible via the Internet; e.g., human beings,
+      corporations, and bound books in a library can also be resources. 
+      Likewise, abstract concepts can be resources, such as the
+      operators and operands of a mathematical equation, the types
+      of a relationship (e.g., "parent" or "employee"), or numeric
+      values (e.g., zero, one, and infinity).
+
+   Identifier
+
+      An identifier embodies the information required to distinguish
+      what is being identified from all other things within its scope
+      of identification.  Our use of the terms "identify" and
+      "identifying" refer to distinguishing one resource from all other
+      resources; they should not be mistaken as an assumption that an
+      identifier defines or embodies the identity of what is referenced,
+      though that may be the case for some identifiers.  Likewise,
+      the "one" resource identified might not be singular in nature
+      (e.g., a resource might be a named set, or a mapping that varies
+      over time).
 </pre>
 </td>
 </tr>

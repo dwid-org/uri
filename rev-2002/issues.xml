@@ -2120,7 +2120,7 @@ Fixed by rewriting URI to "a URI" or URIs, as appropriate.
  <type>terminology</type>
  <name>024-identity</name>
  <title>Resource should not be defined as anything that has identity</title>
- <status>reopened</status>
+ <status>fixed 06</status>
  <report>
   <author email="msabin_AT_milessabin.com">Miles Sabin</author>
   <date sort="20020909">09 Sep 2002</date>
@@ -2475,6 +2475,43 @@ Suggested change:
      but there is no constraint on what is a resource.
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040715">15 Jul 2004</date>
+  <where>draft 06</where>
+<pre>
+The definition has been updated to
+
+   Resource
+
+      This specification does not limit the scope of what might be a
+      resource; rather, the term "resource" is used in a general sense
+      for whatever might be identified by a URI.  Familiar examples
+      include an electronic document, an image, a source of information
+      with consistent purpose (e.g., "today's weather report for
+      Los Angeles"), a service (e.g., an HTTP to SMS gateway), a
+      collection of other resources, and so on.  A resource is not
+      necessarily accessible via the Internet; e.g., human beings,
+      corporations, and bound books in a library can also be resources. 
+      Likewise, abstract concepts can be resources, such as the
+      operators and operands of a mathematical equation, the types
+      of a relationship (e.g., "parent" or "employee"), or numeric
+      values (e.g., zero, one, and infinity).
+
+   Identifier
+
+      An identifier embodies the information required to distinguish
+      what is being identified from all other things within its scope
+      of identification.  Our use of the terms "identify" and
+      "identifying" refer to distinguishing one resource from all other
+      resources; they should not be mistaken as an assumption that an
+      identifier defines or embodies the identity of what is referenced,
+      though that may be the case for some identifiers.  Likewise,
+      the "one" resource identified might not be singular in nature
+      (e.g., a resource might be a named set, or a mapping that varies
+      over time).
+</pre>
+ </action>
 </issue>
 
 <issue>
