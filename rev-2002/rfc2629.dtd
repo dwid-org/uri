@@ -96,7 +96,8 @@
 <!ATTLIST author
           initials    %ATEXT;            #IMPLIED
           surname     %ATEXT;            #IMPLIED
-          fullname    %ATEXT;            #IMPLIED>
+          fullname    %ATEXT;            #IMPLIED
+          role        (editor)           #IMPLIED>
 
 <!ELEMENT organization
                       (%CTEXT;)>
@@ -140,14 +141,23 @@
   -->
 
 
-<!ELEMENT middle      (section)+>
+<!-- later on, may be (section+,appendix*,section*) -->
+<!ELEMENT middle      (section+)>
 
-<!ELEMENT section     (t|figure|iref|section)*>
+<!ELEMENT section     (t|figure|texttable|iref|section)*>
 <!ATTLIST section
           anchor      ID                 #IMPLIED
           title       %ATEXT;            #REQUIRED>
 
-<!ELEMENT t           (%TEXT;|list|figure|xref|eref|iref|vspace)*>
+<!--
+<!ELEMENT appendix    (t|figure|texttable|iref|appendix)*>
+<!ATTLIST appendix
+          anchor      ID                 #IMPLIED
+          title       %ATEXT;            #REQUIRED>
+  -->
+
+<!-- use of <figure/> is deprecated... -->
+<!ELEMENT t           (%TEXT;|list|figure|xref|eref|iref|spanx|vspace)*>
 <!ATTLIST t
           hangText    %ATEXT;            #IMPLIED>
 
@@ -155,12 +165,16 @@
      parent -->
 <!ELEMENT list        (t+)>
 <!ATTLIST list
-          style       %ATEXT;            "empty">
+          style       %ATEXT;            "empty"
+          hangIndent  %NUMBER;           #IMPLIED
+          counter     %ATEXT;            #IMPLIED>
 
 <!ELEMENT xref        (%CTEXT;)>
 <!ATTLIST xref
           target      IDREF              #REQUIRED
-          pageno      (true|false)       "false">
+          pageno      (true|false)       "false"
+          format      (counter|title|default)
+                                         "default">
 
 <!ELEMENT eref        (%CTEXT;)>
 <!ATTLIST eref
@@ -172,6 +186,11 @@
           subitem     %ATEXT;            ""
           primary    (true|false)       "false">
 
+<!ELEMENT spanx       (%CTEXT;)>
+<!ATTLIST spanx
+          xml:space   (default|preserve) "preserve"
+          style       %ATEXT;            "emph">
+
 <!ELEMENT vspace      EMPTY>
 <!ATTLIST vspace
           blankLines  %NUMBER;           "0">
@@ -181,14 +200,27 @@
           anchor      ID                 #IMPLIED
           title       %ATEXT;            "">
 
-<!ELEMENT preamble    (%TEXT;|xref|eref|iref)*>
+<!ELEMENT preamble    (%TEXT;|xref|eref|iref|spanx)*>
 <!ELEMENT artwork     (%TEXT;)*>
 <!ATTLIST artwork
           xml:space   (default|preserve) "preserve"
           name        %ATEXT;            ""
-          type        %ATEXT;            "">
+          type        %ATEXT;            ""
+          src         %URI;              ""
+          width       %ATEXT;            ""
+          height      %ATEXT;            "">
 
-<!ELEMENT postamble   (%TEXT;|xref|eref|iref)*>
+<!ELEMENT postamble   (%TEXT;|xref|eref|iref|spanx)*>
+    
+<!ELEMENT texttable   (preamble?,ttcol+,c*,postamble?)>
+<!ATTLIST texttable
+          anchor      ID                 #IMPLIED
+          title       %ATEXT;            "">
+<!ELEMENT ttcol       (%CTEXT;)>
+<!ATTLIST ttcol
+          width       %ATEXT;           #IMPLIED
+          align       (left|center|right) "left">
+<!ELEMENT c           (%TEXT;|xref|eref|iref|spanx)*>
 
 
 <!--
@@ -202,7 +234,7 @@
 <!ELEMENT references  (reference+)>
 <!ATTLIST references
           title       %ATEXT;            "References">
-<!ELEMENT reference   (front,seriesInfo*,format*)>
+<!ELEMENT reference   (front,seriesInfo*,format*,annotation*)>
 <!ATTLIST reference
           anchor      ID                 #IMPLIED
           target      %URI;              #IMPLIED>
@@ -215,3 +247,4 @@
           target      %URI;              #IMPLIED
           type        %ATEXT;            #REQUIRED
           octets      %NUMBER;           #IMPLIED>
+<!ELEMENT annotation  (%TEXT;|xref|eref|iref|spanx)*>
