@@ -779,7 +779,6 @@ is available at
 
 
 
-
 <b>&nbsp;&nbsp;6.2.2&nbsp;
             <a href="#normalize-syntax">Syntax-based Normalization</a></b>
 <br>
@@ -793,10 +792,10 @@ is available at
 
 
 
+
 <b>&nbsp;&nbsp;&nbsp;6.2.2.2&nbsp;
             <a href="#normalize-encoding">Encoding Normalization</a></b>
 <br>
-
 
 
 
@@ -838,7 +837,6 @@ is available at
 <b>&nbsp;6.3&nbsp;
             <a href="#canonical-form">Canonical Form</a></b>
 <br>
-
 
 
 
@@ -3145,7 +3143,9 @@ are many application-dependent versions of equivalence.
 <p>
 Even though it is possible to determine that two URIs are equivalent,
 it is never possible to be sure that two URIs identify different
-resources. Therefore, comparison methods are designed to minimize
+resources. For example, an owner of two different domain names could
+decide to serve the same resource from both, resulting in two different
+URIs.  Therefore, comparison methods are designed to minimize
 false negatives while strictly avoiding false positives.
 </p>
 <div>
@@ -3180,7 +3180,7 @@ for all applications.
 </div>
 <p>
 If this range of comparison practices is considered as a ladder, the
-following discussion will climb the ladder, starting with those that
+following discussion will climb the ladder, starting with those practices that
 are cheap but have a relatively higher chance of producing false negatives,
 and proceeding to those that have higher computational cost and lower risk
 of false negatives.
@@ -3217,21 +3217,12 @@ before the other.
 <p>
 Such character comparisons require that each pair of characters be put
 in comparable form.  For example, should one URI be stored in a byte
-array in EBCDIC encoding, and the second be in a Java String object,
+array in EBCDIC encoding, and the second be in a Java String object (UTF-16),
 bit-for-bit comparisons applied naively will produce both false-positive
-and false-negative errors.  Thus, in principle, it is better to speak of
-equality on a character-for-character rather than byte-for-byte or
-bit-for-bit basis.
-</p>
-<div>
-<a name="rfc.section.6.2.1.p.4"></a>
-</div>
-<p>
-Unicode defines a character as being identified by number
-(codepoint) with an associated bundle of visual and other semantics.
-At the software level, it is not practical to compare semantic bundles,
-so in practical terms, character-by-character comparisons are done
-codepoint-by-codepoint.
+and false-negative errors.  It is better to speak of equality on a
+character-for-character rather than byte-for-byte or bit-for-bit basis.
+In practical terms, character-by-character comparisons should be done
+codepoint-by-codepoint after conversion to a common character encoding.
 </p>
 <h3>
 <a name="rfc.section.6.2.2">6.2.2</a>&nbsp;
@@ -3267,9 +3258,19 @@ dot-segments.
 <p>
 When a URI scheme uses components of the generic syntax, it will
 also use the common syntax equivalence rules, namely that the scheme
-and host are case insensitive and therefore can be normalized
+and host are case-insensitive and therefore should be normalized
 to lowercase.  For example, the URI &lt;HTTP://www.EXAMPLE.com/&gt; is
-equivalent to &lt;http://www.example.com/&gt;.
+equivalent to &lt;http://www.example.com/&gt;.  Applications should not
+assume anything about the case sensitivity of other URI components,
+since that is dependent on the implementation used to handle a dereference.
+</p>
+<div>
+<a name="rfc.section.6.2.2.1.p.2"></a>
+</div>
+<p>
+The hexadecimal digits within a percent-encoding triplet (e.g., "%3a"
+versus "%3A") are case-insensitive and therefore should be normalized
+to use uppercase letters for the digits A-F.
 </p>
 <h3>
 <a name="rfc.section.6.2.2.2">6.2.2.2</a>&nbsp;
@@ -3281,21 +3282,12 @@ equivalent to &lt;http://www.example.com/&gt;.
 <p>
 The percent-encoding mechanism (<a href="#percent-encoding">section&nbsp;2.1</a>)
 is a frequent source of variance among otherwise identical URIs.
-One cause is the choice of uppercase or lowercase letters for the
-hexadecimal digits within the encoding triplet (e.g., "%3a" versus "%3A").
-Such sequences are always equivalent; for the sake of uniformity, URI
-producers and normalizers should use uppercase letters for the
-hex digits A-F.
-</p>
-<div>
-<a name="rfc.section.6.2.2.2.p.2"></a>
-</div>
-<p>
-Some URI producers percent-encode octets that do not require
-percent-encoding, resulting in URIs that are equivalent to their
-non-encoded counterparts.  Such URIs should be normalized by
-decoding any percent-encoded octet that corresponds to an unreserved
-character, as described in <a href="#unreserved">section&nbsp;2.3</a>.
+In addition to the case-insensitivity issue noted above, some URI
+producers percent-encode octets that do not require percent-encoding,
+resulting in URIs that are equivalent to their non-encoded counterparts.
+Such URIs should be normalized by decoding any percent-encoded octet
+that corresponds to an unreserved character, as described in
+<a href="#unreserved">section&nbsp;2.3</a>.
 </p>
 <h3>
 <a name="rfc.section.6.2.2.3">6.2.2.3</a>&nbsp;
@@ -3450,13 +3442,6 @@ with respect to their scheme.  Specifically:
 </ul>
 <p>
 
-</p>
-<div>
-<a name="rfc.section.6.3.p.2"></a>
-</div>
-<p>
-The good practices listed above are motivated by deployed software
-that frequently use these techniques for the purposes of normalization.
 </p>
 
 
