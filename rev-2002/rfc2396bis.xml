@@ -169,7 +169,7 @@ operands of a mathematical equation or the types of a relationship
     </t>
   </list>
 </t>
-<iref item="identifier" primary="true"/>        
+<iref item="identifier" primary="true"/>
 <t>Identifier
   <list>
     <t>
@@ -193,7 +193,7 @@ the user's network interface and yet not specific to any one user).
 </t>
 
 <section title="Generic Syntax" anchor="generic-syntax">
-<iref item="generic syntax" primary="true"/>        
+<iref item="generic syntax" primary="true"/>
 <t>
 Each URI begins with a scheme name, as defined in <xref target="scheme"/>,
 that refers to a specification for assigning identifiers within that scheme.
@@ -238,10 +238,10 @@ The following examples illustrate URIs that are in common use.
 </section>
 
 <section title="URI, URL, and URN" anchor="URLvsURN">
-<iref item="URL" primary="true"/>        
-<iref item="URN" primary="true"/>        
-<iref item="locator" primary="true"/>        
-<iref item="name" primary="true"/>        
+<iref item="URL" primary="true"/>
+<iref item="URN" primary="true"/>
+<iref item="locator" primary="true"/>
+<iref item="name" primary="true"/>
 <t>
 A URI can be further classified as a locator, a name, or both.  The
 term "Uniform Resource Locator" (URL) refers to the subset of URIs
@@ -266,8 +266,8 @@ the more restrictive terms URL and URN <xref target="RFC3305"/>.
 
 </section>
 <section title="Design Considerations" anchor="design">
-<section title="Transcription" anchor="transcription">        
-<iref item="transcription" primary="true"/>        
+<section title="Transcription" anchor="transcription">
+<iref item="transcription" primary="true"/>
 <t>
 The URI syntax has been designed with global transcription as one of
 its main considerations.  A URI is a sequence of characters from a very
@@ -322,7 +322,7 @@ specification.
 
 <section title="Separating Identification from Interaction"
          anchor="identification">
-<iref item="access" primary="true"/>        
+<iref item="access" primary="true"/>
 <t>
 A common misunderstanding of URIs is that they are only used to
 refer to accessible resources.  In fact, the URI alone only provides
@@ -331,8 +331,8 @@ implied by the presence of a URI.  Instead, an operation (if any)
 associated with a URI reference is defined by the protocol element,
 data format attribute, or natural language text in which it appears.
 </t>
-<iref item="resolution" primary="true"/>        
-<iref item="dereference" primary="true"/>        
+<iref item="resolution" primary="true"/>
+<iref item="dereference" primary="true"/>
 <t>
 Given a URI, a system may attempt to perform a variety of operations
 on the resource, as might be characterized by such words as
@@ -345,8 +345,8 @@ a URI; such resolution may require several iterations.  To use that access
 mechanism to perform an action on the URI's resource is to "dereference"
 the URI.
 </t>
-<iref item="retrieval" primary="true"/>        
-<iref item="representation" primary="true"/>        
+<iref item="retrieval" primary="true"/>
+<iref item="representation" primary="true"/>
 <t>
 When URIs are used within information systems to identify sources
 of information, the most common form of URI dereference is "retrieval":
@@ -362,7 +362,7 @@ Depending on the protocols used to perform the retrieval, additional
 information might be supplied about the resource (resource metadata)
 and its relation to other resources.
 </t>
-<iref item="sameness" primary="true"/>        
+<iref item="sameness" primary="true"/>
 <t>
 URI references in information systems are designed to be late-binding:
 the result of an access is generally determined at the time it is accessed
@@ -390,7 +390,7 @@ a representation isn't found in a local cache).
 </section>
 
 <section title="Hierarchical Identifiers" anchor="hierarchical">
-<iref item="hierarchical" primary="true"/>        
+<iref item="hierarchical" primary="true"/>
 <t>
 The URI syntax is organized hierarchically, with components listed
 in order of decreasing significance from left to right.  For some URI schemes,
@@ -419,7 +419,7 @@ parser's hierarchical syntax may still use the slash ("/") character
 for any purpose, since its hierarchical interpretation is only relevant
 during the parsing of relative references.
 </t>
-<iref item="relative" primary="true"/>        
+<iref item="relative" primary="true"/>
 <t>
 It is often the case that a group or "tree" of documents has been
 constructed to serve a common purpose, wherein the vast majority of URIs
@@ -451,7 +451,7 @@ within that scheme.
 </section>
 
 <section title="Syntax Notation" anchor="notation">
-<iref item="ABNF" primary="true"/>        
+<iref item="ABNF" primary="true"/>
 <iref item="URI grammar" subitem="ALPHA" primary="true"/>
 <iref item="URI grammar" subitem="CR" primary="true"/>
 <iref item="URI grammar" subitem="CTL" primary="true"/>
@@ -706,7 +706,7 @@ Each URI begins with a scheme name that refers to a specification for
 assigning identifiers within that scheme. As such, the URI syntax is a
 federated and extensible naming system wherein each scheme's specification
 may further restrict the syntax and semantics of identifiers using that
-scheme. 
+scheme.
 </t>
 <figure><preamble>
 Scheme names consist of a sequence of characters beginning with a
@@ -804,7 +804,7 @@ and not a reg-name.
 <iref item="IPv6address" primary="true"/>
 <iref item="ls32" primary="true"/>
 <iref item="h4" primary="true"/>
-<iref item="vflag" primary="true"/>
+<iref item="IPvFuture" primary="true"/>
 A host identified by an Internet Protocol literal address, version 6
 <xref target="RFC3513"/> or later, is distinguished by enclosing the IP
 literal within square-brackets ("[" and "]").  This is the only place
@@ -814,15 +814,15 @@ an optional version flag may be used to indicate such a format
 explicitly rather than relying on heuristic determination.
 <iref item="URI grammar" subitem="IP-literal" primary="true"/>
 <iref item="URI grammar" subitem="IPv6address" primary="false"/>
-<iref item="URI grammar" subitem="vflag" primary="true"/>
+<iref item="URI grammar" subitem="IPvFuture" primary="true"/>
 </preamble><artwork type="abnf">
-   IP-literal = "[" ( IPv6address | vflag "." 1*pchar ) "]"
+   IP-literal = "[" ( IPv6address | IPvFuture  ) "]"
 
-   vflag       = "v" HEXDIG
+   IPvFuture  = "v" HEXDIG "." 1*( unreserved / sub-delims / ":" )
 </artwork><postamble>
 The version flag does not indicate the IP version; rather, it indicates
 future versions of the literal format.  As such, implementations must
-not provide the vflag for existing IPv4 and IPv6 literal addresses.
+not provide the version flag for existing IPv4 and IPv6 literal addresses.
 If a URI containing an IP-literal that starts with "v" (case-insensitive),
 indicating that the version flag is present, is dereferenced by an application
 that does not know the meaning of that version flag, then the application
@@ -1009,7 +1009,7 @@ of the URI's dereferencing algorithm.
 The query component contains non-hierarchical data that, along with data
 in the <xref target="path">path</xref> component, serves to identify a
 resource within the scope of the URI's scheme and naming authority (if any).
-The query component is indicated by the first question mark ("?") character 
+The query component is indicated by the first question mark ("?") character
 and terminated by a number sign ("#") character or by the end of the URI.
 <iref item="URI grammar" subitem="query" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="false"/>
@@ -1418,13 +1418,13 @@ algorithm for transforming R into its target URI (T):
                T.query = Base.query;
             endif;
          else
-            if (R.path starts-with "/") then 
+            if (R.path starts-with "/") then
                T.path = remove_dot_segments(R.path);
             else
                T.path = merge(Base.path, R.path);
                T.path = remove_dot_segments(T.path);
             endif;
-            T.query = R.query; 
+            T.query = R.query;
          endif;
          T.authority = Base.authority;
       endif;
@@ -1902,7 +1902,7 @@ to avoid including data that should not be revealed in plain text.
 There is no guarantee that, having once used a given URI to retrieve
 some information, the same information will be retrievable by
 that URI in the future. Nor is there any guarantee that the information
-retrievable via that URI in the future will be observably similar to 
+retrievable via that URI in the future will be observably similar to
 that retrieved in the past.  The URI syntax does not constrain how a
 given scheme or authority apportions its name space or maintains it
 over time.  Such a guarantee can only be obtained from the person(s)
@@ -1928,7 +1928,7 @@ Caution should be used when dereferencing a URI that specifies a TCP port
 number other than the default for the scheme, especially when it is
 a number within the reserved space.  A frequent example of abuse has
 been the use of a network protocol-based scheme with a port component
-of "25", thereby fooling user agent software into sending an 
+of "25", thereby fooling user agent software into sending an
 unintended or impersonating message via an SMTP server.
 </t>
 <t>
@@ -2004,7 +2004,7 @@ on the software itself.  User agents may be able to reduce the impact
 of such attacks by visually distinguishing the various components of
 the URI when rendered, such as by using a different color or tone to
 render userinfo if any is present, though there is no general panacea.
-More information on URI-based semantic attacks can be found in 
+More information on URI-based semantic attacks can be found in
 <xref target="Siedzik"/>.
 </t>
 </section>
@@ -2078,7 +2078,7 @@ are gratefully acknowledged.
   </references>
 
   <references title="Informative References">
-  
+
 <reference anchor='RFC2277'>
 <front>
 <title abbrev='Charset Policy'>IETF Policy on Character Sets and Languages</title>
@@ -2161,7 +2161,7 @@ are gratefully acknowledged.
 </front>
 <seriesInfo name='RFC' value='1738' />
 </reference>
-  
+
 <reference anchor='RFC2396'>
 <front>
 <title abbrev='URI Generic Syntax'>Uniform Resource Identifiers (URI): Generic Syntax</title>
@@ -2683,7 +2683,7 @@ Science, University of California, Irvine</organization>
 </front>
 <seriesInfo name='RFC' value='2279' />
 </reference>
-  
+
 </references>
 
 <section title="Collected ABNF for URI" anchor="collected-abnf">
@@ -2703,9 +2703,9 @@ Science, University of California, Irvine</organization>
  host          = IP-literal / IPv4address / reg-name
  port          = *DIGIT
 
- IP-literal    = "[" ( IPv6address | vflag "." 1*pchar ) "]"
+ IP-literal    = "[" ( IPv6address | IPvFuture  ) "]"
 
- vflag         = "v" HEXDIG
+ IPvFuture     = "v" HEXDIG "." 1*( unreserved / sub-delims / ":" )
 
  IPv6address   =                          6( h4 ":" ) ls32
                /                     "::" 5( h4 ":" ) ls32
