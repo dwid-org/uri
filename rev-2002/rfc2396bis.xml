@@ -75,7 +75,7 @@
 
   <abstract>
 <t>
-A Uniform Resource Identifier (URI) is a compact string of characters
+A Uniform Resource Identifier (URI) is a compact sequence of characters
 for identifying an abstract or physical resource.  This specification
 defines the generic URI syntax and a process for resolving URI references
 that might be in relative form, along with guidelines and security
@@ -125,9 +125,14 @@ Advice for designers of new URI schemes can be found in
 <t>
 All significant changes from RFC 2396 are noted in <xref target="changes"/>.
 </t>
+<iref item="character" primary="true"/>
+<iref item="coded character set" primary="true"/>
+<iref item="character encoding" primary="true"/>
 <t>
-This specification uses the terms "character" and "character encoding"
-in accordance with the definitions provided in <xref target="RFC2978"/>.
+This specification uses the terms "character" and "coded character set"
+in accordance with the definitions provided in <xref target="RFC2978"/>,
+and "character encoding" in place of what <xref target="RFC2978"/>
+refers to as a "charset".
 </t>
 
 <section title="Overview of URIs" anchor="overview">
@@ -298,9 +303,9 @@ its main considerations.  A URI is a sequence of characters from a very
 limited set: the letters of the basic Latin alphabet, digits,
 and a few special characters.  A URI may be represented in a variety
 of ways: e.g., ink on paper, pixels on a screen, or a sequence of
-integers from a coded character set.  The interpretation of a URI depends
-only on the characters used and not how those characters are
-represented in a network protocol.
+character encoding octets.  The interpretation of a URI depends only
+on the characters used and not how those characters are represented
+in a network protocol.
 </t>
 <t>
 The goal of transcription can be described by a simple scenario.
@@ -345,9 +350,9 @@ benefit from being able to use a wider range of characters; such use
 is not defined by this specification.  Percent-encoded octets
 (<xref target="percent-encoding"/>) may be used within a URI to represent
 characters outside the range of the US-ASCII coded character set if such
-representation is defined by the scheme or by the protocol element
-in which the URI is referenced; such a definition will specify the
-character encoding scheme used to map those characters to octets prior
+representation is allowed by the scheme or by the protocol element
+in which the URI is referenced; such a definition should specify the
+character encoding used to map those characters to octets prior
 to being percent-encoded for the URI.
 </t>
 </section>
@@ -483,7 +488,6 @@ dot-segments.
 <iref item="ABNF" primary="true"/>
 <iref item="URI grammar" subitem="ALPHA" primary="true"/>
 <iref item="URI grammar" subitem="CR" primary="true"/>
-<iref item="URI grammar" subitem="CTL" primary="true"/>
 <iref item="URI grammar" subitem="DIGIT" primary="true"/>
 <iref item="URI grammar" subitem="DQUOTE" primary="true"/>
 <iref item="URI grammar" subitem="HEXDIG" primary="true"/>
@@ -494,7 +498,7 @@ dot-segments.
 This specification uses the Augmented Backus-Naur Form (ABNF) notation of
 <xref target="RFC2234"/>, including the following core ABNF syntax rules
 defined by that specification:
-ALPHA (letters), CR (carriage return), CTL (control characters),
+ALPHA (letters), CR (carriage return),
 DIGIT (decimal digits), DQUOTE (double quote), HEXDIG (hexadecimal digits),
 LF (line feed), and SP (space).
 The complete URI syntax is collected in <xref target="collected-abnf"/>.
@@ -510,7 +514,7 @@ The URI syntax provides a method of encoding data, presumably for the
 sake of identifying a resource, as a sequence of characters.  The URI
 characters are, in turn, frequently encoded as octets for transport or
 presentation.  This specification does not mandate any particular character
-encoding scheme for mapping between URI characters and the octets used
+encoding for mapping between URI characters and the octets used
 to store or transmit those characters.  When a URI appears in a protocol
 element, the character encoding is defined by that protocol; absent such
 a definition, a URI is assumed to be in the same character encoding as
@@ -693,9 +697,10 @@ producing meaningful names.  The URI producer will transform the
 local encoding to one that is suitable for a public interface, and
 then transform the public interface encoding into the restricted
 set of URI characters (reserved, unreserved, and percent-encodings).
-Those characters are, in turn, encoded in a charset to be used as a
-reference within a data format, and such data formats are often
-subsequently encoded for transmission over Internet protocols.
+Those characters are, in turn, encoded as octets to be used as a
+reference within a data format (e.g., a document charset), and such
+data formats are often subsequently encoded for transmission over
+Internet protocols.
 </t>
 <t>
 For most systems, an unreserved character appearing within a URI
@@ -912,7 +917,19 @@ misleadingly crafted to look like a trusted domain name
 <figure><preamble>
 The host subcomponent of authority is identified by an IP literal
 encapsulated within square brackets, an IPv4 address in dotted-decimal form,
-or a host name.  The host subcomponent is case-insensitive.
+or a registered name.  The host subcomponent is case-insensitive.
+The presence of a host subcomponent within a URI does not imply that
+the scheme requires access to the given host on the Internet.
+In many cases, the host syntax is used only for the sake of reusing the
+existing registration process created and deployed for DNS, thus obtaining
+a globally unique name without the cost of deploying another registry.
+However, such use comes with its own costs: domain name ownership
+may change over time for reasons not anticipated by the URI producer.
+In other cases, the data within the host component identifies
+a registered name that has nothing to do with an Internet host.
+We use the name "host" for the ABNF rule because that is its most
+common purpose, not its only purpose, and thus should not be
+considered as semantically limiting the data within it.
 <iref item="URI grammar" subitem="host" primary="true"/>
 </preamble><artwork type="abnf">
    host        = IP-literal / IPv4address / reg-name
@@ -922,7 +939,7 @@ distinguish between an IPv4address and a reg-name.  In order to disambiguate,
 the syntax, we apply the "first-match-wins" algorithm: If host matches
 the rule for IPv4address, then it should be considered an IPv4 address literal
 and not a reg-name.  Although host is case-insensitive, producers
-and normalizers should use lowercase for host names and hexadecimal
+and normalizers should use lowercase for registered names and hexadecimal
 addresses for the sake of uniformity, while only using uppercase letters
 for percent-encodings.
 </postamble></figure>
@@ -1015,12 +1032,12 @@ four octets is allowed by this grammar.
 <figure><preamble>
 <iref item="reg-name" primary="true"/>
 <iref item="registered name" primary="true"/>
-A host identified by a registered name is a string of characters that is
+A host identified by a registered name is a sequence of characters that is
 usually intended for lookup within a locally-defined host or service name
 registry, though the URI's scheme-specific semantics may require that a
 specific registry (or fixed name table) be used instead.
 The most common name registry mechanism is the Domain Name System (DNS).
-A host name intended for lookup in the DNS uses the syntax defined in
+A registered name intended for lookup in the DNS uses the syntax defined in
 Section 3.5 of <xref target="RFC1034"/> and
 Section 2.1 of <xref target="RFC1123"/>.    Such a name consists of a
 sequence of domain labels separated by ".", each domain label starting and
@@ -1044,44 +1061,30 @@ empty host to be invalid.
 This specification does not mandate a particular registered name lookup
 technology and therefore does not restrict the syntax of reg-name beyond
 that necessary for interoperability.  Instead, it delegates the issue of
-host name syntax conformance to the operating system of each application
+registered name syntax conformance to the operating system of each application
 performing URI resolution, and that operating system decides what it will
 allow for the purpose of host identification.
 A URI resolution implementation might use DNS, host tables, yellow pages,
-NetInfo, WINS, or any other system for lookup of host and service names.
+NetInfo, WINS, or any other system for lookup of registered names.
 However, a globally-scoped naming system, such as
 DNS fully-qualified domain names, is necessary for URIs that are intended
-to have global scope. URI producers should use host names that conform to
+to have global scope. URI producers should use names that conform to
 the DNS syntax, even when use of DNS is not immediately apparent.
 </t>
 <t>
 The reg-name syntax allows percent-encoded octets in order to represent
-non-ASCII host or service names in a uniform way that is independent of
+non-ASCII registered names in a uniform way that is independent of
 the underlying name resolution technology; such non-ASCII characters must
 first be encoded according to UTF-8 <xref target="RFC3629"/> and then
 each octet of the corresponding UTF-8 sequence must be percent-encoded
 to be represented as URI characters.  URI producing applications must not
 use percent-encoding in host unless it is used to represent a UTF-8
-character sequence.  When a non-ASCII host name represents an
+character sequence.  When a non-ASCII registered name represents an
 internationalized domain name intended for resolution via the DNS,
 the name must be transformed to the IDNA encoding <xref target="RFC3490"/>
-prior to name lookup.  URI producers should provide such host names in
+prior to name lookup.  URI producers should provide such registered names in
 the IDNA encoding, rather than a percent-encoding, if they wish to maximize
 interoperability with legacy URI resolvers.
-</t>
-<t>
-The presence of host within a URI does not imply that the scheme
-requires access to the given host on the Internet.  In many cases,
-the host syntax is used only for the sake of reusing the existing
-registration process created and deployed for DNS, thus obtaining a
-globally unique name without the cost of deploying another registry.
-However, such use comes with its own costs: domain name ownership
-may change over time for reasons not anticipated by the URI producer.
-Thus, in some cases, the data within the host component identifies
-a registered name that has nothing to do with an Internet host.
-We use the name "host" for the ABNF rule because that is its most
-common purpose, not its only purpose, and thus should not be
-considered as semantically limiting the data within it.
 </t>
 </section>
 
@@ -1449,7 +1452,7 @@ portions of the URI, such as
 or simply a DNS registered name on its own.  Such references are primarily
 intended for human interpretation, rather than for machines, with the
 assumption that context-based heuristics are sufficient to complete
-the URI (e.g., most host names beginning with "www" are likely to have
+the URI (e.g., most registered names beginning with "www" are likely to have
 a URI prefix of "http://").  Although there is no standard set of
 heuristics for disambiguating a URI suffix, many client implementations
 allow them to be entered by the user and heuristically resolved.
