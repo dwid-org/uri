@@ -1,0 +1,251 @@
+From: "Larry Masinter" <LMM@acm.org>
+Date: Wed Mar 26, 2003  2:14:08  PM US/Pacific
+To: <minutes@ietf.org>
+Cc: <uri@w3.org>
+Subject: Minutes of URI BOF - IETF 56 - 2003-03-20
+
+
+Minutes of URI BOF - IETF 56 - 2003-03-20
+=========================================
+Session chaired by Larry Masinter
+Reported by Graham Klyne with edits by Larry Masinter.
+
+Agenda
+(1) URI to standard
+(2) IRI to proposed standard
+(3) Discuss processes for URI registration
+(4) Review other URI-related work needed
+
+===========
+
+(1) URI to standard
+
+We discussed draft-fielding-uri-rfc2396bis-01.txt and open issues in
+http://www.apache.org/~fielding/uri/rev-2002/issues.html .
+
+Status of the URI-comparision section 6.2: This is new text,
+originally contributed by Tim Bray (W3C TAG). (An earlier version of
+the document had a placeholder for this.)
+
+021-relative-examples: 
+Roy is waiting for people to submit examples!  Please do so!
+
+033-dot-segments:
+Implementers tend to normalize dot segments in *any* URI (relative or
+otherwise) -- these should be disallowed as path segments in full URI?
+
+008-URIvsURIref:  (URI includes with fragments?)
+-Michael Mealling: Distinguish between terminology used when people
+ are lazy and terminology in specifications.  The distinction should
+ be kept concrete in the spec.
+-GK: finds TimBL distinction between identifer and reference to be
+ compelling.
+-Larry: Choices: leave old terms, change definition, define new
+ terms. Changing is problematic.  At best introduce new terms (for BNF
+ in document).
+-Roy: Currently no 'URI' production in the document.
+-MM: prefer some other term; any suggestions?  No.  Prefers no new
+ term.
+
+Straw poll of the room seemed to favor 'no new term'.
+
+Roy noted that the current draft has a BNF production for
+absolute-URI-reference.
+
+017-rdf-fragment:
+One cannot use the fragment to indicate relative to a base document,
+other than to the current document.  Some want to allow XML parsers
+for RDF to use base URI+fragment together.  The proposal would replace
+discussion in current document with extended discussion of retrieval
+when base is same as current document. There was support for this the
+floor.
+
+022-definitions: definitions for operations on URIs; e.g. resolution,
+dereference, retrieval.  The proposal came from Stuart Williams on W3C
+TAG list.  Current intent is to incorporate these definitions
+introduction section. Larry noted that they needed some editing &
+offered to help. Ted Hardie volunteered to edit the text on URI
+resolution.
+
+024-identity: rework to avoid problematic issues of resource identity.
+-Larry: People seem to interpret permission for a resource to 'be
+ anything that has identity' to be a requirement.  Intent of rework is
+ to avoid this issue.
+-MM: Resources in RFC2396 only exist when bound to URI.
+
+Discussion about RDF and its needs: "If RDF has problems with the
+'meaning' of URIs, it's RDF's problem, not URI's problem." The room
+hummed in agreement with this assertion.
+
+034-identifier: ('identifier is not just a sequence of characters')
+Larry suggested we reject this issue. Roy explained that it was
+missing context and that the sentence before actually said what the
+proposal wanted the document to say.
+
+036-host-escaping;  allow %hh in host name?
+We deferred this issue to the IRI discussion. 
+
+038-qualified (syntax production)
+This issue is about the attemps to provide syntactic distinction
+between domain and IP address.  We discussed what RFC 1034/1123 allow
+in domain names; there was some question about whether it
+matters. Surprisingly, there are no other definition to reference for
+this.
+
+We were out of time to review issues, but set a goal to have a
+document ready for last-call before next IETF. The document and open
+issues should be reviewed by everyone.
+
+(2) IRI to proposed standard
+
+Martin Duerst reviewed the status of draft-duerst-iri-03.txt using the
+presentation at http://www.w3.org/2003/03/ietf-uri-bof-iri.html .
+
+Currently discussion is being held on: www-international@w3.org (but
+see below).  The plan is to resolve remaining issues, submit as
+individual draft for proposed standard.  Martin noted the major edits
+in the last two versions; these included, for example, bug fix from
+RFC2396bis, and a new BIDI section.
+
+Note that IRIs are already used (in some form) in several W3C specs
+(e.g. XML for system identifiers).
+
+Martin reviewed open issues:
+
+Issue iadditional: Allow characters in iadditional production?  
+
+(<, >, ", SPACE, {, }, |, \, ^, `) are not allowed in URIs; in the
+current draft, they are allowed in IRIs.
+
+-Roy: must distinguish what's used in the syntax, and what characters
+ can be represented.  Criteria is to pick solution with best
+ interoperability.
+-MM: people are lazy, but this is not a good reason to break
+ interoperability.  %-escaping of these things is OK (general
+ agreement).  Don't do this.
+-Leslie Daigle: We should separate two questions (a) are spaces in
+ identifiers good in principle?  (b) ... Note that backward
+ compatibility less of an issue, if IRIs aren't URIs, because this is
+ new item.
+-Paul Hoffman: There may be security problems: IRIs are sufficiently
+ like URIs that people will use old RI code as a basis for
+ IRI-handling. Changing the allowed characters may introduce security
+ problems. URI-using applications assume that certain characters are
+ allowed as separators in data. Changes to reserved characters may
+ lead to unexpected behavior, and possible exploits against the
+ software.
+
+There was some discussion of whether or not current specifications
+mandate %-escaping for space characters in URIs.  The consequence of
+this might be that requiring or not requiring %-escaping of spaces in
+IRIs impacts the ease of migrating URI-using software to use IRIs.
+
+-Martin: We might define IRIs to not include spaces, but allow some
+ components to use "IRI with space" and to escape from space to %20
+ when extracting IRIs from such components.
+-Michel Suignard: Don't confuse IRI with URI: cannot use IRI in
+ protocol that requires a URI. Space is a different problem than the
+ other characters.  Code points other than 0x20 are also spaces; if
+ 0x20 is disallowed, have to think about disallowing other space
+ characters.
+-Larry: reasons to allow these characters are not strong.  That some
+ implementations may allow them, is not a reason to change protcol
+ spec in ways that are problematic. The characters chosen to be
+ disallowed, at the time, were chosen for good reasons. Now that there
+ is so much software that ssumes those characters are disallowed, the
+ reasons are stronger, not weaker.
+-Michel: there are visually similar characters that should be treated
+ similarly.
+-Larry: No different from avoiding 'upper case greek Alpha'.
+-TedH: The 'side-of-bus' issue is a rathole.  Pretend I'm being mean:
+ require some otherwise forbidden character to appear in IRIs, as a
+ flag to signal IRI context.  We need to figure how to take this
+ string of characters and put it on the wire.
+
+Issue alignment:
+It was noted to align the description in sect 2.3 with W3C TAG
+discussion of URI equivalence. This issue is considered solved; the
+TAG came to a conclusion that is essentially the same as what is
+already in the draft.
+
+Issue IDNURI: How to allow internationalized domain names in URIs?
+(also URI issue 036-host-escaping)
+
+General approach (recommended): convert to UTF-8, then use %hh
+escaping.  Alternatives for URIs with IDN: escape -> IDN, or go
+straight to IDN Which form is used for resolution via URIs, as opposed
+to direct resolution?  %-escaping of Unicode IDN, or converted IDN
+form?
+-Roy: one way requires URI spec to allow %-encoding in URIs, and DNS
+ resolvers to recognize %-encoding.  Alternative is to disallow
+ alternative registry names in URI authority components.  Otherwise,
+ IRI->URI conversion becomes scheme-dependent.
+-MS:  take all things into consideration in URI->IRI mapping
+-Larry: The 'host' part of a URI in HTTP doesn't just affect what the
+ client uses to look up the domain name, it also specifies what goes
+ in the Host: header. If this is changed to allow I18N host names,
+ does it require a HTTP spec update? The HTTP spec would need updating
+ to specify one way or another, because otherwise it is
+ ambiguous. What about other protocols? Are host names from URIs also
+ sent over the wire? Asked about mailto:, sip:, ... We may need new
+ issue for IRI draft to review existing URI schemes to check that IRI
+ form maps appropriately for the protocol that is to use it.
+-TedH: does that mean update all URI schemes?  Will IRIs be usable in
+ any scheme currently defined for URIs?
+-Martin: yes, that was intent.
+
+There are concerns about scheme-dependency.
+
+Process for moving forward:
+(a) Agreement we should make a new list focused only on IRIs
+(b) There will likely be a longer timeframe than RFC2396bis
+(c) Martin's proposed schedule looks aggressive.
+(d) Martin will publish the issue list and keep it up to date.
+
+(3) Discuss processes for URI registration
+
+Patrik: How do ADs know when proposed URI scheme has had sufficient
+review?  Have created a new mailing list: <uri-review@ietf.org> Will
+be updated on apps area web page.
+
+Most of procedure is the same (send URI proposal to area director),
+but the area director will then conduct review on that mailing list
+(so archives of review are easily accessible).
+
+This does not include URN namespaces: they are reviewed on
+urn-names@ietf.org.  The URI scheme registration document should be
+updated to reflect this change.
+
+Roy will edit URI process document.
+
+Martin: note that uri@w3.org is an IETF list that happens to be hosted
+by W3C, and doesn't reflect W3C policy.
+
+Additional info: The W3C URI coordination group has now been
+chartered.
+
+(4) Review other URI-related work needed
+RFC1738 is mainly obsolete, but has the only definition of some URI
+schemes, notably the 'file:' scheme. Other schemes which are defined
+in 1738 from http://www.iana.org/assignments/uri-schemes include ftp:,
+gopher:, news:, nntp:, wais:, telnet:, prospero:. Some of these can be
+left behind, others redefined by other working groups (news:, nttp:),
+and others updated independently.
+
+Dan Kohn and Paul Hoffman volunteered to scope the work and take on
+some or all of it.
+
+Wrap-up:
+
+Michael Mealling noted DDDS has ben published, and IANA name servers
+have been set up to handle the zone uri.arpa. Larry asks Michael to
+make it clear what this means can now be done.
+
+There was a comment that RFC2396bis had a dependency on RFC2234, which
+is currently 'proposed standard', which might interfere with it moving
+to full standard. The plan is that RFC2234 will go to BCP which will
+solve the problem.
+
+We noted that work was proceeding well without any formal working
+groups established, and that we would continue as planned.
+
