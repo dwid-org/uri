@@ -1,7 +1,7 @@
 Network Working Group                            T. Berners-Lee, MIT/LCS
 INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
-draft-fielding-uri-syntax-00              L. Masinter, Xerox Corporation
-Expires six months after publication date              November 05, 1997
+draft-fielding-uri-syntax-01              L. Masinter, Xerox Corporation
+Expires six months after publication date              November 18, 1997
 
 
     Uniform Resource Identifiers (URI): Generic Syntax and Semantics
@@ -25,6 +25,10 @@ Status of this Memo
    Shadow Directories on ftp.is.co.za (Africa), nic.nordu.net
    (Europe), munnari.oz.au (Pacific Rim), ds.internic.net (US East
    Coast), or ftp.isi.edu (US West Coast).
+
+Copyright Notice
+
+   Copyright (C) The Internet Society (1997).  All Rights Reserved.
 
 Abstract
 
@@ -595,8 +599,8 @@ Abstract
    The user information, if present, is followed by a commercial
    at-sign "@".
 
-      userinfo      = *( unreserved | escaped | ":" | ";" |
-                         "&" | "=" | "+" )
+      userinfo      = *( unreserved | escaped |
+                         ";" | ":" | "&" | "=" | "+" )
 
    Some URL schemes use the format "user:password" in the <userinfo>
    field. This practice is NOT RECOMMENDED, because the passing of
@@ -1083,55 +1087,7 @@ Abstract
 [ASCII] US-ASCII. "Coded Character Set -- 7-bit American Standard Code
    for Information Interchange", ANSI X3.4-1986.
 
-10. Notices
-
-   Copyright (C) The Internet Society 1997. All Rights Reserved.
-
-   This document and translations of it may be copied and furnished to
-   others, and derivative works that comment on or otherwise explain it
-   or assist in its implementation may be prepared, copied, published
-   and distributed, in whole or in part, without restriction of any
-   kind, provided that the above copyright notice and this paragraph are
-   included on all such copies and derivative works.  However, this
-   document itself may not be modified in any way, such as by removing
-   the copyright notice or references to the Internet Society or other
-   Internet organizations, except as needed for the purpose of
-   developing Internet standards in which case the procedures for
-   copyrights defined in the Internet Standards process must be
-   followed, or as required to translate it into languages other than
-   English.
-
-   The limited permissions granted above are perpetual and will not be
-   revoked by the Internet Society or its successors or assigns.
-
-   This document and the information contained herein is provided on an
-   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
-   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
-   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
-   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
-   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
-
-   The IETF takes no position regarding the validity or scope of any
-   intellectual property or other rights that might be claimed to
-   pertain to the implementation or use of the technology described in
-   this document or the extent to which any license under such rights
-   might or might not be available; neither does it represent that it
-   has made any effort to identify any such rights.  Information on the
-   IETF's procedures with respect to rights in standards-track and
-   standards-related documentation can be found in BCP-11.  Copies of
-   claims of rights made available for publication and any assurances of
-   licenses to be made available, or the result of an attempt made to
-   obtain a general license or permission for the use of such
-   proprietary rights by implementors or users of this specification can
-   be obtained from the IETF Secretariat.
-
-   The IETF invites any interested party to bring to its attention any
-   copyrights, patents or patent applications, or other proprietary
-   rights which may cover technology that may be required to practice
-   this standard.  Please address the information to the IETF Executive
-   Director.
-
-11. Authors' Addresses
+10. Authors' Addresses
 
    Tim Berners-Lee
    World Wide Web Consortium
@@ -1183,8 +1139,8 @@ A. Collected BNF for URIs
                          ";" | ":" | "@" | "&" | "=" | "+" )
 
       server        = [ [ userinfo ] "@" ] hostport ]
-      userinfo      = *( unreserved | escaped | ":" | ";" | "&" |
-                         "=" | "+" )
+      userinfo      = *( unreserved | escaped |
+                         ";" | ":" | "&" | "=" | "+" )
       hostport      = host [ ":" port ]
       host          = hostname | IPv4address
       hostname      = *( domainlabel "." ) toplabel [ "." ]
@@ -1205,7 +1161,7 @@ A. Collected BNF for URIs
 
       uric          = reserved | unreserved | escaped
       reserved      = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+"
-      unreserved    = alpha | digit | mark
+      unreserved    = alphanum | mark
       mark          = "$" | "-" | "_" | "." | "!" | "~" |
                       "*" | "'" | "(" | ")" | ","
 
@@ -1618,4 +1574,33 @@ G.4. Modifications from RFC 1808
    has been removed from the algorithm for resolving a relative URI
    reference.  The resolution examples in Appendix C have been modified
    to reflect this change.
+
+
+H. Full Copyright Statement
+
+   Copyright (C) The Internet Society (1997).  All Rights Reserved.
+
+   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
