@@ -993,56 +993,55 @@ by additional comments or assertions made by the resource provider.
     URI, URL, and URN</h2>
 <p>
 <a name="rfc.section.1.3.p.1"></a>
-   A URI can be further classified as a locator, a name, or both.  The
-   term "Uniform Resource Locator" (URL) refers to the subset of URIs
-   that, in addition to identifying the resource, provide a means of
-   locating the resource by describing its primary access mechanism
-   (e.g., its network "location").  The term "Uniform Resource Name" (URN)
-   refers to the subset of URIs that are required to remain globally unique and
-   persistent even when the resource ceases to exist or becomes unavailable.
+A URI can be further classified as a locator, a name, or both.  The
+term "Uniform Resource Locator" (URL) refers to the subset of URIs
+that, in addition to identifying the resource, provide a means of
+locating the resource by describing its primary access mechanism
+(e.g., its network "location").  The term "Uniform Resource Name" (URN)
+refers to the subset of URIs that are required to remain globally unique and
+persistent even when the resource ceases to exist or becomes unavailable.
 </p>
 <p>
 <a name="rfc.section.1.3.p.2"></a>
-   An individual scheme does not need to be cast into one of a discrete
-   set of URI types such as "URL", "URN", "URC", etc.  Any given URI
-   scheme may define subspaces that have the characteristics of a name,
-   a locator, or both, often depending on the persistence and care in
-   the assignment of identifiers by the naming authority, rather than on
-   any quality of the URI scheme.  For that reason, this specification
-   deprecates use of the terms URL or URN to distinguish between
-   schemes, instead using the term URI throughout.
+An individual scheme does not need to be classified as being just one of
+"name" or "locator".  Instances of URIs from any given scheme may have
+the characteristics of names or locators or both, often depending on the
+persistence and care in the assignment of identifiers by the naming
+authority, rather than any quality of the scheme.  This specification
+deprecates use of the term URN for anything but URIs in the "urn" scheme
+<a href="#RFC2141" title="URN Syntax">[RFC2141]</a>.  This specification also deprecates the term "URL".
 </p>
 <p>
 <a name="rfc.section.1.3.p.3"></a>
-   Each URI scheme (Section 3.1) defines the namespace of the URI, and
-   thus may further restrict the syntax and semantics of identifiers
-   using that scheme.  This specification defines those elements of the
-   URI syntax that are either required of all URI schemes or are common
-   to many URI schemes.  It thus defines the syntax and semantics that
-   are needed to implement a scheme-independent parsing mechanism for
-   URI references, such that the scheme-dependent handling of a URI can
-   be postponed until the scheme-dependent semantics are needed.
+Each URI scheme (Section 3.1) defines the namespace of the URI, and
+thus may further restrict the syntax and semantics of identifiers
+using that scheme.  This specification defines those elements of the
+URI syntax that are either required of all URI schemes or are common
+to many URI schemes.  It thus defines the syntax and semantics that
+are needed to implement a scheme-independent parsing mechanism for
+URI references, such that the scheme-dependent handling of a URI can
+be postponed until the scheme-dependent semantics are needed.
 </p>
 <p>
 <a name="rfc.section.1.3.p.4"></a>
-   Although many URI schemes are named after protocols, this does not
-   imply that use of such a URI will result in access to the resource
-   via the named protocol.  URIs are often used in contexts that are
-   purely for identification, just like any other identifier.  Even when
-   a URI is used to obtain a representation of a resource, that access
-   might be through gateways, proxies, caches, and name resolution
-   services that are independent of the protocol of the resource origin,
-   and the resolution of some URIs may require the use of more than one
-   protocol (e.g., both DNS and HTTP are typically used to access an
-   "http" URI's resource when it can't be found in a local cache).
+Although many URI schemes are named after protocols, this does not
+imply that use of such a URI will result in access to the resource
+via the named protocol.  URIs are often used in contexts that are
+simply for denotation.  Even when
+a URI is used to obtain a representation of a resource, that access
+might be through gateways, proxies, caches, and name resolution
+services that are independent of the protocol of the resource origin,
+and the resolution of some URIs may require the use of more than one
+protocol (e.g., both DNS and HTTP are typically used to access an
+"http" URI's resource when it can't be found in a local cache).
 </p>
 <p>
 <a name="rfc.section.1.3.p.5"></a>
-   A parser of the generic URI syntax is capable of parsing any URI
-   reference into its major components; once the scheme is determined,
-   further scheme-specific parsing can be performed on the components.
-   In other words, the URI generic syntax is a superset of the syntax
-   of all URI schemes.
+A parser of the generic URI syntax is capable of parsing any URI
+reference into its major components; once the scheme is determined,
+further scheme-specific parsing can be performed on the components.
+In other words, the URI generic syntax is a superset of the syntax
+of all URI schemes.
 </p>
 <h2>
 <a name="rfc.section.1.4">1.4</a>&nbsp;
@@ -1160,7 +1159,7 @@ The following examples illustrate URIs that are in common use.
 <p>
 <a name="rfc.section.1.7.p.1"></a>
 This document uses two conventions to describe and define the syntax
-for URI.  The first, called the layout form, is a general description
+for URIs.  The first, called the layout form, is a general description
 of the order of components and component separators, as in
 </p>
 <a name="rfc.figure.u.2"></a>
@@ -2876,6 +2875,11 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 
 
 <tr>
+<td nowrap="nowrap" valign="top"><b><a name="RFC2141">[RFC2141]</a></b></td><td valign="top"><a href="mailto:jayhawk@ds.internic.net" title="AT&amp;T">Moats, R.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2141.txt">URN Syntax</a>", RFC&nbsp;2141, May&nbsp;1997.</td>
+</tr>
+
+
+<tr>
 <td nowrap="nowrap" valign="top"><b><a name="RFC1034">[RFC1034]</a></b></td><td valign="top">Mockapetris, P.,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1034.txt">Domain names - concepts and facilities</a>", STD&nbsp;13, RFC&nbsp;1034, November&nbsp;1987.</td>
 </tr>
 
@@ -3031,7 +3035,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <p>
 <a name="rfc.section.B.p.1"></a>
    As described in Section 4.3, the generic URI syntax is not sufficient
-   to disambiguate the components of some forms of URI.  Since the
+   to disambiguate the components of some URIs.  Since the
    "greedy algorithm" described in that section is identical to the
    disambiguation method used by POSIX regular expressions, it is
    natural and commonplace to use a regular expression for parsing the

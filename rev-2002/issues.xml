@@ -16,6 +16,8 @@
        <a href="draft-fielding-uri-rfc2396bis-00.html">00.html</a></li>
  <li><a href="../rfc/rfc2396.html">RFC 2396</a></li>
  <li><a href="http://cvs.apache.org/viewcvs.cgi/ietf-uri/rev-2002/">CVS web view of editor revisions</a></li>
+ <li><a href="http://lists.w3.org/Archives/Public/uri/">Archive of
+ &lt;uri&#64;w3.org&gt; mailing list discussions</a></li>
 </links>
 <summary>
  <section>
@@ -1703,7 +1705,7 @@ limit each decimal octet to the range 0-255.
  <type>terminology</type>
  <name>019-URI-URL-URN</name>
  <title>URI/URL/URN contemporary view</title>
- <status>reopened</status>
+ <status>fixed 02</status>
  <report>
   <author email="michael_AT_neonym.net">Michael Mealling</author>
   <date sort="20020501">01 May 2002</date>
@@ -1777,6 +1779,14 @@ This specification also deprecates the term "URL".'
 Sec 1.2, fourth para; the phrase "just like any identifier" is superfluous.
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030502">02 May 2002</date>
+  <where>draft 02</where>
+<pre>
+Done.
+</pre>
+ </action>
 </issue>
 
 <issue>
