@@ -24,10 +24,10 @@ Please send your test results to
 <H2>Tested Clients and Client Libraries</H2>
 
 <DL COMPACT>
-<DT>[01]
-<DD><a href="draft-fielding-url-syntax-01.txt">draft-fielding-url-syntax-01.txt</a>
+<DT>[02]
+<DD>draft-fielding-url-syntax-02.txt
 <DT>RFC
-<DD><a href="rfc1808.txt">RFC 1808</a>
+<DD>RFC 1808
 <DT>[1]
 <DD>Mozilla/3.0Gold (X11; I; SunOS 5.5 sun4m)   [Roy Fielding]
 <DT>[2]
@@ -49,67 +49,67 @@ be part of each path segment and not outside the path.
 <PRE>
               RESULTS                     from
 
-<a href="g:h">g:h</a>        =  g:h                         [01,RFC,2,3,4]
+<a href="g:h">g:h</a>        =  g:h                         [02,RFC,2,3,4]
               http://a/b/c/d;p=1/g:h      [1]
 
-<a href="g">g</a>          =  http://a/b/c/d;p=1/g        [01,1,2,3,4]
+<a href="g">g</a>          =  http://a/b/c/d;p=1/g        [02,1,2,3,4]
               http://a/b/c/g              [RFC]
 
-<a href="./g">./g</a>        =  http://a/b/c/d;p=1/g        [01,1,2,3,4]
+<a href="./g">./g</a>        =  http://a/b/c/d;p=1/g        [02,1,2,3,4]
               http://a/b/c/g              [RFC]
 
-<a href="g/">g/</a>         =  http://a/b/c/d;p=1/g/       [01,1,2,3,4]
+<a href="g/">g/</a>         =  http://a/b/c/d;p=1/g/       [02,1,2,3,4]
               http://a/b/c/g/             [RFC]
 
-<a href="/g">/g</a>         =  http://a/g                  [01,RFC,1,2,3,4]
+<a href="/g">/g</a>         =  http://a/g                  [02,RFC,1,2,3,4]
 
-<a href="//g">//g</a>        =  http://g                    [01,RFC,1,2,3,4]
+<a href="//g">//g</a>        =  http://g                    [02,RFC,1,2,3,4]
 
-<a href="?y">?y</a>         =  http://a/b/c/d;p=1/?y       [01,1,2,3,4]
+<a href="?y">?y</a>         =  http://a/b/c/d;p=1/?y       [02,1,2,3,4]
               http://a/b/c/d;p=1/2?y      [RFC]
 
-<a href="g?y">g?y</a>        =  http://a/b/c/d;p=1/g?y      [01,1,2,3,4]
+<a href="g?y">g?y</a>        =  http://a/b/c/d;p=1/g?y      [02,1,2,3,4]
               http://a/b/c/g?y            [RFC]
 
-<a href="g?y/./x">g?y/./x</a>    =  http://a/b/c/d;p=1/g?y/x    [01,1,2,3,4]
+<a href="g?y/./x">g?y/./x</a>    =  http://a/b/c/d;p=1/g?y/x    [02,1,2,3,4]
               http://a/b/c/g?y/./x        [RFC]
 
-<a href="g?y/../x">g?y/../x</a>   =  http://a/b/c/d;p=1/x        [01,1,2,3,4]
+<a href="g?y/../x">g?y/../x</a>   =  http://a/b/c/d;p=1/x        [02,1,2,3,4]
               http://a/b/c/g?y/../x       [RFC]
 
-<a href="g#s/./x">g#s/./x</a>    =  http://a/b/c/d;p=1/g#s/./x  [01,3,4]
+<a href="g#s/./x">g#s/./x</a>    =  http://a/b/c/d;p=1/g#s/./x  [02,3,4]
               http://a/b/c/d;p=1/g#s/x    [1,2]
               http://a/b/c/g#s/./x        [RFC]
 
-<a href="g#s/../x">g#s/../x</a>   =  http://a/b/c/d;p=1/g#s/../x [01,2,3,4]
+<a href="g#s/../x">g#s/../x</a>   =  http://a/b/c/d;p=1/g#s/../x [02,2,3,4]
               http://a/b/c/d;p=1/x        [1]
               http://a/b/c/g#s/../x       [RFC]
 
-<a href=";x">;x</a>         =  http://a/b/c/d;p=1/;x       [01,1,2,3,4]
+<a href=";x">;x</a>         =  http://a/b/c/d;p=1/;x       [02,1,2,3,4]
               http://a/b/c/d;x            [RFC]
 
-<a href="g;x">g;x</a>        =  http://a/b/c/d;p=1/g;x      [01,1,2,3,4]
+<a href="g;x">g;x</a>        =  http://a/b/c/d;p=1/g;x      [02,1,2,3,4]
               http://a/b/c/g;x            [RFC]
 
-<a href="g;x=1/./y">g;x=1/./y</a>  =  http://a/b/c/d;p=1/g;x=1/y  [01,1,2,3,4]
+<a href="g;x=1/./y">g;x=1/./y</a>  =  http://a/b/c/d;p=1/g;x=1/y  [02,1,2,3,4]
               http://a/b/c/g;x=1/./y      [RFC]
 
-<a href="g;x=1/../y">g;x=1/../y</a> =  http://a/b/c/d;p=1/y        [01,1,2,3,4]
+<a href="g;x=1/../y">g;x=1/../y</a> =  http://a/b/c/d;p=1/y        [02,1,2,3,4]
               http://a/b/c/g;x=1/../y     [RFC]
 
-<a href="./">./</a>         =  http://a/b/c/d;p=1/         [01,1,2,3,4]
+<a href="./">./</a>         =  http://a/b/c/d;p=1/         [02,1,2,3,4]
               http://a/b/c/               [RFC]
 
-<a href="../">../</a>        =  http://a/b/c/               [01,1,2,3,4]
+<a href="../">../</a>        =  http://a/b/c/               [02,1,2,3,4]
               http://a/b/                 [RFC]
 
-<a href="../g">../g</a>       =  http://a/b/c/g              [01,1,2,3,4]
+<a href="../g">../g</a>       =  http://a/b/c/g              [02,1,2,3,4]
               http://a/b/g                [RFC]
 
-<a href="../../">../../</a>     =  http://a/b/                 [01,1,2,3,4]
+<a href="../../">../../</a>     =  http://a/b/                 [02,1,2,3,4]
               http://a/                   [RFC]
 
-<a href="../../g">../../g</a>    =  http://a/b/g                [01,1,2,3,4]
+<a href="../../g">../../g</a>    =  http://a/b/g                [02,1,2,3,4]
               http://a/g                  [RFC]
 </PRE>
 </BODY></HTML>

@@ -22,10 +22,10 @@ Please send your test results to
 <H2>Tested Clients and Client Libraries</H2>
 
 <DL COMPACT>
-<DT>[01]
-<DD><a href="draft-fielding-url-syntax-01.txt">draft-fielding-url-syntax-01.txt</a>
+<DT>[02]
+<DD>draft-fielding-url-syntax-02.txt
 <DT>RFC
-<DD><a href="rfc1808.txt">RFC 1808</a>
+<DD>RFC 1808
 <DT>[1]
 <DD>Mozilla/3.0Gold (X11; I; SunOS 5.5 sun4m)   [Roy Fielding]
 <DT>[2]
@@ -40,75 +40,75 @@ Please send your test results to
 <PRE>
               RESULTS                     from
  
-<a href="g:h">g:h</a>        =  g:h                         [01,RFC,2,3,4]
+<a href="g:h">g:h</a>        =  g:h                         [02,RFC,2,3,4]
               http://a/b/c/g:h            [1]
 
-<a href="g">g</a>          =  http://a/b/c/g              [01,RFC,1,2,3,4]
+<a href="g">g</a>          =  http://a/b/c/g              [02,RFC,1,2,3,4]
 
-<a href="./g">./g</a>        =  http://a/b/c/g              [01,RFC,1,2,3,4]
+<a href="./g">./g</a>        =  http://a/b/c/g              [02,RFC,1,2,3,4]
 
-<a href="g/">g/</a>         =  http://a/b/c/g/             [01,RFC,1,2,3,4]
+<a href="g/">g/</a>         =  http://a/b/c/g/             [02,RFC,1,2,3,4]
 
-<a href="/g">/g</a>         =  http://a/g                  [01,RFC,1,2,3,4]
+<a href="/g">/g</a>         =  http://a/g                  [02,RFC,1,2,3,4]
 
-<a href="//g">//g</a>        =  http://g                    [01,RFC,1,2,3,4]
+<a href="//g">//g</a>        =  http://g                    [02,RFC,1,2,3,4]
 
-<a href="?y">?y</a>         =  http://a/b/c/?y             [01,1,2,3,4]
+<a href="?y">?y</a>         =  http://a/b/c/?y             [02,1,2,3,4]
               http://a/b/c/d;p?y          [RFC]
 
-<a href="g?y">g?y</a>        =  http://a/b/c/g?y            [01,RFC,1,2,3,4]
+<a href="g?y">g?y</a>        =  http://a/b/c/g?y            [02,RFC,1,2,3,4]
 
-<a href="g?y/./x">g?y/./x</a>    =  http://a/b/c/g?y/x          [01,1,2,3,4]
+<a href="g?y/./x">g?y/./x</a>    =  http://a/b/c/g?y/x          [02,1,2,3,4]
               http://a/b/c/g?y/./x        [RFC]
 
-<a href="g?y/../x">g?y/../x</a>   =  http://a/b/c/x              [01,1,2,3,4]
+<a href="g?y/../x">g?y/../x</a>   =  http://a/b/c/x              [02,1,2,3,4]
               http://a/b/c/g?y/../x       [RFC]
 
-<a name="s" href="#s">#s</a>         =  (current document)#s        [01,3,4]
+<a name="s" href="#s">#s</a>         =  (current document)#s        [02,3,4]
               http://a/b/c/d;p?q#s        [RFC,1,2]
 
-<a href="g#s">g#s</a>        =  http://a/b/c/g#s            [01,RFC,1,2,3,4]
+<a href="g#s">g#s</a>        =  http://a/b/c/g#s            [02,RFC,1,2,3,4]
 
-<a href="g#s/./x">g#s/./x</a>    =  http://a/b/c/g#s/./x        [01,RFC,3,4]
+<a href="g#s/./x">g#s/./x</a>    =  http://a/b/c/g#s/./x        [02,RFC,3,4]
               http://a/b/c/g#s/x          [1,2]
 
-<a href="g#s/../x">g#s/../x</a>   =  http://a/b/c/g#s/../x       [01,RFC,2,3,4]
+<a href="g#s/../x">g#s/../x</a>   =  http://a/b/c/g#s/../x       [02,RFC,2,3,4]
               http://a/b/c/x              [1]
 
-<a href="g?y#s">g?y#s</a>      =  http://a/b/c/g?y#s          [01,RFC,1,2,3,4]
+<a href="g?y#s">g?y#s</a>      =  http://a/b/c/g?y#s          [02,RFC,1,2,3,4]
 
-<a href=";x">;x</a>         =  http://a/b/c/;x             [01,1,2,3,4]
+<a href=";x">;x</a>         =  http://a/b/c/;x             [02,1,2,3,4]
               http://a/b/c/d;x            [RFC]
 
-<a href="g;x">g;x</a>        =  http://a/b/c/g;x            [01,RFC,1,2,3,4]
+<a href="g;x">g;x</a>        =  http://a/b/c/g;x            [02,RFC,1,2,3,4]
 
-<a href="g;x=1/./y">g;x=1/./y</a>  =  http://a/b/c/g;x=1/y        [01,1,2,3,4]
+<a href="g;x=1/./y">g;x=1/./y</a>  =  http://a/b/c/g;x=1/y        [02,1,2,3,4]
               http://a/b/c/g;x=1/./y      [RFC]
 
-<a href="g;x=1/../y">g;x=1/../y</a> =  http://a/b/c/y              [01,1,2,3,4]
+<a href="g;x=1/../y">g;x=1/../y</a> =  http://a/b/c/y              [02,1,2,3,4]
               http://a/b/c/g;x=1/../y     [RFC]
 
-<a href="g;x?y#s">g;x?y#s</a>    =  http://a/b/c/g;x?y#s        [01,RFC,1,2,3,4]
+<a href="g;x?y#s">g;x?y#s</a>    =  http://a/b/c/g;x?y#s        [02,RFC,1,2,3,4]
 
-<a href=".">.</a>          =  http://a/b/c/               [01,RFC]
+<a href=".">.</a>          =  http://a/b/c/               [02,RFC]
               http://a/b/c/.              [1]
               http://a/b/c                [2,3,4]
 
-<a href="./">./</a>         =  http://a/b/c/               [01,RFC,1,2,3,4]
+<a href="./">./</a>         =  http://a/b/c/               [02,RFC,1,2,3,4]
 
-<a href="..">..</a>         =  http://a/b/                 [01,RFC]
+<a href="..">..</a>         =  http://a/b/                 [02,RFC]
               http://a/b                  [1,2,3,4]
 
-<a href="../">../</a>        =  http://a/b/                 [01,RFC,1,2,3,4]
+<a href="../">../</a>        =  http://a/b/                 [02,RFC,1,2,3,4]
 
-<a href="../g">../g</a>       =  http://a/b/g                [01,RFC,1,2,3,4]
+<a href="../g">../g</a>       =  http://a/b/g                [02,RFC,1,2,3,4]
 
-<a href="../..">../..</a>      =  http://a/                   [01,RFC,2]
+<a href="../..">../..</a>      =  http://a/                   [02,RFC,2]
               http://a                    [1,3,4]
 
-<a href="../../">../../</a>     =  http://a/                   [01,RFC,1,2,3,4]
+<a href="../../">../../</a>     =  http://a/                   [02,RFC,1,2,3,4]
 
-<a href="../../g">../../g</a>    =  http://a/g                  [01,RFC,1,2,3,4]
+<a href="../../g">../../g</a>    =  http://a/g                  [02,RFC,1,2,3,4]
 </PRE>
 
 <H2>Abnormal Examples</H2>
@@ -119,7 +119,7 @@ consistently.  Each example uses the same base as above.<P>
 
 An empty reference refers to the start of the current document.
 <PRE>
-<a href="">&lt;&gt;</a>         =  (current document)#s        [01,3,4]
+<a href="">&lt;&gt;</a>         =  (current document)#s        [02,3,4]
               http://a/b/c/d;p?q          [RFC,1,2]
 </PRE>
 Parsers must be careful in handling the case where there are more
@@ -127,52 +127,52 @@ relative path ".." segments than there are hierarchical levels in the
 base URL's path.  Note that the ".." syntax cannot be used to change
 the server of a URL.
 <PRE>
-<a href="../../../g">../../../g</a>    =  http://a/../g            [01,RFC,2,4]
+<a href="../../../g">../../../g</a>    =  http://a/../g            [02,RFC,2,4]
                  http://a/g               [1,3]
 
-<a href="../../../../g">../../../../g</a> =  http://a/../../g         [01,RFC,2,4]
+<a href="../../../../g">../../../../g</a> =  http://a/../../g         [02,RFC,2,4]
                  http://a/g               [1,3]
 </PRE>
 Similarly, parsers must avoid treating "." and ".." as special when
 they are not complete components of a relative path.
 <PRE>
-<a href="/./g">/./g</a>      =  http://a/./g                 [01,RFC,2,3,4]
+<a href="/./g">/./g</a>      =  http://a/./g                 [02,RFC,2,3,4]
              http://a/g                   [1]
 
-<a href="/../g">/../g</a>     =  http://a/../g                [01,RFC,2,3,4]
+<a href="/../g">/../g</a>     =  http://a/../g                [02,RFC,2,3,4]
              http://a/g                   [1]
 
-<a href="g.">g.</a>        =  http://a/b/c/g.              [01,RFC,1,2,3,4]
+<a href="g.">g.</a>        =  http://a/b/c/g.              [02,RFC,1,2,3,4]
 
-<a href=".g">.g</a>        =  http://a/b/c/.g              [01,RFC,1,2,3,4]
+<a href=".g">.g</a>        =  http://a/b/c/.g              [02,RFC,1,2,3,4]
 
-<a href="g..">g..</a>       =  http://a/b/c/g..             [01,RFC,1,2,3,4]
+<a href="g..">g..</a>       =  http://a/b/c/g..             [02,RFC,1,2,3,4]
 
-<a href="..g">..g</a>       =  http://a/b/c/..g             [01,RFC,1,2,3,4]
+<a href="..g">..g</a>       =  http://a/b/c/..g             [02,RFC,1,2,3,4]
 </PRE>
 Less likely are cases where the relative URL uses unnecessary or
 nonsensical forms of the "." and ".." complete path segments.
 <PRE>
-<a href="./../g">./../g</a>    =  http://a/b/g                 [01,RFC,1]
+<a href="./../g">./../g</a>    =  http://a/b/g                 [02,RFC,1]
              http://a/b/c/../g            [2,3,4]
 
-<a href="./g/.">./g/.</a>     =  http://a/b/c/g/              [01,RFC,3]
+<a href="./g/.">./g/.</a>     =  http://a/b/c/g/              [02,RFC,3]
              http://a/b/c/g/.             [1]
              http://a/b/c/g               [2,4]
 
-<a href="g/./h">g/./h</a>     =  http://a/b/c/g/h             [01,RFC,1,2,3,4]
+<a href="g/./h">g/./h</a>     =  http://a/b/c/g/h             [02,RFC,1,2,3,4]
 
-<a href="g/../h">g/../h</a>    =  http://a/b/c/h               [01,RFC,1,2,3,4]
+<a href="g/../h">g/../h</a>    =  http://a/b/c/h               [02,RFC,1,2,3,4]
 </PRE>
 Finally, some older parsers allow the scheme name to be present in a
 relative URL if it is the same as the base URL scheme.  This is
 considered to be a loophole in prior specifications of partial URLs
 [RFC 1630] and should be avoided by future parsers.
 <PRE>
-<a href="http:g">http:g</a>    =  http:g                       [01,RFC]
+<a href="http:g">http:g</a>    =  http:g                       [02,RFC]
              http://a/b/c/g               [1,2,3,4]
 
-<a href="http:">http:</a>     =  http:                        [01,RFC]
+<a href="http:">http:</a>     =  http:                        [02,RFC]
              http://a/b/c/                [1]
              http://a/b/c/d;p?q           [2,3,4]
 </PRE>

@@ -2,12 +2,12 @@
 
 Network Working Group                                     T. Berners-Lee
 INTERNET-DRAFT                                                   MIT/LCS
-<draft-fielding-url-syntax-02b>                              R. Fielding
+<draft-fielding-url-syntax-02>                               R. Fielding
 Expires six months after publication date.                   U.C. Irvine
                                                              L. Masinter
                                                        Xerox Corporation
 
-                                                        05 December 1996
+                                                        07 December 1996
 
 
                     Uniform Resource Locators (URL)
@@ -65,6 +65,7 @@ Abstract
    define a single, general syntax for all URLs.  It excludes those
    portions of RFC 1738 that defined the specific syntax of individual
    URL schemes; those portions will be updated as separate documents.
+   All significant changes from the prior RFCs are noted in Appendix F.
 
    URLs are characterized by the following definitions:
 
@@ -81,8 +82,8 @@ Abstract
          examples include an electronic document, an image, a service
          (e.g., "today's weather report for Los Angeles"), and a
          collection of other resources.  Not all resources are network
-         "retrievable", such as human beings, corporations, and actual
-         books in a library.
+         "retrievable"; e.g., human beings, corporations, and bound
+         books in a library can also be considered resources.
 
          The resource is the conceptual mapping to an entity or set of
          entities, not necessarily the entity which corresponds to that
@@ -143,15 +144,17 @@ Abstract
       -- telnet scheme for interactive services via the TELNET Protocol
 
    Many other URL schemes have been defined.  Section 7 describes how
-   new schemes are defined and registered.  The scheme defines the
-   namespace of the URL.  Although many URL schemes are named after
-   protocols, this does not imply that the only way to access the URL's
-   resource is via the named protocol.  Gateways, proxies, caches, and
-   name resolution services might be used to access some resources,
-   independent of the protocol of their origin, and the resolution of
-   some URLs may require the use of more than one protocol (e.g., both
-   DNS and HTTP are typically used to access an "http" URL's resource
-   when it can't be found in a local cache).
+   new schemes are defined and registered.
+   
+   The scheme defines the namespace of the URL.  Although many URL
+   schemes are named after protocols, this does not imply that the only
+   way to access the URL's resource is via the named protocol.
+   Gateways, proxies, caches, and name resolution services might be used
+   to access some resources, independent of the protocol of their
+   origin, and the resolution of some URLs may require the use of more
+   than one protocol (e.g., both DNS and HTTP are typically used to
+   access an "http" URL's resource when it can't be found in a local
+   cache).
 
 1.3. URL Transcribability
 
@@ -429,7 +432,7 @@ Abstract
    URL from such a reference without also parsing the fragment and
    resolving the relative form.
 
-      URL-reference  =  [ absoluteURL | relativeURL ] [ "#" fragment ]
+      URL-reference = [ absoluteURL | relativeURL ] [ "#" fragment ]
 
    The syntax for relative URLs is a shortened form of that for absolute
    URLs, where some prefix of the URL is missing and certain path
@@ -445,7 +448,7 @@ Abstract
    format and interpretation of fragment identifiers is dependent on the
    media type of the retrieved resource.
 
-      fragment  =  *urlchar
+      fragment      = *urlchar
 
    A URL reference which does not contain a URL is a reference to the
    current document.  In other words, an empty URL reference within a
@@ -479,7 +482,7 @@ Abstract
    interpreting URLs should treat upper case letters as equivalent to
    lower case in scheme names (e.g., allow "HTTP" as well as "http").
 
-      scheme  =  1*( alpha | digit | "+" | "-" | "." )
+      scheme        = 1*( alpha | digit | "+" | "-" | "." )
 
    Relative URL references are distinguished from absolute URLs in that
    they do not begin with a scheme name.  Instead, the scheme is
@@ -493,11 +496,11 @@ Abstract
    representing hierarchical relationships within the locator namespace.
    This generic-URL syntax is used in interpreting relative URLs.
 
-      absoluteURL = generic-URL | opaque-URL
+      absoluteURL   = generic-URL | opaque-URL
 
-      opaque-URL  = scheme ":" *urlchar
+      opaque-URL    = scheme ":" *urlchar
 
-      generic-URL = scheme ":" relativeURL
+      generic-URL   = scheme ":" relativeURL
 
    URLs which are hierarchical in nature use the slash "/" character for
    separating hierarchical components.  For some file systems, the "/"
@@ -534,14 +537,14 @@ Abstract
    end of the URL.  Within the server component, the characters ":",
    "@", "?", and "/" are reserved.
 
-      server       = [ [ user [ ":" password ] "@" ] hostport ]
+      server        = [ [ user [ ":" password ] "@" ] hostport ]
 
    The user name and password, if present, are followed by a commercial
    at-sign "@".
 
-      user         = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+      user          = *( unreserved | escaped | ";" | "&" | "=" | "+" )
 
-      password     = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+      password      = *( unreserved | escaped | ";" | "&" | "=" | "+" )
 
    Note that an empty user name or password is different than no user
    name or password; there is no way to specify a password without
@@ -554,13 +557,13 @@ Abstract
    set of four decimal digit groups separated by ".".  A suitable
    representation for IPv6 addresses has not yet been determined.
 
-      hostport     = host [ ":" port ]
-      host         = hostname | hostnumber
-      hostname     = *( domainlabel "." ) toplabel
-      domainlabel  = alphanum | alphanum *( alphanum | "-" ) alphanum
-      toplabel     = alpha | alpha *( alphanum | "-" ) alphanum
-      hostnumber   = 1*digit "." 1*digit "." 1*digit "." 1*digit
-      port         = *digit
+      hostport      = host [ ":" port ]
+      host          = hostname | hostnumber
+      hostname      = *( domainlabel "." ) toplabel
+      domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+      toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+      hostnumber    = 1*digit "." 1*digit "." 1*digit "." 1*digit
+      port          = *digit
 
    Domain names take the form as described in Section 3.5 of RFC 1034
    [9] and Section 2.1 of RFC 1123 [5]: a sequence of domain labels
@@ -600,42 +603,24 @@ Abstract
    The parameters are not significant to the parsing of relative
    references.
 
-   A relative reference beginning with a single slash character is
-   termed an absolute-path reference.
-
-   A relative reference which does not begin with a scheme name or a
-   slash character is termed a relative-path reference.  Within a
-   relative-path reference, the complete path segments "." and ".." have
-   special meanings: "the current hierarchy level" and "the level above
-   this hierarchy level", respectively.  Although this is very similar
-   to their use within Unix-based filesystems to indicate directory
-   levels, these path components are only active when resolving
-   relative-path references to their absolute form (Section 5.2).
-
-   Authors should be aware that path segments which contain a colon ":"
-   character cannot be used as the first component of a relative URL
-   path (e.g., "this:that") because they will likely be mistaken for a
-   scheme name.  It is therefore necessary to precede such cases with
-   other components (e.g., "./this:that") in order for them to be
-   referenced as a relative path.
-
 4.3.3. Query Component
 
    The query component is a string of information to be interpreted by
    the resource.
 
-      query       = *urlchar
+      query         = *urlchar
 
    Within a query component, the characters "/", "&", "=", and "+" are
    reserved.
 
-4.4. Parsing URL References
+4.4. Parsing a URL Reference
 
    A URL reference is typically parsed according to the four main
    components in order to determine what components are present and
-   whether or not the reference is relative or absolute.  The reference
-   is parsed as if it were a generic-URL, even though it might be
-   considered opaque by later processes.
+   whether or not the reference is relative or absolute.  The individual
+   components are then parsed for their subparts and to verify their
+   validity.  A reference is parsed as if it is a generic-URL, even
+   though it might be considered opaque by later processes.
 
    Although the BNF defines what is allowed in each component, it is
    ambiguous in terms of differentiating between a server component and
@@ -667,11 +652,37 @@ Abstract
    has demonstrated that the ability to perform relative referencing
    is necessary for the long-term usability of embedded URLs.
 
-      relativeURL = net_path | abs_path | rel_path
+      relativeURL   = net_path | abs_path | rel_path
 
-      net_path    = "//" server [ abs_path ]
-      abs_path    = "/"  rel_path
-      rel_path    = [ path_segments ] [ "?" query ]
+   A relative reference beginning with two slash characters is termed a
+   network-path reference.  Such references are rarely used.
+
+      net_path      = "//" server [ abs_path ]
+
+   A relative reference beginning with a single slash character is
+   termed an absolute-path reference.
+
+      abs_path      = "/"  rel_path
+
+   A relative reference which does not begin with a scheme name or a
+   slash character is termed a relative-path reference.
+
+      rel_path      = [ path_segments ] [ "?" query ]
+
+   Within a relative-path reference, the complete path segments "." and
+   ".." have special meanings: "the current hierarchy level" and "the
+   level above this hierarchy level", respectively.  Although this is
+   very similar to their use within Unix-based filesystems to indicate
+   directory levels, these path components are only considered special
+   when resolving a relative-path reference to its absolute form
+   (Section 5.2).
+
+   Authors should be aware that a path segment which contains a colon
+   character cannot be used as the first segment of a relative URL path
+   (e.g., "this:that"), because it would be mistaken for a scheme name.
+   It is therefore necessary to precede such segments with other
+   segments (e.g., "./this:that") in order for them to be referenced as
+   a relative path.
 
    It is not necessary for all URLs within a given scheme to be
    restricted to the generic-URL syntax, since the hierarchical
@@ -680,8 +691,8 @@ Abstract
    relative URLs when their base URL fits within the generic-URL syntax.
    It is assumed that any document which contains a relative reference
    will also have a base URL that obeys the syntax.  In other words,
-   relative URLs cannot be used within documents that have unsuitable
-   base URLs.
+   relative URLs cannot be used within a document that has an unsuitable
+   base URL.
 
 5.1. Establishing a Base URL
 
@@ -813,106 +824,115 @@ Abstract
    references which might be relative to a given base URL.
 
    The base URL is established according to the rules of Section 5.1 and
-   parsed into the four main components described in Section 4.3:
-   scheme, server, path, and query.  Note that only scheme is required
-   to be present in the base URL; the other components may be empty or
-   undefined.  A component is undefined if its preceding separator does
-   not appear in the URL; the path component is never undefined, though
-   it may be empty.  The base URL's query component is not used by the
+   parsed into the four main components as described in Section 4.4.
+   Note that only the scheme component is required to be present in the
+   base URL; the other components may be empty or undefined.  A
+   component is undefined if its preceding separator does not appear in
+   the URL reference; the path component is never undefined, though it
+   may be empty.  The base URL's query component is not used by the
    resolution algorithm and may be discarded.
    
    For each URL reference, the following steps are performed in order:
 
-   1) Any fragment identifier is separated from the rest of the
-      reference.  If the reference contains a crosshatch "#" character,
-      then the substring after the first (left-most) crosshatch and up
-      to the end of the reference is the fragment identifier.  If the
-      crosshatch is the last character, or no crosshatch is present,
-      then the fragment identifier is empty.  The crosshatch separator
-      is discarded.
+   1) The URL reference is parsed into the potential four components and
+      fragment identifier, as described in Section 4.4.
 
-   2) The remaining reference is scanned from left to right to determine
-      whether or not it is relative.
+   2) If the path component is empty and the scheme, server, and query
+      components are undefined, then it is a reference to the current
+      document and we are done.
 
-      a) If the remaining reference is empty, it is interpreted as a
-         reference to the current document and we are done.
+   3) If the scheme component is defined, indicating that the reference
+      starts with a scheme name, then the reference is interpreted as an
+      absolute URL and we are done.  Otherwise, the reference URL's
+      scheme is inherited from the base URL's scheme component.
 
-      b) If a colon ":" character occurs before any slash "/" character
-         and before the end of the reference string, indicating that the
-         reference starts with a scheme name, then the reference is
-         interpreted as an absolute URL and we are done.
+   4) If the server component is defined, then the reference is a
+      network-path and we skip to step 7.  Otherwise, the reference
+      URL's server is inherited from the base URL's server component,
+      which will also be undefined if the URL scheme does not use a
+      server component.
 
-      c) Otherwise, the reference's scheme is inherited from the base
-         URL's scheme component by copying the scheme name to the result
-         string and appending a ":" character.
+   5) If the path component begins with a slash character ("/"), then
+      the reference is an absolute-path and we skip to step 7.
 
-   3) If the remaining reference begins with two slash characters
-      ("//"), then the reference is appended to the result string and we
-      are done.  Otherwise, if the base URL's server component is
-      defined, then two slash characters followed by the server
-      component are appended to the result string.
+   6) If this step is reached, then we are resolving a relative-path
+      reference.  The relative path needs to be merged with the base
+      URL's path.  Although there are many ways to do this, we will
+      describe a simple method using a separate string buffer.
 
-   4) If the remaining reference begins with a slash character ("/"),
-      as would be the case for an absolute-path reference, then the
-      reference is appended to the result string and we are done.
+      a) All but the last segment of the base URL's path component is
+         copied to the buffer.  In other words, any characters after the
+         last (right-most) slash character, if any, are excluded.
 
-   5) If this step is reached, then we are resolving a relative-path
-      reference.
+      b) The reference's path component is appended to the buffer
+         string.
 
-I STOPPED WORK HERE -- THE REST IS UNFINISHED
-   "base prefix" is obtained by truncating the base URL at the beginning
-   of the last path segment of its path component.  In other words, any
-   characters after the first (left-most) question-mark "?", if any, are
-   removed from the base URL, and then any characters after the last
-   (right-most) slash "/" character, if any, are removed from the
-   remaining string.
+      c) If the reference's query component is defined, then a "?"
+         character is appended to the buffer string, followed by the
+         query component.
 
+      d) All occurrences of "./", where "." is a complete path segment,
+         are removed from the buffer string.
 
-   Step 3: If the URL reference's <server> is non-empty, we skip to
-           Step 7.  Otherwise, the URL reference inherits the <server>
-           (if any) of the base URL.  If the base URL's has no <server>
-           component, then neither does the relative reference.
+      e) If the buffer string ends with "." as a complete path segment,
+         that "." is removed.
 
-   Step 4: If the URL reference path is preceded by a slash "/", the
-           path is not relative and we skip to Step 7.
+      f) All occurrences of "<segment>/../", where <segment> is a
+         complete path segment not equal to "..", are removed from the
+         buffer string.  Removal of these path segments is performed
+         iteratively, removing the leftmost matching pattern on each
+         iteration, until no matching pattern remains.
 
-   Step 5: If the URL reference path is empty (and not preceded by a
-           slash), then the URL reference inherits the base URL path.
-           If the URL reference's <query> is non-empty, we skip to
-           step 7; otherwise, it inherits the <query> of the base
-           URL (if any) and we skip to step 7.
+      g) If the buffer string ends with "<segment>/..", where <segment>
+         is a complete path segment not equal to "..", that
+         "<segment>/.." is removed.
 
-   Step 6: The last segment of the base URL's path (anything
-           following the rightmost slash "/", or the entire path if no
-           slash is present) is removed and the URL reference's path is
-           appended in its place.  The following operations are
-           then applied, in order, to the new path:
+      h) If the buffer string contains a question-mark "?" character,
+         then the reference URL's query component is the substring after
+         the first (left-most) question-mark.  Otherwise, the reference
+         URL's query component is set undefined.
 
-           a) All occurrences of "./", where "." is a complete path
-              segment, are removed.
+      i) The reference URL's new path component is the buffer string up
+         to, but not including, the first question-mark character or the
+         end of the buffer string.
 
-           b) If the path ends with "." as a complete path segment,
-              that "." is removed.
+   7) The resulting URL components, including any inherited from the
+      base URL, are recombined to give the absolute form of the URL
+      reference.  Using pseudocode, this would be
 
-           c) All occurrences of "<segment>/../", where <segment> is a
-              complete path segment not equal to "..", are removed.
-              Removal of these path segments is performed iteratively,
-              removing the leftmost matching pattern on each iteration,
-              until no matching pattern remains.
+         result = ""
 
-           d) If the path ends with "<segment>/..", where <segment> is a
-              complete path segment not equal to "..", that
-              "<segment>/.." is removed.
+         if scheme is defined then
+             append scheme to result
+             append ":" to result
 
-   Step 7: The resulting URL components, including any inherited from
-           the base URL, are recombined to give the absolute form of
-           the URL reference.
+         if server is defined then
+             append "//" to result
+             append server to result
+
+         append path to result
+
+         if query is defined then
+             append "?" to result
+             append query to result
+
+         if fragment is defined then
+             append "#" to result
+             append fragment to result
+
+         return result
+
+      Note that we must be careful to preserve the distinction between a
+      component that is undefined, meaning that its separator was not
+      present in the reference, and a component that is empty, meaning
+      that the separator was present and was immediately followed by the
+      next component separator or the end of the reference.
 
    The above algorithm is intended to provide an example by which the
    output of implementations can be tested -- implementation of the
    algorithm itself is not required.  For example, some systems may find
-   it more efficient to implement Step 6 as a pair of segment stacks
-   being merged, rather than as a series of string pattern matches.
+   it more efficient to implement step 6 as a pair of segment stacks
+   being merged, rather than as a series of string pattern replacements.
 
    Resolution examples are provided in Appendix C.
 
@@ -989,7 +1009,7 @@ I STOPPED WORK HERE -- THE REST IS UNFINISHED
 
    Most of this document was derived from RFC 1738 [2] and RFC 1808 [7];
    the acknowledgements in those specifications still apply.  In
-   addition, this draft has benefitted from comments by Lauren Wood.
+   addition, this draft has benefited from comments by Lauren Wood.
 
 
 10. References
@@ -1049,9 +1069,8 @@ I STOPPED WORK HERE -- THE REST IS UNFINISHED
 
    Roy T. Fielding
    Department of Information and Computer Science
-   University of California
-   Irvine, CA  92717-3425
-   U.S.A.
+   University of California, Irvine
+   Irvine, CA  92697-3425
 
    Fax: +1(714)824-4056
    EMail: fielding@ics.uci.edu
@@ -1070,7 +1089,60 @@ Appendices
 
 A. Collected BNF for URLs
 
-   # To be inserted when it is completed.
+      URL-reference = [ absoluteURL | relativeURL ] [ "#" fragment ]
+      absoluteURL   = generic-URL | opaque-URL
+      opaque-URL    = scheme ":" *urlchar
+      generic-URL   = scheme ":" relativeURL
+
+      relativeURL   = net_path | abs_path | rel_path
+      net_path      = "//" server [ abs_path ]
+      abs_path      = "/"  rel_path
+      rel_path      = [ path_segments ] [ "?" query ]
+
+      scheme        = 1*( alpha | digit | "+" | "-" | "." )
+
+      server        = [ [ user [ ":" password ] "@" ] hostport ]
+      user          = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+      password      = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+      hostport      = host [ ":" port ]
+      host          = hostname | hostnumber
+      hostname      = *( domainlabel "." ) toplabel
+      domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+      toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+      hostnumber    = 1*digit "." 1*digit "." 1*digit "." 1*digit
+      port          = *digit
+
+      path          = [ "/" ] path_segments
+      path_segments = segment *( "/" segment )
+      segment       = *pchar *( ";" param )
+      param         = *pchar
+      pchar         = unreserved | escaped | ":" | "@" | "&" | "=" | "+"
+
+      query         = *urlchar
+
+      fragment      = *urlchar
+
+      urlchar       = reserved | unreserved | escaped
+      reserved      = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+"
+      unreserved    = alpha | digit | mark
+      mark          = "$" | "-" | "_" | "." | "!" | "~" |
+                      "*" | "'" | "(" | ")" | ","
+
+      escaped       = "%" hex hex
+      hex           = digit | "A" | "B" | "C" | "D" | "E" | "F" |
+                              "a" | "b" | "c" | "d" | "e" | "f"
+
+      alphanum      = alpha | digit
+      alpha         = lowalpha | hialpha
+
+      lowalpha = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" |
+                 "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" |
+                 "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
+      hialpha  = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" |
+                 "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" |
+                 "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+      digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
+                 "8" | "9"
 
 
 B. Parsing a URL Reference with a Regular Expression
@@ -1080,9 +1152,10 @@ B. Parsing a URL Reference with a Regular Expression
    "greedy algorithm" described in that section is identical to the
    disambiguation method used by POSIX regular expressions, it is
    natural and commonplace to use a regular expression for parsing the
-   possible four components and fragment identifier of a URL reference.
+   potential four components and fragment identifier of a URL reference.
 
-   The following line is the regular expression.
+   The following line is the regular expression for breaking-down a URL
+   reference into its components.
 
       ^(([^/?#]+):)?(//([^/?#]*))?([^?#]*)?(\?([^#]*))?(#(.*))?
        12           3  4          5        6  7        8 9
@@ -1116,34 +1189,8 @@ B. Parsing a URL Reference with a Regular Expression
       query    = $7
       fragment = $9
 
-   and, going in the opposite direction, recreate a URL reference from
-   its components using the following algorithm:
-
-      reference = ""
-
-      if scheme is defined then
-          append scheme to reference
-          append ":" to reference
-
-      if server is defined then
-          append "//" to reference
-          append server to reference
-
-      append path to reference
-
-      if query is defined then
-          append "?" to reference
-          append query to reference
-
-      if fragment is defined then
-          append "#" to reference
-          append fragment to reference
-
-   Note that we must be careful to preserve the distinction between a
-   component that is undefined, meaning that its separator was not
-   present in the reference, and a component that is empty, meaning that
-   the separator was present and was immediately followed by the next
-   component separator or the end of the reference.
+   and, going in the opposite direction, we can recreate a URL reference
+   from its components using the algorithm in step 7 of Section 5.2.
 
 
 C. Examples of Resolving Relative URL References
@@ -1274,16 +1321,15 @@ E. Recommendations for Delimiting URLs in Context
 
    In practice, URLs are delimited in a variety of ways, but usually
    within double-quotes "http://test.com/", angle brackets
-   <http://test.com/>, or just
+   <http://test.com/>, or just using whitespace
 
                   http://test.com/
 
-   using whitespace.  The prefix "URL:", with or without a trailing
-   space, is also sometimes used to help distinguish a URL from normal
-   text.  These wrappers do not form part of the URL.  In the case where
-   a fragment identifier is associated with a URL reference, the
-   fragment would be placed within the brackets as well (separated from
-   the URL with a "#" character).
+   The prefix "URL:", with or without a trailing space, is sometimes
+   used to help distinguish a URL from normal text.  These wrappers do
+   not form part of the URL.  In the case where a fragment identifier is
+   associated with a URL reference, the fragment would be placed within
+   the brackets as well (separated from the URL with a "#" character).
 
    In some cases, extra whitespace (spaces, linebreaks, tabs, etc.) may
    need to be added to break long URLs across lines.  The whitespace
@@ -1427,6 +1473,8 @@ F.4. Modifications from RFC 1808
    to reflect this change.
 
    Testing has also revealed that most client applications remove the
-   query component from the base URL before resolving relative URLs.
-   The resolution algorithm has been changed accordingly.
+   query component from the base URL before resolving relative URLs, and
+   append the reference's query component to a relative path before
+   merging it with the base path.  The resolution algorithm has been
+   changed accordingly.
 
