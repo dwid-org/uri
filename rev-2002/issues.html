@@ -51,6 +51,9 @@
 <td nowrap="nowrap"><a href="#042-fragment-when">042-fragment-when</a></td><td>fragment identifiers applied before entire content is retrieved</td><td>fragment</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#043-rel-inverse">043-rel-inverse</a></td><td>relativising an absolute reference should be invertible</td><td>relative</td><td nowrap="nowrap">accepted</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>terminology</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
@@ -3858,6 +3861,51 @@ representation is determined.
   issues list:
   <pre>
 This will be addressed as part of the rewrite for issue 017-rdf-fragment.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="043-rel-inverse">043-rel-inverse</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">relativising an absolute reference should be invertible</font></th>
+</tr>
+<tr>
+<th>accepted</th><th align="left">relative</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:timbl_AT_w3.org">Tim Berners-Lee</a>,
+  18 Nov 2002,
+  TAG meeting:
+  <pre>
+RFC2396 doesn't say that xxx/./yyy is equivalnet to xxx/yyy for any
+xxx and yyy. However, the only tenable situation is that they are
+equivalent, because we require that any URI can be relative-ized and
+absolute-ized back to its original. That is an (unspoken) axiom.
+When you relative-ize things and re-absolutize then,
+you cannot distinguih between the two, and so they HAVE to be
+equivalent. The URI spec should say that.
+
+We need to write down the axioms: if you take a URI, make it
+relative w.r.t. a base URI, then make it absolute w.r.t. the same base
+URI, you get the same starting URI...
+
+  http://www.w3.org/2002/11/18-tag-summary
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  17 Apr 2003,
+  issues list:
+  <pre>
+I would rephrase that as:
+
+When you relativize an absolute URI (A) using base (B) producing
+the relative reference (R), and then re-absolutize R using the same
+base B to produce an absolute reference A', then A' must equal A.
 </pre>
 </td>
 </tr>
