@@ -1,9 +1,10 @@
 Uniform Resource Identifiers Working Group                  R. Fielding
-INTERNET-DRAFT version 0.1                                    UC Irvine
-Expires February 25, 1995                                  August 20, 1994
+INTERNET-DRAFT                                                UC Irvine
+Expires February 24, 1995                               August 24, 1994
 
 
                   Relative Uniform Resource Locators
+                 <draft-ietf-uri-relative-url-00.txt>
 
 
 Status of this Memo
@@ -30,8 +31,6 @@ Status of this Memo
    URI working group (URI-WG) of the Internet Engineering Task Force
    (IETF) at <uri@bunyip.com>. Discussions of the group are archived at
    <URL:http://www.acl.lanl.gov/URI/archive/uri-archive.index.html>.
-
-   This Internet-Draft expires February 25, 1995.
 
 
 Abstract
@@ -233,15 +232,18 @@ Abstract
    It is recommended that new schemes include a description of their
    membership in the following categories when they are registered,
    as per Section 4 of [2].  Membership in the six categories is 
-   described in terms of named sets: Never-Relative, Uses-Netloc,
+   described in terms of named sets: Uses-Relative, Uses-Netloc,
    Non-Hierarchical, Uses-Params, Uses-Query, and Uses-Fragment.
 
-2.3.1  The Never-Relative Set
+2.3.1  The Uses-Relative Set
 
-   The Never-Relative set includes those access schemes which are
-   never considered relative to another URL.
+   The Uses-Relative set includes those access schemes which are
+   allowed to use relative forms.
 
-      Never-Relative = {mailto, news, telnet}
+      Uses-Relative = {ftp, http, gopher, nntp, wais, file, prospero}
+
+   Schemes that are not in the Uses-Relative set (including any scheme
+   which is unknown to the parser) are assumed to be in absolute form.
 
 2.3.2  The Uses-Netloc Set
 
@@ -299,19 +301,19 @@ Abstract
 
 2.3.7.  Summary of Categories by Scheme
 
-              Never-   Uses-   Non-Hier  Uses-    Uses-    Uses-
+              Uses-    Uses-   Non-Hier  Uses-    Uses-    Uses-
              Relative  Netloc  archical  Params   Query   Fragment
             .-----------------------------------------------------.
-   ftp      |        |  XXXX  |        |  XXXX  |        |  XXXX  |
-   http     |        |  XXXX  |        |        |  XXXX  |  XXXX  |
-   gopher   |        |  XXXX  |  XXXX  |        |        |  XXXX  |
-   mailto   |  XXXX  |        |  XXXX  |        |        |        |
-   news     |  XXXX  |        |  XXXX  |        |        |  XXXX  |
-   nntp     |        |  XXXX  |        |        |        |  XXXX  |
-   telnet   |  XXXX  |  XXXX  |  XXXX  |        |        |        |
-   wais     |        |  XXXX  |  XXXX  |        |  XXXX  |  XXXX  |
-   file     |        |  XXXX  |        |        |        |  XXXX  |
-   prospero |        |  XXXX  |        |  XXXX  |        |  XXXX  |
+   ftp      |  XXXX  |  XXXX  |        |  XXXX  |        |  XXXX  |
+   http     |  XXXX  |  XXXX  |        |        |  XXXX  |  XXXX  |
+   gopher   |  XXXX  |  XXXX  |  XXXX  |        |        |  XXXX  |
+   mailto   |        |        |  XXXX  |        |        |        |
+   news     |        |        |  XXXX  |        |        |  XXXX  |
+   nntp     |  XXXX  |  XXXX  |        |        |        |  XXXX  |
+   telnet   |        |  XXXX  |  XXXX  |        |        |        |
+   wais     |  XXXX  |  XXXX  |  XXXX  |        |  XXXX  |  XXXX  |
+   file     |  XXXX  |  XXXX  |        |        |        |  XXXX  |
+   prospero |  XXXX  |  XXXX  |        |  XXXX  |        |  XXXX  |
             `-----------------------------------------------------'
 
 2.4.  Parsing a URL
@@ -403,10 +405,9 @@ Abstract
 
    In order for relative URLs to be usable within a base document,
    the absolute "base URL" of that document must be known to the
-   parser.  None of the schemes in the Never-Relative set
-   (Section 2.3.1) can be used for a base URL.  There are three
-   methods for obtaining the base URL of a document, listed here in
-   order of precedence.
+   parser.  Only the schemes in the Uses-Relative set (Section 2.3.1)
+   can be used for a base URL.  There are three methods for obtaining
+   the base URL of a document, listed here in order of precedence.
 
 3.1.  Base URL within Document Content
 
@@ -485,7 +486,7 @@ Abstract
            the base URL.
 
    Step 4: If the scheme of the embedded URL is different from that of
-           the base URL or is a member of the Never-Relative set
+           the base URL or is not a member of the Uses-Relative set
            (Section 2.3.1), we skip to Step 9.
 
    Step 5: If the scheme of the embedded URL is a member of the
@@ -542,7 +543,7 @@ Abstract
    to that URL.  Parameters and fragment identifiers are never
    inherited from the base URL.
 
-5.  Examples
+5.  Examples and Recommended Practice
 
    Within an object with a well-defined base URL of
 
@@ -550,9 +551,9 @@ Abstract
 
    the relative URLs would be resolved as follows: 
 
+5.1.  Normal Examples
+
       g:h        = <URL:g:h>
-      http:g     = <URL:http://a/b/c/g>
-      http:      = <URL:http://a/b/c/d>
       g          = <URL:http://a/b/c/g>
       ./g        = <URL:http://a/b/c/g>
       g/         = <URL:http://a/b/c/g/>
@@ -568,16 +569,40 @@ Abstract
       ../g       = <URL:http://a/b/g>
       ../..      = <URL:http://a/>
       ../../g    = <URL:http://a/g>
+
+5.2.  Abnormal Examples
+
       ../../../g = <URL:http://a/../g>
       ./../g     = <URL:http://a/b/g>
       ./g/.      = <URL:http://a/b/c/g/>
       /./g       = <URL:http://a/./g>
-      g/./h      = <URL:http://a/g/h>
-      g/../h     = <URL:http://a/h>
+      g/./h      = <URL:http://a/b/c/g/h>
+      g/../h     = <URL:http://a/b/c/h>
+      http:g     = <URL:http://a/b/c/g>
+      http:      = <URL:http://a/b/c/d>
 
-   Note that, although the last six examples are not likely to occur
+   Note that, although the abnormal examples are not likely to occur
    for a normal relative URL, all URL parsers should be capable of
    resolving them consistently.
+
+5.3.  Recommended Practice
+
+   Although the relative form does allow scheme names to be used with
+   relative paths, as in the last two abnormal examples ("http:g" and
+   "http:") above, it is strongly recommended that authors not use the
+   scheme name in this manner.  Including the scheme name prevents a
+   relative URL from being usable in more than one context (e.g.,
+   simultaneous availability via "file" and "http") and requires that
+   the URL be changed if the primary access scheme is changed.
+
+   Authors should also be aware that path names which contain a colon
+   ":" character cannot be used as the first component of a relative
+   URL path (e.g. "this:that") because they will likely be mistaken for
+   a scheme name.  It is therefore necessary to precede such cases with
+   other components (e.g., "./this:that"), or to escape the colon
+   character (e.g., "this%3Athat"), in order for them to be correctly
+   parsed.  The former solution is preferred because it has no effect
+   on the absolute form of the URL.
 
 6.  Security Considerations
 
@@ -594,7 +619,10 @@ Abstract
    from the primary URL draft.
 
    This document is intended to fulfill the requirements for Internet
-   Resource Locators as stated in [15].
+   Resource Locators as stated in [15].  It has benefited greatly from
+   the comments of all those participating in the URI-WG.  Particular
+   thanks go to Larry Masinter, Michael A. Dolan, and Guido van Rossum
+   for identifying problems/deficiencies in earlier drafts.
 
 8.  References
 
@@ -680,6 +708,8 @@ Abstract
    Tel: +1 (714) 856-7308
    Fax: +1 (714) 856-4056
    Email: fielding@ics.uci.edu
+
+   This Internet-Draft expires February 24, 1995.
 
 10.  Appendix - Embedding the Base URL in HTML documents.
 
