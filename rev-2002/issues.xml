@@ -1764,7 +1764,7 @@ limit each decimal octet to the range 0-255.
  <type>terminology</type>
  <name>019-URI-URL-URN</name>
  <title>URI/URL/URN contemporary view</title>
- <status>fixed 02</status>
+ <status>reopened</status>
  <report>
   <author email="michael_AT_neonym.net">Michael Mealling</author>
   <date sort="20020501">01 May 2002</date>
@@ -1846,6 +1846,27 @@ Sec 1.2, fourth para; the phrase "just like any identifier" is superfluous.
 Done.
 </pre>
  </action>
+ <report>
+  <author email="T.Hammond_AT_elsevier.com">Tony Hammond</author>
+  <date sort="20030527">27 May 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Just a brief comment on the revised draft. This passage from end 2nd para,
+section 1.1.3, strikes me as very peculiar:
+
+	'This specification deprecates use of the term "URN" for anything
+but URIs in the "urn" scheme [RFC2141]. This specification also deprecates
+the term "URL".'
+
+Given that a URI scheme may be classified as a 'locator', a 'name' or both,
+how can the term 'URL' be deprecated while maintaining the term 'URN'? This
+seems to introduce an imbalance into the glossary of terms. Surely in the
+contemporary view the only term of any significance is 'URI'. IMO the term
+'URN' should be deprecated wholesale along with the term 'URL'. The 'urn'
+scheme just marks out a certain class of URIs which have a particular
+semantics - i.e. 'persistence'.
+</pre>
+ </report>
 </issue>
 
 <issue>
@@ -2916,7 +2937,7 @@ ignoring the actual syntax specification.]
  <type>relative</type>
  <name>033-dot-segments</name>
  <title>relativising an absolute reference should be invertible</title>
- <status>fixed 02</status>
+ <status>reopened</status>
  <report>
   <author email="timbl_AT_w3.org">Tim Berners-Lee</author>
   <date sort="20021118">18 Nov 2002</date>
@@ -3054,6 +3075,34 @@ because there is no agreed upon standard for converting absolute
 references to a relative form.
 </pre>
  </action>
+ <report>
+  <author email="cameron_AT_cs.sfu.ca">Rob Cameron</author>
+  <date sort="20030525">25 May 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Following up on issue 033, the following equation is an
+important test of consistent implementations:
+resolve_relative_URI(compute_relative_URI(u, base), base) = u
+
+To satisfy this for all examples in section 5.4 of rfc2396bis-02,
+a change in the algorithm of section 5.2 is required.
+The change is needed to ensure that the ./  and ../ processing 
+is applied even when a relative  URI is a path starting with "/".
+In my implementation:
+                if R_path[0] == "/": T_path = merge('', R_path[1:])
+
+A parser and URI processing algorithms that pass all the tests
+are available for examination and comment at the following URL.
+http://www.cs.sfu.ca/~cameron/uri/URIbis2.py
+The parser is based on abnf2re and the algorithms include
+compute_relative_URI as described yesterday, with one bug fix
+to handle the authorityless relative URI.  
+
+The test program is available as well.
+<a href="http://www.cs.sfu.ca/~cameron/uri/bis2tests.py">
+http://www.cs.sfu.ca/~cameron/uri/bis2tests.py</a>
+</pre>
+ </report>
 </issue>
 
 <issue>
