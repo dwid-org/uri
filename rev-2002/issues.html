@@ -97,9 +97,6 @@
 <td nowrap="nowrap"><a href="#012-simplify-IPv6">012-simplify-IPv6</a></td><td>change BNF to incorporate IPv6 better than RFC 2732</td><td>IPv6</td><td nowrap="nowrap">added 00</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>IPv6</td><td nowrap="nowrap">added 00</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#027-ref-HTML">027-ref-HTML</a></td><td>draft 00 contains an obsolete ref to RFC 1866</td><td>references</td><td nowrap="nowrap">fixed 01</td>
 </tr>
 <tr>
@@ -142,12 +139,6 @@
 <td nowrap="nowrap"><a href="#039-LALR-BNF">039-LALR-BNF</a></td><td>BNF should be more LALR-parser friendly</td><td>bnf</td><td nowrap="nowrap">fixed 02</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#040-reg-name">040-reg-name</a></td><td>Remove registry-based name syntax from authority</td><td>authority</td><td nowrap="nowrap">fixed 02</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#041-encoding">041-encoding</a></td><td>Section 2 on encoding causes too much confusion</td><td>characters</td><td nowrap="nowrap">fixed 02</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#042-fragment-when">042-fragment-when</a></td><td>fragment identifiers applied before entire content is retrieved</td><td>fragment</td><td nowrap="nowrap">fixed 02</td>
 </tr>
 <tr>
@@ -163,7 +154,19 @@
 <td nowrap="nowrap"><a href="#032-component-examples">032-component-examples</a></td><td>add more examples for generic syntax components</td><td>examples</td><td nowrap="nowrap">added 03</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#036-host-escaping">036-host-escaping</a></td><td>%HH escaping should be allowed on hostname</td><td>characters</td><td nowrap="nowrap">fixed 04</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#040-reg-name">040-reg-name</a></td><td>Remove registry-based name syntax from authority</td><td>authority</td><td nowrap="nowrap">fixed 04</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#041-encoding">041-encoding</a></td><td>Section 2 on encoding causes too much confusion</td><td>characters</td><td nowrap="nowrap">fixed 04</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#044-empty-path">044-empty-path</a></td><td>no path is defined for scheme://ABCD?query</td><td>bnf</td><td nowrap="nowrap">fixed 04</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>IPv6</td><td nowrap="nowrap">added 04</td>
 </tr>
 </table>
 <br>
@@ -185,9 +188,6 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#034-identifier">034-identifier</a></td><td>identifier is not just a sequence of characters</td><td>terminology</td><td nowrap="nowrap">closed</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#036-host-escaping">036-host-escaping</a></td><td>%HH escaping should be allowed on hostname</td><td>characters</td><td nowrap="nowrap">closed</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#043-same-scheme">043-same-scheme</a></td><td>Should reference resolver ignore scheme if same as base URI?</td><td>relative</td><td nowrap="nowrap">closed</td>
@@ -1581,6 +1581,17 @@ Changed to reflect all of the suggestions:
 </pre>
 </td>
 </tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  10 Feb 2004,
+  draft 04:
+  <pre>
+All of these productions have been removed from draft 04 in favor
+of the reg-name production.
+</pre>
+</td>
+</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -1990,7 +2001,7 @@ target URI and base URI, excluding fragments, match.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="018-IPv6-example">018-IPv6-example</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">RFC 2732 example bug</font></th>
 </tr>
 <tr>
-<th bgcolor="lightgreen">added 00</th><th align="left">IPv6</th>
+<th bgcolor="lightgreen">added 04</th><th align="left">IPv6</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2062,6 +2073,16 @@ IPv6address, I created a new ABNF rule for IPv6address that matches
 the text representations defined by Section 2.2 of RFC 2373.
 Likewise, the definition of IPv4address has been improved in order to
 limit each decimal octet to the range 0-255.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  10 Feb 2004,
+  draft 04:
+  <pre>
+A version flag has been added at the request of John Klensin.
 </pre>
 </td>
 </tr>
@@ -3720,7 +3741,7 @@ example of a scheme defined as requiring UTF-8.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="036-host-escaping">036-host-escaping</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">%HH escaping should be allowed on hostname</font></th>
 </tr>
 <tr>
-<th bgcolor="lightgrey">closed</th><th align="left">characters</th>
+<th bgcolor="lightgreen">fixed 04</th><th align="left">characters</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -3766,6 +3787,18 @@ could not convert to IDNA forms automatically was because of the potential
 for a reg-name syntax.  It was decided at the URI BOF that the best solution
 would be to remove reg-name, since nobody has used it anyway, thus clearing
 the way for IRI conversion to take place prior to URI handling.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  10 Feb 2004,
+  draft 04:
+  <pre>
+Prior decision has been reversed for draft 04 and reg-name has replaced
+hostname due to multiple resolution mechanisms.  Percent-encoded octets are
+allowed in reg-name if and only if they represent UTF-8 encoded characters.
 </pre>
 </td>
 </tr>
@@ -3966,6 +3999,17 @@ with additional text added for disambiguation of host.
 </pre>
 </td>
 </tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  10 Feb 2004,
+  draft 04:
+  <pre>
+All of these productions have been removed from draft 04 in favor
+of the reg-name production.
+</pre>
+</td>
+</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -4051,7 +4095,7 @@ section defining relative-URI.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="040-reg-name">040-reg-name</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Remove registry-based name syntax from authority</font></th>
 </tr>
 <tr>
-<th bgcolor="lightgreen">fixed 02</th><th align="left">authority</th>
+<th bgcolor="lightgreen">fixed 04</th><th align="left">authority</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -4102,6 +4146,18 @@ to simplify parsing of the URI syntax.
 </pre>
 </td>
 </tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  10 Feb 2004,
+  draft 04:
+  <pre>
+Prior decision has been reversed for draft 04 and reg-name has replaced
+hostname due to multiple resolution mechanisms.  Percent-encoded octets are
+allowed in reg-name if and only if they represent UTF-8 encoded characters.
+</pre>
+</td>
+</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -4109,7 +4165,7 @@ to simplify parsing of the URI syntax.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="041-encoding">041-encoding</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Section 2 on encoding causes too much confusion</font></th>
 </tr>
 <tr>
-<th bgcolor="lightgreen">fixed 02</th><th align="left">characters</th>
+<th bgcolor="lightgreen">fixed 04</th><th align="left">characters</th>
 </tr>
 <tr>
 <td colspan="2">report:

@@ -1309,6 +1309,15 @@ Changed to reflect all of the suggestions:
    alphanum      = ALPHA / DIGIT
 </pre>
  </action>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040210">10 Feb 2004</date>
+  <where>draft 04</where>
+<pre>
+All of these productions have been removed from draft 04 in favor
+of the reg-name production.
+</pre>
+ </action>
 </issue>
 
 <issue>
@@ -1697,7 +1706,7 @@ target URI and base URI, excluding fragments, match.
  <type>IPv6</type>
  <name>018-IPv6-example</name>
  <title>RFC 2732 example bug</title>
- <status>added 00</status>
+ <status>added 04</status>
  <report>
   <author email="Robert.Graf_AT_ecetra.com">Robert Graf</author>
   <date sort="20020424">24 Apr 2002</date>
@@ -1763,6 +1772,14 @@ IPv6address, I created a new ABNF rule for IPv6address that matches
 the text representations defined by Section 2.2 of RFC 2373.
 Likewise, the definition of IPv4address has been improved in order to
 limit each decimal octet to the range 0-255.
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040210">10 Feb 2004</date>
+  <where>draft 04</where>
+<pre>
+A version flag has been added at the request of John Klensin.
 </pre>
  </action>
 </issue>
@@ -3254,7 +3271,7 @@ example of a scheme defined as requiring UTF-8.
  <type>characters</type>
  <name>036-host-escaping</name>
  <title>%HH escaping should be allowed on hostname</title>
- <status>closed</status>
+ <status>fixed 04</status>
  <report>
   <author email="duerst_AT_w3.org">Martin Duerst</author>
   <date sort="20020722">22 Jul 2002</date>
@@ -3294,6 +3311,16 @@ could not convert to IDNA forms automatically was because of the potential
 for a reg-name syntax.  It was decided at the URI BOF that the best solution
 would be to remove reg-name, since nobody has used it anyway, thus clearing
 the way for IRI conversion to take place prior to URI handling.
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040210">10 Feb 2004</date>
+  <where>draft 04</where>
+<pre>
+Prior decision has been reversed for draft 04 and reg-name has replaced
+hostname due to multiple resolution mechanisms.  Percent-encoded octets are
+allowed in reg-name if and only if they represent UTF-8 encoded characters.
 </pre>
  </action>
 </issue>
@@ -3473,6 +3500,15 @@ Fixed as suggested:
 with additional text added for disambiguation of host.
 </pre>
  </action>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040210">10 Feb 2004</date>
+  <where>draft 04</where>
+<pre>
+All of these productions have been removed from draft 04 in favor
+of the reg-name production.
+</pre>
+ </action>
 </issue>
 
 <issue>
@@ -3547,7 +3583,7 @@ section defining relative-URI.
  <type>authority</type>
  <name>040-reg-name</name>
  <title>Remove registry-based name syntax from authority</title>
- <status>fixed 02</status>
+ <status>fixed 04</status>
  <report>
   <author email="duerst_AT_w3.org">Martin Duerst</author>
   <date sort="20030320">20 Mar 2003</date>
@@ -3591,13 +3627,23 @@ The reg_name, server, and hostport productions have been removed
 to simplify parsing of the URI syntax.
 </pre>
  </action>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040210">10 Feb 2004</date>
+  <where>draft 04</where>
+<pre>
+Prior decision has been reversed for draft 04 and reg-name has replaced
+hostname due to multiple resolution mechanisms.  Percent-encoded octets are
+allowed in reg-name if and only if they represent UTF-8 encoded characters.
+</pre>
+ </action>
 </issue>
 
 <issue>
  <type>characters</type>
  <name>041-encoding</name>
  <title>Section 2 on encoding causes too much confusion</title>
- <status>fixed 02</status>
+ <status>fixed 04</status>
  <report>
   <author email="stefan.eissing_AT_greenbytes.de">Stefan Eissing</author>
   <date sort="20030131">31 Jan 2003</date>
