@@ -33,6 +33,12 @@
 <td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#027-ref-HTML">027-ref-HTML</a></td><td>draft 00 contains an obsolete ref to RFC 1866</td><td>references</td><td nowrap="nowrap">accepted</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#029-decimal-IP">029-decimal-IP</a></td><td>add security considerations for misleading use of decimal IP</td><td>security</td><td nowrap="nowrap">accepted</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>uri</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
@@ -49,6 +55,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>intro</td><td nowrap="nowrap">pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#028-ref-rfc0952">028-ref-rfc0952</a></td><td>draft 00 normative reference to RFC 952</td><td>references</td><td nowrap="nowrap">pending</td>
 </tr>
 </table>
 <br>
@@ -100,6 +109,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>syntax: IPv6</td><td nowrap="nowrap">added 00</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#030-IPv6-bnf">030-IPv6-bnf</a></td><td>draft 00 errors in IPv6 syntax</td><td>syntax: IPv6</td><td nowrap="nowrap">fixed 01</td>
 </tr>
 </table>
 <br>
@@ -2313,6 +2325,198 @@ characters to be renamed with a dash instead.
 
 Likewise, absoluteURI and relativeURI have been changed to absolute-URI
 and relative-URI, respectively, for consistency.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="027-ref-HTML">027-ref-HTML</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">draft 00 contains an obsolete ref to RFC 1866</font></th>
+</tr>
+<tr>
+<th>accepted</th><th align="left">references</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:dan@dankohn.com">Dan Kohn</a>,
+  09 Nov 2002,
+  URI-WG mailing list:
+  <pre>
+draft 00 contains an obsolete reference to RFC 1866, which was obsoleted by
+RFC 2854.  This reference should be replaced with one to
+
+   http://www.w3.org/TR/html401
+
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  25 Feb 2003,
+  issues list:
+  <pre>
+I will replace it with
+
+   [HTML]  Raggett, D., et al., "HTML 4.01 Specification",
+           W3C Recommendation, December 1999.
+           Available at &lt;http://www.w3.org/TR/html401&gt;.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="028-ref-rfc0952">028-ref-rfc0952</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">draft 00 normative reference to RFC 952</font></th>
+</tr>
+<tr>
+<th>pending</th><th align="left">references</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:dan@dankohn.com">Dan Kohn</a>,
+  09 Nov 2002,
+  URI-WG mailing list:
+  <pre>
+I question whether a normative reference to RFC 952, status
+unknown (http://www.normos.org/en/summaries/ietf/rfc/rfc952.html), is
+appropriate for dotted-decimal notation, versus a normative reference to
+RFC 791, or to section 2.1 of RFC 1123, which is already referenced.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  25 Feb 2003,
+  issues list:
+  <pre>
+I chose 952 because it was the only description of the notation.  I'll
+see if I can find one in the later RFCs, but I am sure that I checked
+before.  In any case, you are right that it should be non-normative.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="029-decimal-IP">029-decimal-IP</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">add security considerations for misleading use of decimal IP</font></th>
+</tr>
+<tr>
+<th>accepted</th><th align="left">security</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:dan@dankohn.com">Dan Kohn</a>,
+  09 Nov 2002,
+  URI-WG mailing list:
+  <pre>
+I would suggest adding a paragraph to the Security
+Considerations about how "malicious URLs" can be crafted combining
+misleading usernames/passwords with decimal IP addresses, such as
+  http://www.microsoft.com@3492563303/
+
+as described in
+  http://www.counterpane.com/crypto-gram-0102.html#7
+  http://rr.sans.org/threats/semantic.php
+
+This is, of course, an
+attack on users and not on the URI specification, but it is possible
+because regular users don't understand the URI spec (and never will).
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  25 Feb 2003,
+  issues list:
+  <pre>
+This is tied to the gethostbyname issue as well.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="030-IPv6-bnf">030-IPv6-bnf</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">draft 00 errors in IPv6 syntax</font></th>
+</tr>
+<tr>
+<th bgcolor="lightgreen">fixed 01</th><th align="left">syntax: IPv6</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:zefram_AT_fysh.org">Zefram</a>,
+  22 Nov 2002,
+  private mail:
+  <pre>
+Finally, wherever the ABNF ends up, note that the ABNF given in
+rfc2396bis has several errors.  In summary: dec-octet matches "12345";
+dec-octet doesn't match "039" (convention does allow leading zeroes, up
+to three digits total); IPv6address matches "::123:"; IPv6address doesn't
+match "1:2:3:4:5:6::" or "1:2:3:4:5:6:7::"; IPv6address doesn't match
+"1:2:3:4:5::9.9.9.9".  The revised ABNF that I give below corrects all
+of these errors, and I strongly believe it to be completely correct.
+(I also revised the layout, and having experimented with variants I
+think this is as neat as it can be subject to RFC line length limits.)
+
+        IPv6address =                        7(h4 ":") h4
+                    /                   "::" 6(h4 ":") h4
+                    / [            h4 ] "::" 5(h4 ":") h4
+                    / [ *1(h4 ":") h4 ] "::" 4(h4 ":") h4
+                    / [ *2(h4 ":") h4 ] "::" 3(h4 ":") h4
+                    / [ *3(h4 ":") h4 ] "::" 2(h4 ":") h4
+                    / [ *4(h4 ":") h4 ] "::"   h4 ":"  h4
+                    / [ *5(h4 ":") h4 ] "::"           h4
+                    / [ *6(h4 ":") h4 ] "::"
+                    /                        6(h4 ":") IPv4address
+                    /                   "::" 5(h4 ":") IPv4address
+                    / [            h4 ] "::" 4(h4 ":") IPv4address
+                    / [ *1(h4 ":") h4 ] "::" 3(h4 ":") IPv4address
+                    / [ *2(h4 ":") h4 ] "::" 2(h4 ":") IPv4address
+                    / [ *3(h4 ":") h4 ] "::"   h4 ":"  IPv4address
+                    / [ *4(h4 ":") h4 ] "::"           IPv4address
+
+        h4          = 1*4HEXDIG
+
+        IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
+
+        dec-octet   = 1*2DIGIT                      ; 0-9, 00-99
+                    / ( "0" / "1" ) 2DIGIT          ; 000-199
+                    / "2" %x30-34 DIGIT             ; 200-249
+                    / "25" %x30-35                  ; 250-255
+
+(It's possible to considerably shorten the IPv6address rule by factoring
+out a production of ( h4 ":" h4 / IPv4address ), but I don't think it's
+any clearer, since we pedagogically distinguish IPv6 addresses with
+embedded IPv4 addresses from those that don't.)
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  05 Dec 2002,
+  URI-WG mailing list:
+  <pre>
+How about this one:
+
+   IPv6address   = (                          6( h4 ":" ) ls32 )
+                 / (                     "::" 5( h4 ":" ) ls32 )
+                 / ( [              h4 ] "::" 4( h4 ":" ) ls32 )
+                 / ( [ *1( h4 ":" ) h4 ] "::" 3( h4 ":" ) ls32 )
+                 / ( [ *2( h4 ":" ) h4 ] "::" 2( h4 ":" ) ls32 )
+                 / ( [ *3( h4 ":" ) h4 ] "::"    h4 ":"   ls32 )
+                 / ( [ *4( h4 ":" ) h4 ] "::"             ls32 )
+                 / ( [ *5( h4 ":" ) h4 ] "::"             h4   )
+                 / ( [ *6( h4 ":" ) h4 ] "::"                  )
+
+   ls32          = ( h4 ":" h4 ) / IPv4address
+                 ; least-significant 32 bits of address
 </pre>
 </td>
 </tr>

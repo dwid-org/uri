@@ -2031,4 +2031,171 @@ and relative-URI, respectively, for consistency.
  </action>
 </issue>
 
+<issue>
+ <type>references</type>
+ <name>027-ref-HTML</name>
+ <title>draft 00 contains an obsolete ref to RFC 1866</title>
+ <status>accepted</status>
+ <report>
+  <author email="dan@dankohn.com">Dan Kohn</author>
+  <date sort="20021109">09 Nov 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+draft 00 contains an obsolete reference to RFC 1866, which was obsoleted by
+RFC 2854.  This reference should be replaced with one to
+
+   http://www.w3.org/TR/html401
+
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030225">25 Feb 2003</date>
+  <where>issues list</where>
+<pre>
+I will replace it with
+
+   [HTML]  Raggett, D., et al., "HTML 4.01 Specification",
+           W3C Recommendation, December 1999.
+           Available at &lt;http://www.w3.org/TR/html401&gt;.
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>references</type>
+ <name>028-ref-rfc0952</name>
+ <title>draft 00 normative reference to RFC 952</title>
+ <status>pending</status>
+ <report>
+  <author email="dan@dankohn.com">Dan Kohn</author>
+  <date sort="20021109">09 Nov 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I question whether a normative reference to RFC 952, status
+unknown (http://www.normos.org/en/summaries/ietf/rfc/rfc952.html), is
+appropriate for dotted-decimal notation, versus a normative reference to
+RFC 791, or to section 2.1 of RFC 1123, which is already referenced.
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030225">25 Feb 2003</date>
+  <where>issues list</where>
+<pre>
+I chose 952 because it was the only description of the notation.  I'll
+see if I can find one in the later RFCs, but I am sure that I checked
+before.  In any case, you are right that it should be non-normative.
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>security</type>
+ <name>029-decimal-IP</name>
+ <title>add security considerations for misleading use of decimal IP</title>
+ <status>accepted</status>
+ <report>
+  <author email="dan@dankohn.com">Dan Kohn</author>
+  <date sort="20021109">09 Nov 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I would suggest adding a paragraph to the Security
+Considerations about how "malicious URLs" can be crafted combining
+misleading usernames/passwords with decimal IP addresses, such as
+  http://www.microsoft.com@3492563303/
+
+as described in
+  http://www.counterpane.com/crypto-gram-0102.html#7
+  http://rr.sans.org/threats/semantic.php
+
+This is, of course, an
+attack on users and not on the URI specification, but it is possible
+because regular users don't understand the URI spec (and never will).
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030225">25 Feb 2003</date>
+  <where>issues list</where>
+<pre>
+This is tied to the gethostbyname issue as well.
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>syntax: IPv6</type>
+ <name>030-IPv6-bnf</name>
+ <title>draft 00 errors in IPv6 syntax</title>
+ <status>fixed 01</status>
+ <report>
+  <author email="zefram_AT_fysh.org">Zefram</author>
+  <date sort="20021122">22 Nov 2002</date>
+  <where>private mail</where>
+<pre>
+Finally, wherever the ABNF ends up, note that the ABNF given in
+rfc2396bis has several errors.  In summary: dec-octet matches "12345";
+dec-octet doesn't match "039" (convention does allow leading zeroes, up
+to three digits total); IPv6address matches "::123:"; IPv6address doesn't
+match "1:2:3:4:5:6::" or "1:2:3:4:5:6:7::"; IPv6address doesn't match
+"1:2:3:4:5::9.9.9.9".  The revised ABNF that I give below corrects all
+of these errors, and I strongly believe it to be completely correct.
+(I also revised the layout, and having experimented with variants I
+think this is as neat as it can be subject to RFC line length limits.)
+
+        IPv6address =                        7(h4 ":") h4
+                    /                   "::" 6(h4 ":") h4
+                    / [            h4 ] "::" 5(h4 ":") h4
+                    / [ *1(h4 ":") h4 ] "::" 4(h4 ":") h4
+                    / [ *2(h4 ":") h4 ] "::" 3(h4 ":") h4
+                    / [ *3(h4 ":") h4 ] "::" 2(h4 ":") h4
+                    / [ *4(h4 ":") h4 ] "::"   h4 ":"  h4
+                    / [ *5(h4 ":") h4 ] "::"           h4
+                    / [ *6(h4 ":") h4 ] "::"
+                    /                        6(h4 ":") IPv4address
+                    /                   "::" 5(h4 ":") IPv4address
+                    / [            h4 ] "::" 4(h4 ":") IPv4address
+                    / [ *1(h4 ":") h4 ] "::" 3(h4 ":") IPv4address
+                    / [ *2(h4 ":") h4 ] "::" 2(h4 ":") IPv4address
+                    / [ *3(h4 ":") h4 ] "::"   h4 ":"  IPv4address
+                    / [ *4(h4 ":") h4 ] "::"           IPv4address
+
+        h4          = 1*4HEXDIG
+
+        IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
+
+        dec-octet   = 1*2DIGIT                      ; 0-9, 00-99
+                    / ( "0" / "1" ) 2DIGIT          ; 000-199
+                    / "2" %x30-34 DIGIT             ; 200-249
+                    / "25" %x30-35                  ; 250-255
+
+(It's possible to considerably shorten the IPv6address rule by factoring
+out a production of ( h4 ":" h4 / IPv4address ), but I don't think it's
+any clearer, since we pedagogically distinguish IPv6 addresses with
+embedded IPv4 addresses from those that don't.)
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021205">05 Dec 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+How about this one:
+
+   IPv6address   = (                          6( h4 ":" ) ls32 )
+                 / (                     "::" 5( h4 ":" ) ls32 )
+                 / ( [              h4 ] "::" 4( h4 ":" ) ls32 )
+                 / ( [ *1( h4 ":" ) h4 ] "::" 3( h4 ":" ) ls32 )
+                 / ( [ *2( h4 ":" ) h4 ] "::" 2( h4 ":" ) ls32 )
+                 / ( [ *3( h4 ":" ) h4 ] "::"    h4 ":"   ls32 )
+                 / ( [ *4( h4 ":" ) h4 ] "::"             ls32 )
+                 / ( [ *5( h4 ":" ) h4 ] "::"             h4   )
+                 / ( [ *6( h4 ":" ) h4 ] "::"                  )
+
+   ls32          = ( h4 ":" h4 ) / IPv4address
+                 ; least-significant 32 bits of address
+</pre>
+ </action>
+</issue>
 </issuelist>
