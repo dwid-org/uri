@@ -205,7 +205,7 @@ URIs have a global scope and must be interpreted consistently regardless
 of context, though the result of that interpretation may be in relation
 to the end-user's context.  For example, "http://localhost/" has the same
 interpretation for every user of that reference, even though the network
-interface corresponding to localhost may be different for each end-user:
+interface corresponding to "localhost" may be different for each end-user:
 interpretation is independent of access.  However, an action made on
 the basis of that reference will take place in relation to the end-user's
 context, which implies that an action intended to refer to a single,
@@ -960,12 +960,14 @@ four octets is allowed by this grammar.
 <figure><preamble>
 <iref item="reg-name" primary="true"/>
 <iref item="registered name" primary="true"/>
-A host identified by a registered name is a string of
-characters that is intended for lookup within a locally-defined host or
-service name registry.  The most common of such registry mechanisms
-is the Domain Name System (DNS), as defined by
-Section 3 of <xref target="RFC1034"/> and
-Section 2.1 of <xref target="RFC1123"/>.  A DNS name consists of a
+A host identified by a registered name is a string of characters that is
+usually intended for lookup within a locally-defined host or service name
+registry, though the URI's scheme-specific semantics may require that a
+specific registry (or fixed name table) be used instead.
+The most common name registry mechanism is the Domain Name System (DNS).
+A host name intended for lookup in the DNS uses the syntax defined in
+Section 3.5 of <xref target="RFC1034"/> and
+Section 2.1 of <xref target="RFC1123"/>.    Such a name consists of a
 sequence of domain labels separated by ".", each domain label starting and
 ending with an alphanumeric character and possibly also containing "-"
 characters.  The rightmost domain label of a fully qualified domain name
@@ -976,10 +978,12 @@ some local domain.
 </preamble><artwork type="abnf">
    reg-name    = 0*255( unreserved / pct-encoded / sub-delims )
 </artwork><postamble>
-If the host component is defined and the registered name is empty
-(zero length), then the name defaults to "localhost".
-If "localhost" is not determined by a host name lookup, then it should be
-interpreted to mean the machine on which the URI is being resolved.
+If the URI scheme defines a default for host, then that default applies
+when the host subcomponent is undefined or when the registered name is
+empty (zero length).  For example, the "file" URI scheme is defined such
+that no authority, an empty host, and "localhost" all mean the end-user's
+machine, whereas the "http" scheme considers a missing authority or
+empty host to be invalid.
 </postamble></figure>
 <t>
 This specification does not mandate a particular registered name lookup
@@ -2025,9 +2029,9 @@ for the "http" scheme.
 Another case where normalization varies by scheme is in the handling
 of an empty authority component.  For many scheme specifications, an
 empty authority is considered an error; for others, it is considered
-equivalent to "localhost".  For the sake of uniformity, future scheme
-specifications should define an empty authority as being equivalent
-to "localhost" and prefer the empty form for the sake of brevity and
+equivalent to "localhost".  When a scheme defines a default for authority
+and a URI reference to that default is desired, the reference should
+have an empty authority for the sake of uniformity, brevity, and
 internationalization.
 </t>
 </section>
@@ -2071,8 +2075,8 @@ with respect to their scheme.  Specifically:
   <t>Only perform percent-encoding where it is essential.</t>
   <t>Always use uppercase A-through-F characters when percent-encoding.</t>
   <t>Prevent /./ and /../ from appearing in non-relative URI paths.</t>
-  <t>For schemes that define an empty authority to be equivalent to
-     "localhost", use an empty authority.</t>
+  <t>For schemes that define a default authority, use an empty authority
+     if the default is desired.</t>
   <t>For schemes that define an empty path to be equivalent to a path
      of "/", use "/".</t>
 </list>
