@@ -49,12 +49,6 @@
 <tr>
 <td nowrap="nowrap"><a href="#032-component-examples">032-component-examples</a></td><td>add more examples for generic syntax components</td><td>examples</td><td nowrap="nowrap">pending</td>
 </tr>
-<tr>
-<td nowrap="nowrap"><a href="#043-same-scheme">043-same-scheme</a></td><td>Should reference resolver ignore scheme if same as base URI</td><td>relative</td><td nowrap="nowrap">pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#019-URI-URL-URN">019-URI-URL-URN</a></td><td>URI/URL/URN contemporary view</td><td>terminology</td><td nowrap="nowrap">reopened</td>
-</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -158,6 +152,9 @@
 <td nowrap="nowrap"><a href="#022-definitions">022-definitions</a></td><td>definitions for operations on URIs</td><td>terminology</td><td nowrap="nowrap">added 02</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#019-URI-URL-URN">019-URI-URL-URN</a></td><td>URI/URL/URN contemporary view</td><td>terminology</td><td nowrap="nowrap">fixed 03</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#033-dot-segments">033-dot-segments</a></td><td>relativising an absolute reference should be invertible</td><td>relative</td><td nowrap="nowrap">fixed 03</td>
 </tr>
 </table>
@@ -183,6 +180,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#036-host-escaping">036-host-escaping</a></td><td>%HH escaping should be allowed on hostname</td><td>characters</td><td nowrap="nowrap">closed</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#043-same-scheme">043-same-scheme</a></td><td>Should reference resolver ignore scheme if same as base URI?</td><td>relative</td><td nowrap="nowrap">closed</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#001-file">001-file</a></td><td>file scheme implementations vary on use of authority component</td><td>scheme</td><td nowrap="nowrap">postponed</td>
@@ -2064,7 +2064,7 @@ limit each decimal octet to the range 0-255.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="019-URI-URL-URN">019-URI-URL-URN</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">URI/URL/URN contemporary view</font></th>
 </tr>
 <tr>
-<th>reopened</th><th align="left">terminology</th>
+<th bgcolor="lightgreen">fixed 03</th><th align="left">terminology</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2175,6 +2175,17 @@ contemporary view the only term of any significance is 'URI'. IMO the term
 'URN' should be deprecated wholesale along with the term 'URL'. The 'urn'
 scheme just marks out a certain class of URIs which have a particular
 semantics - i.e. 'persistence'.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  06 Jun 2003,
+  draft 03:
+  <pre>
+Removed the two sentences on deprecation -- they are not worth the
+effort that has alredy been spent on it.
 </pre>
 </td>
 </tr>
@@ -4461,10 +4472,10 @@ This has been fixed in the rewrite for draft 02.
 <br>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th bgcolor="#FFFFCC"><font size="+2"><a name="043-same-scheme">043-same-scheme</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Should reference resolver ignore scheme if same as base URI</font></th>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="043-same-scheme">043-same-scheme</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Should reference resolver ignore scheme if same as base URI?</font></th>
 </tr>
 <tr>
-<th>pending</th><th align="left">relative</th>
+<th bgcolor="lightgrey">closed</th><th align="left">relative</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -4566,6 +4577,16 @@ references within it mangled by the parser:  e.g., an absolute ref
 to "this:that" would be forced into "this:/that".  Since this is
 no longer the case with the new algorithm, we could fix this once
 and for all by specifying the loophole result as the standard.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  06 Jun 2003,
+  issues list:
+  <pre>
+Closed due to lack of interest.
 </pre>
 </td>
 </tr>

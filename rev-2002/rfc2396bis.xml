@@ -247,20 +247,19 @@ The following examples illustrate URIs that are in common use.
 <t>
 A URI can be further classified as a locator, a name, or both.  The
 term "Uniform Resource Locator" (URL) refers to the subset of URIs
-that, in addition to identifying the resource, provide a means of
+that, in addition to identifying a resource, provide a means of
 locating the resource by describing its primary access mechanism
 (e.g., its network "location").  The term "Uniform Resource Name" (URN)
-refers to the subset of URIs that are required to remain globally unique and
-persistent even when the resource ceases to exist or becomes unavailable.
+refers to URIs under the "urn" scheme <xref target="RFC2141"/>, which
+are required to remain globally unique and persistent even when the
+resource ceases to exist or becomes unavailable.
 </t>
 <t>
 An individual scheme does not need to be classified as being just one of
 "name" or "locator".  Instances of URIs from any given scheme may have
 the characteristics of names or locators or both, often depending on the
 persistence and care in the assignment of identifiers by the naming
-authority, rather than any quality of the scheme.  This specification
-deprecates use of the term "URN" for anything but URIs in the "urn" scheme
-<xref target="RFC2141"/>.  This specification also deprecates the term "URL".
+authority, rather than any quality of the scheme.
 </t>
 </section>
 

@@ -1767,7 +1767,7 @@ limit each decimal octet to the range 0-255.
  <type>terminology</type>
  <name>019-URI-URL-URN</name>
  <title>URI/URL/URN contemporary view</title>
- <status>reopened</status>
+ <status>fixed 03</status>
  <report>
   <author email="michael_AT_neonym.net">Michael Mealling</author>
   <date sort="20020501">01 May 2002</date>
@@ -1870,6 +1870,15 @@ scheme just marks out a certain class of URIs which have a particular
 semantics - i.e. 'persistence'.
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030606">06 Jun 2003</date>
+  <where>draft 03</where>
+<pre>
+Removed the two sentences on deprecation -- they are not worth the
+effort that has alredy been spent on it.
+</pre>
+ </action>
 </issue>
 
 <issue>
@@ -3935,8 +3944,8 @@ This has been fixed in the rewrite for draft 02.
 <issue>
  <type>relative</type>
  <name>043-same-scheme</name>
- <title>Should reference resolver ignore scheme if same as base URI</title>
- <status>pending</status>
+ <title>Should reference resolver ignore scheme if same as base URI?</title>
+ <status>closed</status>
  <report>
   <author email="cameron_AT_cs.sfu.ca">Rob Cameron</author>
   <date sort="20030530">30 May 2003</date>
@@ -4032,6 +4041,14 @@ references within it mangled by the parser:  e.g., an absolute ref
 to "this:that" would be forced into "this:/that".  Since this is
 no longer the case with the new algorithm, we could fix this once
 and for all by specifying the loophole result as the standard.
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030606">06 Jun 2003</date>
+  <where>issues list</where>
+<pre>
+Closed due to lack of interest.
 </pre>
  </action>
 </issue>
