@@ -1370,10 +1370,11 @@ table.closedissue {
       <p>
          All URIs are parsed by generic syntax parsers when used. A URI scheme that
          wishes to remain opaque to hierarchical processing must disallow the use
-         of slash and question mark characters.  However, since a non-relative URI
-         reference is only modified by the generic parser if it contains complete
-         path segments of "." or ".." (see <a href="#path" title="Path">Section&nbsp;3.3</a>), URIs may safely
-         use "/" for other purposes if they do not allow dot-segments.
+         of slash and question mark characters.  However, since a URI reference is
+         only modified by the generic parser if it contains a dot-segment (a complete
+         path segment of "." or "..", as described in <a href="#path" title="Path">Section&nbsp;3.3</a>),
+         URI schemes may safely use "/" for other purposes if they do not allow
+         dot-segments.
          
       </p>
       <h2><a name="rfc.iref.18"></a><a name="rfc.iref.19"></a><a name="rfc.iref.20"></a><a name="rfc.iref.21"></a><a name="rfc.iref.22"></a><a name="rfc.iref.23"></a><a name="rfc.iref.24"></a><a name="rfc.iref.25"></a><a name="rfc.iref.26"></a><a name="rfc.iref.27"></a><a name="rfc.section.1.3">1.3</a>&nbsp;
@@ -2063,9 +2064,10 @@ table.closedissue {
       </p>
       <div><a name="rfc.section.3.3.p.4"></a></div>
       <p>
-         The path segments "." and ".." are defined for relative reference within
-         the path name hierarchy.  They are intended for use at the beginning of
-         a relative path reference (<a href="#relative-uri" title="Relative URI">Section&nbsp;4.2</a>) for indicating
+         The path segments "." and "..", also known as dot-segments, are defined for
+         relative reference within the path name hierarchy.
+         They are intended for use at the beginning of a relative path reference
+         (<a href="#relative-uri" title="Relative URI">Section&nbsp;4.2</a>) for indicating
          relative position within the hierarchical tree of names.  This is similar
          to their role within some operating systems' file directory structure to
          indicate the current directory and parent directory, respectively.
@@ -3166,7 +3168,7 @@ table.closedissue {
          
          <li>Always use uppercase A-through-F characters when percent-encoding.</li>
          
-         <li>Prevent /./ and /../ from appearing in non-relative URI paths.</li>
+         <li>Prevent dot-segments appearing in non-relative URI paths.</li>
          
          <li>For schemes that define a default authority, use an empty authority
             if the default is desired.

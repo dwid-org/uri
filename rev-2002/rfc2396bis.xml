@@ -469,10 +469,11 @@ are compelling reasons to forbid relative referencing within that scheme.
 <t>
 All URIs are parsed by generic syntax parsers when used. A URI scheme that
 wishes to remain opaque to hierarchical processing must disallow the use
-of slash and question mark characters.  However, since a non-relative URI
-reference is only modified by the generic parser if it contains complete
-path segments of "." or ".." (see <xref target="path"/>), URIs may safely
-use "/" for other purposes if they do not allow dot-segments.
+of slash and question mark characters.  However, since a URI reference is
+only modified by the generic parser if it contains a dot-segment (a complete
+path segment of "." or "..", as described in <xref target="path"/>),
+URI schemes may safely use "/" for other purposes if they do not allow
+dot-segments.
 </t>
 </section>
 
@@ -1132,9 +1133,10 @@ the URI &lt;foo://info.example.com?fred&gt; has an empty path.
 </t>
 <iref item="dot-segments" primary="true"/>
 <t>
-The path segments "." and ".." are defined for relative reference within
-the path name hierarchy.  They are intended for use at the beginning of
-a relative path reference (<xref target="relative-uri"/>) for indicating
+The path segments "." and "..", also known as dot-segments, are defined for
+relative reference within the path name hierarchy.
+They are intended for use at the beginning of a relative path reference
+(<xref target="relative-uri"/>) for indicating
 relative position within the hierarchical tree of names.  This is similar
 to their role within some operating systems' file directory structure to
 indicate the current directory and parent directory, respectively.
@@ -2106,7 +2108,7 @@ with respect to their scheme.  Specifically:
   <t>Always provide the host, if any, in lowercase characters.</t>
   <t>Only perform percent-encoding where it is essential.</t>
   <t>Always use uppercase A-through-F characters when percent-encoding.</t>
-  <t>Prevent /./ and /../ from appearing in non-relative URI paths.</t>
+  <t>Prevent dot-segments appearing in non-relative URI paths.</t>
   <t>For schemes that define a default authority, use an empty authority
      if the default is desired.</t>
   <t>For schemes that define an empty path to be equivalent to a path
