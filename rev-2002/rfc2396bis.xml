@@ -416,17 +416,6 @@ identifiers through the consistent use of familiar syntax, this
 uniform representation of hierarchy across naming schemes allows
 scheme-independent references to be made relative to that hierarchy.
 </t>
-<t>
-The slash ("/") character indicates hierarchy between the
-<xref target="scheme">scheme</xref> and the first question mark ("?") or
-number sign ("#"), or the end of the URI string.  In other words,
-the slash ("/") character does not indicate hierarchy within the
-the query (<xref target="query"/>) and fragment (<xref target="fragment"/>)
-components of a URI. URI schemes that do not adhere to the generic
-parser's hierarchical syntax may still use the slash ("/") character
-for any purpose, since its hierarchical interpretation is only relevant
-during the parsing of relative references.
-</t>
 <iref item="relative" primary="true"/>
 <t>
 It is often the case that a group or "tree" of documents has been
@@ -451,8 +440,16 @@ algorithm, presented in <xref target="reference-resolution"/>, defines
 how such a reference is transformed to the target URI.
 Since relative references can only be used within the context of a
 hierarchical URI, designers of new URI schemes should use a syntax
-conforming to the generic hierarchical syntax unless there are compelling
-reasons to forbid relative referencing within that scheme.
+consistent with the generic syntax's hierarchical components unless there
+are compelling reasons to forbid relative referencing within that scheme.
+</t>
+<t>
+All URIs are parsed by generic syntax parsers when used. A URI scheme that
+wishes to remain opaque to hierarchical processing must disallow the use
+of slash or question mark characters.  However, since a non-relative URI
+reference is only modified by the generic parser if it contains complete
+path segments of "." or ".." (see <xref target="path"/>), URIs may safely
+use "/" for other purposes if they do not allow dot-segments.
 </t>
 </section>
 

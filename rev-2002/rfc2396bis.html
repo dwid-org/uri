@@ -1399,20 +1399,6 @@ scheme-independent references to be made relative to that hierarchy.
 <a name="rfc.section.1.2.3.p.3"></a>
 </div>
 <p>
-The slash ("/") character indicates hierarchy between the
-<a href="#scheme">scheme</a> and the first question mark ("?") or
-number sign ("#"), or the end of the URI string.  In other words,
-the slash ("/") character does not indicate hierarchy within the
-the query (<a href="#query">section&nbsp;3.4</a>) and fragment (<a href="#fragment">section&nbsp;3.5</a>)
-components of a URI. URI schemes that do not adhere to the generic
-parser's hierarchical syntax may still use the slash ("/") character
-for any purpose, since its hierarchical interpretation is only relevant
-during the parsing of relative references.
-</p>
-<div>
-<a name="rfc.section.1.2.3.p.4"></a>
-</div>
-<p>
 It is often the case that a group or "tree" of documents has been
 constructed to serve a common purpose, wherein the vast majority of URIs
 in these documents point to resources within the tree rather than
@@ -1428,7 +1414,7 @@ Furthermore, such document trees can be moved, as a whole, without
 changing any of the relative references.
 </p>
 <div>
-<a name="rfc.section.1.2.3.p.5"></a>
+<a name="rfc.section.1.2.3.p.4"></a>
 </div>
 <p>
 A relative URI reference (<a href="#relative-uri">section&nbsp;4.2</a>) refers to a
@@ -1438,8 +1424,19 @@ algorithm, presented in <a href="#reference-resolution">section&nbsp;5</a>, defi
 how such a reference is transformed to the target URI.
 Since relative references can only be used within the context of a
 hierarchical URI, designers of new URI schemes should use a syntax
-conforming to the generic hierarchical syntax unless there are compelling
-reasons to forbid relative referencing within that scheme.
+consistent with the generic syntax's hierarchical components unless there
+are compelling reasons to forbid relative referencing within that scheme.
+</p>
+<div>
+<a name="rfc.section.1.2.3.p.5"></a>
+</div>
+<p>
+All URIs are parsed by generic syntax parsers when used. A URI scheme that
+wishes to remain opaque to hierarchical processing must disallow the use
+of slash or question mark characters.  However, since a non-relative URI
+reference is only modified by the generic parser if it contains complete
+path segments of "." or ".." (see <a href="#path">section&nbsp;3.3</a>), URIs may safely
+use "/" for other purposes if they do not allow dot-segments.
 </p>
 <h2>
 <a name="rfc.iref.18"></a><a name="rfc.iref.19"></a><a name="rfc.iref.20"></a><a name="rfc.iref.21"></a><a name="rfc.iref.22"></a><a name="rfc.iref.23"></a><a name="rfc.iref.24"></a><a name="rfc.iref.25"></a><a name="rfc.iref.26"></a><a name="rfc.iref.27"></a><a name="rfc.section.1.3">1.3</a>&nbsp;
