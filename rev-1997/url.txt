@@ -1,7 +1,7 @@
 Network Working Group                            T. Berners-Lee, MIT/LCS
 INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
-draft-fielding-url-syntax-06              L. Masinter, Xerox Corporation
-Expires six months after publication date                  July 30, 1997
+draft-fielding-url-syntax-07a             L. Masinter, Xerox Corporation
+Expires six months after publication date             September 17, 1997
 
     Uniform Resource Locators (URL): Generic Syntax and Semantics
 
@@ -99,8 +99,7 @@ Abstract
    identification of the resource location.  Having located a resource,
    a system may perform a variety of operations on the resource, as
    might be characterized by such words as `access', `update',
-   `replace', or `find attributes'.  This specification is only
-   concerned with the issue of identifying a resource by its location.
+   `replace', or `find attributes'.
 
 1.2. URL, URN, and URI
 
@@ -109,8 +108,9 @@ Abstract
    from a URL in that it identifies a resource in a
    location-independent fashion (see [RFC1737]). This specification
    restricts its discussion to URLs. The syntax and semantics of other
-   URIs are defined by a separate set of specifications.
-
+   URIs are defined by a separate set of specifications, although
+   it is expected that any URI notation would have a compatible syntax.
+   
 1.3. Example URLs
 
    The following examples illustrate URLs which are in common use.
@@ -143,7 +143,17 @@ Abstract
    protocol (e.g., both DNS and HTTP are typically used to access an
    "http" URL's resource when it can't be found in a local cache).
 
-1.4. URL Transcribability
+1.4. Hierarchical URLs and relative forms
+
+   URL schemes may support a hierarchical naming system, where the
+   hierarchy of the name is denoted by a "/" delimeter separating the
+   components in the scheme. There is a `relative' form of URL
+   reference which is used in conjunction with a `base' URL (of a
+   hierarchical scheme) to produce another URL. The syntax of
+   hierarchical URLs is described in section 4, and the relative
+   URL calculation is described in section 5.
+
+1.5. URL Transcribability
 
    The URL syntax was designed with global transcribability as one of
    its main concerns. A URL is a sequence of characters from a very
@@ -187,7 +197,7 @@ Abstract
    being able to use a wider range of characters; such use is not
    defined in this document.
 
-1.4. Syntax Notation and Common Elements
+1.6. Syntax Notation and Common Elements
 
    This document uses two conventions to describe and define the syntax
    for Uniform Resource Locators.  The first, called the layout form, is
@@ -278,7 +288,10 @@ Abstract
    there is a strong desire to provide for a general and uniform
    mapping between more general scripts and URLs, the standard for
    such use is outside of the scope of this document.
-   
+
+   More systematic treatment of character encoding within URLs is
+   currently under development.
+
 2.2. Reserved Characters
 
    Many URLs include components consisting of or delimited by, certain
@@ -524,38 +537,32 @@ Abstract
    specified host on the Internet use a common syntax for the <site>
    component of the URL's scheme-specific data:
 
-        <user>:<password>@<host>:<port>
+        <userinfo>@<host>:<port>
 
-   Some or all of the parts "<user>:<password>@", ":<password>", and
-   ":<port>" may be excluded.  The <site> component is preceded by a
-   double slash "//" and is terminated by the next slash "/" or by the
-   end of the URL.  Within the <site> component, the characters ":",
-   "@", "?", and "/" are reserved.
+   where <userinfo> may consist of an user name and, optionally,
+   scheme-specific info about how to authorize to the server.
+   
+   The parts "<userinfo>@", and ":<port>" may be omitted.  The <site>
+   component is preceded by a double slash "//" and is terminated by
+   the next slash "/" or by the end of the URL.  Within the <site>
+   component, the characters ":", "@", "?", and "/" are reserved.
 
-      site          = [ [ user [ ":" password ] "@" ] hostport ]
+      site          = [ [ userinfo ] "@" ] hostport ]
 
-   The user name and password, if present, are followed by a commercial
+   The user information, if present, is followed by a commercial
    at-sign "@".
 
-      user          = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+      userinfo      = *( unreserved | escaped | ":" | ";" |
+                         "&" | "=" | "+" )
 
-      password      = *( unreserved | escaped | ";" | "&" | "=" | "+" )
-
-   Note that an empty user name or password is different than no user
-   name or password; there is no way to specify a password without
-   specifying a user name.  E.g., <ftp://@host.com/> has an empty
-   user name and no password, <ftp://host.com/> has no user name,
-   while <ftp://foo:@host.com/> has a user name of "foo" and an
-   empty password.
-
-   The use of passwords (which appear as plain text) within URLs
-   is ill-advised except in the limited circumstance that the password
-   is not intended to be a secret. ("Log in as guest, password guest.")
-   Its appearance in the general syntax is not a recommendation for
-   use.
-
-   The host is a domain name of a network host, or its IPv4 address as a
-   set of four decimal digit groups separated by ".".  A suitable
+   Some older URL schemes use the format "user:password" in the
+   userinfo field. This practice is NOT RECOMMENDED, because the
+   passing of authentication information in clear text (such as URLs)
+   has proven to be a security risk in almost every case where it has
+   been used.
+   
+   The host is a domain name of a network host, or its IPv4 address as
+   a set of four decimal digit groups separated by ".".  A suitable
    representation for IPv6 addresses has not yet been determined.
 
       hostport      = host [ ":" port ]
@@ -790,15 +797,16 @@ Abstract
 
    Composite media types, such as the "multipart/*" and "message/*"
    media types defined by MIME[RFC2046], define a hierarchy of
-   retrieval context for their enclosed documents.  In other words, the
-   retrieval context of a component part is the base URL of the
-   composite entity of which it is a part.  Thus, a composite entity can
-   redefine the retrieval context of its component parts via the
+   retrieval context for their enclosed documents.  In other words,
+   the retrieval context of a component part is the base URL of the
+   composite entity of which it is a part.  Thus, a composite entity
+   can redefine the retrieval context of its component parts via the
    inclusion of a Content-Base or Content-Location header, and this
-   redefinition applies recursively for a hierarchy of composite parts.
-   Note that this might not change the base URL of the components, since
-   each component may include an embedded base URL or base-header that
-   takes precedence over the retrieval context.
+   redefinition applies recursively for a hierarchy of composite
+   parts.  Note that this might not change the base URL of the
+   components, since each component may include an embedded base URL
+   or a Content-Base or Content-Location header field header that
+   would take precedence over the retrieval context.
 
 5.1.3. Base URL from the Retrieval URL
 
@@ -812,14 +820,18 @@ Abstract
 5.1.4. Default Base URL
 
    If none of the conditions described in Sections 5.1.1--5.1.3 apply,
-   then the base URL is considered to be the empty string and all
-   URL references within that document are assumed to be absolute URLs.
+   then the base URL can be considered to be an imaginary URL, e.g.,
+   
+         this_message:/
 
+   which exists for the sole purpose of resolving relative references
+   within a multipart entity.
+   
    It is the responsibility of the distributor(s) of a document
    containing relative URLs to ensure that the base URL for that
    document can be established.  It must be emphasized that relative
-   URLs cannot be used reliably in situations where the document's base
-   URL is not well-defined.
+   URLs cannot be used reliably in situations where the document's
+   base URL is not well-defined.
 
 5.2. Resolving Relative References to Absolute Form
 
@@ -1107,9 +1119,9 @@ A. Collected BNF for URLs
 
       scheme        = 1*( alpha | digit | "+" | "-" | "." )
 
-      site          = [ [ user [ ":" password ] "@" ] hostport ]
-      user          = *( unreserved | escaped | ";" | "&" | "=" | "+" )
-      password      = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+      site          = [ [ userinfo ] "@" ] hostport ]
+      userinfo      = *( unreserved | escaped | ":" | ";" | "&" |
+                         "=" | "+" )
       hostport      = host [ ":" port ]
       host          = hostname | hostnumber
       hostname      = *( domainlabel "." ) toplabel
@@ -1274,23 +1286,20 @@ C.2.  Abnormal Examples
       g#s/./x       =  http://a/b/c/g#s/./x
       g#s/../x      =  http://a/b/c/g#s/../x
 
-   Note that within a relative URL, "?", ";", and "#" that are not
-   leading characters are not interpreted with their reserved meaning;
-   in some cases, this results in illegal URLs.
-
-   While the rules for resolving partial/relative URLs since the have
-   been such that if relative symbolic elements end up at the
-   beginning of paths they should be retained,
+   In practice, some implementations strip leading relative symbolic
+   elements (".", "..") after applying a relative URL calculation; for
+   example,
 
       /../s/x      =  http://a/../s/x
 
-   in practice, most parsers will strip lead relative symbolic
-   elements in the destination URL, such that
-
-     /../s/x       = http://a/s/x   
-
-   Because of the ambiguity, such relative forms should be avoided.
+   but many URL parsers will instead produce "http://a/s/x". For this
+   reason, such relative forms should be avoided.
    
+   Note that within a relative URL, the characters "?", ";", and "#",
+   when they do not appear in the leading position, are not treated
+   specially for the purpose of the relative URL calculation; only the
+   resulting full URL is examined for reserved characters.
+
    Some parsers allow the scheme name to be present in a relative URL
    if it is the same as the base URL scheme.  This is considered to be
    a loophole in prior specifications of partial URLs [RFC1630]. Its
@@ -1298,12 +1307,6 @@ C.2.  Abnormal Examples
 
       http:g        =  http:g
       http:         =  http:
-
-
-   Some parsers inappropriately strip a lead relative symbolic path
-   element from resolved paths in requests with some schemes.
-
-      http://a/../b/c =  http://a/b/c
 
 D. Embedding the Base URL in HTML documents
 
@@ -1436,8 +1439,13 @@ F.2. Modifications from both RFC 1738 and RFC 1808
    since it is extensively used on the Internet in spite of the
    difficulty to transcribe it with some keyboards.
 
+   The "user:password" form in the previous BNF was changed to
+   a "userinfo" token, and the possibility that it might be
+   "user:password" made scheme specific. In particular, the use
+   of passwords in the clear is not even suggested by the syntax.
+
    The question-mark "?" character was removed from the set of allowed
-   characters for the user and password in the site component, since
+   characters for the userinfo in the site component, since
    testing showed that many applications treat it as reserved for
    separating the query component from the rest of the URL.
 
