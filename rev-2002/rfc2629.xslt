@@ -414,9 +414,24 @@
     Fix vspace implementation. Use right/left dqoutes and copyright sign
     where appropriate.
     
-    2005-02-03  julian.reschke@greenbytes.de
+    2005-02-04  julian.reschke@greenbytes.de
     
-    Add <link> element to references section.
+    Add <link> element to references section.  Fix newly introduced bug
+    in references processing.
+    
+    2005-02-05  julian.reschke@greenbytes.de
+   
+    Integrate various fixes/enhancements by Roy Fielding: spelling of
+    "Authors' Addresses", comma setting in references, position of "Authors"
+    section, optionally place authors addresses at end (PI), trailing dots
+    in section numbers, switch to verdana default font in CSS.  Add
+    experimental support for centered artwork.
+    
+    2005-02-08  julian.reschke@greenbytes.de
+
+    Fixes in spacing and links of references section titles.  Enhance sorting
+    in references when change tracking is in place.  Re-add figure centering
+    support.
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -562,7 +577,7 @@
 
 <!-- extension for XML parsing in artwork -->
 
-<xsl:param name="parse-xml-in-artwork"
+<xsl:param name="xml2rfc-ext-parse-xml-in-artwork"
   select="substring-after(
       translate(/processing-instruction('rfc-ext')[contains(.,'parse-xml-in-artwork=')], concat($quote-chars,' '), ''),
         'parse-xml-in-artwork=')"
@@ -582,6 +597,22 @@
   select="substring-after(
       translate(/processing-instruction('rfc-ext')[contains(.,'allow-markup-in-artwork=')], concat($quote-chars,' '), ''),
         'allow-markup-in-artwork=')"
+/>
+
+<!-- position of author's section -->
+
+<xsl:param name="xml2rfc-ext-authors-section"
+  select="substring-after(
+      translate(/processing-instruction('rfc-ext')[contains(.,'authors-section=')], concat($quote-chars,' '), ''),
+        'authors-section=')"
+/>
+
+<!-- trailing dots in section numbers -->
+
+<xsl:param name="xml2rfc-ext-sec-no-trailing-dots"
+  select="substring-after(
+      translate(/processing-instruction('rfc-ext')[contains(.,'sec-no-trailing-dots=')], concat($quote-chars,' '), ''),
+        'sec-no-trailing-dots=')"
 />
 
 <!-- choose whether or not to do mailto links --> 
@@ -674,7 +705,7 @@
 </msxsl:script>
 
 <xsl:template match="artwork">
-  <xsl:if test="not(ancestor::ed:del) and $parse-xml-in-artwork='yes' and function-available('myns:parseXml')">
+  <xsl:if test="not(ancestor::ed:del) and $xml2rfc-ext-parse-xml-in-artwork='yes' and function-available('myns:parseXml')">
     <xsl:if test="contains(.,'&lt;?xml')">
       <xsl:variable name="body" select="substring-after(substring-after(.,'&lt;?xml'),'?>')" /> 
       <xsl:if test="$body!='' and myns:parseXml($body)!=''">
@@ -695,14 +726,35 @@
       </xsl:if>
     </xsl:if>
   </xsl:if>
-  <xsl:choose>
-    <xsl:when test="$xml2rfc-ext-allow-markup-in-artwork='yes'">
-      <pre>
+  <xsl:variable name="display">
+    <xsl:choose>
+      <xsl:when test="$xml2rfc-ext-allow-markup-in-artwork='yes'">
         <xsl:apply-templates/>
-      </pre>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="."/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>  
+  <xsl:choose>
+    <xsl:when test="@align='right'">
+      <div style="display:table; margin-left: auto; margin-right: 0pt; width: 0pt;">
+        <pre style="margin-left: 0em;">
+          <xsl:copy-of select="$display"/>
+        </pre>          
+      </div>
+    </xsl:when>
+    <xsl:when test="@align='center'">
+      <div style="display:table; margin-left: auto; margin-right: auto; width: 0pt;">
+        <pre style="margin-left: 0em;">
+          <xsl:copy-of select="$display"/>
+        </pre>          
+      </div>
     </xsl:when>
     <xsl:otherwise>
-      <pre><xsl:value-of select="."/></pre>
+      <pre>
+        <xsl:copy-of select="$display"/>
+      </pre>
     </xsl:otherwise>
   </xsl:choose>
   <xsl:call-template name="check-artwork-width">
@@ -823,12 +875,18 @@
     <xsl:call-template name="insertComments" />
   </xsl:if>
   
+  <!-- next, add information about the document's authors -->
+  <xsl:if test="$xml2rfc-ext-authors-section!='end'">
+    <xsl:call-template name="insertAuthors" />
+  </xsl:if>
+     
   <!-- add all other top-level sections under <back> -->
   <xsl:apply-templates select="*[not(self::references)]" />
 
-  <!-- next, add information about the document's authors -->
-  <xsl:call-template name="insertAuthors" />
-    
+  <xsl:if test="$xml2rfc-ext-authors-section='end'">
+    <xsl:call-template name="insertAuthors" />
+  </xsl:if>
+
   <xsl:if test="not($xml2rfc-private)">
     <!-- copyright statements -->
     <xsl:variable name="copyright"><xsl:call-template name="insertCopyright" /></xsl:variable>
@@ -1172,7 +1230,7 @@
               </xsl:if>
             </xsl:variable>
             <xsl:choose>
-               <xsl:when test="address/email">
+              <xsl:when test="address/email">
                 <a>
                   <xsl:if test="$xml2rfc-linkmailto!='no'">
                     <xsl:attribute name="href">mailto:<xsl:value-of select="address/email" /></xsl:attribute>
@@ -1187,13 +1245,14 @@
                 <xsl:value-of select="$displayname" />
               </xsl:otherwise>
             </xsl:choose>
+            
             <xsl:choose>
               <xsl:when test="position()=last() - 1">
                 <xsl:if test="last() &gt; 2">,</xsl:if>
                 <xsl:text> and </xsl:text>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:text>,&#0160;</xsl:text>
+                <xsl:text>, </xsl:text>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
@@ -1206,13 +1265,14 @@
                 <xsl:value-of select="organization" />
               </xsl:otherwise>
             </xsl:choose>
+            
             <xsl:choose>
               <xsl:when test="position()=last() - 1">
                 <xsl:if test="last() &gt; 2">,</xsl:if>
                 <xsl:text> and </xsl:text>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:text>,&#0160;</xsl:text>
+                <xsl:text>, </xsl:text>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
@@ -1271,8 +1331,12 @@
       <xsl:variable name="sectionNumber">
         <xsl:call-template name="get-references-section-number"/>
       </xsl:variable>
-      <a name="{$anchor-prefix}.section.{$sectionNumber}"><xsl:value-of select="$sectionNumber" /></a>
-      <xsl:text>&#0160;</xsl:text>
+      <a name="{$anchor-prefix}.section.{$sectionNumber}" href="#{$anchor-prefix}.section.{$sectionNumber}">
+        <xsl:call-template name="emit-section-number">
+          <xsl:with-param name="no" select="$sectionNumber"/>
+        </xsl:call-template>
+      </a>
+      <xsl:text> </xsl:text>
       <a href="#{$anchor-prefix}.references">References</a>
     </h1>
   </xsl:if>
@@ -1297,10 +1361,14 @@
         <xsl:otherwise>.<xsl:value-of select="$name"/></xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <xsl:attribute name="id"><xsl:value-of select="concat($anchor-prefix,'.references',$anchorpref)"/></xsl:attribute>
     <a name="{$anchor-prefix}.references{$anchorpref}"/>
-    <a name="{$anchor-prefix}.section.{$sectionNumber}"/>
-    <xsl:value-of select="$sectionNumber" />
-    <xsl:text>&#0160;</xsl:text>
+    <a href="#{$anchor-prefix}.section.{$sectionNumber}">
+      <xsl:call-template name="emit-section-number">
+        <xsl:with-param name="no" select="$sectionNumber"/>
+      </xsl:call-template>
+    </a>
+    <xsl:text> </xsl:text>
     <xsl:choose>
       <xsl:when test="not(@title) or @title=''">References</xsl:when>
       <xsl:otherwise><xsl:value-of select="@title"/></xsl:otherwise>
@@ -1310,8 +1378,8 @@
   <table summary="{@title}" border="0" cellpadding="2">
     <xsl:choose>
       <xsl:when test="$xml2rfc-sortrefs='yes'">
-        <xsl:apply-templates select="reference">
-          <xsl:sort select="@anchor" />
+        <xsl:apply-templates>
+          <xsl:sort select="@anchor|.//ed:ins//reference/@anchor" />
         </xsl:apply-templates>
       </xsl:when>
       <xsl:otherwise>
@@ -1528,8 +1596,12 @@
     <xsl:call-template name="insertInsDelClass" />
         
     <xsl:if test="$sectionNumber!=''">
-      <a href="#{$anchor-prefix}.section.{$sectionNumber}"><xsl:value-of select="$sectionNumber" /></a>
-      <xsl:text>.&#0160;</xsl:text>
+      <a href="#{$anchor-prefix}.section.{$sectionNumber}">
+        <xsl:call-template name="emit-section-number">
+          <xsl:with-param name="no" select="$sectionNumber"/>
+        </xsl:call-template>
+      </a>
+      <xsl:text>&#0160;</xsl:text>
     </xsl:if>
     <xsl:choose>
       <xsl:when test="@anchor">
@@ -1855,10 +1927,7 @@
     
   <h1 id="{$anchor-prefix}.authors">
     <xsl:call-template name="insert-conditional-pagebreak"/>
-    <xsl:choose>
-      <xsl:when test="count(/rfc/front/author)=1">Author's Address</xsl:when>
-      <xsl:otherwise>Authors' Addresses</xsl:otherwise>
-   </xsl:choose>
+    Author's Address<xsl:if test="count(/rfc/front/author) &gt; 1">es</xsl:if>
   </h1>
 
   <table summary="Authors" width="99%" border="0" cellpadding="0" cellspacing="0">
@@ -2031,14 +2100,11 @@ body {
 dl {
   margin-left: 2em;
 }
-h1, h2, h3, h4, h5 {
-  font-family: verdana, helvetica, arial, sans-serif;
-  page-break-after: avoid;
-}
 h1 {
   color: #333333;
   font-size: 14pt;
   line-height: 21pt;
+  page-break-after: avoid;
 }
 h1.np {
   page-break-before: always;
@@ -2050,6 +2116,7 @@ h2 {
   color: #000000;
   font-size: 12pt;
   line-height: 15pt;
+  page-break-after: avoid;
 }
 h2 a {
   color: #000000;
@@ -2057,6 +2124,7 @@ h2 a {
 h3 {
   color: #000000;
   font-size: 10pt;
+  page-break-after: avoid;
 }
 h3 a {
   color: #000000;
@@ -2064,6 +2132,7 @@ h3 a {
 h4 {
   color: #000000;
   font-size: 10pt;
+  page-break-after: avoid;
 }
 h4 a {
   color: #000000;
@@ -2071,6 +2140,7 @@ h4 a {
 h5 {
   color: #000000;
   font-size: 10pt;
+  page-break-after: avoid;
 }
 h5 a {
   color: #000000;
@@ -2126,7 +2196,7 @@ thead {
 }
 ul.toc {
   list-style: none;
-  margin-left: 2em;
+  margin-left: 1.5em;
   margin-right: 0em;
   padding-left: 0em;
 }
@@ -2278,7 +2348,6 @@ table.closedissue {
     width: 50%;
     color: black;
     background-color: white;
-    font-family: verdana, arial, helvetica, sans-serif;
     vertical-align: top;
     font-size: 10pt;
   }
@@ -2287,7 +2356,6 @@ table.closedissue {
     width: 33%;
     color: black;
     background-color: white;
-    font-family: verdana, arial, helvetica, sans-serif;
     vertical-align: top;
     text-align: right;
     font-size: 10pt;
@@ -2304,27 +2372,21 @@ table.closedissue {
 
 @page {
   @top-left {
-       font-family: verdana, helvetica, arial, sans-serif; 
        content: "<xsl:call-template name="get-header-left"/>"; 
   } 
   @top-right {
-       font-family: verdana, helvetica, arial, sans-serif; 
        content: "<xsl:call-template name="get-header-right"/>"; 
   } 
   @top-center {
-       font-family: verdana, helvetica, arial, sans-serif; 
        content: "<xsl:call-template name="get-header-center"/>"; 
   } 
   @bottom-left {
-       font-family: verdana, helvetica, arial, sans-serif; 
        content: "<xsl:call-template name="get-author-summary"/>"; 
   } 
   @bottom-center {
-       font-family: verdana, helvetica, arial, sans-serif; 
        content: "<xsl:call-template name="get-category-long"/>"; 
   } 
   @bottom-right {
-       font-family: verdana, helvetica, arial, sans-serif; 
        content: "[Page " counter(page) "]"; 
   } 
 }
@@ -2372,7 +2434,7 @@ table.closedissue {
       <xsl:variable name="n">
         <xsl:choose>
           <xsl:when test="$_n!=''">
-            <xsl:value-of select="$_n"/>
+            <xsl:value-of select="$_n"/><xsl:if test="$xml2rfc-ext-sec-no-trailing-dots='yes'">.</xsl:if>
           </xsl:when>
           <xsl:otherwise>&#167;</xsl:otherwise>
         </xsl:choose>
@@ -2689,8 +2751,12 @@ table.closedissue {
               <xsl:attribute name="class">tocline1</xsl:attribute>
             </xsl:otherwise>
           </xsl:choose>
-          <xsl:value-of select="$number" />
-          <xsl:text>.&#160;&#160;&#160;</xsl:text>
+          <xsl:if test="$number != ''">
+            <xsl:call-template name="emit-section-number">
+              <xsl:with-param name="no" select="$number"/>
+            </xsl:call-template>
+            <xsl:text>&#160;&#160;&#160;</xsl:text>
+          </xsl:if>
           <a href="#{$target}"><xsl:value-of select="$title"/></a>
         </xsl:otherwise>
       </xsl:choose>
@@ -2705,21 +2771,25 @@ table.closedissue {
   <xsl:if test="//cref and $xml2rfc-comments='yes' and $xml2rfc-inline!='yes'">
     <li>
       <xsl:call-template name="insert-toc-line">
-        <xsl:with-param name="number" select="'&#167;'"/>
         <xsl:with-param name="target" select="concat($anchor-prefix,'.comments')"/>
         <xsl:with-param name="title" select="'Editorial Comments'"/>
       </xsl:call-template>
     </li>
   </xsl:if>
 
+  <xsl:if test="$xml2rfc-ext-authors-section!='end'">
+    <xsl:apply-templates select="/rfc/front" mode="toc" />
+  </xsl:if>
   <xsl:apply-templates select="*[not(self::references)]" mode="toc" />
-  <xsl:apply-templates select="/rfc/front" mode="toc" />
+
+  <xsl:if test="$xml2rfc-ext-authors-section='end'">
+    <xsl:apply-templates select="/rfc/front" mode="toc" />
+  </xsl:if>
 
   <!-- copyright statements -->
   <xsl:if test="not($xml2rfc-private)">
     <li>
       <xsl:call-template name="insert-toc-line">
-        <xsl:with-param name="number" select="'&#167;'"/>
         <xsl:with-param name="target" select="concat($anchor-prefix,'.ipr')"/>
         <xsl:with-param name="title" select="'Intellectual Property and Copyright Statements'"/>
       </xsl:call-template>
@@ -2730,7 +2800,6 @@ table.closedissue {
   <xsl:if test="//iref">
     <li>
       <xsl:call-template name="insert-toc-line">
-        <xsl:with-param name="number" select="'&#167;'"/>
         <xsl:with-param name="target" select="concat($anchor-prefix,'.index')"/>
         <xsl:with-param name="title" select="'Index'"/>
       </xsl:call-template>
@@ -2748,7 +2817,6 @@ table.closedissue {
   
   <li>
     <xsl:call-template name="insert-toc-line">
-      <xsl:with-param name="number" select="'&#167;'"/>
       <xsl:with-param name="target" select="concat($anchor-prefix,'.authors')"/>
       <xsl:with-param name="title" select="$title"/>
     </xsl:call-template>
@@ -3531,11 +3599,11 @@ table.closedissue {
   <xsl:variable name="gen">
     <xsl:text>http://greenbytes.de/tech/webdav/rfc2629.xslt, </xsl:text>
     <!-- when RCS keyword substitution in place, add version info -->
-    <xsl:if test="contains('$Revision: 1.20 $',':')">
-      <xsl:value-of select="concat('Revision ',normalize-space(translate(substring-after('$Revision: 1.20 $', 'Revision: '),'$','')),', ')" />
+    <xsl:if test="contains('$Revision: 1.21 $',':')">
+      <xsl:value-of select="concat('Revision ',normalize-space(translate(substring-after('$Revision: 1.21 $', 'Revision: '),'$','')),', ')" />
     </xsl:if>
-    <xsl:if test="contains('$Date: 2005/02/05 15:55:45 $',':')">
-      <xsl:value-of select="concat(normalize-space(translate(substring-after('$Date: 2005/02/05 15:55:45 $', 'Date: '),'$','')),', ')" />
+    <xsl:if test="contains('$Date: 2005/02/09 02:22:30 $',':')">
+      <xsl:value-of select="concat(normalize-space(translate(substring-after('$Date: 2005/02/09 02:22:30 $', 'Date: '),'$','')),', ')" />
     </xsl:if>
     <xsl:value-of select="concat('XSLT vendor: ',system-property('xsl:vendor'),' ',system-property('xsl:vendor-url'))" />
   </xsl:variable>
@@ -3593,6 +3661,11 @@ table.closedissue {
 <!-- get the section number for the references section -->
 <xsl:template name="get-references-section-number">
   <xsl:value-of select="count(/rfc/middle/section) + 1"/>
+</xsl:template>
+
+<xsl:template name="emit-section-number">
+  <xsl:param name="no"/>
+  <xsl:value-of select="$no"/><xsl:if test="$xml2rfc-ext-sec-no-trailing-dots='yes'">.</xsl:if>
 </xsl:template>
 
 <xsl:template name="get-section-type">
