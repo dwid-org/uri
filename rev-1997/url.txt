@@ -1,7 +1,7 @@
 Network Working Group                            T. Berners-Lee, MIT/LCS
 INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
-draft-fielding-url-syntax-07a             L. Masinter, Xerox Corporation
-Expires six months after publication date             September 17, 1997
+draft-fielding-url-syntax-07              L. Masinter, Xerox Corporation
+Expires six months after publication date             September 22, 1997
 
     Uniform Resource Locators (URL): Generic Syntax and Semantics
 
@@ -69,7 +69,7 @@ Abstract
          access mechanisms, and operations can be introduced without
          changing the protocols and data formats that use URLs.
          Uniformity of syntax means that the same locator is used
-         independent of the local, character representation, or
+         independent of the locale, character representation, or
          system type of the user entering the URL.
 
       Resource
@@ -143,15 +143,15 @@ Abstract
    protocol (e.g., both DNS and HTTP are typically used to access an
    "http" URL's resource when it can't be found in a local cache).
 
-1.4. Hierarchical URLs and relative forms
+1.4. Hierarchical URLs and Relative Forms
 
    URL schemes may support a hierarchical naming system, where the
-   hierarchy of the name is denoted by a "/" delimeter separating the
-   components in the scheme. There is a `relative' form of URL
-   reference which is used in conjunction with a `base' URL (of a
-   hierarchical scheme) to produce another URL. The syntax of
-   hierarchical URLs is described in section 4, and the relative
-   URL calculation is described in section 5.
+   hierarchy of the name is denoted by a "/" delimiter separating the
+   components in the scheme. There is a `relative' form of URL reference
+   which is used in conjunction with a `base' URL (of a hierarchical
+   scheme) to produce another URL. The syntax of hierarchical URLs is
+   described in section 4, and the relative URL calculation is described
+   in section 5.
 
 1.5. URL Transcribability
 
@@ -367,7 +367,7 @@ Abstract
    "mark" characters are automatically escaped by some systems. It is
    safe to unescape these within the body of a URL.  For example,
    "%7e" is sometimes used instead of "~" in http URL path, but the
-   two can be used interchangably.
+   two can be used interchangeably.
 
    Because the percent "%" character always has the reserved purpose of
    being the escape indicator, it must be escaped as "%25" in order to
@@ -384,7 +384,7 @@ Abstract
    and the reasons for their exclusion.
 
    The control characters in the US-ASCII coded character set are not
-   use within a URL, both because they are non-printable and because
+   used within a URL, both because they are non-printable and because
    they are likely to be misinterpreted by some control mechanisms.
 
    control     = <US-ASCII coded characters 00-1F and 7F hexadecimal>
@@ -449,7 +449,7 @@ Abstract
    retrieval action has been successfully completed.  As such, it is not
    part of a URL, but is often used in conjunction with a URL.  The
    format and interpretation of fragment identifiers is dependent on the
-   media type of the resource referenced by the URL.
+   media type of the retrieval result.
 
       fragment      = *urlc
 
@@ -461,10 +461,10 @@ Abstract
    reference should not result in an additional retrieval action.
 
    However, if the URL reference occurs in a context that is always
-   intended to result in a new request, as in the cases of HTML's
-   FORM "action" attribute and IMG "src" attribute [RFC1866], then
-   an empty URL reference represents the URL of the current document
-   and should be replaced by that URL when transformed into a request.
+   intended to result in a new request, as in the case of HTML's FORM
+   element, then an empty URL reference represents the base URL of the
+   current document and should be replaced by that URL when transformed
+   into a request.
 
 4. Generic URL Syntax
 
@@ -510,12 +510,20 @@ Abstract
 
       generic-URL   = scheme ":" relativeURL
 
+   The separation of the URL grammar into <generic-URL> and <opaque-URL>
+   is redundant, since both rules will successfully parse any string of
+   <urlc> characters.  The distinction is simply to clarify that a
+   parser of relative URL references (Section 5) will view a URL as a
+   generic-URL, whereas a handler of absolute references need only view
+   it as an opaque-URL.
+
    URLs which are hierarchical in nature use the slash "/" character for
    separating hierarchical components.  For some file systems, a "/"
    character (used to denote the hierarchical structure of a URL) is the
    delimiter used to construct a file name hierarchy, and thus the URL
    path will look similar to a file pathname.  This does NOT imply that
-   the URL is a Unix pathname.
+   the resource is a file or that the URL maps to an actual filesystem
+   pathname.
 
 4.3. URL Syntactic Components
 
@@ -533,21 +541,36 @@ Abstract
 
 4.3.1. Site Component
 
+   Many URL schemes include a top hierarchical element for a naming
+   authority, such that the namespace defined by the remainder of the
+   URL is governed by that authority.  This <site> component is
+   typically defined by an Internet-based server or a scheme-specific
+   registry of naming authorities.
+
+      site          = server | authority
+
+   The <site> component is preceded by a double slash "//" and is
+   terminated by the next slash "/", question-mark "?", or by the end of
+   the URL.  Within the <site> component, the characters ":", "@", "?",
+   and "/" are reserved.
+
+   The structure of a registry-based naming authority is specific to the
+   URL scheme, but constrained to the allowed characters for <site>.
+
+      authority     = *( unreserved | escaped |
+                         ";" | ":" | "@" | "&" | "=" | "+" )
+
    URL schemes that involve the direct use of an IP-based protocol to a
-   specified host on the Internet use a common syntax for the <site>
+   specified server on the Internet use a common syntax for the <site>
    component of the URL's scheme-specific data:
 
         <userinfo>@<host>:<port>
 
-   where <userinfo> may consist of an user name and, optionally,
-   scheme-specific info about how to authorize to the server.
-   
-   The parts "<userinfo>@", and ":<port>" may be omitted.  The <site>
-   component is preceded by a double slash "//" and is terminated by
-   the next slash "/" or by the end of the URL.  Within the <site>
-   component, the characters ":", "@", "?", and "/" are reserved.
+   where <userinfo> may consist of a user name and, optionally,
+   scheme-specific information about how to gain authorization to access
+   the server.  The parts "<userinfo>@" and ":<port>" may be omitted.
 
-      site          = [ [ userinfo ] "@" ] hostport ]
+      server        = [ [ userinfo ] "@" ] hostport ]
 
    The user information, if present, is followed by a commercial
    at-sign "@".
@@ -555,11 +578,10 @@ Abstract
       userinfo      = *( unreserved | escaped | ":" | ";" |
                          "&" | "=" | "+" )
 
-   Some older URL schemes use the format "user:password" in the
-   userinfo field. This practice is NOT RECOMMENDED, because the
-   passing of authentication information in clear text (such as URLs)
-   has proven to be a security risk in almost every case where it has
-   been used.
+   Some URL schemes use the format "user:password" in the <userinfo>
+   field. This practice is NOT RECOMMENDED, because the passing of
+   authentication information in clear text (such as URLs) has proven to
+   be a security risk in almost every case where it has been used.
    
    The host is a domain name of a network host, or its IPv4 address as
    a set of four decimal digit groups separated by ".".  A suitable
@@ -573,15 +595,15 @@ Abstract
       hostnumber    = 1*digit "." 1*digit "." 1*digit "." 1*digit
       port          = *digit
 
-   Hostnames take the form as described in Section 3.5 of [RFC1034]
-   and Section 2.1 of [RFC1123]: a sequence of domain labels separated
-   by ".", each domain label starting and ending with an
-   alphanumerical character and possibly also containing "-"
-   characters.  The rightmost domain label will never start with a
-   digit, though, which syntactically distinguishes all domain names
-   from hostnumbers. To actually be "Uniform" as a resource locator,
-   a URL hostname should be a fully qualified domain names. In practice,
-   however, the host component may be a local domain literal.
+   Hostnames take the form described in Section 3.5 of [RFC1034] and
+   Section 2.1 of [RFC1123]: a sequence of domain labels separated by
+   ".", each domain label starting and ending with an alphanumeric
+   character and possibly also containing "-" characters.  The rightmost
+   domain label will never start with a digit, though, which
+   syntactically distinguishes all domain names from hostnumbers. To
+   actually be "Uniform" as a resource locator, a URL hostname should
+   be a fully qualified domain name. In practice, however, the host
+   component may be a local domain literal.
 
    The port is the network port number for the server.  Most schemes
    designate protocols that have a default port number.  Another port
@@ -595,8 +617,9 @@ Abstract
 
 4.3.2. Path Component
 
-   The path component contains data, specific to the scheme or site,
-   regarding the details of how the resource can be accessed.
+   The path component contains data, specific to the site (or the scheme
+   if there is no site component), identifying the resource within the
+   scope of that scheme and site.
 
       path          = [ "/" ] path_segments
 
@@ -733,7 +756,7 @@ Abstract
       |  |  `----------------------------------------------'  |  |
       |  | (5.1.3) URL used to retrieve the entity            |  |
       |  `----------------------------------------------------'  |
-      | (5.1.4) Base URL = "" (undefined)                        |
+      | (5.1.4) Base URL = "this_message:/"                      |
       `----------------------------------------------------------'
 
 5.1.1. Base URL within Document Content
@@ -757,7 +780,7 @@ Abstract
    headers (or equivalent tagged metainformation) of the message.  For
    protocols that make use of message headers like those described in
    MIME [RFC2045], the base URL can be specified by the Content-Base
-   or Content-Location[RFC2068] header fields.
+   or Content-Location [RFC2068] header fields.
 
       Content-Base      = "Content-Base" ":" absoluteURL
 
@@ -766,8 +789,9 @@ Abstract
 
    The field names are case-insensitive and any whitespace inside
    the field value (including that used for line folding) is ignored.
-   Content-Base takes precedence over any Content-Location.  If the
-   latter is relative, it must be resolved to its absolute form (like
+   Content-Base takes precedence over Content-Location when both are
+   present within the same header field set.  If a Content-Location
+   value is relative, it must be resolved to its absolute form (like
    any relative URL) before it can be used as the base URL for other
    references.
 
@@ -796,7 +820,7 @@ Abstract
    encapsulated.
 
    Composite media types, such as the "multipart/*" and "message/*"
-   media types defined by MIME[RFC2046], define a hierarchy of
+   media types defined by MIME [RFC2046], define a hierarchy of
    retrieval context for their enclosed documents.  In other words,
    the retrieval context of a component part is the base URL of the
    composite entity of which it is a part.  Thus, a composite entity
@@ -805,7 +829,7 @@ Abstract
    redefinition applies recursively for a hierarchy of composite
    parts.  Note that this might not change the base URL of the
    components, since each component may include an embedded base URL
-   or a Content-Base or Content-Location header field header that
+   or a Content-Base or Content-Location header field that
    would take precedence over the retrieval context.
 
 5.1.3. Base URL from the Retrieval URL
@@ -820,7 +844,7 @@ Abstract
 5.1.4. Default Base URL
 
    If none of the conditions described in Sections 5.1.1--5.1.3 apply,
-   then the base URL can be considered to be an imaginary URL, e.g.,
+   then the base URL can be considered to be the imaginary URL
    
          this_message:/
 
@@ -854,7 +878,9 @@ Abstract
 
    2) If the path component is empty and the scheme, site, and query
       components are undefined, then it is a reference to the current
-      document and we are done.
+      document and we are done.  Otherwise, the reference URL's query
+      and fragment components are defined as found (or not found) within
+      the URL reference and not inherited from the base URL.
 
    3) If the scheme component is defined, indicating that the reference
       starts with a scheme name, then the reference is interpreted as an
@@ -882,27 +908,23 @@ Abstract
       b) The reference's path component is appended to the buffer
          string.
 
-      c) If the reference's query component is defined, then a "?"
-         character is appended to the buffer string, followed by the
-         query component.
-
-      d) All occurrences of "./", where "." is a complete path segment,
+      c) All occurrences of "./", where "." is a complete path segment,
          are removed from the buffer string.
 
-      e) If the buffer string ends with "." as a complete path segment,
+      d) If the buffer string ends with "." as a complete path segment,
          that "." is removed.
 
-      f) All occurrences of "<segment>/../", where <segment> is a
+      e) All occurrences of "<segment>/../", where <segment> is a
          complete path segment not equal to "..", are removed from the
          buffer string.  Removal of these path segments is performed
          iteratively, removing the leftmost matching pattern on each
          iteration, until no matching pattern remains.
 
-      g) If the buffer string ends with "<segment>/..", where <segment>
+      f) If the buffer string ends with "<segment>/..", where <segment>
          is a complete path segment not equal to "..", that
          "<segment>/.." is removed.
 
-      h) If the resulting buffer string still begins with one or more
+      g) If the resulting buffer string still begins with one or more
          complete path segments of "..", then the reference is
          considered to be in error.  Implementations may handle this
          error by retaining these components in the resolved path
@@ -910,14 +932,8 @@ Abstract
          them from the resolved path (i.e., discarding relative levels
          above the root), or by avoiding traversal of the reference.
 
-      i) If the buffer string contains a question-mark "?" character,
-         then the reference URL's query component is the substring after
-         the first (left-most) question-mark.  Otherwise, the reference
-         URL's query component is set undefined.
-
-      j) The reference URL's new path component is the buffer string up
-         to, but not including, the first question-mark character or the
-         end of the buffer string.
+      h) The remaining buffer string is the reference URL's new path
+         component.
 
    7) The resulting URL components, including any inherited from the
       base URL, are recombined to give the absolute form of the URL
@@ -957,6 +973,12 @@ Abstract
    algorithm itself is not required.  For example, some systems may find
    it more efficient to implement step 6 as a pair of segment stacks
    being merged, rather than as a series of string pattern replacements.
+
+      Note: Some WWW client applications will fail to separate the
+      reference's query component from its path component before merging
+      the base and reference paths in step 6 above.  This may result in
+      a loss of information if the query component contains the strings
+      "/../" or "/./".
 
    Resolution examples are provided in Appendix C.
 
@@ -1062,9 +1084,9 @@ Abstract
    1987.
 
 [RFC2110] Palme, J., Hopmann, A. "MIME E-mail Encapsulation of 
-   Agregate Documents, such as HTML (MHTML)", RFC 2110, Stockholm
+   Aggregate Documents, such as HTML (MHTML)", RFC 2110, Stockholm
    University/KTH, Microsoft Corporation, March 1997.
-   
+
 [RFC1737] Sollins, K., and L. Masinter, "Functional Requirements for
    Uniform Resource Names", RFC 1737, MIT/LCS, Xerox Corporation,
    December 1994.
@@ -1090,7 +1112,7 @@ Abstract
    University of California, Irvine
    Irvine, CA  92697-3425
 
-   Fax: +1(714)824-4056
+   Fax: +1(714)824-1715
    EMail: fielding@ics.uci.edu
 
 
@@ -1119,7 +1141,12 @@ A. Collected BNF for URLs
 
       scheme        = 1*( alpha | digit | "+" | "-" | "." )
 
-      site          = [ [ userinfo ] "@" ] hostport ]
+      site          = server | authority
+
+      authority     = *( unreserved | escaped |
+                         ";" | ":" | "@" | "&" | "=" | "+" )
+
+      server        = [ [ userinfo ] "@" ] hostport ]
       userinfo      = *( unreserved | escaped | ":" | ";" | "&" |
                          "=" | "+" )
       hostport      = host [ ":" port ]
@@ -1262,6 +1289,12 @@ C.2.  Abnormal Examples
       ../../../g    =  http://a/../g
       ../../../../g =  http://a/../../g
 
+   In practice, some implementations strip leading relative symbolic
+   elements (".", "..") after applying a relative URL calculation, based
+   on the theory that compensating for obvious author errors is better
+   than allowing the request to fail.  Thus, the above two references
+   will be interpreted as "http://a/g" by some implementations.
+
    Similarly, parsers must avoid treating "." and ".." as special when
    they are not complete components of a relative path.
 
@@ -1281,24 +1314,19 @@ C.2.  Abnormal Examples
       g/../h        =  http://a/b/c/h
       g;x=1/./y     =  http://a/b/c/g;x=1/y
       g;x=1/../y    =  http://a/b/c/y
+
+   All client applications remove the query component from the base URL
+   before resolving relative URLs.  However, some applications fail to
+   separate the reference's query and/or fragment components from a
+   relative path before merging it with the base path.  This error is
+   rarely noticed, since typical usage of a fragment never includes the
+   hierarchy ("/") character, and the query component is not normally
+   used within relative references.
+
       g?y/./x       =  http://a/b/c/g?y/x
       g?y/../x      =  http://a/b/c/x
       g#s/./x       =  http://a/b/c/g#s/./x
       g#s/../x      =  http://a/b/c/g#s/../x
-
-   In practice, some implementations strip leading relative symbolic
-   elements (".", "..") after applying a relative URL calculation; for
-   example,
-
-      /../s/x      =  http://a/../s/x
-
-   but many URL parsers will instead produce "http://a/s/x". For this
-   reason, such relative forms should be avoided.
-   
-   Note that within a relative URL, the characters "?", ";", and "#",
-   when they do not appear in the leading position, are not treated
-   specially for the purpose of the relative URL calculation; only the
-   resulting full URL is examined for reserved characters.
 
    Some parsers allow the scheme name to be present in a relative URL
    if it is the same as the base URL scheme.  This is considered to be
@@ -1381,7 +1409,7 @@ E. Recommendations for Delimiting URLs in Context
 
    The prefix "URL:" (with or without a trailing space) was
    recommended as a way to used to help distinguish a URL from other
-   bracketed designators, although this is not common in pratice.
+   bracketed designators, although this is not common in practice.
    
    For robustness, software that accepts user-typed URLs should
    attempt to recognize and strip both delimiters and embedded
@@ -1492,7 +1520,7 @@ F.4. Modifications from RFC 1808
 
    The description of the mythical Base header field has been replaced
    with the Content-Base and Content-Location header fields defined by
-   HTTP/1.1 and MHTML.[palme]
+   HTTP/1.1 and MHTML [RFC2110].
 
    RFC 1808 described various schemes as either having or not having the
    properties of the generic-URL syntax.  However, the only requirement
@@ -1502,7 +1530,8 @@ F.4. Modifications from RFC 1808
    reflect that.
 
    The BNF term <net_loc> has been replaced with <site>, since the
-   latter more accurately describes its use and purpose.
+   latter more accurately describes its use and purpose.  Likewise, the
+   site is no longer restricted to the IP server syntax.
 
    Extensive testing of current client applications demonstrated that
    the majority of deployed systems do not use the ";" character to
@@ -1513,10 +1542,4 @@ F.4. Modifications from RFC 1808
    has been removed from the algorithm for resolving a relative URL
    reference.  The resolution examples in Appendix C have been modified
    to reflect this change.
-
-   Testing has also revealed that most client applications remove the
-   query component from the base URL before resolving relative URLs, and
-   append the reference's query component to a relative path before
-   merging it with the base path.  The resolution algorithm has been
-   changed accordingly.
 
