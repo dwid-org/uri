@@ -2115,12 +2115,14 @@ for the "http" scheme.
 </postamble></figure>
 <t>
 Another case where normalization varies by scheme is in the handling
-of an empty authority component.  For many scheme specifications, an
-empty authority is considered an error; for others, it is considered
-equivalent to "localhost".  When a scheme defines a default for authority
-and a URI reference to that default is desired, the reference should
-have an empty authority for the sake of uniformity, brevity, and
-internationalization.
+of an empty authority component or empty host subcomponent.  For many
+scheme specifications, an empty authority or host is considered an error;
+for others, it is considered equivalent to "localhost" or the end-user's host.
+When a scheme defines a default for authority and a URI reference to
+that default is desired, the reference should have an empty authority
+for the sake of uniformity, brevity, and internationalization.
+If, however, either the userinfo or port subcomponent is non-empty,
+then the host should be given explicitly even if it matches the default.
 </t>
 </section>
 
