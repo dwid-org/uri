@@ -18,8 +18,8 @@ based on the scheme name.
 <H2>Tested Clients and Client Libraries</H2>
 
 <DL COMPACT>
-<DT>[D]
-<DD>draft-fielding-uri-syntax-01.txt
+<DT>[R]
+<DD>RFC 2396 (the right way to parse)
 <DT>Tim
 <DD>Tim Berners-Lee's proposed interpretation
 <DT>[1]
@@ -47,45 +47,45 @@ Oddly, Lynx seems to straddle both sides.
 <PRE>
                   RESULTS                       from
 
-<a href="g:h">g:h</a>            =  g:h                           [D,Tim,2,3]
+<a href="g:h">g:h</a>            =  g:h                           [R,Tim,2,3]
                   http:///s//a/b/g:h            [1]
 
-<a href="g">g</a>              =  http:///s//a/b/g              [D,Tim,1,2,3]
+<a href="g">g</a>              =  http:///s//a/b/g              [R,Tim,1,2,3]
 
-<a href="./g">./g</a>            =  http:///s//a/b/g              [D,Tim,1,2,3]
+<a href="./g">./g</a>            =  http:///s//a/b/g              [R,Tim,1,2,3]
 
-<a href="g/">g/</a>             =  http:///s//a/b/g/             [D,Tim,1,2,3]
+<a href="g/">g/</a>             =  http:///s//a/b/g/             [R,Tim,1,2,3]
 
-<a href="/g">/g</a>             =  http:///g                     [D,1,2,3]
+<a href="/g">/g</a>             =  http:///g                     [R,1,2,3]
                   http:///s//a/g                [Tim]
 
-<a href="//g">//g</a>            =  http://g                      [D,1,2,3]
+<a href="//g">//g</a>            =  http://g                      [R,1,2,3]
                   http:///s//g                  [Tim]
 
-<a href="//g/x">//g/x</a>          =  http://g/x                    [D,1,2,3]
+<a href="//g/x">//g/x</a>          =  http://g/x                    [R,1,2,3]
                   http:///s//g/x                [Tim]
 
-<a href="///g">///g</a>           =  http:///g                     [D,Tim,1,2,3]
+<a href="///g">///g</a>           =  http:///g                     [R,Tim,1,2,3]
 
-<a href="./">./</a>             =  http:///s//a/b/               [D,Tim,1,2,3]
+<a href="./">./</a>             =  http:///s//a/b/               [R,Tim,1,2,3]
 
-<a href="../">../</a>            =  http:///s//a/                 [D,Tim,1,2,3]
+<a href="../">../</a>            =  http:///s//a/                 [R,Tim,1,2,3]
 
-<a href="../g">../g</a>           =  http:///s//a/g                [D,Tim,1,2,3]
+<a href="../g">../g</a>           =  http:///s//a/g                [R,Tim,1,2,3]
 
-<a href="../../">../../</a>         =  http:///s//                   [D,1]
+<a href="../../">../../</a>         =  http:///s//                   [R,1]
                   http:///s//a/../              [Tim,2]
                   http:///s//a/                 [3]
 
-<a href="../../g">../../g</a>        =  http:///s//g                  [D,1]
+<a href="../../g">../../g</a>        =  http:///s//g                  [R,1]
                   http:///s//a/../g             [Tim,2]
                   http:///s//a/g                [3]
 
-<a href="../../../g">../../../g</a>     =  http:///s/g                   [D,1]
+<a href="../../../g">../../../g</a>     =  http:///s/g                   [R,1]
                   http:///s//a/../../g          [Tim,2]
                   http:///s//a/g                [3]
 
-<a href="../../../../g">../../../../g</a>  =  http:///g                     [D,1]
+<a href="../../../../g">../../../../g</a>  =  http:///g                     [R,1]
                   http:///s//a/../../../g       [Tim,2]
                   http:///s//a/g                [3]
 </PRE>
