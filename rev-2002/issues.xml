@@ -1578,6 +1578,44 @@ documents, the WG particularly requests feedback on:
 The last call period for these documents ends on 21 Feb 2003.
 </pre>
  </report>
+ <report>
+  <author email="GK_AT_ninebynine.org">Graham Klyne</author>
+  <date sort="20030306">05 Mar 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Is there a way to specify a fragment identifer relative to the document
+in the current base URI.  I can't see a way to do this.
+
+If I use ./#frag, then the final path component of the base URI is omitted.
+
+So I see no way of indicating a fragment of the base URI without including
+some part of the base URI.
+
+    Er, "#frag", right?  What am I missing?
+
+According to the URI spec, that is relative to the *current document*,
+as opposed to the current base URI.  For example, when xml:base is used
+within an XML document, the #frag is not (as I understand) relative to
+the base URI.
+
+The URI spec is quite explicit about stating that when resolving
+#frag relative to some base URI, it refers to a fragment the
+*current document* as distinct from the base URI; 
+cf. algorithm in section 5.2.
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030307">07 Mar 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Note that this issue is a request to change the "current document"
+algorithm.  This can be accomplished is by changing the spec to remove
+the bit about current document and instead replace the empty URI with
+the base URI, later stating that a retrieval action must not take place
+if the new URI differs from the base URI only by its fragment.
+</pre>
+ </action>
 </issue>
 
 <issue>
