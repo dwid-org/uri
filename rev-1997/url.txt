@@ -39,7 +39,8 @@ Abstract
    of the location for a resource that is available via the Internet.
    This document defines the general syntax and semantics of URLs,
    including both absolute and relative locators, and guidelines for
-   their use and for the definition of new URL schemes.
+   their use and for the definition of new URL schemes.  It revises and
+   replaces the generic definitions in RFC 1738 and RFC 1808.
 
 
 1. Introduction
@@ -57,8 +58,7 @@ Abstract
    [2] and RFC 1808 "Relative Uniform Resource Locators" [7] in order to
    define a single, general syntax for all URLs.  It excludes those
    portions of RFC 1738 that defined the specific syntax of individual
-   URL schemes, since those portions will be updated as separate
-   documents.
+   URL schemes; those portions will be updated as separate documents.
 
    URLs are characterized by the following definitions:
 
@@ -103,9 +103,6 @@ Abstract
 1.1. Example URLs
 
    The following examples illustrate URLs which are in common use.
-
-   file:/home/fred/bio.txt
-      -- file scheme for host-specific files and directories
 
    ftp://ds.internic.net/rfc/rfc1808.txt
       -- ftp scheme for File Transfer Protocol services
@@ -1038,19 +1035,19 @@ B. Recommendations for Delimiting URLs in Context
    distinguish URLs from other kinds of URIs.
 
    In addition, there are many occasions when URLs are included in other
-   kinds of text; examples include electronic mail, USENET news
-   messages, or printed on paper.  In such cases, it is convenient to
-   have a separate syntactic wrapper that delimits the URL and separates
-   it from the rest of the text, and in particular from punctuation
-   marks that might be mistaken for part of the URL.  For this purpose,
-   is recommended that angle brackets ("<" and ">"), along with the
-   prefix "URL:", be used to delimit the boundaries of the URL.  This
-   wrapper does not form part of the URL and should not be used in
-   contexts in which delimiters are already specified.
+   kinds of text; examples include simple plain text sent in electronic
+   mail, USENET news messages, or, most importantly, printed on paper.
+   In such cases, it is important to be able to delimit the URL from the
+   rest of the text, and in particular from punctuation marks that might
+   be mistaken for part of the URL.
 
-   In the case where a fragment/anchor identifier is associated with a
-   URL (following a "#"), the identifier would be placed within the
-   brackets as well.
+   In practice, URLs are delimited in a variety of ways, using brackets
+   [http://test.com/] or angle brackets <http://www.w3.org> or even
+   paired braces {http://test.com}, with or (usually) without the "URL:"
+   prefix.  This wrapper does not form part of the URL.  In the case
+   where a fragment/anchor identifier is associated with a URL
+   (following a "#"), the identifier would be placed within the brackets
+   as well.
 
    In some cases, extra whitespace (spaces, linebreaks, tabs, etc.) may
    need to be added to break long URLs across lines.  The whitespace
