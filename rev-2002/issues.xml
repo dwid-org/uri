@@ -105,7 +105,7 @@ name mapping.
  <title>inconsistent resolution of query-only relative URI</title>
  <status>pending</status>
  <report>
-  <author email="msabin_AT_cromwellmedia.co.uk">Miles Sabin</author>
+  <author email="msabin_AT_milessabin.com">Miles Sabin</author>
   <date sort="19990323">23 Mar 1999</date>
   <where>private mail</where>
 <pre>
@@ -1664,6 +1664,77 @@ I prefer whichever one is easier to say while speaking, since I do not
 believe in the theory that people expand acronyms as they read.
 
 I am fine with either one, provided I only have to change it once.
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>intro</type>
+ <name>024-identity</name>
+ <title>Resource should not be defined as anything that has identity</title>
+ <status>pending</status>
+ <report>
+  <author email="msabin_AT_milessabin.com">Miles Sabin</author>
+  <date sort="20020909">09 Sep 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+http://lists.w3.org/Archives/Public/uri/2002Sep/0016.html
+
+At issue is the first sentence of the informal definition of resource in 
+RFC 2396 1.1,
+
+  A resource can be anything that has identity.
+
+"that has identity" is redundant because *everything* has identity in 
+the only reasonably straightforward understanding of identity, ie. the 
+logical truth in all but the most obscure formal systems that,
+
+  (Vx) x = x
+
+Even though redundant, this qualifier has had the unfortunate 
+consequence of leaving this sentence open to wildly different 
+interpretations,
+
+* It has been read as implying that the set of possible resources is a
+  subset of the set of things: the subset that has identity as opposed
+  to the subset that doesn't. Dan Brickley reports that this confusion,
+  and the subsequent hunt for things which *don't* have identity and
+  some means for identifying them, has caused trouble in RDF circles.
+
+* It has been misread as,
+
+    A resource can be anything that has an identifier (eg. a URI).
+
+* It has been misread as,
+
+    A resource can be anything that can be identified (via some
+    effective mechanism).
+
+I don't believe that any of these were the authors intent, so to clear 
+up any confusion, the "that has identity" qualifier should be dropped.
+
+That still leaves open the question of whether or not the residual,
+
+  A resource can be anything.
+
+is either true or makes sense. This is controversial, no doubt, but it's 
+better not to have the controversy obscured by a distracting 
+qualification.
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20020912">12 Sep 2002</date>
+  <where>issues list</where>
+<pre>
+The sentence says "can be", which implies exactly what I meant it to
+imply: that anything with identity can be a resource but not necessarily
+is a resource.  I see no reason to change it.  The important bit is that
+sameness of identity is the important characteristic -- the defining
+characteristic -- of a resource.
+
+The goal of the sentence is to describe the essence of what it means
+to be a resource.  None of the other suggestions do that.
 </pre>
  </action>
 </issue>

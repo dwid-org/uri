@@ -80,6 +80,9 @@
 <tr>
 <td nowrap="nowrap"><a href="#023-URI-plural">023-URI-plural</a></td><td>URI or URIs for plural</td><td>intro</td><td>accepted</td>
 </tr>
+<tr>
+<td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>intro</td><td>pending</td>
+</tr>
 </table>
 <br>
 <h2>
@@ -192,7 +195,7 @@ name mapping.
 </tr>
 <tr>
 <td colspan="2">report:
-  <a href="mailto:msabin_AT_cromwellmedia.co.uk">Miles Sabin</a>,
+  <a href="mailto:msabin_AT_milessabin.com">Miles Sabin</a>,
   23 Mar 1999,
   private mail:
   <pre>
@@ -1882,6 +1885,83 @@ I prefer whichever one is easier to say while speaking, since I do not
 believe in the theory that people expand acronyms as they read.
 
 I am fine with either one, provided I only have to change it once.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<h2>
+<a name="024-identity">024-identity</a>: 
+      Resource should not be defined as anything that has identity</h2>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th width="40%">intro</th><th>pending</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:msabin_AT_milessabin.com">Miles Sabin</a>,
+  09 Sep 2002,
+  URI-WG mailing list:
+  <pre>
+http://lists.w3.org/Archives/Public/uri/2002Sep/0016.html
+
+At issue is the first sentence of the informal definition of resource in 
+RFC 2396 1.1,
+
+  A resource can be anything that has identity.
+
+"that has identity" is redundant because *everything* has identity in 
+the only reasonably straightforward understanding of identity, ie. the 
+logical truth in all but the most obscure formal systems that,
+
+  (Vx) x = x
+
+Even though redundant, this qualifier has had the unfortunate 
+consequence of leaving this sentence open to wildly different 
+interpretations,
+
+* It has been read as implying that the set of possible resources is a
+  subset of the set of things: the subset that has identity as opposed
+  to the subset that doesn't. Dan Brickley reports that this confusion,
+  and the subsequent hunt for things which *don't* have identity and
+  some means for identifying them, has caused trouble in RDF circles.
+
+* It has been misread as,
+
+    A resource can be anything that has an identifier (eg. a URI).
+
+* It has been misread as,
+
+    A resource can be anything that can be identified (via some
+    effective mechanism).
+
+I don't believe that any of these were the authors intent, so to clear 
+up any confusion, the "that has identity" qualifier should be dropped.
+
+That still leaves open the question of whether or not the residual,
+
+  A resource can be anything.
+
+is either true or makes sense. This is controversial, no doubt, but it's 
+better not to have the controversy obscured by a distracting 
+qualification.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  12 Sep 2002,
+  issues list:
+  <pre>
+The sentence says "can be", which implies exactly what I meant it to
+imply: that anything with identity can be a resource but not necessarily
+is a resource.  I see no reason to change it.  The important bit is that
+sameness of identity is the important characteristic -- the defining
+characteristic -- of a resource.
+
+The goal of the sentence is to describe the essence of what it means
+to be a resource.  None of the other suggestions do that.
 </pre>
 </td>
 </tr>
