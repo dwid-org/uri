@@ -887,17 +887,17 @@ URIs are characterized by the following definitions:
   <blockquote>
     
 <p>
-         Uniformity provides several benefits: it allows different types
-         of resource identifiers to be used in the same context, even
-         when the mechanisms used to access those resources may differ;
-         it allows uniform semantic interpretation of common syntactic
-         conventions across different types of resource identifiers; it
-         allows introduction of new types of resource identifiers
-         without interfering with the way that existing identifiers are
-         used; and, it allows the identifiers to be reused in many
-         different contexts, thus permitting new applications or
-         protocols to leverage a pre-existing, large, and widely-used
-         set of resource identifiers.
+Uniformity provides several benefits: it allows different types
+of resource identifiers to be used in the same context, even
+when the mechanisms used to access those resources may differ;
+it allows uniform semantic interpretation of common syntactic
+conventions across different types of resource identifiers; it
+allows introduction of new types of resource identifiers
+without interfering with the way that existing identifiers are
+used; and, it allows the identifiers to be reused in many
+different contexts, thus permitting new applications or
+protocols to leverage a pre-existing, large, and widely-used
+set of resource identifiers.
     </p>
   
 </blockquote>
@@ -908,22 +908,44 @@ URIs are characterized by the following definitions:
   <blockquote>
     
 <p>
-         A resource can be anything that has identity.  Familiar
-         examples include an electronic document, an image, a service
-         (e.g., "today's weather report for Los Angeles"), and a
-         collection of other resources.  Not all resources are network
-         "retrievable"; e.g., human beings, corporations, and bound
-         books in a library can also be considered resources.
-        </p>
-        
+A resource is a source of supply or support within the context of a
+given system.  In general, a resource could be anything.  In practice,
+however, the nature of a system's resources is defined by actions
+that might be applied to them in the future.  For example, if a system
+is performing an information retrieval action, then things that can
+provide information to that system are considered resources.
+This specification does not place any limits on the nature of a resource
+or the nature of systems that might use resources.  Familiar examples of
+a resource include an electronic document, an image, a service
+(e.g., "today's weather report for Los Angeles"), and a collection of
+other resources.  Not all resources are network "retrievable"; e.g.,
+human beings, corporations, and bound books in a library can also be
+considered resources.
+    </p>
+    
 <p>
-         The resource is the conceptual mapping to an entity or set of
-         entities, not necessarily the entity which corresponds to that
-         mapping at any particular instance in time.  Thus, a resource
-         can remain constant even when its content---the entities to
-         which it currently corresponds---changes over time, provided
-         that the conceptual mapping is not changed in the process.
-        </p>
+A common misunderstanding of resources, particularly in information
+systems, is to equate the resource with one representation of that
+resource as observed at a particular instance in time.  A resource is
+defined not by its current representation, but rather by the sameness of
+characteristics that should be observed in any future representation.
+This conceptual mapping of resource to representations is what the
+system identifies as a resource.  Thus, a resource remains constant
+even when its representation---what it supplies to the system---changes
+over time, provided that the conceptual mapping remains constant.
+    </p>
+    
+<p>
+For example, a resource that is defined to be "a live camera view from
+my window" is distinctly different from a resource defined as
+"a camera view from my window on May 3rd, 2003", even if the set of
+representations for both resources are identical during that day.
+The characteristics of a resource as they are observed over time,
+perhaps elucidated by additional comments or assertions made by the
+resource provider, create an expectation of sameness that differentiates
+one resource from another even if they are impossible to distinguish
+from individual observations.
+    </p>
   
 </blockquote>
 
@@ -933,9 +955,12 @@ URIs are characterized by the following definitions:
   <blockquote>
     
 <p>
-         An identifier is an object that can act as a reference to
-         something that has identity.  In the case of a URI, the object is
-         a sequence of characters with a restricted syntax.
+An identifier is an object that carries identifying data.  It is not
+necessary for the identifier to define what is being identified; it is
+only necessary for the identifier to provide sufficient data to distinguish
+what is being identified from all other things within the scope of its use.
+A URI is an identifier object consisting of a sequence of characters
+that matches the restricted syntax defined by this specification.
     </p>
   
 </blockquote>
@@ -943,9 +968,9 @@ URIs are characterized by the following definitions:
 </p>
 <p>
 <a name="rfc.section.1.1.p.5"></a>
-Having identified a resource, a system may perform a variety of
+Given an identifier for a resource, a system could perform a variety of
 operations on the resource, as might be characterized by such words
-as `access', `update', `replace', or `find attributes'.
+as `denote', `access', `update', `replace', or `find attributes'.
 </p>
 <h2>
 <a name="rfc.section.1.2">1.2</a>&nbsp;

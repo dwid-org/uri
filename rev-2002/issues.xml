@@ -1902,7 +1902,7 @@ More annotation is welcome.
 </issue>
 
 <issue>
- <type>examples</type>
+ <type>terminology</type>
  <name>022-definitions</name>
  <title>definitions for operations on URIs</title>
  <status>pending</status>
@@ -1977,7 +1977,7 @@ Fixed by rewriting URI to "a URI" or URIs, as appropriate.
  <type>terminology</type>
  <name>024-identity</name>
  <title>Resource should not be defined as anything that has identity</title>
- <status>pending</status>
+ <status>fixed 02</status>
  <report>
   <author email="msabin_AT_milessabin.com">Miles Sabin</author>
   <date sort="20020909">09 Sep 2002</date>
@@ -2274,6 +2274,18 @@ it is very clear that this is different than A or B.  I would also
 A="thing", B="thing which hasn't been bound to a URI", C="Resource".
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030427">27 Apr 2003</date>
+  <where>draft 02</where>
+<pre>
+I have rewritten the definitions.  It would be pointless to attempt to
+further define words that can be found in any dictionary.  Instead, I
+added more examples and chose words that are less likely to prick the
+sensibilities of those who use URIs only for denotation.  Additional
+terminology will be addressed in issue 022-definitions.
+</pre>
+ </action>
 </issue>
 
 <issue>

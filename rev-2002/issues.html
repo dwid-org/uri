@@ -51,10 +51,7 @@
 <td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>terminology</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#022-definitions">022-definitions</a></td><td>definitions for operations on URIs</td><td>examples</td><td nowrap="nowrap">pending</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>terminology</td><td nowrap="nowrap">pending</td>
+<td nowrap="nowrap"><a href="#022-definitions">022-definitions</a></td><td>definitions for operations on URIs</td><td>terminology</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#031-query-def">031-query-def</a></td><td>query definition</td><td>query</td><td nowrap="nowrap">pending</td>
@@ -139,6 +136,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#037-uri-comparison">037-uri-comparison</a></td><td>define how to compare URIs</td><td>characters</td><td nowrap="nowrap">added 01</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>terminology</td><td nowrap="nowrap">fixed 02</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#040-reg-name">040-reg-name</a></td><td>Remove registry-based name syntax from authority</td><td>authority</td><td nowrap="nowrap">fixed 02</td>
@@ -2216,7 +2216,7 @@ More annotation is welcome.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="022-definitions">022-definitions</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">definitions for operations on URIs</font></th>
 </tr>
 <tr>
-<th>pending</th><th align="left">examples</th>
+<th>pending</th><th align="left">terminology</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2300,7 +2300,7 @@ Fixed by rewriting URI to "a URI" or URIs, as appropriate.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="024-identity">024-identity</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Resource should not be defined as anything that has identity</font></th>
 </tr>
 <tr>
-<th>pending</th><th align="left">terminology</th>
+<th bgcolor="lightgreen">fixed 02</th><th align="left">terminology</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2611,6 +2611,20 @@ it is very clear that this is different than A or B.  I would also
 (personally) suggest that terminology be kept clear by using:
 
 A="thing", B="thing which hasn't been bound to a URI", C="Resource".
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  27 Apr 2003,
+  draft 02:
+  <pre>
+I have rewritten the definitions.  It would be pointless to attempt to
+further define words that can be found in any dictionary.  Instead, I
+added more examples and chose words that are less likely to prick the
+sensibilities of those who use URIs only for denotation.  Additional
+terminology will be addressed in issue 022-definitions.
 </pre>
 </td>
 </tr>
