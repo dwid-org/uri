@@ -48,6 +48,12 @@
 <tr>
 <th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
 </tr>
+<tr>
+<td nowrap="nowrap"><a href="#044-empty-path">044-empty-path</a></td><td>no path is defined for scheme://ABCD?query</td><td>bnf</td><td nowrap="nowrap">accepted</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#045-double-slash">045-double-slash</a></td><td>inconsistent handling of .//g relative references</td><td>relative</td><td nowrap="nowrap">pending</td>
+</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -4600,6 +4606,306 @@ and for all by specifying the loophole result as the standard.
   issues list:
   <pre>
 Closed due to lack of interest.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="044-empty-path">044-empty-path</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">no path is defined for scheme://ABCD?query</font></th>
+</tr>
+<tr>
+<th>accepted</th><th align="left">bnf</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:marktt_AT_excite.com">Mark Thomson</a>,
+  08 Jun 2003,
+  URI-WG mailing list:
+  <pre>
+"A path is always defined for a URI, though the defined path may
+ be empty (zero length) or opaque (not containing any "/" delimiters)"
+
+The production for net-path says that abs-path is optional, so for a URI like
+
+   http://ABCD?query
+
+we have both abs-path and rel-path undefined and not empty and therefore
+path would be undefined. Do we still have to assume that path is empty
+even when both abs-path and rel-path are undefined ?
+or is the above statement from the draft incorrect ?
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  08 Jun 2003,
+  URI-WG mailing list:
+  <pre>
+The statement is correct, but I'll need to fix the ABNF so
+that it always ends up with a matching production.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
+  11 Jun 2003,
+  URI-WG mailing list:
+  <pre>
+I've been playing with an experimental grammar modification that
+addresses this problem and also addresses the following 
+additional wrinkle:   http://ABCD+y is a legal URI according to
+the ABNF (as translated to regexps by abnf2re).
+
+parseURI('http://ABCD+y')
+('http', None, '//ABCD+y', None, None)
+
+That is, because ABCD+y is not  a legal authority, the
+regular expression matching rules for http://ABCD+y backtrack
+to accept //ABCD+y as a path.    
+
+To address both the problem reported by Mark and the
+problem above, I have found that there may be merit
+to simplifying the URI production to directly reflect the
+opening statement of section 3:
+
+"The generic URI syntax consists of a hierarchical sequence of
+components referred to as the scheme, authority, path, query, and
+fragment."
+
+URI  = scheme ":" ["//" authority] path [ "?" query ] [ "#" fragment ]
+
+This rule reflects the five-component structure and the statement
+that a path always exists, even if it is empty.   It can be made
+to work with either of the two following definitions of path:
+
+path = abs-path / rel-path
+path = segment *( "/" segment )
+
+Running a parser based on either of these changes with
+all the test cases listed in section 5.4 (both normal and 
+abnormal examples) gives precisely the same results as 
+with the grammar of bis-02 or bis-03.   (By the way, it
+might be good to have some IPv6 literals in the test
+examples.)
+
+On the problem case of http://ABCD+y, the following results.
+parseURI('http://ABCD+y')
+('http', 'ABCD', '+y', None, None)
+
+Arguably, this is a better parse if http://ABCD+y is to be 
+accepted as a URI.   It is also a better parse if http://ABCD+y
+is to be ruled out by the extra-grammatical restriction: "when
+an authority exists, the path must either be empty or an
+abs-path."  (Alternatively, "when an authority exists, the 
+first segment of the path must be empty.")   
+
+Overall, I think the theme of grammar simplification reflected in the
+change from bis02 to bis03 is a good idea.   One other
+area that could use some attention is the grammar of IPv6
+literals.    
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:marktt_AT_excite.com">Mark Thomson</a>,
+  12 Jun 2003,
+  URI-WG mailing list:
+  <pre>
+One other simpler modification to the grammar to address the problem
+of the path being undefined is:
+
+net-path        = "//" authority net-path-suffix
+net-path-suffix = ["/" path-segments]
+
+path            = abs-path / rel-path / net-path-suffix
+
+Of course, //ABCD+y in http://ABCD+y would still be parsed as a path.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="045-double-slash">045-double-slash</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">inconsistent handling of .//g relative references</font></th>
+</tr>
+<tr>
+<th>pending</th><th align="left">relative</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
+  13 Jun 2003,
+  URI-WG mailing list:
+  <pre>
+It appears that there is a semantic bug in the URI spec in the
+resolution of relative URIs.  Consider resolution of the
+relative URI ".//g" in the context of the base URI "f:/a".
+Should the result be "f:/.//g" or "f://g"?
+
+It seems to me that only "f:/.//g" makes sense; the URI "f://g"
+re-interprets the path segment "g" as an authority component.
+
+However, the spec and three reference implementations all seem
+to agree that "f://g" is the answer specified.
+
+uripath.py
+join('f:/a','.//g')
+'f://g'
+
+URI.hs (Graham Klyne)
+URI&gt; absoluteUriPart "f:/a" ".//g"
+"f://g"
+
+URIbis3.py (me)
+resolve_relative_URI('f:/a', './/g')
+'f://g'
+
+At least part of the solution seems to me that the 
+recomposition of parsed URIs (section 5.3) must be 
+modified to deal with the potential ambiguity.  If the
+authority is undefined and the path begins "//", then
+"/." must be appended to the result before the path is.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:marktt_AT_excite.com">Mark Thomson</a>,
+  14 Jun 2003,
+  URI-WG mailing list:
+  <pre>
+In addition to the semantic bug, I think the assumption that the base URI
+doesn't contain dot-segments in its path should be dropped. If a URI has
+an absolute path beginning with a "//" and doesn't have an authority,
+then the absolute path must be written as /.//...
+
+Another example where the target URI would be invalid is if the
+relative URI is scheme:/.//ff or scheme:/..//ff and the parser is strict
+or the parser is non-strict and base URI's scheme != relative URI's scheme.
+
+One more thing. If the relative URI has a scheme then, regardless of
+the base URI, the target URI will equal the relative URI for a strict
+parser. Should the algorithm fail in this case if the base URI is
+illegal (doesn't have a scheme) even though the target URI has nothing
+to do with the base URI? (i.e., should the assumption "only the scheme
+component is required to be present in the base URI" be dropped in this case?)
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
+  17 Jun 2003,
+  URI-WG mailing list:
+  <pre>
+Below I suggest modifications to section 5.3 that ensure correct URI 
+construction for all (scheme, authority, path, query, fragment) 5-tuples.
+
+Motivation:
+
+Suppose that an infostructure is to be moved from h://a/b/c/d to f:/d with all 
+links made relative.
+
+It is not inconceivable that the document at h://a/b/c/d contains URIs like 
+h://a/b/c//e and http://a/b/c/this:that
+
+In the first case, the following relative_URI calculation may be performed.
+
+(URIbis3.py) 
+compute_relative_URI('h://a/b/c/d', 'h://a/b/c//e') 
+'.//e'
+
+This relative URI is fine when resolved with respect to the original base, 
+applying the algorithm of 5.2.
+
+resolve_relative_URI('h://a/b/c/d', './/e')
+'h://a/b/c//e'
+
+But when interpreted relative to f:/d, we have a problem. 
+resolve_relative_URI('f:/d', './/e')
+'f://e'
+
+Here e has been erroneously interpreted as an authority. 
+build_URI('f', None, '//e', None, None) should ensure that "/." 
+is prepended to path.
+
+In the second case, the computation of a relative URI might attempt the 
+following construction: build_URI(None, None, 'this:that', None, None) 
+yielding "this:that" rather than "./this:that" as mentioned at the end of 
+section 4.2
+
+For example, uripath.py exhibits this behaviour. 
+refTo('h://a/b/c/d', 'h://a/b/c/this:that')
+'this:that'
+
+With only slight modifications to 5.3, these ambiguities of URI 
+construction can be avoided.
+
+   if defined(scheme) then
+      append scheme to result;
+      append ":" to result;
+   endif;
+
+   if defined(authority) then
+      append "//" to result;
+      append authority to result;
+   endif;
+
+   if defined(path) then
+      if defined(authority) then
+         if path is neither empty nor begins with "/" then 
+             error('an absolute or empty path is required')
+         endif
+      elsif path begins "//" then append "/." to result
+      elsif not defined(scheme) and 
+              the first path segment contains ":" then
+        append "./" to result
+      endif;
+      append path to result
+   else
+      error('undefined path')
+   endif;
+
+   if defined(query) then
+      append "?" to result;
+      append query to result;
+   endif;
+
+   if defined(fragment) then
+      append "#" to result;
+      append fragment to result;
+   endif;
+
+   return result;
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:marktt_AT_excite.com">Mark Thomson</a>,
+  18 Jun 2003,
+  URI-WG mailing list:
+  <pre>
+What about URIs that have paths beginning with // but can't be interperted
+as an authority (e.g., scheme://@@). Do we have to add a /. also?
+(Of course, not doing so complicates both the resolution and
+recomposition algorithms)
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  05 Feb 2004,
+  issues list:
+  <pre>
+I don't know if handling bad relative URI references is worth the hassle.
 </pre>
 </td>
 </tr>

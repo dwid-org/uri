@@ -43,7 +43,7 @@
       </postal>
       <phone>+1-949-679-2960</phone>
       <facsimile>+1-949-679-2972</facsimile>
-      <email>roy.fielding@day.com</email>
+      <email>fielding@gbiv.com</email>
       <uri>http://roy.gbiv.com/</uri>
     </address>
   </author>
@@ -63,7 +63,7 @@
     </address>
   </author>
 
-  <date month='September' year='2003'></date>
+  <date month='February' year='2004'></date>
 
   <area>Applications</area>
   <keyword>uniform resource identifier</keyword>
@@ -2064,7 +2064,8 @@ Dan Connolly, Adam M. Costello, John Cowan, Jason Diamond, Martin Duerst,
 Stefan Eissing, Clive D.W. Feather, Tony Hammond,
 Pat Hayes, Henry Holtzman, Graham Klyne, Dan Kohn,
 Bruce Lilly, Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
-Miles Sabin, Ronald Tschalaer, Marc Warne, Stuart Williams, and Henry Zongaro
+Miles Sabin, Ronald Tschalaer, Norm Walsh, Marc Warne, Stuart Williams,
+and Henry Zongaro
 are gratefully acknowledged.
 </t>
 </section>
