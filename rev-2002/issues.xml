@@ -1945,7 +1945,7 @@ More annotation is welcome.
  <type>terminology</type>
  <name>022-definitions</name>
  <title>definitions for operations on URIs</title>
- <status>pending</status>
+ <status>added 02</status>
  <report>
   <author email="LMM_AT_acm.org">Larry Masinter</author>
   <date sort="20020713">13 Jul 2002</date>
@@ -1974,6 +1974,14 @@ URI Retrieval:
   representations of resource state. 
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030506">06 May 2003</date>
+  <where>draft 02</where>
+<pre>
+I have added the definitions and reorganized the entire section 1.
+</pre>
+ </action>
 </issue>
 
 <issue>
