@@ -138,6 +138,11 @@
     2002-10-13  julian.reschke@greenbytes.de
     
     Support for tocdepth PI.
+
+    2003-05-02  fielding
+
+    Make mailto links optional (default = none)
+    
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -232,6 +237,14 @@
 <!-- URL prefix for RFCs. -->
 
 <xsl:param name="rfcUrlPrefix" select="'http://www.ietf.org/rfc/rfc'" />
+
+<!-- choose whether or not to do mailto links -->
+
+<xsl:param name="linkMailto"
+  select="substring-after(
+      translate(/processing-instruction('rfc')[contains(.,'linkMailto=')], '&quot;', ''),
+        'linkMailto=')"
+/>
 
 
 <!-- build help keys for indices -->
@@ -348,7 +361,7 @@
   <xsl:if test="address/email">
     <tr>
       <td align="right"><b>EMail:&#0160;</b></td>
-      <td><a href="mailto:{address/email}"><xsl:value-of select="address/email" /></a></td>
+      <td><xsl:call-template name="showEmail"><xsl:with-param name="email" select="address/email" /></xsl:call-template></td>
     </tr>
   </xsl:if>
   <xsl:if test="address/uri">
@@ -647,7 +660,10 @@
         <xsl:choose>
           <xsl:when test="@surname and @surname!=''">
             <xsl:choose>
-               <xsl:when test="address/email">
+              <xsl:when test="not($linkMailto)">
+                <xsl:value-of select="concat(@surname,', ',@initials)" />
+              </xsl:when>
+              <xsl:when test="address/email">
                 <a href="mailto:{address/email}">
                   <xsl:if test="organization/text()">
                     <xsl:attribute name="title"><xsl:value-of select="organization/text()"/></xsl:attribute>
@@ -1660,6 +1676,14 @@ ins
     <xsl:otherwise><xsl:value-of select="$string" /></xsl:otherwise>
   </xsl:choose>
 
+</xsl:template>
+
+<xsl:template name="showEmail">
+  <xsl:param name="email" />
+  <xsl:choose>
+    <xsl:when test="$linkMailto"><a href="mailto:$email"><xsl:value-of select="$email" /></a></xsl:when>
+    <xsl:otherwise><xsl:value-of select="$email" /></xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <xsl:template name="showArtworkLine">
