@@ -995,7 +995,7 @@ Abstract
 
    Care should be taken when URLs contain escaped delimiters for a given
    protocol (for example, CR and LF characters for telnet protocols)
-   that these are not unencoded before transmission.  This might violate
+   that these are not unescaped before transmission.  This might violate
    the protocol, but avoids the potential for such characters to be used
    to simulate an extra operation or parameter in that protocol, which
    might lead to an unexpected and possibly harmful remote operation to
@@ -1007,9 +1007,9 @@ Abstract
 
 8. Acknowledgements
 
-   Most of this document was derived from RFC 1738 [2] and RFC 1808 [7];
-   the acknowledgements in those specifications still apply.  In
-   addition, this draft has benefited from comments by Lauren Wood.
+   This document was derived from RFC 1738 [2] and RFC 1808 [7]; the
+   acknowledgements in those specifications still apply.  In addition,
+   this draft has benefited from comments by Lauren Wood.
 
 
 9. References
@@ -1339,7 +1339,7 @@ E. Recommendations for Delimiting URLs in Context
    Because some typesetters and printers may (erroneously) introduce a
    hyphen at the end of line when breaking a line, the interpreter of a
    URL containing a line break immediately after a hyphen should ignore
-   all unencoded whitespace around the line break, and should be aware
+   all unescaped whitespace around the line break, and should be aware
    that the hyphen may or may not actually be part of the URL.
 
    Examples:
