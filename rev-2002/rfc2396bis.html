@@ -529,7 +529,6 @@ is available at
 
 
 
-
 <b>&nbsp;&nbsp;3.2.3&nbsp;
             <a href="#port">Port</a></b>
 <br>
@@ -1861,15 +1860,6 @@ or a host name.
 <pre>   host        = IP-literal / IPv4address / reg-name
 </pre>
 <p>
-If host is omitted, a default may be defined by the scheme-specific
-semantics of the URI.  For example, the "file" URI scheme defaults to
-"localhost", whereas the "http" URI scheme does not allow host to be
-omitted.
-</p>
-<div>
-<a name="rfc.section.3.2.2.p.2"></a>
-</div>
-<p>
 The production for host is ambiguous because it does not completely
 distinguish between an IPv4address and a reg-name.  Again, the
 "first-match-wins" algorithm applies: If host matches the production for
@@ -2000,7 +1990,7 @@ must represent characters encoded in the UTF-8 character encoding prior
 to being percent-encoded.
 </p>
 <div>
-<a name="rfc.section.3.2.2.p.7"></a>
+<a name="rfc.section.3.2.2.p.6"></a>
 </div>
 <p>
 This specification does not mandate a particular registered name lookup
@@ -2013,7 +2003,7 @@ that are intended to have global scope, and thus names conforming to the
 DNS syntax are strongly recommended.
 </p>
 <div>
-<a name="rfc.section.3.2.2.p.8"></a>
+<a name="rfc.section.3.2.2.p.7"></a>
 </div>
 <p>
 The presence of host within a URI does not imply that the scheme

@@ -792,18 +792,12 @@ or a host name.
 </preamble><artwork type="abnf">
    host        = IP-literal / IPv4address / reg-name
 </artwork><postamble>
-If host is omitted, a default may be defined by the scheme-specific
-semantics of the URI.  For example, the "file" URI scheme defaults to
-"localhost", whereas the "http" URI scheme does not allow host to be
-omitted.
-</postamble></figure>
-<t>
 The production for host is ambiguous because it does not completely
 distinguish between an IPv4address and a reg-name.  Again, the
 "first-match-wins" algorithm applies: If host matches the production for
 IPv4address, then it should be considered an IPv4 address literal
 and not a reg-name.
-</t>
+</postamble></figure>
 <figure><preamble>
 <iref item="IPv6" primary="true"/>
 <iref item="IP-literal" primary="true"/>
