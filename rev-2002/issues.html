@@ -2901,12 +2901,54 @@ regardless of whether it's relative or absolute.
 </tr>
 <tr>
 <td colspan="2">action:
+  <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
+  25 Feb 2003,
+  URI-WG mailing list:
+  <pre>
+Whether "a/./b/../c" in a path component is equivalent to
+"a/c" is entirely dependent on the definition of
+the URI scheme. Some schemes may define the two as
+equivalent, others may not.  
+
+The current definition of the 'http' URI scheme
+(in RFC 2616) does not specify this equivalence,
+although apparently popular browsers will turn
+http://example.dom/a/./b/../c into
+http://example.dom/a/c before sending.
+
+Do you think it should apply to all URI schemes
+that use the "generic syntax"? "rtsp:"? "ldap:"?
+What about schemes that use something like
+the "generic syntax" but make modifications?
+
+Note that mailto:a/./b/../@test.com sends a message
+to a/./b/../@test.com, i.e., it doesn't process
+them.
+
+I'm having trouble telling what happens without
+a protocol trace with 
+ftp://ftp.ietf.org/ietf/../ietf/00dec/, or
+with ldap:. 
+
+But I think it is a good idea to resist the
+tendency to jump from examination of the
+behavior of http URIs to assert properties
+of all URIs.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
   25 Feb 2003,
   issues list:
   <pre>
 I still get those segments in httpd access log files, but all we need
-are two independent implementations to justify a change.
+are two independent implementations to justify a change.  I think it
+is safe to remove them based on the theory that "/" is reserved for
+the hierarchical syntax.  I can't think of a real mailto example that
+would break, since even distinguished-name-based addresses are not
+going to have ".." or "." as a DN.
 </pre>
 </td>
 </tr>
