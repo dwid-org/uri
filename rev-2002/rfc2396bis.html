@@ -216,7 +216,7 @@ table.resolution
 </tr>
 <tr>
 <td class="header">
-        &lt;draft-fielding-uri-rfc2396bis-02&gt;
+        &lt;draft-fielding-uri-rfc2396bis-0x&gt;
       &nbsp;</td><td class="header">R. Fielding&nbsp;</td>
 </tr>
 <tr>
@@ -239,7 +239,7 @@ table.resolution
 </tr>
 </table>
 <p class="title">Uniform Resource Identifier (URI): Generic Syntax<br>
-<span class="filename">draft-fielding-uri-rfc2396bis-02</span>
+<span class="filename">draft-fielding-uri-rfc2396bis-0x</span>
 </p>
 <h1>Status of this Memo</h1>
 <p>
@@ -931,7 +931,7 @@ is available at
 
 
 <b>C&nbsp;
-            <a href="#html">Embedding the Base URI in HTML documents</a></b>
+            <a href="#html-base">Embedding the Base URI in HTML documents</a></b>
 <br>
 
 
@@ -1033,7 +1033,7 @@ by <a href="#RFC2717" title="Registration Procedures for URL Scheme Names">[RFC2
 <a name="rfc.section.1.p.3"></a>
 </div>
 <p>
-All significant changes from RFC 2396 are noted in Appendix G.
+All significant changes from RFC 2396 are noted in <a href="#changes">appendix&nbsp;E</a>.
 </p>
 <h2>
 <a name="rfc.iref.1"></a><a name="rfc.iref.2"></a><a name="rfc.iref.3"></a><a name="rfc.section.1.1">1.1</a>&nbsp;
@@ -1115,8 +1115,10 @@ being identified from all other things within its scope of identification.
 </div>
 <p>
 A URI is an identifier that consists of a sequence of characters
-matching the restricted syntax defined by this specification.  A URI
-can be used to refer to a resource.  This specification does not place any
+matching the syntax defined by the grammar rule named "URI" in
+<a href="#components">section&nbsp;3</a>.
+A URI can be used to refer to a resource.
+This specification does not place any
 limits on the nature of a resource or the reasons why an application
 might wish to refer to a resource.  URIs have a global scope
 and should be interpreted consistently regardless of context, but
@@ -1435,7 +1437,7 @@ charset of the document that contains it.
 The following core ABNF productions are used by this specification
 as defined by Section 6.1 of <a href="#RFC2234" title="Augmented BNF for Syntax Specifications: ABNF">[RFC2234]</a>:
 ALPHA, CR, CTL, DIGIT, DQUOTE, HEXDIG, LF, OCTET, and SP.
-The complete URI syntax is collected in Appendix A.
+The complete URI syntax is collected in <a href="#collected-abnf">appendix&nbsp;A</a>.
 </p>
 
 
@@ -1559,7 +1561,7 @@ that is responsible for interpreting it during URI resolution.
 </div>
 <p>
 The slash ("/"), question-mark ("?"), and crosshatch ("#") characters
-are reserved in all URI for the purpose of delimiting components
+are reserved in all URIs for the purpose of delimiting components
 that are significant to the generic parser's hierarchical interpretation
 of an identifier.  The hierarchical prefix of a URI, wherein the
 slash ("/") character signifies a hierarchy delimiter, extends from
@@ -2595,7 +2597,7 @@ has the highest precedence.  This can be visualized graphically as:
    agents manipulating such media types will be able to obtain the
    appropriate syntax from that media type's specification.  An example
    of how the base URI can be embedded in the Hypertext Markup Language
-   (HTML) <a href="#HTML" title="Hypertext Markup Language (HTML 4.01) Specification">[HTML]</a> is provided in Appendix D.
+   (HTML) <a href="#HTML" title="Hypertext Markup Language (HTML 4.01) Specification">[HTML]</a> is provided in <a href="#html-base">appendix&nbsp;C</a>.
 </p>
 <div>
 <a name="rfc.section.5.1.1.p.3"></a>
@@ -3542,7 +3544,8 @@ It also incorporates the update (with corrections) for IPv6 literals
 in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
 and Larry Masinter in <a href="#RFC2732" title="Format for Literal IPv6 Addresses in URL's">[RFC2732]</a>.
 In addition, contributions by Reese Anschultz, Tim Bray, Rob Cameron,
-Dan Connolly, Adam M. Costello, Jason Diamond, Martin Duerst, Stefan Eissing,
+Dan Connolly, Adam M. Costello, John Cowan, Jason Diamond, Martin Duerst,
+Stefan Eissing,
 Clive D.W. Feather, Pat Hayes, Henry Holtzman, Graham Klyne, Dan Kohn,
 Bruce Lilly, Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
 Miles Sabin, Ronald Tschalaer, Marc Warne, Stuart Williams, and Henry Zongaro
@@ -3898,7 +3901,7 @@ from its components using the algorithm of <a href="#recomposition">section&nbsp
 </table>
 <h1>
 <a name="rfc.section.C">C</a>&nbsp;
-    <a name="html">Embedding the Base URI in HTML documents</a>
+    <a name="html-base">Embedding the Base URI in HTML documents</a>
 </h1>
 <div>
 <a name="rfc.section.C.p.1"></a>

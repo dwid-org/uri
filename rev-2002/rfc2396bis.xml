@@ -9,7 +9,7 @@
 <?rfc editing="no"?>
 <?rfc-ext parse-xml-in-artwork="yes" ?>
 <rfc obsoletes="2732, 2396, 1808" updates="1738" category="std"
-     ipr="full2026" docName="draft-fielding-uri-rfc2396bis-02">
+     ipr="full2026" docName="draft-fielding-uri-rfc2396bis-0x">
 
 <front>
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifier (URI): Generic Syntax</title>
@@ -120,7 +120,7 @@ The process for registration of new URI schemes is defined separately
 by <xref target="RFC2717"/>.
 </t>
 <t>
-All significant changes from RFC 2396 are noted in Appendix G.
+All significant changes from RFC 2396 are noted in <xref target="changes"/>.
 </t>
 
 <section title="Overview of URIs" anchor="overview">
@@ -173,8 +173,10 @@ being identified from all other things within its scope of identification.
 </t>
 <t>
 A URI is an identifier that consists of a sequence of characters
-matching the restricted syntax defined by this specification.  A URI
-can be used to refer to a resource.  This specification does not place any
+matching the syntax defined by the grammar rule named "URI" in
+<xref target="components"/>.
+A URI can be used to refer to a resource.
+This specification does not place any
 limits on the nature of a resource or the reasons why an application
 might wish to refer to a resource.  URIs have a global scope
 and should be interpreted consistently regardless of context, but
@@ -445,7 +447,7 @@ charset of the document that contains it.
 The following core ABNF productions are used by this specification
 as defined by Section 6.1 of <xref target="RFC2234"/>:
 ALPHA, CR, CTL, DIGIT, DQUOTE, HEXDIG, LF, OCTET, and SP.
-The complete URI syntax is collected in Appendix A.
+The complete URI syntax is collected in <xref target="collected-abnf"/>.
 </t>
 </section>
 
@@ -533,7 +535,7 @@ that is responsible for interpreting it during URI resolution.
 </t>
 <t>
 The slash ("/"), question-mark ("?"), and crosshatch ("#") characters
-are reserved in all URI for the purpose of delimiting components
+are reserved in all URIs for the purpose of delimiting components
 that are significant to the generic parser's hierarchical interpretation
 of an identifier.  The hierarchical prefix of a URI, wherein the
 slash ("/") character signifies a hierarchy delimiter, extends from
@@ -1331,7 +1333,7 @@ has the highest precedence.  This can be visualized graphically as:
    agents manipulating such media types will be able to obtain the
    appropriate syntax from that media type's specification.  An example
    of how the base URI can be embedded in the Hypertext Markup Language
-   (HTML) <xref target="HTML"/> is provided in Appendix D.
+   (HTML) <xref target="HTML"/> is provided in <xref target="html-base"/>.
 </t>
 <t>
    A mechanism for embedding the base URI within MIME container types
@@ -2024,7 +2026,8 @@ It also incorporates the update (with corrections) for IPv6 literals
 in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
 and Larry Masinter in <xref target="RFC2732"/>.
 In addition, contributions by Reese Anschultz, Tim Bray, Rob Cameron,
-Dan Connolly, Adam M. Costello, Jason Diamond, Martin Duerst, Stefan Eissing,
+Dan Connolly, Adam M. Costello, John Cowan, Jason Diamond, Martin Duerst,
+Stefan Eissing,
 Clive D.W. Feather, Pat Hayes, Henry Holtzman, Graham Klyne, Dan Kohn,
 Bruce Lilly, Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
 Miles Sabin, Ronald Tschalaer, Marc Warne, Stuart Williams, and Henry Zongaro
@@ -2666,7 +2669,7 @@ from its components using the algorithm of <xref target="recomposition"/>.
 </t>
 </section>
 
-<section title="Embedding the Base URI in HTML documents" anchor="html">
+<section title="Embedding the Base URI in HTML documents" anchor="html-base">
 <t>
 It is useful to consider an example of how the base URI of a document
 can be embedded within the document's content.  In this appendix, we
