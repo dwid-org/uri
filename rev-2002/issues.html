@@ -33,6 +33,9 @@
 <th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#017-rdf-fragment">017-rdf-fragment</a></td><td>RDF does not believe in same-document references</td><td>fragment</td><td nowrap="nowrap">accepted</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
@@ -45,10 +48,10 @@
 <td nowrap="nowrap"><a href="#041-encoding">041-encoding</a></td><td>Section 2 on encoding causes too much confusion</td><td>characters</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>terminology</td><td nowrap="nowrap">pending</td>
+<td nowrap="nowrap"><a href="#042-fragment-when">042-fragment-when</a></td><td>fragment identifiers applied before entire content is retrieved</td><td>fragment</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#017-rdf-fragment">017-rdf-fragment</a></td><td>RDF does not believe in same-document references</td><td>fragment</td><td nowrap="nowrap">pending</td>
+<td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>terminology</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#022-definitions">022-definitions</a></td><td>definitions for operations on URIs</td><td>examples</td><td nowrap="nowrap">pending</td>
@@ -1545,7 +1548,7 @@ Changed to reflect all of the suggestions:
 <th bgcolor="#FFFFCC"><font size="+2"><a name="017-rdf-fragment">017-rdf-fragment</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">RDF does not believe in same-document references</font></th>
 </tr>
 <tr>
-<th>pending</th><th align="left">fragment</th>
+<th>accepted</th><th align="left">fragment</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -3793,6 +3796,68 @@ recommends UTF-8 usage.
   issues list:
   <pre>
 Planning a rewrite.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="042-fragment-when">042-fragment-when</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">fragment identifiers applied before entire content is retrieved</font></th>
+</tr>
+<tr>
+<th>accepted</th><th align="left">fragment</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:LMM_AT_acm.org">Larry Masinter</a>,
+  17 Apr 2003,
+  URI-WG mailing list:
+  <pre>
+During the discussion of temporal fragment identifiers,
+I've noted that some of the wording in RFC 2396 might
+need some minor tweaking:
+
+    When a URI reference is used to perform a retrieval action on the
+    identified resource, the optional fragment identifier, separated from
+    the URI by a crosshatch ("#") character, consists of additional
+    reference information to be interpreted by the user agent after the
+    retrieval action has been successfully completed.  ....
+
+The fragment identifier can be interpreted by the user agent
+before "the retrieval action has been successfully completed"
+but after it's been successfully initiated. For example,
+in HTML pages, the browser can scroll to the identified
+fragment as soon as it's been parsed, and not wait until
+the _entire_ document has been retrieved.
+
+Similarly, if you open a PDF file with a page identifier
+   http://acroeng.adobe.com/BrowserTestSuite/auxurl/auxurl_testpage.html
+it doesn't need to download the entire file before it can turn
+to the appropriate page, using byte range retrieval.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:distobj_AT_acm.org">Mark Baker</a>,
+  17 Apr 2003,
+  URI-WG mailing list:
+  <pre>
+In the context of interpretation and not processing (which I'd
+classify the scroll action you describe as), I'd say that the fragid can
+be interpreted as soon as the (authoritative) media type of the
+representation is determined.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  17 Apr 2003,
+  issues list:
+  <pre>
+This will be addressed as part of the rewrite for issue 017-rdf-fragment.
 </pre>
 </td>
 </tr>

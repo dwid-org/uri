@@ -1287,7 +1287,7 @@ Changed to reflect all of the suggestions:
  <type>fragment</type>
  <name>017-rdf-fragment</name>
  <title>RDF does not believe in same-document references</title>
- <status>pending</status>
+ <status>accepted</status>
  <report>
   <author email="jjc_AT_hplb.hpl.hp.com">Jeremy Carroll</author>
   <date sort="20020410">10 Apr 2002</date>
@@ -3337,11 +3337,65 @@ Planning a rewrite.
  </action>
 </issue>
 
+<issue>
+ <type>fragment</type>
+ <name>042-fragment-when</name>
+ <title>fragment identifiers applied before entire content is retrieved</title>
+ <status>accepted</status>
+ <report>
+  <author email="LMM_AT_acm.org">Larry Masinter</author>
+  <date sort="20030417">17 Apr 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+During the discussion of temporal fragment identifiers,
+I've noted that some of the wording in RFC 2396 might
+need some minor tweaking:
+
+    When a URI reference is used to perform a retrieval action on the
+    identified resource, the optional fragment identifier, separated from
+    the URI by a crosshatch ("#") character, consists of additional
+    reference information to be interpreted by the user agent after the
+    retrieval action has been successfully completed.  ....
+
+The fragment identifier can be interpreted by the user agent
+before "the retrieval action has been successfully completed"
+but after it's been successfully initiated. For example,
+in HTML pages, the browser can scroll to the identified
+fragment as soon as it's been parsed, and not wait until
+the _entire_ document has been retrieved.
+
+Similarly, if you open a PDF file with a page identifier
+   http://acroeng.adobe.com/BrowserTestSuite/auxurl/auxurl_testpage.html
+it doesn't need to download the entire file before it can turn
+to the appropriate page, using byte range retrieval.
+</pre>
+ </report>
+ <report>
+  <author email="distobj_AT_acm.org">Mark Baker</author>
+  <date sort="20030417">17 Apr 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+In the context of interpretation and not processing (which I'd
+classify the scroll action you describe as), I'd say that the fragid can
+be interpreted as soon as the (authoritative) media type of the
+representation is determined.
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030417">17 Apr 2003</date>
+  <where>issues list</where>
+<pre>
+This will be addressed as part of the rewrite for issue 017-rdf-fragment.
+</pre>
+ </action>
+</issue>
+
 <!--
 
 <issue>
  <type>query</type>
- <name>042-def</name>
+ <name>043-def</name>
  <title></title>
  <status>accepted</status>
  <report>
