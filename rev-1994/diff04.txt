@@ -1,0 +1,312 @@
+3c3
+< Expires July 9, 1995                                    January 9, 1995
+---
+> Expires July 18, 1995                                  January 18, 1995
+7c7
+<                  <draft-ietf-uri-relative-url-03.txt>
+---
+>                  <draft-ietf-uri-relative-url-04.txt>
+53,61d52
+<    This work is derived from concepts introduced by the World-Wide Web
+<    global information initiative, whose use of such objects dates from
+<    1990 and is described in "Universal Resource Identifiers in WWW",
+<    RFC 1630 [3].  This document is a companion to RFC 1738, 
+<    "Uniform Resource Locators (URL)" [4], which specifies the
+<    syntax and semantics of absolute URLs.  A URL is "absolute" if it
+<    can be interpreted consistently and unambiguously, with global scope,
+<    independent of any other URL.
+< 
+65,66c56,57
+<    The syntax of relative URLs is a subset of that defined for
+<    Uniform Resource Locators.
+---
+>    It is a companion to RFC 1738, "Uniform Resource Locators (URL)" [2],
+>    which specifies the syntax and semantics of absolute URLs.
+103,109c94,99
+<    The syntax for relative URLs is a subset of that for absolute
+<    URLs [4].  Relative URLs are distinct in that some prefix of the URL
+<    is missing and certain path components ("." and "..") have a special
+<    meaning when interpreting a relative path.  Because a relative URL
+<    may appear in any context that could hold an absolute URL, systems
+<    that support relative URLs must be able to recognize them as part
+<    of the URL parsing process. 
+---
+>    The syntax for relative URLs is a shortened form of that for absolute
+>    URLs [2], where some prefix of the URL is missing and certain path
+>    components ("." and "..") have a special meaning when interpreting a
+>    relative path.  Because a relative URL may appear in any context that
+>    could hold an absolute URL, systems that support relative URLs must
+>    be able to recognize them as part of the URL parsing process. 
+119c109
+<    have abnormal base URLs.
+---
+>    have unsuitable base URLs.
+136c126
+<       scheme ":"   ::= scheme name, as per Section 2.1 of [4].
+---
+>       scheme ":"   ::= scheme name, as per Section 2.1 of [2].
+139c129
+<                        Section 3.1 of [4].
+---
+>                        Section 3.1 of [2].
+141c131
+<       "/" path     ::= URL path, as per Section 3.1 of [4].
+---
+>       "/" path     ::= URL path, as per Section 3.1 of [2].
+144c134
+<                        Section 3.2.2 of [4]).
+---
+>                        Section 3.2.2 of [2]).
+146c136
+<       "?" query    ::= query information, as per Section 3.3 of [4].
+---
+>       "?" query    ::= query information, as per Section 3.3 of [2].
+149a140,145
+>    Note that the fragment identifier (and the "#" that precedes it) is
+>    not considered part of the URL.  However, since it is commonly used
+>    within the same string context as a URL, a parser must be able to
+>    recognize the fragment when it is present and set it aside as part
+>    of the parsing process.
+> 
+157c153
+<    Locator syntax, using the conventions of RFC 822 [7], except that
+---
+>    Locator syntax, using the conventions of RFC 822 [5], except that
+222c218
+<    have a defined URL syntax in [4].  The following schemes are never
+---
+>    have a defined URL syntax in [2].  The following schemes are never
+225,226c221,222
+<       mailto     Electronic Mail [7]
+<       telnet     TELNET Protocol for Interactive Sessions [13]
+---
+>       mailto     Electronic Mail
+>       telnet     TELNET Protocol for Interactive Sessions
+231c227
+<    base URL is restricted to the generic syntax.
+---
+>    base URL follows the generic syntax.
+233,237c229,233
+<       gopher     Gopher and Gopher+ Protocols [1, 2]
+<       news       USENET news [9]
+<       nntp       USENET news using NNTP access [10]
+<       prospero   Prospero Directory Service [12]
+<       wais       Wide Area Information Servers Protocol [8,15]
+---
+>       gopher     Gopher and Gopher+ Protocols
+>       news       USENET news
+>       nntp       USENET news using NNTP access
+>       prospero   Prospero Directory Service
+>       wais       Wide Area Information Servers Protocol
+243,244c239,240
+<       ftp        File Transfer Protocol [14]
+<       http       Hypertext Transfer Protocol [6]
+---
+>       ftp        File Transfer Protocol
+>       http       Hypertext Transfer Protocol
+249c245
+<    when a new scheme is registered, as per Section 4 of [4].
+---
+>    when a new scheme is registered, as per Section 4 of [2].
+342c338
+<    how this is done for the Hypertext Markup Language (HTML) [5] is
+---
+>    how this is done for the Hypertext Markup Language (HTML) [3] is
+347,348c343,344
+<    For schemes which make use of message headers like those described
+<    in RFC 822 [7], a second method for identifying the base URL of a
+---
+>    For protocols that make use of message headers like those described
+>    in RFC 822 [5], a second method for identifying the base URL of a
+352c348
+<       Base-URL: "<" absoluteURL ">"
+---
+>       base  = "Base" ":" "<URL:" absoluteURL ">"
+354c350
+<    where "Base-URL" is case-insensitive.  For example,
+---
+>    where "Base" is case-insensitive.  For example,
+356c352
+<       Base-URL: <http://www.ics.uci.edu/Test/a/b/c>
+---
+>       Base: <URL:http://www.ics.uci.edu/Test/a/b/c>
+364,365c360,361
+<    Section 3.1) and a "Base-URL" message header are present, the
+<    embedded base URL takes precedence.
+---
+>    Section 3.1) and a "Base" message header are present, the embedded
+>    base URL takes precedence.
+369c365
+<    If neither an embedded base URL nor a "Base-URL" message header
+---
+>    If neither an embedded base URL nor a "Base" message header
+386a383,392
+> 3.5.  Base URL for Composite Media Types
+> 
+>    Composite media types, such as the "multipart/*" and "message/*"
+>    media types defined by MIME (RFC 1521, [4]), require special
+>    processing in order to determine the base URL of a component part.
+>    For these types, the base URL of the composite entity should be
+>    determined first; this base is then considered the default for any
+>    component part that does not define its own base via one of the
+>    methods described in Sections 3.1 and 3.2.
+> 
+472c478
+<       <URL:http://a/b/c/d;p?q#f>
+---
+>       Base: <URL:http://a/b/c/d;p?q#f>
+505c511,523
+<       <>         = <URL:http://a/b/c/d;p?q#f>    [an empty reference]
+---
+>    Although the following abnormal examples are unlikely to occur
+>    in normal practice, all URL parsers should be capable of resolving
+>    them consistently.  Each example uses the same base as above.
+> 
+>    An empty reference resolves to the complete base URL:
+> 
+>       <>         = <URL:http://a/b/c/d;p?q#f>
+> 
+>    Parsers must be careful in handling the case where there are more
+>    relative path ".." segments than there are hierarchical levels in
+>    the base URL's path.  Note that the ".." syntax cannot be used to
+>    change the <net_loc> of a URL.
+> 
+507,508c525,528
+<       ./../g     = <URL:http://a/b/g>
+<       ./g/.      = <URL:http://a/b/c/g/>
+---
+> 
+>    Similarly, parsers must avoid treating "." and ".." as special when
+>    they are not complete components of a relative path.
+> 
+510,511c530
+<       g/./h      = <URL:http://a/b/c/g/h>
+<       g/../h     = <URL:http://a/b/c/h>
+---
+>       /../g      = <URL:http://a/../g>
+515a535,548
+> 
+>    Less likely are cases where the relative URL uses unnecessary or
+>    nonsensical forms of the "." and ".." complete path segments.
+> 
+>       ./../g     = <URL:http://a/b/g>
+>       ./g/.      = <URL:http://a/b/c/g/>
+>       g/./h      = <URL:http://a/b/c/g/h>
+>       g/../h     = <URL:http://a/b/c/h>
+> 
+>    Finally, some older parsers allow the scheme name to be present in
+>    a relative URL if it is the same as the base URL scheme.  This is
+>    considered to be a loophole in prior specifications of partial
+>    URLs [1] and should be avoided by future parsers.
+> 
+519,522d551
+<    Note that, although the abnormal examples are not likely to occur
+<    for a normal relative URL, all URL parsers should be capable of
+<    resolving them consistently.
+< 
+540c569,570
+<    the ";type=d" parameter value not be used.
+---
+>    the ";type=d" parameter value not be used within contexts that allow
+>    relative URLs.
+547c577
+<    RFC 1738 [4].
+---
+>    RFC 1738 [2].
+553c583
+<    described as "Partial URLs" in RFC 1630 [3].  That description was
+---
+>    described as "Partial URLs" in RFC 1630 [1].  That description was
+555c585
+<    "Uniform Resource Locators (URL)" [4].  However, after further
+---
+>    "Uniform Resource Locators (URL)" [2].  However, after further
+560c590
+<    Resource Locators as stated in [11].  It has benefited greatly from
+---
+>    Resource Locators as stated in [6].  It has benefited greatly from
+567,579c597
+<    [1] F. Anklesaria, M. McCahill, P. Lindner, D. Johnson,
+<        D. Torrey, and B. Alberti, "The Internet Gopher Protocol:
+<        A distributed document search and retrieval protocol",
+<        RFC 1436, University of Minnesota, March 1993.
+<        <URL:ftp://ds.internic.net/rfc/rfc1436.txt>
+< 
+<    [2] F. Anklesaria, P. Lindner, M. McCahill, D. Torrey,
+<        D. Johnson, and B. Alberti, "Gopher+: Upward compatible
+<        enhancements to the Internet Gopher protocol", University of
+<        Minnesota, July 1993.  <URL:ftp://boombox.micro.umn.edu
+<        /pub/gopher/gopher_protocol/Gopher+/Gopher+.txt>, July 1993.
+< 
+<    [3] T. Berners-Lee, "Universal Resource Identifiers in WWW:
+---
+>    [1] T. Berners-Lee, "Universal Resource Identifiers in WWW:
+584c602
+<    [4] T. Berners-Lee, L. Masinter, and M. McCahill, Editors,
+---
+>    [2] T. Berners-Lee, L. Masinter, and M. McCahill, Editors,
+589c607
+<    [5] T. Berners-Lee and D. Connolly, "HyperText Markup Language
+---
+>    [3] T. Berners-Lee and D. Connolly, "HyperText Markup Language
+594,597c612,615
+<    [6] T. Berners-Lee, R. T. Fielding, and H. Frystyk Nielsen,
+<        "Hypertext Transfer Protocol -- HTTP/1.0" , Work in Progress,
+<        MIT, UC Irvine, CERN, December 1993.
+<        <URL:http://www.ics.uci.edu/pub/ietf/http/>
+---
+>    [4] N. Borenstein and N. Freed, "MIME (Multipurpose Internet Mail
+>        Extensions): Mechanisms for Specifying and Describing the Format
+>        of Internet Message Bodies", RFC 1521, Bellcore, Innosoft,
+>        September 1993.  <URL:ftp://ds.internic.net/rfc/rfc1521.txt>
+599c617
+<    [7] D. H. Crocker, "Standard for the Format of ARPA Internet
+---
+>    [5] D. H. Crocker, "Standard for the Format of ARPA Internet
+603,618c621
+<    [8] F. Davis, B. Kahle, H. Morris, J. Salem, T. Shen, R. Wang,
+<        J. Sui, and M. Grinbaum, "WAIS Interface Protocol Prototype
+<        Functional Specification", (v1.5), Thinking Machines Corporation,
+<        April 1990. <URL:ftp://quake.think.com/pub/wais/doc/protspec.txt>
+< 
+<    [9] M. Horton and R. Adams, "Standard For Interchange of USENET
+<        Messages", RFC 1036, AT&T Bell Laboratories, Center for
+<        Seismic Studies, December 1987.
+<        <URL:ftp://ds.internic.net/rfc/rfc1036.txt>
+< 
+<   [10] B. Kantor and P. Lapsley, "Network News Transfer Protocol:
+<        A Proposed Standard for the Stream-Based Transmission of News",
+<        RFC 977, UC San Diego & UC Berkeley, February 1986.
+<        <URL:ftp://ds.internic.net/rfc/rfc977.txt>
+< 
+<   [11] J. Kunze, "Functional Requirements for Internet Resource
+---
+>    [6] J. Kunze, "Functional Requirements for Internet Resource
+623,641d625
+<   [12] B. C. Neuman and S. Augart, "The Prospero Protocol",
+<        USC/Information Sciences Institute, June 1993.
+<        <URL:ftp://prospero.isi.edu/pub/prospero/doc/
+<        prospero-protocol.PS.Z>
+< 
+<   [13] J. Postel and J. K. Reynolds, "TELNET Protocol Specification",
+<        RFC 854, USC/Information Sciences Institute, May 1983.
+<        <URL:ftp://ds.internic.net/rfc/rfc854.txt>
+< 
+<   [14] J. Postel and J. K. Reynolds, "File Transfer Protocol (FTP)",
+<        STD 9, RFC 959, USC/Information Sciences Institute, October 1985.
+<        <URL:ftp://ds.internic.net/rfc/rfc959.txt>
+< 
+<   [15] M. St. Pierre, J. Fullton, K. Gamiel, J. Goldman, B. Kahle,
+<        J. Kunze, H. Morris, and F. Schiettecatte,
+<        "WAIS over Z39.50-1988", RFC 1625, WAIS, Inc., CNIDR,
+<        Thinking Machines Corp., UC Berkeley, FS Consulting, June 1994.
+<        <URL:ftp://ds.internic.net/rfc/rfc1625.txt>
+< 
+654c638
+<    This Internet-Draft expires July 9, 1995.
+---
+>    This Internet-Draft expires July 18, 1995.
+662c646
+<    Language (HTML) [5] can include an embedded base URL.  This appendix
+---
+>    Language (HTML) [3] can include an embedded base URL.  This appendix

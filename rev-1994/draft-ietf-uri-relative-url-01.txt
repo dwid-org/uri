@@ -1,0 +1,737 @@
+Uniform Resource Identifiers Working Group                R.T. Fielding
+INTERNET-DRAFT                                                UC Irvine
+Expires April 28, 1995                                 October 28, 1994
+
+
+                  Relative Uniform Resource Locators
+                 <draft-ietf-uri-relative-url-01.txt>
+
+
+Status of this Memo
+
+   This document is an Internet-Draft.  Internet-Drafts are working
+   documents of the Internet Engineering Task Force (IETF), its areas,
+   and its working groups.  Note that other groups may also distribute
+   working documents as Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six
+   months and may be updated, replaced, or obsoleted by other
+   documents at any time.  It is inappropriate to use Internet-
+   Drafts as reference material or to cite them other than as
+   ``work in progress.''
+
+   To learn the current status of any Internet-Draft, please check
+   the ``1id-abstracts.txt'' listing contained in the Internet-
+   Drafts Shadow Directories on ds.internic.net (US East Coast),
+   nic.nordu.net (Europe), ftp.isi.edu (US West Coast), or
+   munnari.oz.au (Pacific Rim).
+
+   Distribution of this document is unlimited.  Please send comments
+   to the editor, Roy T. Fielding <fielding@ics.uci.edu>, or to the
+   URI working group (URI-WG) of the Internet Engineering Task Force
+   (IETF) at <uri@bunyip.com>. Discussions of the group are archived at
+   <URL:http://www.acl.lanl.gov/URI/archive/uri-archive.index.html>.
+
+
+Abstract
+
+   Uniform Resource Locators (URLs) are a compact representation of the
+   location and access method for a resource available via the Internet.
+   When embedded within a base document, a URL in its absolute form may
+   contain a great deal of information which is already known from the
+   context of that base document's retrieval, including the access
+   scheme, network location, and parts of the url-path.  In situations
+   where the base URL is well-defined and known to the parser (human or
+   machine), it is useful to be able to embed URL references which
+   inherit that context rather than re-specifying it in every instance.
+   This document defines the syntax and semantics for such Relative
+   Uniform Resource Locators.
+
+
+1.  Introduction
+
+   This work is derived from concepts introduced by the World-Wide Web
+   global information initiative, whose use of such objects dates from
+   1990 and is described in "Universal Resource Identifiers in WWW",
+   RFC 1630 [1].  This document is a companion to the Internet-Draft
+   "Uniform Resource Locators (URL)" [2], which specifies the
+   syntax and semantics of absolute URLs.  A URL is "absolute" if it
+   can be interpreted consistently and unambiguously, with global scope,
+   independent of any other URL.
+
+   This document describes the syntax and semantics for "relative"
+   Uniform Resource Locators (relative URLs): a compact representation
+   of the location and access method for a resource available via the
+   Internet relative to an absolute base URL.  The name space of
+   relative URLs is a superset of that defined in [2] for Uniform
+   Resource Locators, in that all absolute URLs can be interpreted
+   consistently relative to any Internet-accessible resource.  For the
+   sake of clarity, however, this document will only term "relative"
+   those URLs which obtain global scope only when interpreted relative
+   to a separate base URL.
+
+   A primary use for Uniform Resource Locators is to embed them within
+   a document (referred to as the "base" document) for the purpose of
+   identifying other Internet-accessible resources.  This is
+   particularly true of hypertext documents, where URLs can serve as
+   the identifiers for hypertext link destinations. 
+
+   It is often the case that, where a group or "tree" of documents
+   serves a common purpose, the vast majority of URLs within those
+   documents point to locations within that tree rather than outside
+   of it.  Similarly, documents located at a particular Internet site
+   are much more likely to refer to other resources at that site than
+   to resources at remote sites.
+
+   Absolute URLs contain a great deal of information which may already
+   be known from the context of the base document's retrieval, 
+   including the access scheme, network location, and parts of the
+   URL path.  In situations where the base URL is well-defined and
+   known to the parser (human or machine), it is useful to be able to
+   embed a URL reference which inherits that context rather than
+   re-specifying it within each instance.
+
+   In addition to the space saved, relative addressing of URLs allows
+   document trees to be partially independent of their location and/or
+   access scheme.  For instance, if they refer to each other using
+   relative URLs, it is possible for a single set of documents to be
+   simultaneously accessible and, if hypertext, traversable via each
+   of the "file", "http", and "ftp" access schemes. Furthermore,
+   document trees can be moved, as a whole, without changing any of
+   the embedded URLs.  Experience within the World-Wide Web has
+   demonstrated that the ability to perform relative referencing is
+   necessary for the long-term usability of embedded URLs.
+
+2.  Relative URL Syntax
+
+   The syntax for relative URLs is the same as that for absolute URLs
+   [2], with the exception that portions of the URL may be missing, and
+   certain path components ("." and "..") have a special meaning when
+   interpreting a relative URL path.  Although this document does not
+   seek to define the overall URL syntax, some discussion of it is
+   necessary in order to describe the parsing of relative URLs.
+
+2.1.  URL Syntactic Components
+
+   The relative form relies on a property of the URL syntax that
+   certain characters ("/") and certain path segments ("..", ".") have
+   a significance reserved for representing a hierarchical space.
+   Additional reserved characters are sometimes used to separate the
+   URL path from other components, including object parameters (";"),
+   query information ("?"), and fragment identifiers ("#").
+
+   Like absolute URLs, relative URL syntax is dependent upon the access
+   scheme.  Some schemes use "?" and ";" to indicate special reserved
+   components, while others just consider them to be part of the path.
+   However, there is enough uniformity in the syntax to allow a parser
+   to resolve relative URLs based upon a few syntactic categories.
+   These categories are described in Section 2.3.
+
+   In general, the relative URL syntax consists of six components:
+
+      <scheme>://<net_loc>/<path>;<params>?<query>#<fragment>
+
+   each of which may be absent or may be disallowed by a particular
+   scheme.  They are defined as follows (a complete BNF is provided in
+   Section 2.2):
+
+      scheme ":"   ::= access scheme name, as per Section 2.1 of [2].
+
+      "//" net_loc ::= network location and login information, as per
+                       Section 3.1 of [2].
+
+      "/" path     ::= URL path, as per Section 3.1 of [2].
+
+      ";" params   ::= object parameters (e.g. ";type=a" as in 
+                       Section 3.2.2 of [2]).
+
+      "?" query    ::= query information, as per Section 3.3 of [2].
+
+      "#" fragment ::= fragment identifier (currently only used within
+                       the World-Wide Web initiative).
+
+   The order of the components is important.  If both <params> and
+   <query> are present, the <query> information must occur after the
+   <params>.  Relative components are resolved from left-to-right,
+   according to the rules given in Section 4.
+
+2.2.  BNF for Relative URLs
+
+   This is a BNF-like description of the Relative Uniform Resource
+   Locator syntax, using the conventions of RFC 822 [7], except that
+   "|" is used to designate alternatives, and brackets "[]" are used
+   around optional or repeated elements. Briefly, literals are quoted
+   with "", optional elements are enclosed in [brackets], and elements
+   may be preceded with <n>* to designate n or more repetitions of the
+   following element; n defaults to 0.
+
+   Because relative URLs are parsed within the context of the base URL,
+   this BNF is not sufficient to completely specify the allowed syntax
+   within any given context.  Section 2.4 describes a context-sensitive
+   parsing algorithm which disambiguates the grammar.
+
+
+   relativeURL = [ absoluteURL | location | abs_path | rel_path ]
+                 [ "#" fragment ]
+
+   absoluteURL = scheme ":" [ location | abs_path | rel_path ]
+   location    = "//" net_loc [ "/" rel_path ]
+   abs_path    = "/"  rel_path
+   rel_path    = [ path ] [ ";" params ] [ "?" query ]
+
+   path        = segment *[ "/" segment ]
+   segment     = *[ pchar | ";" ]
+
+   params      = param *[ ";" param ]
+   param       = *[ pchar | "/" ]
+
+   scheme      = 1*[ alpha | digit | "+" | "-" | "." ]
+   net_loc     =  *[ pchar | ";" ]
+   query       =  *[ uchar | reserved | "#" ]
+   fragment    =  *[ uchar | reserved ]
+
+   pchar       = [ uchar | "?" | ":" | "@" | "&" | "=" | "#" ]
+   uchar       = unreserved | escape
+   unreserved  = alpha | digit | safe | extra | national
+
+   escape      = "%" hex hex
+   hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
+		         "a" | "b" | "c" | "d" | "e" | "f"
+
+   alpha       = lowalpha | hialpha
+   lowalpha    = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" |
+                 "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" |
+                 "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
+   hialpha     = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | 
+                 "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | 
+                 "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+
+   digit       = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
+                 "8" | "9"
+
+   safe        = "$" | "-" | "_" | "." | "+"
+   extra       = "!" | "*" | "'" | "(" | ")" | ","
+   national    = "{" | "}" | "|" | "\" | "^" | "~" | "[" | "]" | "`"
+   reserved    = ";" | "/" | "?" | ":" | "@" | "&" | "="
+   punctuation = "<" | ">" | "#" | "%" | <">
+
+
+2.3.  Specific Schemes and their Syntactic Categories
+
+   Each URL access scheme has its own rules regarding the presence or
+   absence of the syntactic components described in Section 2.1 and 2.2.
+   However, there is enough commonality among the schemes to be able
+   to group them into just a few categories.  These categories are
+   sufficiently general to allow new schemes to be added without 
+   substantial changes to the algorithm for resolving relative URLs.
+
+   Within this section, we include as examples only those schemes 
+   which have a defined URL syntax in [2].  This includes:
+
+      ftp        File Transfer Protocol [3]
+      http       Hypertext Transfer Protocol [4]
+      gopher     Gopher and Gopher+ Protocols [5, 6]
+      mailto     Electronic Mail [7]
+      news       USENET news [8]
+      nntp       USENET news using NNTP access [9]
+      telnet     TELNET Protocol for Interactive Sessions [10]
+      wais       Wide Area Information Servers Protocol [11,12]
+      file       Host-specific Files
+      prospero   Prospero Directory Service [13]
+
+   It is recommended that new schemes include a description of their
+   membership in the following categories when they are registered,
+   as per Section 4 of [2].  Membership in the five categories is 
+   described in terms of named sets: Uses-Netloc, Non-Hierarchical,
+   Uses-Params, Uses-Query, and Uses-Fragment.
+
+2.3.1  The Uses-Netloc Set
+
+   The Uses-Netloc set includes those access schemes which use the
+   Common Internet Scheme Syntax described in Section 3.1 of [2], where
+   the network location and/or login information starts with a
+   double-slash "//" to indicate its presence, and continues until the
+   following slash "/", if any.
+
+      Uses-Netloc = {ftp, http, gopher, nntp, telnet, wais,
+                     file, prospero}
+
+2.3.2  The Non-Hierarchical Set
+
+   The Non-Hierarchical set includes those access schemes which do not
+   use "/" to indicate hierarchical segments in the URL path.
+
+      Non-Hierarchical = {gopher, wais, mailto, news, telnet, prospero}
+
+   When resolving relative paths for schemes not in the Non-Hierarchical
+   set, the complete path segments ".." and "." have a significance
+   reserved for representing the path hierarchy, indicating up-one-level
+   and current-level, respectively.
+
+2.3.3  The Uses-Params Set
+
+   The Uses-Params set includes those access schemes which allow the
+   semicolon ";" character to separate object parameters from the
+   URL path.  There may be more than one parameter, each being
+   separated by a semicolon ";".
+
+      Uses-Params = {ftp, http, prospero}
+
+2.3.4  The Uses-Query Set
+
+   The Uses-Query set includes those access schemes which allow the
+   question mark "?" character to separate query information from the
+   URL path.
+
+      Uses-Query = {http, wais}
+
+2.3.5  The Uses-Fragment Set
+
+   The Uses-Fragment set includes those access schemes which allow the
+   crosshatch "#" character to separate a fragment identifier from
+   the rest of the URL.  Within systems that use fragment identifiers,
+  
+      Uses-Fragment = {ftp, http, gopher, news, nntp, wais,
+                       file, prospero}
+
+   Unlike the other sets, however, the fragment identifier is only
+   reserved within systems which use it.  Outside of those systems,
+   Uses-Fragment is equal to the empty set.
+
+2.3.6.  Summary of Categories by Scheme
+
+                 Uses-   Non-Hier  Uses-    Uses-    Uses-
+                 Netloc  archical  Params   Query   Fragment
+               .--------------------------------------------.
+      ftp      |  XXXX  |        |  XXXX  |        |  XXXX  |
+      http     |  XXXX  |        |  XXXX  |  XXXX  |  XXXX  |
+      gopher   |  XXXX  |  XXXX  |        |        |  XXXX  |
+      mailto   |        |  XXXX  |        |        |        |
+      news     |        |  XXXX  |        |        |  XXXX  |
+      nntp     |  XXXX  |        |        |        |  XXXX  |
+      telnet   |  XXXX  |  XXXX  |        |        |        |
+      wais     |  XXXX  |  XXXX  |        |  XXXX  |  XXXX  |
+      file     |  XXXX  |        |        |        |  XXXX  |
+      prospero |  XXXX  |  XXXX  |  XXXX  |        |  XXXX  |
+               `--------------------------------------------'
+
+2.4.  Parsing a URL
+
+   An accepted method for parsing URLs is necessary to disambiguate the
+   relative URL syntax of Section 2.2 and to describe the algorithm for
+   resolving relative URLs presented in Section 4.  This section
+   describes the parsing rules for breaking down a URL (relative or
+   absolute) into the component parts described in Section 2.1.  The
+   rules assume that the URL has already been separated from any
+   surrounding text and copied to a "parse string".  The rules are
+   listed in the order in which they must be applied by the parser.
+
+2.4.1.  Parsing the Scheme
+
+   If the parse string contains a colon ":" after the first character
+   and before any characters not allowed as part of a scheme name
+   (i.e. any not an alphanumeric, plus "+", period ".", or hyphen "-"),
+   the scheme of the URL is the substring of characters up to but not
+   including the first colon.  These characters and the colon are then
+   removed from the parse string before continuing. 
+ 
+2.4.2.  Parsing the Fragment Identifier
+
+   If the scheme is not a member of the Uses-Fragment set, this section
+   is skipped.
+
+   If the parse string contains a crosshatch "#" character, then the
+   substring after the last (right-most) crosshatch "#" and up to the
+   end of the parse string is the fragment identifier.  If the
+   crosshatch is the last character, or no crosshatch is present, then
+   the fragment identifier is empty.  The matched substring, including
+   the crosshatch character, is removed from the parse string before
+   continuing.
+
+   Note that the fragment identifier is not considered part of the URL.
+   However, since it is often attached to the URL, parsers must be able
+   to recognize and set aside fragment identifiers as part of the
+   process.
+
+2.4.3.  Parsing the Network Location/Login
+
+   If the scheme is not a member of the Uses-Netloc set, this section
+   is skipped.
+
+   If the parse string begins with a double-slash "//", then the
+   substring of characters after the double-slash and up to, but not
+   including, the next slash "/" character is the network location/login
+   (<net_loc>) of the URL.  If no trailing slash "/" is present, the
+   entire remaining parse string is assigned to <net_loc>.  The 
+   double-slash and <net_loc> are removed from the parse string before
+   continuing. 
+ 
+2.4.4.  Parsing the Query Information
+
+   If the scheme is not a member of the Uses-Query set, this section
+   is skipped.
+
+   If the parse string contains a question mark "?" character, then the
+   substring after the first (left-most) question mark "?" and up to the
+   end of the parse string is the query information.  If the question
+   mark is the last character, or no question mark is present, then the
+   query information is empty.  The matched substring, including the
+   question mark character, is removed from the parse string before
+   continuing.
+
+2.4.5.  Parsing the Parameters
+
+   If the scheme is not a member of the Uses-Params set, this section
+   is skipped.
+
+   If the parse string contains a semicolon ";" character, then the
+   substring after the first (left-most) semicolon ";" and up to the
+   end of the parse string is the parameters (<params>).  If the
+   semicolon is the last character, or no semicolon is present, then
+   <params> is empty.  The matched substring, including the semicolon
+   character, is removed from the parse string before continuing.
+
+2.4.6.  Parsing the Path
+
+   After the above steps, all that is left of the parse string is
+   the URL path and the slash "/" that may precede it.  Even though
+   the initial slash is not part of the URL path, the parser must
+   remember whether or not it was present so that later processes
+   can differentiate between relative and absolute paths.  Often this
+   is done by simply storing the preceding slash along with the path.
+
+3.  Establishing a Base URL
+
+   In order for relative URLs to be usable within a base document,
+   the absolute "base URL" of that document must be known to the
+   parser.  There are three methods for obtaining the base URL of
+   a document, listed here in order of precedence.
+
+3.1.  Base URL within Document Content
+
+   Within certain document content-types, the base URL of the document
+   can be embedded within the content itself such that it can be
+   readily obtained by a parser.  This can be useful for descriptive
+   documents, such as tables of content, which may be transmitted to
+   others through schemes which do not support relative addressing
+   (e.g. E-Mail or USENET news).
+
+   It is beyond the scope of this document to specify how, for each
+   content-type, the base URL can be embedded.  However, an example of
+   how this is done for the Hypertext Markup Language (HTML) [14] is
+   provided in an Appendix (Section 10).
+
+3.2.  Base URL within Message Headers
+
+   For access schemes which make use of message headers like those
+   described in RFC 822 [7], a second method for identifying the base
+   URL of a document is to include that URL in the message headers.
+   It is recommended that the format of this header be:
+
+      Base-URL: absoluteURL
+
+   where "Base-URL" is case-insensitive.  For example,
+
+      Base-URL: http://www.ics.uci.edu/Test/a/b/c
+
+   would indicate that any relative URLs found within the document
+   should be parsed relative to <URL:http://www.ics.uci.edu/Test/a/b/c>.
+   In situations where both an embedded base URL (as described in
+   Section 3.1) and a "Base-URL" message header are present, the
+   embedded base URL takes precedence.
+
+3.3.  Base URL from the Retrieval Context
+
+   If neither an embedded base URL nor a "Base-URL" message header
+   is present, then, if a URL was used to retrieve the base document,
+   that URL shall be considered the base URL.  Note that if the
+   retrieval was the result of a redirected request, the last URL used
+   (i.e., that which resulted in the actual retrieval of the document)
+   is the base URL.
+
+3.4.  Default Base URL
+
+   If none of the conditions described in Sections 3.1 -- 3.3 apply,
+   then the base URL is considered to be the empty string and all
+   embedded URLs within that document shall be interpreted as absolute.
+   It is the responsibility of the distributor(s) of a document
+   containing relative URLs to ensure that the base URL for that
+   document can be established.  It must be emphasized that relative
+   URLs cannot be used reliably in situations where the object's base
+   URL is not well-defined.
+
+4.  Resolving Relative URLs
+
+   This section describes an example algorithm for resolving URLs
+   within a context in which the URLs may be relative, such that the
+   result is always a URL in absolute form.  Although this algorithm
+   cannot guarantee that the resulting URL will equal that intended
+   by the original author, it does guarantee that any valid URL
+   (relative or absolute) can be consistently transformed to an
+   absolute form given a valid base URL.
+
+   The following steps are performed in order:
+
+   Step 1: The base URL is established according to the rules of
+           Section 3.
+
+   Step 2: If the base URL is the empty string (unknown), the embedded
+           URL is interpreted as an absolute URL and we are done.
+
+   Step 3: Both the base and embedded URLs are parsed into their
+           component parts as described in Section 2.4.
+
+           a) If the embedded URL starts with a scheme name, it is
+              interpreted as an absolute URL and we are done.
+
+           b) Otherwise, the embedded URL inherits the scheme of
+              the base URL.
+
+   Step 4: If the scheme is a member of the Uses-Netloc set
+           (Section 2.3.1), then
+
+           a) If the embedded URL's <net_loc> is non-empty, we skip to
+              Step 8.
+
+           b) Otherwise, the embedded URL inherits the <net_loc> of the
+              base URL.
+
+   Step 5: If the embedded URL path is preceded by a slash "/", the
+           path is not relative and we skip to Step 8.
+
+   Step 6: If the embedded URL path is empty (and not preceded by a
+           slash), then
+
+           a) The embedded URL inherits the base URL path; and,
+
+           b) If the embedded URL's <params> is empty, it
+              inherits the <params> of the base URL (if any); and,
+
+           c) If the embedded URL's <query> is empty, it inherits
+              the <query> of the base URL (if any); and,
+
+           d) We skip to Step 8.
+
+   Step 7: The last path segment of the base URL's path (anything
+           following the rightmost slash "/", or the entire path if no
+           slash is present) is removed and the embedded URL's path is
+           appended in its place.  The following operations are
+           then applied, in order, to the new URL path:
+ 
+           a) All occurrences of "./", where "." is a complete path
+              segment, are removed.
+
+           b) If the URL path ends with "." as a complete path segment,
+              that "." is removed.
+
+           c) All occurrences of "<segment>/../", where <segment> and
+              ".." are complete path segments, are removed.  Removal of
+              these path segments is performed iteratively, removing the
+              leftmost matching pattern on each iteration, until no
+              matching pattern remains.
+
+           d) If the URL path ends with "<segment>/..", that
+              "<segment>/.." is removed.
+
+   Step 8: The resulting URL components, including any inherited from
+           the base URL, are recombined to give the absolute form of
+           the embedded URL.
+
+   Parameters, regardless of their purpose, do not form a part of the
+   URL path and thus have no effect on the resolving of relative paths.
+   In particular, the presence or absence of the ";type=d" parameter
+   on an ftp URL has no effect on the interpretation of paths relative
+   to that URL.  Fragment identifiers are never inherited from the
+   base URL.
+
+5.  Examples and Recommended Practice
+
+   Within an object with a well-defined base URL of
+
+      <URL:http://a/b/c/d>
+
+   the relative URLs would be resolved as follows: 
+
+5.1.  Normal Examples
+
+      g:h        = <URL:g:h>
+      g          = <URL:http://a/b/c/g>
+      ./g        = <URL:http://a/b/c/g>
+      g/         = <URL:http://a/b/c/g/>
+      /g         = <URL:http://a/g>
+      //g        = <URL:http://g>
+      ?y         = <URL:http://a/b/c/d?y>
+      g?y        = <URL:http://a/b/c/g?y>
+      g?y/./x    = <URL:http://a/b/c/g?y/./x>
+      .          = <URL:http://a/b/c/>
+      ./         = <URL:http://a/b/c/>
+      ..         = <URL:http://a/b/>
+      ../        = <URL:http://a/b/>
+      ../g       = <URL:http://a/b/g>
+      ../..      = <URL:http://a/>
+      ../../g    = <URL:http://a/g>
+
+5.2.  Abnormal Examples
+
+      ../../../g = <URL:http://a/../g>
+      ./../g     = <URL:http://a/b/g>
+      ./g/.      = <URL:http://a/b/c/g/>
+      /./g       = <URL:http://a/./g>
+      g/./h      = <URL:http://a/b/c/g/h>
+      g/../h     = <URL:http://a/b/c/h>
+      http:g     = <URL:http:g>
+      http:      = <URL:http:>
+
+   Note that, although the abnormal examples are not likely to occur
+   for a normal relative URL, all URL parsers should be capable of
+   resolving them consistently.
+
+5.3.  Recommended Practice
+
+   Authors should be aware that path names which contain a colon
+   ":" character cannot be used as the first component of a relative
+   URL path (e.g. "this:that") because they will likely be mistaken for
+   a scheme name.  It is therefore necessary to precede such cases with
+   other components (e.g., "./this:that"), or to escape the colon
+   character (e.g., "this%3Athat"), in order for them to be correctly
+   parsed.  The former solution is preferred because it has no effect
+   on the absolute form of the URL.
+
+6.  Security Considerations
+
+   None.
+
+7.  Acknowledgements
+
+   This work is derived from concepts introduced by Tim Berners-Lee and
+   the World-Wide Web global information initiative.  Relative URLs are
+   described as "Partial URLs" in RFC 1630 [1].  That description was
+   expanded for inclusion as an appendix for the Internet-Draft
+   "Uniform Resource Locators (URL)" [2].  However, after further
+   discussion, the URI-WG decided to specify Relative URLs separately
+   from the primary URL draft.
+
+   This document is intended to fulfill the requirements for Internet
+   Resource Locators as stated in [15].  It has benefited greatly from
+   the comments of all those participating in the URI-WG.  Particular
+   thanks go to Larry Masinter, Michael A. Dolan, Guido van Rossum, and
+   Dave Kristol for identifying problems/deficiencies in earlier drafts.
+
+8.  References
+
+   [1] Berners-Lee, T., "Universal Resource Identifiers in WWW:
+       A Unifying Syntax for the Expression of Names and Addresses of
+       Objects on the Network as used in the World-Wide Web", RFC 1630,
+       <URL:ftp://ds.internic.net/rfc/rfc1630.txt>, June 1994.
+
+   [2] Berners-Lee, T., Masinter, L., and McCahill, M., Editors,
+       "Uniform Resource Locators (URL)", Internet-Draft (work in
+       progress), <URL:ftp://ds.internic.net/internet-drafts/
+       draft-ietf-uri-url-08.txt>, October 1994.
+
+   [3] Postel, J. and Reynolds, J.K., "File Transfer Protocol (FTP)",
+       RFC 959, <URL:ftp://ds.internic.net/rfc/rfc959.txt>, October 1985.
+
+   [4] Berners-Lee, T ., "Hypertext Transfer Protocol (HTTP)" ,
+       CERN, <URL:ftp://info.cern.ch/pub/www/doc/http-spec.txt.Z>,
+       November 1993.
+
+   [5] Anklesaria, F., McCahill, M., Lindner, P., Johnson, D.,
+       Torrey, D., and Alberti, B., "The Internet Gopher Protocol:
+       A distributed document search and retrieval protocol",
+       RFC 1436, <URL:ftp://ds.internic.net/rfc/rfc1436.txt>,
+       March 1993.
+
+   [6] Anklesaria, F., Lindner, P., McCahill, M., Torrey, D.,
+       Johnson, D., and Alberti, B., "Gopher+: Upward compatible
+       enhancements to the Internet Gopher protocol",
+       University of Minnesota, <URL:ftp://boombox.micro.umn.edu
+       /pub/gopher/gopher_protocol/Gopher+/Gopher+.txt>, July 1993.
+
+   [7] Crocker, D. H., "Standard for the Format of ARPA Internet Text
+       Messages", RFC 822, <URL:ftp://ds.internic.net/rfc/rfc822.txt>,
+       April 1982.
+
+   [8] Horton, M. and Adams, R., "Standard For Interchange of USENET
+       messages", RFC 1036, <URL:ftp://ds.internic.net/rfc/rfc1036.txt>,
+       December 1987.
+
+   [9] Kantor, B. and Lapsley, P., "Network News Transfer Protocol:
+       A Proposed Standard for the Stream-Based Transmission of News",
+       RFC977, <URL:ftp://ds.internic.net/rfc/rfc977.txt>,
+       February 1986.
+
+  [10] Postel, J. and Reynolds, J., "TELNET Protocol Specification",
+       RFC 854, <URL:ftp://ds.internic.net/rfc/rfc854.txt>, May 1983.
+
+  [11] Davis, F., Kahle, B., Morris, H., Salem, J., Shen, T., Wang, R.,
+       Sui, J., and Grinbaum, M., "WAIS Interface Protocol Prototype
+       Functional Specification", (v1.5), Thinking Machines Corporation, 
+       <URL:ftp://quake.think.com/pub/wais/doc/protspec.txt>,
+       April 1990.
+
+  [12] St. Pierre, M, Fullton, J., Gamiel, K., Goldman, J., Kahle, B.,
+       Kunze, J., Morris, H., and Schiettecatte, F.,
+       "WAIS over Z39.50-1988", RFC 1625,
+       <URL:ftp://ds.internic.net/rfc/rfc1625.txt>, June 1994.
+
+  [13] Neuman, B.C., and Augart, S. "The Prospero Protocol",
+       USC Information Sciences Institute, <URL:
+       ftp://prospero.isi.edu/pub/prospero/doc/prospero-protocol.PS.Z>,
+       June 1993.
+
+  [14] Berners-Lee, T., Connolly, D., et al. "HyperText Markup Language
+       Specification -- 2.0", HTML-WG draft (work in progress),
+       <URL:ftp://www.ics.uci.edu/pub/ietf/html/>, October 1994.
+
+  [15] Kunze, J., "Functional Requirements for Internet Resource
+       Locators", Internet-Draft (work in progress),
+       <URL:ftp://ds.internic.net/internet-drafts/
+       draft-ietf-uri-irl-fun-req-01.txt>, July 1994.
+
+9.  Author's Address
+
+   Roy T. Fielding
+   Department of Information and Computer Science
+   University of California
+   Irvine, CA  92717-3425
+   U.S.A.
+
+   Tel: +1 (714) 824-4049
+   Fax: +1 (714) 824-4056
+   Email: fielding@ics.uci.edu
+
+   This Internet-Draft expires April 28, 1995.
+
+
+10.  Appendix - Embedding the Base URL in HTML documents.
+
+   It is useful to consider an example of how the base URL of a
+   document can be embedded within the document's content.  In this
+   appendix, we describe how documents written in the Hypertext Markup
+   Language (HTML) [14] can include an embedded base URL.  This appendix
+   does not form a part of the relative URL specification and should not
+   be considered as anything more than a descriptive example.
+
+   HTML defines a special element "BASE" which, when present in the
+   "HEAD" portion of a document, signals that the parser should use
+   the BASE element's "HREF" attribute as the base URL for resolving
+   any relative URLs.  The "HREF" attribute must be an absolute URL.
+   Note that, in HTML, element and attribute names are case-insensitive.
+   For example:
+
+      <!doctype html public "-//IETF//DTD HTML//EN">
+      <HTML><HEAD>
+      <TITLE>An example HTML document</TITLE>
+      <BASE href="http://www.ics.uci.edu/Test/a/b/c">
+      </HEAD><BODY>
+      ... <A href="../x">a hypertext anchor</A> ...
+      </BODY></HTML>
+
+   A parser reading the example document should interpret the given
+   relative URL "../x" as representing the absolute URL
+
+      <URL:http://www.ics.uci.edu/Test/a/x>
+
+   regardless of the context in which the example document was obtained.
+
