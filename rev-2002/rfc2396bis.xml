@@ -3,9 +3,9 @@
 <!DOCTYPE rfc SYSTEM "../rfc2629.dtd">
 <?rfc toc="yes" ?>
 <?rfc symrefs="yes" ?>
-<?rfc sortrefs="yes"?>
+<?rfc sortrefs="no"?>
 <?rfc toc="yes"?>
-<?rfc editing="yes"?>
+<?rfc editing="no"?>
 <?rfc-ext parse-xml-in-artwork="yes" ?>
 <rfc obsoletes="2396, 1808" updates="1738" category="std"
      ipr="full2026" docName="draft-fielding-uri-rfc2396bis-00">
@@ -17,8 +17,8 @@
     <organization abbrev="MIT/LCS">World Wide Web Consortium</organization>
     <address>
       <postal>
+        <street>MIT/LCS, Room NE43-356</street>
         <street>200 Technology Square</street>
-        <street>MIT Room NE43-356</street>
         <city>Cambridge</city>
         <region>MA</region>
         <code>02139</code>
