@@ -10,6 +10,8 @@
  <li>Drafts in-progress: <a href="rfc2396bis.html">rfc2396bis.html</a>,
                          <a href="rfc2396bis.xml">rfc2396bis.xml</a></li>
  <li>Published drafts:
+       <a href="draft-fielding-uri-rfc2396bis-02.txt">02.txt</a>,
+       <a href="draft-fielding-uri-rfc2396bis-02.html">02.html</a>,
        <a href="draft-fielding-uri-rfc2396bis-01.txt">01.txt</a>,
        <a href="draft-fielding-uri-rfc2396bis-01.html">01.html</a>,
        <a href="draft-fielding-uri-rfc2396bis-00.txt">00.txt</a>,
@@ -35,6 +37,8 @@
   <status>added 01</status>
   <status>fixed 02</status>
   <status>added 02</status>
+  <status>fixed 03</status>
+  <status>added 03</status>
  </section><section>
   <title>Issues that will not be incorporated</title>
   <status>closed</status>
