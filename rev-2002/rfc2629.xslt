@@ -117,7 +117,7 @@
                 xmlns:xalan="http://xml.apache.org/xalan"
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
                 xmlns:saxon="http://icl.com/saxon"
-                xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rcf2629.xslt"
+                xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rfc2629.xslt"
                 exclude-result-prefixes="msxsl xalan saxon myns ed"
                 xmlns:ed="http://greenbytes.de/2002/rfcedit"
                 >
