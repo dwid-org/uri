@@ -2238,6 +2238,29 @@ are gratefully acknowledged.
 <format type='TXT' octets='24265' target='http://www.ietf.org/rfc/rfc2234.txt' />
 </reference>
 
+<reference anchor='RFC3629'>
+<front>
+<title>UTF-8, a transformation format of ISO 10646</title>
+<author initials='F.' surname='Yergeau' fullname='Francois Yergeau'>
+<organization>Alis Technologies</organization>
+<address>
+<postal>
+<street>100, boul. Alexis-Nihon</street>
+<street>Suite 600</street>
+<city>Montreal</city>
+<region>Quebec</region>
+<code>H4M 2P2</code>
+<country>CA</country></postal>
+<phone>+1 514 747 2547</phone>
+<facsimile>+1 514 747 2561</facsimile>
+<email>fyergeau@alis.com</email></address></author>
+<date month='November' year='2003' />
+</front>
+<seriesInfo name='STD' value='63' />
+<seriesInfo name='RFC' value='3629' />
+<format type='TXT' octets='33856' target='http://www.ietf.org/rfc/rfc3629.txt' />
+</reference>
+
   </references>
 
   <references title="Informative References">
@@ -2839,29 +2862,6 @@ Science, University of California, Irvine</organization>
 <date day='6' month='April' year='2001'></date>
 </front>
 <format type='PDF' target='http://www.giac.org/practical/gsec/Richard_Siedzik_GSEC.pdf' />
-</reference>
-
-<reference anchor='RFC3629'>
-<front>
-<title>UTF-8, a transformation format of ISO 10646</title>
-<author initials='F.' surname='Yergeau' fullname='Francois Yergeau'>
-<organization>Alis Technologies</organization>
-<address>
-<postal>
-<street>100, boul. Alexis-Nihon</street>
-<street>Suite 600</street>
-<city>Montreal</city>
-<region>Quebec</region>
-<code>H4M 2P2</code>
-<country>CA</country></postal>
-<phone>+1 514 747 2547</phone>
-<facsimile>+1 514 747 2561</facsimile>
-<email>fyergeau@alis.com</email></address></author>
-<date month='November' year='2003' />
-</front>
-<seriesInfo name='STD' value='63' />
-<seriesInfo name='RFC' value='3629' />
-<format type='TXT' octets='33856' target='http://www.ietf.org/rfc/rfc3629.txt' />
 </reference>
 
 </references>
