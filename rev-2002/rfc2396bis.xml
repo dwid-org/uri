@@ -80,7 +80,7 @@ defines the generic syntax of a URI, including both absolute and
 relative forms, and guidelines for their use.
 </t>
 <t>
-This document defines a grammar that is a superset of all valid URI,
+This document defines a grammar that is a superset of all valid URIs,
 such that an implementation can parse the common components of a URI
 reference without knowing the scheme-specific requirements of every
 possible identifier type.  This document does not define a generative
