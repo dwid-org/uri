@@ -435,7 +435,7 @@ changing any of the relative references.
 <t>
 A relative URI reference (<xref target="relative-uri"/>) refers to a
 resource by describing the difference within a hierarchical name space
-between the current context and the target URI.  The reference resolution
+between the reference context and the target URI.  The reference resolution
 algorithm, presented in <xref target="reference-resolution"/>, defines
 how such a reference is transformed to the target URI.
 Since relative references can only be used within the context of a
@@ -609,7 +609,7 @@ unreserved character by URI normalizers.
 <section title="When to Encode or Decode" anchor="when-to-percent-encode">
 <t>
 Under normal circumstances, the only time that octets within a
-URI string are percent-encoded is during the process of producing
+URI are percent-encoded is during the process of producing
 the URI from its component parts.  It is during that process that an
 implementation determines which of the reserved characters are to be
 used as sub-component delimiters and which can be safely used as data.
@@ -1068,24 +1068,16 @@ and terminated by a number sign ("#") character or by the end of the URI.
    query       = *( pchar / "/" / "?" )
 </artwork></figure>
 <t>
-The characters slash ("/") and question mark ("?") are allowed to
-represent data within the query component, but such use is discouraged;
-incorrect implementations of reference resolution often fail to
-distinguish them from hierarchical separators, thus resulting in
-non-interoperable results while parsing relative references.  However,
-since query components are often used to carry identifying information
+The characters slash ("/") and question mark ("?") may represent data
+within the query component, but should not be used as such within a URI
+that is expected to be the base for relative references
+(<xref target="base-uri"/>).  Incorrect implementations of reference
+resolution often fail to distinguish query data from path data when looking
+for hierarchical separators, thus resulting in non-interoperable results.
+However, since query components are often used to carry identifying information
 in the form of "key=value" pairs, and one frequently used value is a
 reference to another URI, it is sometimes better for usability to
 avoid percent-encoding those characters.
-<list>
-<t>
-Note: Some client applications will fail to separate a reference's
-query component from its path component before merging the base and
-reference paths (<xref target="absolutize"/>).  This may result in
-loss of information if the query component contains the strings
-"/../" or "/./".
-</t>
-</list>
 </t>
 </section>
 
@@ -1099,7 +1091,7 @@ portion or subset of the primary resource, some view on representations
 of the primary resource, or some other resource defined or described by
 those representations.  A fragment identifier component is indicated by
 the presence of a number sign ("#") character and terminated by the end
-of the URI string.
+of the URI.
 <iref item="URI grammar" subitem="fragment" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="false"/>
 </preamble><artwork type="abnf">
@@ -1146,8 +1138,9 @@ refer to information within a resource.
 </t>
 <t>
 The characters slash ("/") and question mark ("?") are allowed to
-represent data within the fragment identifier, but such use is
-discouraged for the same reasons as described above for query.
+represent data within the fragment identifier, but should not be used
+as such within a URI that is expected to be the base for relative references
+(<xref target="base-uri"/>) for the same reasons as described above for query.
 </t>
 </section>
 
@@ -1178,7 +1171,7 @@ resource identifier.
    URI-reference = URI / relative-URI
 </artwork><postamble>
 A URI-reference may be relative:
-if the reference string's prefix matches the syntax of a scheme followed by
+if the reference's prefix matches the syntax of a scheme followed by
 its colon separator, then the reference is a URI rather than a relative-URI.
 </postamble></figure>
 <t>
@@ -1248,19 +1241,18 @@ does not allow a fragment.
 <section title="Same-document Reference" anchor="same-document">
 <iref item="same-document" primary="true"/>
 <t>
-When a URI reference occurring within a document or message refers
-to a URI that is, aside from its fragment component (if any),
-identical to the base URI (<xref target="base-uri"/>), that reference
-is called a "same-document" reference.  The most frequent examples
-of same-document references are relative references that are empty
+When a URI reference refers to a URI that is, aside from its fragment
+component (if any), identical to the base URI (<xref target="base-uri"/>),
+that reference is called a "same-document" reference.  The most frequent
+examples of same-document references are relative references that are empty
 or include only the number sign ("#") separator followed by a fragment
 identifier.
 </t>
 <t>
 When a same-document reference is dereferenced for the purpose of a
 retrieval action, the target of that reference is defined to be within
-that current document or message; the dereference should not result in
-a new retrieval.
+the same entity (representation, document, or message) as the reference;
+therefore, a dereference should not result in a new retrieval action.
 </t>
 <t>
 Normalization of the base and target URIs prior to their comparison,
@@ -1585,6 +1577,16 @@ merged paths, showing the state of the two buffers after each step.
 Some applications may find it more efficient to implement the
 remove_dot_segments algorithm using two segment stacks rather than strings.
 </postamble></figure>
+<t>
+<list>
+<t>
+Note: Some client applications will fail to separate a reference's
+query component from its path component before merging the base and
+reference paths.  This may result in loss of information if the query
+component contains the strings "/../" or "/./".
+</t>
+</list>
+</t>
 </section>
 
 <section title="Recomposition of a Parsed URI" anchor="recomposition">
@@ -1653,6 +1655,7 @@ a relative URI reference is transformed to its target URI as follows.
    ";x"            =  "http://a/b/c/;x"
    "g;x"           =  "http://a/b/c/g;x"
    "g;x?y#s"       =  "http://a/b/c/g;x?y#s"
+   ""              =  "http://a/b/c/d;p?q"
    "."             =  "http://a/b/c/"
    "./"            =  "http://a/b/c/"
    ".."            =  "http://a/b/"
@@ -1671,13 +1674,7 @@ normal practice, all URI parsers should be capable of resolving them
 consistently.  Each example uses the same base as above.
 </t>
 <t>
-An empty reference refers to the current base URI.
-</t>
-<figure><artwork>
-   ""              =  "http://a/b/c/d;p?q"
-</artwork></figure>
-<t>
-Parsers must be careful in handling the case where there are more
+Parsers must be careful in handling cases where there are more
 relative path ".." segments than there are hierarchical levels in the
 base URI's path.  Note that the ".." syntax cannot be used to change
 the authority component of a URI.
@@ -1783,12 +1780,12 @@ URIs.  Therefore, comparison methods are designed to minimize
 false negatives while strictly avoiding false positives.
 </t>
 <t>
-In testing for equivalence, it is generally unwise to directly compare
-relative URI references; they should be converted to their absolute forms
-before comparison.  Furthermore, when URI references are being compared
+In testing for equivalence, applications should not directly compare
+relative URI references; the references should be converted to their
+target URI forms before comparison.  When URIs are being compared
 for the purpose of selecting (or avoiding) a network action, such as
-retrieval of a representation, it is often necessary to remove fragment
-identifiers from the URIs prior to comparison.
+retrieval of a representation, the fragment components (if any) should
+be excluded from the comparison.
 </t>
 </section>
 
@@ -1951,8 +1948,8 @@ of an empty authority component.  For many scheme specifications, an
 empty authority is considered an error; for others, it is considered
 equivalent to "localhost".  For the sake of uniformity, future scheme
 specifications should define an empty authority as being equivalent
-to "localhost", and URI producers and normalizers should use the
-string "localhost" instead of an empty authority.
+to "localhost", and URI producers and normalizers should use
+"localhost" instead of an empty authority.
 </t>
 </section>
 
@@ -2129,15 +2126,15 @@ These additional IP address formats are not allowed in the URI syntax
 due to differences between platform implementations.  However, they
 can become a security concern if an application attempts to filter
 access to resources based on the IP address in string literal format.
-If such filtering is performed, it is recommended that literals
-be converted to numeric form and filtered based on the numeric value,
-rather than a prefix or suffix of the string form.
+If such filtering is performed, literals should be converted to numeric
+form and filtered based on the numeric value, rather than a prefix or
+suffix of the string form.
 </t>
 </section>
 <section title="Sensitive Information" anchor="security-sensitive">
 <t>
-It is clearly unwise to use a URI that contains a username or
-password which is intended to be secret: they are frequently
+URI producers should not provide a URI that contains a username or
+password which is intended to be secret: URIs are frequently
 displayed by browsers, stored in clear text bookmarks, and logged
 by user agent history and intermediary applications (proxies).
 A password appearing within the userinfo component is deprecated and
@@ -2185,7 +2182,7 @@ Daniel Barclay, Tim Bray, Mike Brown,
 Rob Cameron, Jeremy Carroll, Dan Connolly, Adam M. Costello, John Cowan,
 Jason Diamond, Martin Duerst, Stefan Eissing, Clive D.W. Feather,
 Tony Hammond, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
-John C. Klensin, Graham Klyne, Dan Kohn, Bruce Lilly,
+Michael Kay, John C. Klensin, Graham Klyne, Dan Kohn, Bruce Lilly,
 Andrew Main, Ira McDonald, Michael Mealling, Stephen Pollei,
 Julian Reschke, Tomas Rokicki, Miles Sabin, Mark Thomson, Ronald Tschalaer,
 Norm Walsh, Marc Warne, Stuart Williams, and Henry Zongaro

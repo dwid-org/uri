@@ -703,6 +703,7 @@ is available at
 
 
 
+
 <b>&nbsp;5.3&nbsp;
             <a href="#recomposition">Recomposition of a Parsed URI</a></b>
 <br>
@@ -728,8 +729,6 @@ is available at
 <b>&nbsp;&nbsp;5.4.2&nbsp;
             <a href="#relative-abnormal">Abnormal Examples</a></b>
 <br>
-
-
 
 
 
@@ -1426,7 +1425,7 @@ changing any of the relative references.
 <p>
 A relative URI reference (<a href="#relative-uri">section&nbsp;4.2</a>) refers to a
 resource by describing the difference within a hierarchical name space
-between the current context and the target URI.  The reference resolution
+between the reference context and the target URI.  The reference resolution
 algorithm, presented in <a href="#reference-resolution">section&nbsp;5</a>, defines
 how such a reference is transformed to the target URI.
 Since relative references can only be used within the context of a
@@ -1643,7 +1642,7 @@ unreserved character by URI normalizers.
 </div>
 <p>
 Under normal circumstances, the only time that octets within a
-URI string are percent-encoded is during the process of producing
+URI are percent-encoded is during the process of producing
 the URI from its component parts.  It is during that process that an
 implementation determines which of the reserved characters are to be
 used as sub-component delimiters and which can be safely used as data.
@@ -2219,29 +2218,16 @@ and terminated by a number sign ("#") character or by the end of the URI.
 <a name="rfc.section.3.4.p.2"></a>
 </div>
 <p>
-The characters slash ("/") and question mark ("?") are allowed to
-represent data within the query component, but such use is discouraged;
-incorrect implementations of reference resolution often fail to
-distinguish them from hierarchical separators, thus resulting in
-non-interoperable results while parsing relative references.  However,
-since query components are often used to carry identifying information
+The characters slash ("/") and question mark ("?") may represent data
+within the query component, but should not be used as such within a URI
+that is expected to be the base for relative references
+(<a href="#base-uri">section&nbsp;5.1</a>).  Incorrect implementations of reference
+resolution often fail to distinguish query data from path data when looking
+for hierarchical separators, thus resulting in non-interoperable results.
+However, since query components are often used to carry identifying information
 in the form of "key=value" pairs, and one frequently used value is a
 reference to another URI, it is sometimes better for usability to
 avoid percent-encoding those characters.
-</p>
-<dl>
-
-<dd style="margin-top: .5em">
-Note: Some client applications will fail to separate a reference's
-query component from its path component before merging the base and
-reference paths (<a href="#absolutize">section&nbsp;5.2</a>).  This may result in
-loss of information if the query component contains the strings
-"/../" or "/./".
-</dd>
-
-</dl>
-<p>
-
 </p>
 <h2>
 <a name="rfc.section.3.5">3.5</a>&nbsp;
@@ -2260,7 +2246,7 @@ portion or subset of the primary resource, some view on representations
 of the primary resource, or some other resource defined or described by
 those representations.  A fragment identifier component is indicated by
 the presence of a number sign ("#") character and terminated by the end
-of the URI string.
+of the URI.
 <a name="rfc.iref.94"></a>
 <a name="rfc.iref.95"></a>
 
@@ -2320,8 +2306,9 @@ refer to information within a resource.
 </div>
 <p>
 The characters slash ("/") and question mark ("?") are allowed to
-represent data within the fragment identifier, but such use is
-discouraged for the same reasons as described above for query.
+represent data within the fragment identifier, but should not be used
+as such within a URI that is expected to be the base for relative references
+(<a href="#base-uri">section&nbsp;5.1</a>) for the same reasons as described above for query.
 </p>
 
 
@@ -2368,7 +2355,7 @@ resource identifier.
 </pre>
 <p>
 A URI-reference may be relative:
-if the reference string's prefix matches the syntax of a scheme followed by
+if the reference's prefix matches the syntax of a scheme followed by
 its colon separator, then the reference is a URI rather than a relative-URI.
 </p>
 <div>
@@ -2455,11 +2442,10 @@ does not allow a fragment.
 <a name="rfc.section.4.4.p.1"></a>
 </div>
 <p>
-When a URI reference occurring within a document or message refers
-to a URI that is, aside from its fragment component (if any),
-identical to the base URI (<a href="#base-uri">section&nbsp;5.1</a>), that reference
-is called a "same-document" reference.  The most frequent examples
-of same-document references are relative references that are empty
+When a URI reference refers to a URI that is, aside from its fragment
+component (if any), identical to the base URI (<a href="#base-uri">section&nbsp;5.1</a>),
+that reference is called a "same-document" reference.  The most frequent
+examples of same-document references are relative references that are empty
 or include only the number sign ("#") separator followed by a fragment
 identifier.
 </p>
@@ -2469,8 +2455,8 @@ identifier.
 <p>
 When a same-document reference is dereferenced for the purpose of a
 retrieval action, the target of that reference is defined to be within
-that current document or message; the dereference should not result in
-a new retrieval.
+the same entity (representation, document, or message) as the reference;
+therefore, a dereference should not result in a new retrieval action.
 </p>
 <div>
 <a name="rfc.section.4.4.p.3"></a>
@@ -2893,6 +2879,25 @@ merged paths, showing the state of the two buffers after each step.
 Some applications may find it more efficient to implement the
 remove_dot_segments algorithm using two segment stacks rather than strings.
 </p>
+<div>
+<a name="rfc.section.5.2.p.8"></a>
+</div>
+<p>
+
+</p>
+<dl>
+
+<dd style="margin-top: .5em">
+Note: Some client applications will fail to separate a reference's
+query component from its path component before merging the base and
+reference paths.  This may result in loss of information if the query
+component contains the strings "/../" or "/./".
+</dd>
+
+</dl>
+<p>
+
+</p>
 <h2>
 <a name="rfc.section.5.3">5.3</a>&nbsp;
     <a name="recomposition">Recomposition of a Parsed URI</a>
@@ -2979,6 +2984,7 @@ a relative URI reference is transformed to its target URI as follows.
    ";x"            =  "http://a/b/c/;x"
    "g;x"           =  "http://a/b/c/g;x"
    "g;x?y#s"       =  "http://a/b/c/g;x?y#s"
+   ""              =  "http://a/b/c/d;p?q"
    "."             =  "http://a/b/c/"
    "./"            =  "http://a/b/c/"
    ".."            =  "http://a/b/"
@@ -3004,30 +3010,19 @@ consistently.  Each example uses the same base as above.
 <a name="rfc.section.5.4.2.p.2"></a>
 </div>
 <p>
-An empty reference refers to the current base URI.
-</p>
-<div>
-<a name="rfc.figure.u.29"></a>
-</div>
-<pre>   ""              =  "http://a/b/c/d;p?q"
-</pre>
-<div>
-<a name="rfc.section.5.4.2.p.4"></a>
-</div>
-<p>
-Parsers must be careful in handling the case where there are more
+Parsers must be careful in handling cases where there are more
 relative path ".." segments than there are hierarchical levels in the
 base URI's path.  Note that the ".." syntax cannot be used to change
 the authority component of a URI.
 </p>
 <div>
-<a name="rfc.figure.u.30"></a>
+<a name="rfc.figure.u.29"></a>
 </div>
 <pre>   "../../../g"    =  "http://a/g"
    "../../../../g" =  "http://a/g"
 </pre>
 <div>
-<a name="rfc.section.5.4.2.p.6"></a>
+<a name="rfc.section.5.4.2.p.4"></a>
 </div>
 <p>
 Similarly, parsers must remove the dot-segments "." and ".." when
@@ -3035,7 +3030,7 @@ they are complete components of a path, but not when they are only
 part of a segment.
 </p>
 <div>
-<a name="rfc.figure.u.31"></a>
+<a name="rfc.figure.u.30"></a>
 </div>
 <pre>   "/./g"          =  "http://a/g"
    "/../g"         =  "http://a/g"
@@ -3045,14 +3040,14 @@ part of a segment.
    "..g"           =  "http://a/b/c/..g"
 </pre>
 <div>
-<a name="rfc.section.5.4.2.p.8"></a>
+<a name="rfc.section.5.4.2.p.6"></a>
 </div>
 <p>
 Less likely are cases where the relative URI uses unnecessary or
 nonsensical forms of the "." and ".." complete path segments.
 </p>
 <div>
-<a name="rfc.figure.u.32"></a>
+<a name="rfc.figure.u.31"></a>
 </div>
 <pre>   "./../g"        =  "http://a/b/g"
    "./g/."         =  "http://a/b/c/g/"
@@ -3062,7 +3057,7 @@ nonsensical forms of the "." and ".." complete path segments.
    "g;x=1/../y"    =  "http://a/b/c/y"
 </pre>
 <div>
-<a name="rfc.section.5.4.2.p.10"></a>
+<a name="rfc.section.5.4.2.p.8"></a>
 </div>
 <p>
 Some applications fail to separate the reference's query and/or
@@ -3073,7 +3068,7 @@ character, and the query component is not normally used within
 relative references.
 </p>
 <div>
-<a name="rfc.figure.u.33"></a>
+<a name="rfc.figure.u.32"></a>
 </div>
 <pre>   "g?y/./x"       =  "http://a/b/c/g?y/./x"
    "g?y/../x"      =  "http://a/b/c/g?y/../x"
@@ -3081,7 +3076,7 @@ relative references.
    "g#s/../x"      =  "http://a/b/c/g#s/../x"
 </pre>
 <div>
-<a name="rfc.section.5.4.2.p.12"></a>
+<a name="rfc.section.5.4.2.p.10"></a>
 </div>
 <p>
 Some parsers allow the scheme name to be present in a relative URI if
@@ -3090,7 +3085,7 @@ loophole in prior specifications of partial URI <a href="#RFC1630" title="Univer
 Its use should be avoided, but is allowed for backward compatibility.
 </p>
 <div>
-<a name="rfc.figure.u.34"></a>
+<a name="rfc.figure.u.33"></a>
 </div>
 <pre>   "http:g"        =  "http:g"         ; for strict parsers
                    /  "http://a/b/c/g" ; for backward compatibility
@@ -3166,12 +3161,12 @@ false negatives while strictly avoiding false positives.
 <a name="rfc.section.6.1.p.3"></a>
 </div>
 <p>
-In testing for equivalence, it is generally unwise to directly compare
-relative URI references; they should be converted to their absolute forms
-before comparison.  Furthermore, when URI references are being compared
+In testing for equivalence, applications should not directly compare
+relative URI references; the references should be converted to their
+target URI forms before comparison.  When URIs are being compared
 for the purpose of selecting (or avoiding) a network action, such as
-retrieval of a representation, it is often necessary to remove fragment
-identifiers from the URIs prior to comparison.
+retrieval of a representation, the fragment components (if any) should
+be excluded from the comparison.
 </p>
 <h2>
 <a name="rfc.section.6.2">6.2</a>&nbsp;
@@ -3243,7 +3238,7 @@ codepoint-by-codepoint after conversion to a common character encoding.
     <a name="normalize-syntax">Syntax-based Normalization</a>
 </h3>
 <div>
-<a name="rfc.figure.u.35"></a>
+<a name="rfc.figure.u.34"></a>
 </div>
 <p>
 Software may use logic based on the definitions provided by this
@@ -3308,7 +3303,7 @@ that corresponds to an unreserved character, as described in
     <a name="normalize-empty">Empty-component Normalization</a>
 </h3>
 <div>
-<a name="rfc.figure.u.36"></a>
+<a name="rfc.figure.u.35"></a>
 </div>
 <p>
 Components of the generic URI syntax are delimited from other components
@@ -3351,7 +3346,7 @@ remove_dot_segments algorithm to the path, as described in
     <a name="normalize-scheme">Scheme-based Normalization</a>
 </h3>
 <div>
-<a name="rfc.figure.u.37"></a>
+<a name="rfc.figure.u.36"></a>
 </div>
 <p>
 The syntax and semantics of URIs vary from scheme to scheme, as described
@@ -3384,15 +3379,15 @@ of an empty authority component.  For many scheme specifications, an
 empty authority is considered an error; for others, it is considered
 equivalent to "localhost".  For the sake of uniformity, future scheme
 specifications should define an empty authority as being equivalent
-to "localhost", and URI producers and normalizers should use the
-string "localhost" instead of an empty authority.
+to "localhost", and URI producers and normalizers should use
+"localhost" instead of an empty authority.
 </p>
 <h3>
 <a name="rfc.section.6.2.4">6.2.4</a>&nbsp;
     <a name="normalize-protocol">Protocol-based Normalization</a>
 </h3>
 <div>
-<a name="rfc.figure.u.38"></a>
+<a name="rfc.figure.u.37"></a>
 </div>
 <p>
 Web spiders, for which substantial effort to reduce the incidence
@@ -3403,7 +3398,7 @@ observe that a URI such as
 <pre>   http://example.com/data
 </pre>
 <div>
-<a name="rfc.figure.u.39"></a>
+<a name="rfc.figure.u.38"></a>
 </div>
 <p>
 redirects to a URI differing only in the trailing slash
@@ -3633,9 +3628,9 @@ These additional IP address formats are not allowed in the URI syntax
 due to differences between platform implementations.  However, they
 can become a security concern if an application attempts to filter
 access to resources based on the IP address in string literal format.
-If such filtering is performed, it is recommended that literals
-be converted to numeric form and filtered based on the numeric value,
-rather than a prefix or suffix of the string form.
+If such filtering is performed, literals should be converted to numeric
+form and filtered based on the numeric value, rather than a prefix or
+suffix of the string form.
 </p>
 <h2>
 <a name="rfc.section.7.5">7.5</a>&nbsp;
@@ -3645,8 +3640,8 @@ rather than a prefix or suffix of the string form.
 <a name="rfc.section.7.5.p.1"></a>
 </div>
 <p>
-It is clearly unwise to use a URI that contains a username or
-password which is intended to be secret: they are frequently
+URI producers should not provide a URI that contains a username or
+password which is intended to be secret: URIs are frequently
 displayed by browsers, stored in clear text bookmarks, and logged
 by user agent history and intermediary applications (proxies).
 A password appearing within the userinfo component is deprecated and
@@ -3658,7 +3653,7 @@ rare cases where the 'password' parameter is intended to be public.
     <a name="security-semantic">Semantic Attacks</a>
 </h2>
 <div>
-<a name="rfc.figure.u.40"></a>
+<a name="rfc.figure.u.39"></a>
 </div>
 <p>
 Because the userinfo sub-component is rarely used and appears before the
@@ -3714,7 +3709,7 @@ Daniel Barclay, Tim Bray, Mike Brown,
 Rob Cameron, Jeremy Carroll, Dan Connolly, Adam M. Costello, John Cowan,
 Jason Diamond, Martin Duerst, Stefan Eissing, Clive D.W. Feather,
 Tony Hammond, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
-John C. Klensin, Graham Klyne, Dan Kohn, Bruce Lilly,
+Michael Kay, John C. Klensin, Graham Klyne, Dan Kohn, Bruce Lilly,
 Andrew Main, Ira McDonald, Michael Mealling, Stephen Pollei,
 Julian Reschke, Tomas Rokicki, Miles Sabin, Mark Thomson, Ronald Tschalaer,
 Norm Walsh, Marc Warne, Stuart Williams, and Henry Zongaro
@@ -3989,7 +3984,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
     <a name="collected-abnf">Collected ABNF for URI</a>
 </h1>
 <div>
-<a name="rfc.figure.u.41"></a>
+<a name="rfc.figure.u.40"></a>
 </div>
 <pre> URI = scheme ":" ["//" authority] path ["?" query] ["#" fragment]
 
@@ -4077,7 +4072,7 @@ The following line is the regular expression for breaking-down a
 well-formed URI reference into its components.
 </p>
 <div>
-<a name="rfc.figure.u.42"></a>
+<a name="rfc.figure.u.41"></a>
 </div>
 <pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
     12            3  4          5       6  7        8 9
@@ -4092,7 +4087,7 @@ paired parenthesis).  We refer to the value matched for subexpression
 &lt;n&gt; as $&lt;n&gt;.  For example, matching the above expression to
 </p>
 <div>
-<a name="rfc.figure.u.43"></a>
+<a name="rfc.figure.u.42"></a>
 </div>
 <pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
 </pre>
@@ -4103,7 +4098,7 @@ paired parenthesis).  We refer to the value matched for subexpression
 results in the following subexpression matches:
 </p>
 <div>
-<a name="rfc.figure.u.44"></a>
+<a name="rfc.figure.u.43"></a>
 </div>
 <pre>   $1 = http:
    $2 = http
@@ -4124,7 +4119,7 @@ the case for the query component in the above example.  Therefore, we
 can determine the value of the four components and fragment as
 </p>
 <div>
-<a name="rfc.figure.u.45"></a>
+<a name="rfc.figure.u.44"></a>
 </div>
 <pre>   scheme    = $2
    authority = $4
@@ -4170,7 +4165,7 @@ within double-quotes "http://example.com/", angle brackets
 &lt;http://example.com/&gt;, or just using whitespace
 </p>
 <div>
-<a name="rfc.figure.u.46"></a>
+<a name="rfc.figure.u.45"></a>
 </div>
 <pre>   http://example.com/
 </pre>
@@ -4223,7 +4218,7 @@ For robustness, software that accepts user-typed URI should attempt
 to recognize and strip both delimiters and embedded whitespace.
 </p>
 <div>
-<a name="rfc.figure.u.47"></a>
+<a name="rfc.figure.u.46"></a>
 </div>
 <p>
 For example, the text:
@@ -4240,7 +4235,7 @@ For example, the text:
 contains the URI references
 </p>
 <div>
-<a name="rfc.figure.u.48"></a>
+<a name="rfc.figure.u.47"></a>
 </div>
 <pre>   http://www.w3.org/Addressing/
    ftp://foo.example.com/rfc/
