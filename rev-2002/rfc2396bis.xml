@@ -1385,7 +1385,7 @@ has the highest precedence.  This can be visualized graphically as:
 </section>
 </section>
 
-<section title="Obtaining the referenced URI" anchor="absolutize">
+<section title="Obtaining the Referenced URI" anchor="absolutize">
 <t>
 This section describes an example algorithm for resolving URI
 references that might be relative to a given base URI.  The algorithm
@@ -2704,7 +2704,7 @@ regardless of the context in which the example document was obtained.
 </t>
 </section>
 
-<section title="Recommendations for Delimiting URI in Context" anchor="delimiting">
+<section title="Delimiting a URI in Context" anchor="delimiting">
 <t>
 URIs are often transmitted through formats that do not provide a clear
 context for their interpretation.  For example, there are many
