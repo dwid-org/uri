@@ -703,6 +703,10 @@ referred to as the scheme, authority, path, query, and fragment.
 <iref item="URI grammar" subitem="net-path" primary="true"/>
 <iref item="URI grammar" subitem="abs-path" primary="true"/>
 <iref item="URI grammar" subitem="rel-path" primary="true"/>
+<iref item="URI grammar" subitem="path-segments" primary="false"/>
+<iref item="URI grammar" subitem="scheme" primary="false"/>
+<iref item="URI grammar" subitem="query" primary="false"/>
+<iref item="URI grammar" subitem="fragment" primary="false"/>
 <iref item="URI grammar" subitem="authority" primary="false"/>
 </preamble><artwork type="abnf">
    URI         = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
@@ -777,10 +781,11 @@ or server address, along with optional port and user information.
 <figure><preamble>
 The authority component is preceded by a double slash ("//") and is
 terminated by the next slash ("/"), question-mark ("?"), or
-crosshatch ("#") character, or by the end of the URI.  Within the
-authority component, the characters ";", ":", "@", "[", and "]"
-are reserved.
+crosshatch ("#") character, or by the end of the URI.
 <iref item="URI grammar" subitem="authority" primary="true"/>
+<iref item="URI grammar" subitem="userinfo" primary="false"/>
+<iref item="URI grammar" subitem="host" primary="false"/>
+<iref item="URI grammar" subitem="port" primary="false"/>
 </preamble><artwork type="abnf">
    authority   = [ userinfo "@" ] host [ ":" port ]
 </artwork><postamble>
@@ -818,28 +823,21 @@ domain name in order to mislead users, as described in
 <xref target="security-semantic"/>.
 </t>
 </section>
-<section title="Host and Port" anchor="host-port">
+
+<section title="Host" anchor="host">
 <iref item="host" primary="true"/>
-<iref item="port" primary="true"/>
 <figure><preamble>
-The naming authority is identified by a network host --- as described by
-an IPv6 literal encapsulated within square brackets, an IPv4 address in
-dotted-decimal form, or a domain name --- and an optional port number.
-The port, if defined by the URI scheme, is designated by a port number
-in decimal following the host and delimited from it by a colon (":")
-character.
+The host sub-component of authority is identified by an IPv6 literal
+encapsulated within square brackets, an IPv4 address in dotted-decimal form,
+or a domain name.
 <iref item="URI grammar" subitem="host" primary="true"/>
-<iref item="URI grammar" subitem="port" primary="true"/>
 </preamble><artwork type="abnf">
    host        = [ IPv6reference / IPv4address / hostname ]
-   port        = *DIGIT
 </artwork><postamble>
-If host or port is omitted, a default may be defined by the scheme-specific
+If host is omitted, a default may be defined by the scheme-specific
 semantics of the URI.  For example, the "file" URI scheme defaults to
-"localhost" and no port, whereas the "http" URI scheme does not allow
-host to be omitted but does define a default port of "80".  The type of
-network port designated by a URI (e.g., TCP, UDP, SCTP, etc.) is defined
-by the scheme-specific semantics of the URI scheme.
+"localhost", whereas the "http" URI scheme does not allow host to be
+omitted.
 </postamble></figure>
 <t>
 The production for host is ambiguous because it does not completely
@@ -847,15 +845,6 @@ distinguish between an IPv4address and a hostname.  Again, the
 "first-match" algorithm applies: If host matches the production for
 IPv4address, then it should be considered an IPv4 address literal
 and not a hostname.
-</t>
-<t>
-The presence of host within a URI does not imply that the scheme
-requires access to the given host on the Internet.  In many cases,
-the host syntax is used only for the sake of reusing the existing
-registration process created and deployed for DNS, thus obtaining a
-globally unique name without the cost of deploying another registry.
-However, such use comes with its own costs: domain name ownership
-may change over time.
 </t>
 <figure><preamble>
 <iref item="hostname" primary="true"/>
@@ -932,7 +921,34 @@ are allowed in the URI syntax.
 
    h4          = 1*4HEXDIG
 </artwork></figure>
+<t>
+The presence of host within a URI does not imply that the scheme
+requires access to the given host on the Internet.  In many cases,
+the host syntax is used only for the sake of reusing the existing
+registration process created and deployed for DNS, thus obtaining a
+globally unique name without the cost of deploying another registry.
+However, such use comes with its own costs: domain name ownership
+may change over time for reasons not anticipated by the URI creator.
+</t>
 </section>
+
+<section title="Port" anchor="port">
+<iref item="port" primary="true"/>
+<figure><preamble>
+The port sub-component of authority is designated by an optional
+port number in decimal following the host and delimited from it by
+a single colon (":") character.
+<iref item="URI grammar" subitem="port" primary="true"/>
+</preamble><artwork type="abnf">
+   port        = *DIGIT
+</artwork><postamble>
+If port is omitted, a default may be defined by the scheme-specific
+semantics of the URI.  Likewise, the type of network port designated by
+the port number (e.g., TCP, UDP, SCTP, etc.) is defined by the URI scheme.
+For example, the "http" URI scheme defines a default of TCP port 80.
+</postamble></figure>
+</section>
+
 </section>
 
 <section title="Path" anchor="path">
@@ -1751,7 +1767,7 @@ process URIs make use of platform-dependent system routines, such as
 gethostbyname() and inet_aton(), to translate the string literal to an
 actual IP address.  Unfortunately, such system routines often allow and
 process a much larger set of formats than those described in
-<xref target="host-port"/>.
+<xref target="host"/>.
 </t>
 <t>
 For example, many implementations allow dotted forms of three numbers,
