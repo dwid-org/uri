@@ -180,7 +180,7 @@ being identified from all other things within its scope of identification.
 </t>
 <t>
 A URI is an identifier that consists of a sequence of characters
-matching the syntax defined by the grammar rule named "URI" in
+matching the syntax defined by the syntax rule named "URI" in
 <xref target="components"/>.
 A URI can be used to refer to a resource.
 This specification does not place any
@@ -313,10 +313,18 @@ is often the case that the most meaningful name for a URI component
 would require characters that cannot be typed into some systems.  The
 ability to transcribe a resource identifier from one medium to
 another has been considered more important than having a URI consist of
-the most meaningful of components.  In local or regional contexts
-and with improving technology, users might benefit from being able to
-use a wider range of characters; such use is not defined in this
-specification.
+the most meaningful of components.
+</t>
+<t>
+In local or regional contexts and with improving technology, users might
+benefit from being able to use a wider range of characters; such use
+is not defined in this specification.  Percent-encoded octets
+(<xref target="percent-encoding"/>) may be used within a URI to represent
+characters outside the range of the US-ASCII coded character set if such
+representation is defined by the scheme or by the protocol element
+in which the URI is referenced; such a definition will specify the
+character encoding scheme used to map those characters to octets prior
+to being percent-encoded for the URI.
 </t>
 </section>
 
@@ -440,11 +448,11 @@ A relative URI reference (<xref target="relative-uri"/>) refers to a
 resource by describing the difference within a hierarchical name space
 between the current context and the target URI.  The reference resolution
 algorithm, presented in <xref target="reference-resolution"/>, defines
-how such references are resolved.  Since relative references can only
-be used within the context of a hierarchical URI, designers of new URI
-schemes should use a syntax conforming to the generic hierarchical syntax
-unless there are compelling reasons to forbid relative referencing
-within that scheme.
+how such a reference is transformed to the target URI.
+Since relative references can only be used within the context of a
+hierarchical URI, designers of new URI schemes should use a syntax
+conforming to the generic hierarchical syntax unless there are compelling
+reasons to forbid relative referencing within that scheme.
 </t>
 </section>
 
@@ -463,7 +471,7 @@ within that scheme.
 <iref item="URI grammar" subitem="SP" primary="true"/>
 <t>
 This specification uses the Augmented Backus-Naur Form (ABNF) notation of
-<xref target="RFC2234"/>, including the following core ABNF productions
+<xref target="RFC2234"/>, including the following core ABNF syntax rules
 defined by that specification:
 ALPHA (letters), CR (carriage return), CTL (control characters),
 DIGIT (decimal digits), DQUOTE (double quote), HEXDIG (hexadecimal digits),
@@ -478,10 +486,10 @@ The complete URI syntax is collected in <xref target="collected-abnf"/>.
 <iref item="characters" primary="true"/>
 <t>
 Although ABNF notation defines its terminal values to be non-negative
-integers based on the US-ASCII coded character set <xref target="ASCII"/>,
-we must invert that relation in order to understand the URI syntax,
-since URIs are defined as strings of characters independent of any
-particular encoding.  Therefore, the integer values must be mapped
+integers (codepoints) based on the US-ASCII coded character set
+<xref target="ASCII"/>, we must invert that relation in order to understand
+the URI syntax, since URIs are defined as strings of characters independent
+of any particular encoding.  Therefore, the integer values must be mapped
 back to their corresponding characters via US-ASCII in order to complete
 the syntax rules.
 </t>
@@ -522,7 +530,7 @@ to the space character (SP).
 The uppercase hexadecimal digits 'A' through 'F' are equivalent to the
 lowercase digits 'a' through 'f', respectively.  Two URIs that differ
 only in the case of hexadecimal digits used in percent-encoded octets are
-equivalent.  For consistency, URI generators and normalizers should
+equivalent.  For consistency, URI producers and normalizers should
 use uppercase hexadecimal digits for all percent-encodings.
 </postamble></figure>
 </section>
@@ -553,9 +561,9 @@ then the conflicting data must be percent-encoded before forming the URI.
 <t>
 A subset of the reserved characters (gen-delims) are used as delimiters
 of the generic URI components described in <xref target="components"/>.
-A component's ABNF syntax rule will not use the "reserved" production
-directly; instead, each rule lists those reserved characters that are
-allowed within that component (i.e., not delimiting it).  The allowed
+A component's ABNF syntax rule will not use the reserved or gen-delims rule
+names directly; instead, each syntax rule lists those reserved characters
+that are allowed within that component (i.e., not delimiting it).  The allowed
 reserved characters, including those in the sub-delims set and any of
 the gen-delims that are not a delimiter of that component, are reserved
 for use as sub-component delimiters within the component.  Only the most
@@ -595,7 +603,7 @@ change the result of some URI comparisons (<xref target="comparison"/>),
 potentially leading to incorrect or inefficient behavior.
 For consistency, percent-encoded octets in the ranges of
 ALPHA (%41-%5A and %61-%7A), DIGIT (%30-%39), hyphen (%2D), period (%2E),
-underscore (%5F), or tilde (%7E) should not be created by URI generators
+underscore (%5F), or tilde (%7E) should not be created by URI producers
 and, when found in a URI, should be decoded to their corresponding
 unreserved character by URI normalizers.
 </t>
@@ -604,11 +612,11 @@ unreserved character by URI normalizers.
 <section title="When to Encode or Decode" anchor="when-to-percent-encode">
 <t>
 Under normal circumstances, the only time that octets within a
-URI string are percent-encoded is during the process of generating
+URI string are percent-encoded is during the process of producing
 the URI from its component parts.  It is during that process that an
 implementation determines which of the reserved characters are to be
 used as sub-component delimiters and which can be safely used as data.
-Once generated, a URI is always in its percent-encoded form.
+Once produced, a URI is always in its percent-encoded form.
 </t>
 <t>
 When a URI is dereferenced, the components and sub-components significant
@@ -648,7 +656,7 @@ encoding translation.  For example, portions of a URI might reflect a
 query on non-ASCII data, numeric coordinates on a map, etc.  Likewise,
 a URI scheme may define components with additional encoding requirements,
 such as base64, that are applied prior to forming the component and
-generating the URI.
+producing the URI.
 </t>
 <t>
 When a URI scheme defines a component that represents textual data
@@ -716,7 +724,7 @@ the canonical form is lowercase and documents that specify schemes
 must do so using lowercase letters.  An implementation should accept
 uppercase letters as equivalent to lowercase in scheme names
 (e.g., allow "HTTP" as well as "http"), for the sake of robustness,
-but should only generate lowercase scheme names, for consistency.
+but should only produce lowercase scheme names, for consistency.
 <iref item="URI grammar" subitem="scheme" primary="true"/>
 </preamble><artwork type="abnf">
    scheme      = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
@@ -751,6 +759,12 @@ number sign ("#") character, or by the end of the URI.
 </preamble><artwork type="abnf">
    authority   = [ userinfo "@" ] host [ ":" port ]
 </artwork><postamble>
+URI producers and normalizers should omit the "@" delimiter that
+separates userinfo from host if the userinfo component is empty
+(zero length) and should omit the ":" delimiter that separates host
+from port if the port component is empty.
+</postamble></figure>
+<t>
 Some schemes do not allow the userinfo and/or port sub-components.
 When presented with a URI that violates one or more scheme-specific
 restrictions, the scheme-specific URI resolution process should flag
@@ -758,7 +772,7 @@ the reference as an error rather than ignore the unused parts; doing so
 reduces the number of equivalent URIs and helps detect abuses of the
 generic syntax that might indicate the URI has been constructed to
 mislead the user (<xref target="security-semantic"/>).
-</postamble></figure>
+</t>
 
 <section title="User Information" anchor="userinfo">
 <iref item="userinfo" primary="true"/>
@@ -769,16 +783,27 @@ the resource.  The user information, if present, is followed by a
 commercial at-sign ("@") that delimits it from the host.
 <iref item="URI grammar" subitem="userinfo" primary="true"/>
 </preamble><artwork type="abnf">
-   userinfo    = *( unreserved / pct-encoded / sub-delims )
-</artwork></figure>
+   userinfo    = *( unreserved / pct-encoded / sub-delims / ":" )
+</artwork><postamble>
+</postamble></figure>
 <t>
-Some URI schemes use the format "user:password" in the userinfo
-field. This practice is NOT RECOMMENDED, because the passing of
-authentication information in clear text has proven to
-be a security risk in almost every case where it has been used.
-Note also that userinfo might be crafted to look like a trusted
-domain name in order to mislead users, as described in
-<xref target="security-semantic"/>.
+Use of the format "user:password" in the userinfo field is deprecated.
+Applications should not render as clear text any data after the first
+colon (":") character found within a userinfo sub-component unless
+such data is the empty string (indicating no password) or "anonymous".
+Applications may choose to ignore or reject such data when received
+as part of a reference, and should reject the storage of such data
+in unencrypted form.  The passing of authentication information in
+clear text has proven to be a security risk in almost every case
+where it has been used.
+</t>
+<t>
+Applications that render a URI for the sake of user feedback, such
+as in graphical hypertext browsing, should render userinfo in a way
+that is distinguished from the rest of a URI, when feasible.  Such
+rendering will assist the user in cases where the userinfo has been
+misleadingly crafted to look like a trusted domain name
+(<xref target="security-semantic"/>).
 </t>
 </section>
 
@@ -792,9 +817,9 @@ or a host name.
 </preamble><artwork type="abnf">
    host        = IP-literal / IPv4address / reg-name
 </artwork><postamble>
-The production for host is ambiguous because it does not completely
+The syntax rule for host is ambiguous because it does not completely
 distinguish between an IPv4address and a reg-name.  Again, the
-"first-match-wins" algorithm applies: If host matches the production for
+"first-match-wins" algorithm applies: If host matches the rule for
 IPv4address, then it should be considered an IPv4 address literal
 and not a reg-name.
 </postamble></figure>
@@ -879,9 +904,9 @@ four octets is allowed by this grammar.
 <iref item="registered name" primary="true"/>
 A host identified by a registered name is a string of
 characters that is intended for lookup within a locally-defined host or
-service name registry.  The most common of such registry mechanisms, and
-the format required for globally-scoped identifiers, is the Domain Name
-System (DNS), as defined by Section 3 of <xref target="RFC1034"/> and
+service name registry.  The most common of such registry mechanisms
+is the Domain Name System (DNS), as defined by
+Section 3 of <xref target="RFC1034"/> and
 Section 2.1 of <xref target="RFC1123"/>.  A DNS name consists of a
 sequence of domain labels separated by ".", each domain label starting and
 ending with an alphanumeric character and possibly also containing "-"
@@ -894,7 +919,8 @@ some local domain.
    reg-name    = 0*255( unreserved / pct-encoded / sub-delims )
 </artwork><postamble>
 If the host component is defined and the registered name is empty
-(zero length), then the registered name defaults to "localhost".
+(zero length), then the registered name defaults to "localhost"
+(<xref target="normalize-scheme"/> discusses how this should be normalized).
 The reg-name syntax allows for percent-encoded octets, which is necessary
 to enable internationalized domain names to be provided in URIs; such octets
 must represent characters encoded in the UTF-8 character encoding prior
@@ -902,13 +928,14 @@ to being percent-encoded.
 </postamble></figure>
 <t>
 This specification does not mandate a particular registered name lookup
-technology, and therefore does not restrict the syntax of reg-name beyond
+technology and therefore does not restrict the syntax of reg-name beyond
 that necessary for interoperability.  A URI resolution implementation might
 use DNS, host tables, yellow pages, NetInfo, WINS, or any other system
 for lookup of host and service names.  However, a globally-scoped naming
 system, such as DNS fully-qualified domain names, is necessary for URIs
-that are intended to have global scope, and thus names conforming to the
-DNS syntax are strongly recommended.
+that are intended to have global scope. URI producers should use host names
+that conform to the DNS syntax, even when use of DNS is not immediately
+apparent.
 </t>
 <t>
 The presence of host within a URI does not imply that the scheme
@@ -917,7 +944,7 @@ the host syntax is used only for the sake of reusing the existing
 registration process created and deployed for DNS, thus obtaining a
 globally unique name without the cost of deploying another registry.
 However, such use comes with its own costs: domain name ownership
-may change over time for reasons not anticipated by the URI creator.
+may change over time for reasons not anticipated by the URI producer.
 </t>
 </section>
 
@@ -934,7 +961,7 @@ a single colon (":") character.
 A scheme may define a default port.  For example, the "http" scheme defines
 a default port of "80", corresponding to its reserved TCP port number.
 The type of port designated by the port number (e.g., TCP, UDP, SCTP, etc.)
-is defined by the URI scheme.  URI generators and normalizers should omit
+is defined by the URI scheme.  URI producers and normalizers should omit
 the port component and its ":" delimiter if port is empty or its value
 would be the same as the scheme's default.
 </postamble></figure>
@@ -988,13 +1015,13 @@ as part of the URI normalization or resolution process, as described in
 </t>
 <t>
 Aside from dot-segments in hierarchical paths, a path segment is
-considered opaque by the generic syntax.  URI-generating applications
+considered opaque by the generic syntax.  URI-producing applications
 often use the reserved characters allowed in segment for the purpose
-of delimiting scheme-specific or generator-specific sub-components.
+of delimiting scheme-specific or dereference-handler-specific sub-components.
 For example, the semicolon (";") and equals ("=") reserved characters
 are often used for delimiting parameters and parameter values
 applicable to that segment.  The comma (",") reserved character is often
-used for similar purposes.  For example, one URI generator might use
+used for similar purposes.  For example, one URI producer might use
 a segment like "name;v=1.1" to indicate a reference to version 1.1 of "name",
 whereas another might use a segment like "name,1.1" to indicate the same.
 Parameter types may be defined by scheme-specific semantics, but in most
@@ -1045,9 +1072,10 @@ The fragment identifier component of a URI allows indirect identification
 of a secondary resource by reference to a primary resource and additional
 identifying information.  The identified secondary resource may be some
 portion or subset of the primary resource, some view on representations
-of the primary resource, or some other resource.  A fragment identifier
-component is indicated by the presence of a number sign ("#") character
-and terminated by the end of the URI string.
+of the primary resource, or some other resource defined or described by
+those representations.  A fragment identifier component is indicated by
+the presence of a number sign ("#") character and terminated by the end
+of the URI string.
 <iref item="URI grammar" subitem="fragment" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="false"/>
 </preamble><artwork type="abnf">
@@ -1057,27 +1085,26 @@ and terminated by the end of the URI string.
 The semantics of a fragment identifier are defined by the set of
 representations that might result from a retrieval action on the primary
 resource. The fragment's format and resolution is therefore dependent on
-the media type <xref target="RFC2046"/> of the retrieved representation,
-even though such a retrieval is only performed if the URI is dereferenced.
+the media type <xref target="RFC2046"/> of a potentially retrieved
+representation, even though such a retrieval is only performed if the URI
+is dereferenced.
 Individual media types may define their own restrictions on, or structure
 within, the fragment identifier syntax for specifying different types of
 subsets, views, or external references that are identifiable as secondary
-resources by that media type.  If the primary resource is represented by
-multiple media types, as is often the case for resources whose representation
-is selected based on attributes of the retrieval request, then interpretation
-of the fragment identifier should be consistent across all of those
-media types in order for it to be viable as an identifier.
+resources by that media type.  If the primary resource has multiple
+representations, as is often the case for resources whose representation
+is selected based on attributes of the retrieval request (a.k.a., content
+negotiation), then whatever is identified by the fragment should be
+consistent across all of those representations: each representation should
+either define the fragment such that it corresponds to the same secondary
+resource, regardless of how it is represented, or the fragment should be
+left undefined by the representation (i.e., not found).
 </t>
 <t>
 As with any URI, use of a fragment identifier component does not imply
 that a retrieval action will take place.  A URI with a fragment identifier
 may be used to refer to the secondary resource without any implication
-that the primary resource is accessible.  However, if a URI is used
-in a context that does call for retrieval and is not a same-document
-reference (<xref target="same-document"/>), the fragment identifier is
-only valid as a reference if a retrieval action on the primary resource
-succeeds and results in a representation for which the fragment identifier
-is meaningful.
+that the primary resource is accessible or will ever be accessed.
 </t>
 <t>
 Fragment identifiers have a special role in information systems as
@@ -1105,7 +1132,7 @@ discouraged for the same reasons as described above for query.
 <section title="Usage" anchor="usage">
 <t>
 When applications make reference to a URI, they do not always use the
-full form of reference defined by the "URI" syntax production.
+full form of reference defined by the "URI" syntax rule.
 In order to save space and take advantage of hierarchical locality,
 many Internet protocol elements and media type formats allow an
 abbreviation of a URI, while others restrict the syntax to a particular
@@ -1118,7 +1145,7 @@ in order to be interpreted consistently.
 <section title="URI Reference" anchor="uri-reference">
 <iref item="URI-reference" primary="true"/>
 <figure><preamble>
-The ABNF rule URI-reference is used to denote the most common usage of a
+URI-reference is used to denote the most common usage of a
 resource identifier.
 <iref item="URI grammar" subitem="URI-reference" primary="true"/>
 <iref item="URI grammar" subitem="URI" primary="false"/>
@@ -1149,8 +1176,8 @@ string and extract the URI components.
 <iref item="absolute-path" primary="true"/>
 <iref item="relative-path" primary="true"/>
 <figure><preamble>
-A relative URI reference takes advantage of the hier-part syntax
-(<xref target="components"/>) in order to express a reference that is
+A relative URI reference takes advantage of the hierarchical syntax
+(<xref target="hierarchical"/>) in order to express a reference that is
 relative to the name space of another hierarchical URI.
 <iref item="URI grammar" subitem="relative-URI" primary="true"/>
 <iref item="URI grammar" subitem="query" primary="false"/>
@@ -1182,8 +1209,8 @@ reference.
 <iref item="absolute-URI" primary="true"/>
 <figure><preamble>
 Some protocol elements allow only the absolute form of a URI without
-a fragment identifier.  For example, defining the base URI for later
-use by relative references calls for an absolute-URI production that
+a fragment identifier.  For example, defining a base URI for later
+use by relative references calls for an absolute-URI syntax rule that
 does not allow a fragment.
 <iref item="URI grammar" subitem="absolute-URI" primary="true"/>
 <iref item="URI grammar" subitem="scheme" primary="false"/>
@@ -1209,6 +1236,16 @@ When a same-document reference is dereferenced for the purpose of a
 retrieval action, the target of that reference is defined to be within
 that current document or message; the dereference should not result in
 a new retrieval.
+</t>
+<t>
+Normalization of the base and target URIs prior to their comparison,
+as described in <xref target="normalize-syntax"/> and
+<xref target="normalize-scheme"/>, is allowed but rarely performed
+in practice.  Normalization may increase the set of same-document
+references, which may be of benefit to some caching applications.
+As such, reference authors should not assume that a slightly different,
+though equivalent, reference URI will (or will not) be interpreted as a
+same-document reference by any given application.
 </t>
 </section>
 
@@ -1259,20 +1296,20 @@ there is no defined base URI, such as dialog boxes and off-line advertisements.
 <t>
 This section defines the process of resolving a URI reference within
 a context that allows relative references, such that the result is a
-string matching the "URI" syntax production of <xref target="components"/>.
+string matching the "URI" syntax rule of <xref target="components"/>.
 </t>
 
 <section title="Establishing a Base URI" anchor="base-uri">
 <iref item="base URI" primary="true"/>
 <t>
-The term "relative" implies that there exists some "base URI" against
-which the relative reference is applied.  Aside from same-document
-references (<xref target="same-document"/>, relative references are
-only usable if the base URI is known.  The base URI must be established
+The term "relative" implies that there exists a "base URI" against
+which the relative reference is applied.  Aside from fragment-only
+references (<xref target="same-document"/>), relative references are
+only usable when a base URI is known.  A base URI must be established
 by the parser prior to parsing URI references that might be relative.
 </t>
 <t>
-The base URI of a document can be established in one of four ways,
+The base URI of a reference can be established in one of four ways,
 listed below in order of precedence.  The order of precedence can be
 thought of in terms of layers, where the innermost defined base URI
 has the highest precedence.  This can be visualized graphically as:
@@ -1285,11 +1322,10 @@ has the highest precedence.  This can be visualized graphically as:
    |  |  |  |  .----------------------------------.  |  |  |  |
    |  |  |  |  |       &lt;relative-reference&gt;       |  |  |  |  |
    |  |  |  |  `----------------------------------'  |  |  |  |
-   |  |  |  | (5.1.1) Base URI embedded in the       |  |  |  |
-   |  |  |  |         document's content             |  |  |  |
+   |  |  |  | (5.1.1) Base URI embedded in content   |  |  |  |
    |  |  |  `----------------------------------------'  |  |  |
    |  |  | (5.1.2) Base URI of the encapsulating entity |  |  |
-   |  |  |         (message, document, or none).        |  |  |
+   |  |  |         (message, representation, or none)   |  |  |
    |  |  `----------------------------------------------'  |  |
    |  | (5.1.3) URI used to retrieve the entity            |  |
    |  `----------------------------------------------------'  |
@@ -1299,7 +1335,7 @@ has the highest precedence.  This can be visualized graphically as:
 
 <section title="Base URI within Document Content" anchor="base-context">
 <t>
-Within certain document media types, the base URI of the document can
+Within certain media types, a base URI for relative references can
 be embedded within the content itself such that it can be readily
 obtained by a parser.  This can be useful for descriptive documents,
 such as tables of content, which may be transmitted to others through
@@ -1307,17 +1343,17 @@ protocols other than their usual retrieval context (e.g., E-Mail or
 USENET news).
 </t>
 <t>
-It is beyond the scope of this document to specify how, for each
-media type, the base URI can be embedded.  It is assumed that user
+It is beyond the scope of this specification to specify how, for each
+media type, a base URI can be embedded.  It is assumed that user
 agents manipulating such media types will be able to obtain the
 appropriate syntax from that media type's specification.
 </t>
 <t>
-A mechanism for embedding the base URI within MIME container types
+A mechanism for embedding a base URI within MIME container types
 (e.g., the message and multipart types) is defined by MHTML
 <xref target="RFC2110"/>.  Protocols that do not use the MIME message
 header syntax, but do allow some form of tagged metadata to be included
-within messages, may define their own syntax for defining the base
+within messages, may define their own syntax for defining a base
 URI as part of a message.
 </t>
 </section>
@@ -1325,23 +1361,22 @@ URI as part of a message.
 <section title="Base URI from the Encapsulating Entity"
          anchor="base-encapsulated">
 <t>
-If no base URI is embedded, the base URI of a document is defined by
-the document's retrieval context.  For a document that is enclosed
-within another entity (such as a message or another document), the
-retrieval context is that entity; thus, the default base URI of the
-document is the base URI of the entity in which the document is
-encapsulated.
+If no base URI is embedded, the base URI is defined by the representation's
+retrieval context.  For a document that is enclosed within another entity,
+such as a message or archive, the retrieval context is that entity; thus,
+the default base URI of a representation is the base URI of the entity in
+which the representation is encapsulated.
 </t>
 </section>
 
 <section title="Base URI from the Retrieval URI" anchor="base-retrieval">
 <t>
-If no base URI is embedded and the document is not encapsulated
+If no base URI is embedded and the representation is not encapsulated
 within some other entity (e.g., the top level of a composite entity),
-then, if a URI was used to retrieve the base document, that URI shall
+then, if a URI was used to retrieve the representation, that URI shall
 be considered the base URI.  Note that if the retrieval was the
-result of a redirected request, the last URI used (i.e., that which
-resulted in the actual retrieval of the document) is the base URI.
+result of a redirected request, the last URI used (i.e., the URI that
+resulted in the actual retrieval of the representation) is the base URI.
 </t>
 </section>
 
@@ -1350,38 +1385,43 @@ resulted in the actual retrieval of the document) is the base URI.
 If none of the conditions described in above apply,
 then the base URI is defined by the context of the application.
 Since this definition is necessarily application-dependent, failing
-to define the base URI using one of the other methods may result in
+to define a base URI using one of the other methods may result in
 the same content being interpreted differently by different types of
 application.
 </t>
 <t>
-It is the responsibility of the distributor(s) of a document
-containing a relative reference to ensure that the base URI for that document
-can be established.  It must be emphasized that a relative reference,
-aside from a same-document reference, cannot be used reliably in
-situations where the document's base URI is not well-defined.
+A sender of a representation containing relative references is responsible
+for ensuring that a base URI for those references can be established.
+Aside from fragment-only references, relative references can only be used
+reliably in situations where the base URI is well-defined.
 </t>
 </section>
 </section>
 
 <section title="Obtaining the Referenced URI" anchor="absolutize">
 <t>
-This section describes an example algorithm for resolving URI
+This section describes an example algorithm for transforming URI
 references that might be relative to a given base URI.  The algorithm
 is intended to provide a definitive result that can be used to test
 the output of other implementations.  Implementation of the algorithm
 itself is not required, but the result given by an implementation must
-match the result that would be given by this algorithm.
+be equivalent to the result that would be given by this algorithm.
 </t>
 <t>
-The base URI (Base) is established according to the rules of
+The base URI (Base) is established according to the procedure of
 <xref target="base-uri"/> and parsed into the five main components
 described in <xref target="components"/>.  Note that only the scheme
-component is required to be present in the base URI; the other components
-may be empty or undefined.  A component is undefined if its preceding
-separator does not appear in the URI reference; the path component is
-never undefined, though it may be empty.  The algorithm assumes that
-the base URI is well-formed and does not contain dot-segments in its path.
+component is required to be present in a base URI; the other components
+may be empty or undefined.  A component is undefined if its associated
+delimiter does not appear in the URI reference; the path component is
+never undefined, though it may be empty.
+</t>
+<t>
+The algorithm assumes that the base URI is well-formed and does not contain
+dot-segments in its path.  Normalization of the base URI, as described in
+<xref target="normalize-syntax"/> and <xref target="normalize-scheme"/>,
+is optional.  A URI reference must be transformed to its target URI before
+it can be normalized.
 </t>
 <figure><preamble>
 For each URI reference (R), the following pseudocode describes an
@@ -1545,13 +1585,13 @@ next component separator or the end of the reference.
 
 <section title="Reference Resolution Examples" anchor="reference-examples">
 <t>
-Within an object with a well-defined base URI of
+Within a representation with a well-defined base URI of
 </t>
 <figure><artwork>
    http://a/b/c/d;p?q
 </artwork></figure>
 <t>
-a relative URI reference would be resolved as follows:
+a relative URI reference is transformed to its target URI as follows.
 </t>
 
 <section title="Normal Examples" anchor="relative-normal">
@@ -1768,13 +1808,14 @@ processing is moderately higher in cost than character-for-character
 string comparison.  For example, an application using this approach
 could reasonably consider the following two URIs equivalent:
 </preamble><artwork>
-   example://a/b/c/%7A
-   eXAMPLE://a/./b/../b/c/%7a
+   example://a/b/c/%7Bfoo%7D
+   eXAMPLE://a/./b/../b/%63/%7bfoo%7d
 </artwork><postamble>
 Web user agents, such as browsers, typically apply this type of URI
 normalization when determining whether a cached response is available.
 Syntax-based normalization includes such techniques as case normalization,
-encoding normalization, and removal of dot-segments.
+encoding normalization, empty-component normalization, and removal of
+dot-segments.
 </postamble></figure>
 
 <section title="Case Normalization" anchor="normalize-case">
@@ -1794,16 +1835,40 @@ is a frequent source of variance among otherwise identical URIs.
 One cause is the choice of uppercase or lowercase letters for the
 hexadecimal digits within the encoding triplet (e.g., "%3a" versus "%3A").
 Such sequences are always equivalent; for the sake of uniformity, URI
-generators and normalizers should use uppercase letters for the
+producers and normalizers should use uppercase letters for the
 hex digits A-F.
 </t>
 <t>
-Some URI generators percent-encode octets that do not require
+Some URI producers percent-encode octets that do not require
 percent-encoding, resulting in URIs that are equivalent to their
 non-encoded counterparts.  Such URIs should be normalized by
 decoding any percent-encoded octet that corresponds to an unreserved
 character, as described in <xref target="unreserved"/>.
 </t>
+</section>
+
+<section title="Empty-component Normalization" anchor="normalize-empty">
+<figure><preamble>
+Components of the generic URI syntax are delimited from other components
+by optional separators.  For example, a query component is separated
+from the path by a question mark ("?") and a port sub-component is
+separated from host by a colon (":").  A URI in which a delimiter is
+present and the (sub-)component it delimits is empty is equivalent to
+the same URI without that delimiter.  For example, the following are
+all equivalent:
+</preamble><artwork>
+   ftp://example.com/
+   ftp://example.com:/
+   ftp://@example.com:/
+   ftp://@example.com:/?
+   ftp://@example.com:/?#
+</artwork><postamble>
+URI producers and normalizers should omit a delimiter if the component
+it delimits is empty, as exemplified by the first URI above, with one
+exception: a double-slash delimiter indicating an authority component should
+not be removed, even when the authority is empty, since doing so can lead
+to misinterpreting the path.
+</postamble></figure>
 </section>
 
 <section title="Path Segment Normalization" anchor="normalize-path">
@@ -1840,6 +1905,15 @@ equivalent to one where the port and its ":" delimiter are elided.
 In other words, the second of the above URI examples is the normal form
 for the "http" scheme.
 </postamble></figure>
+<t>
+Another case where normalization varies by scheme is in the handling
+of an empty authority component.  For many scheme specifications, an
+empty authority is considered an error; for others, it is considered
+equivalent to "localhost".  For the sake of uniformity, future scheme
+specifications should define an empty authority as being equivalent
+to "localhost", and URI producers and normalizers should use the
+string "localhost" instead of an empty authority.
+</t>
 </section>
 
 <section title="Protocol-based Normalization" anchor="normalize-protocol">
@@ -1856,8 +1930,12 @@ redirects to a URI differing only in the trailing slash
 </preamble><artwork>
    http://example.com/data/
 </artwork><postamble>
-they will likely regard the two as equivalent in the future.  Obviously,
-this kind of technique is only appropriate in special situations.
+they will likely regard the two as equivalent in the future.
+This kind of technique is only appropriate when equivalence is clearly
+indicated by both the result of accessing the resources and the common
+conventions of their scheme's dereference algorithm (in this case,
+use of redirection by HTTP origin servers to avoid problems with
+relative references).
 </postamble></figure>
 </section>
 
@@ -1867,7 +1945,7 @@ this kind of technique is only appropriate in special situations.
 <t>
 It is in the best interests of everyone to avoid false-negatives in
 comparing URIs and to minimize the amount of software processing for
-such comparisons.  Those who generate and make reference to URIs can
+such comparisons.  Those who produce and make reference to URIs can
 reduce the cost of processing and the risk of false negatives by
 consistently providing them in a form that is reasonably canonical
 with respect to their scheme.  Specifically:
@@ -1877,6 +1955,9 @@ with respect to their scheme.  Specifically:
   <t>Only perform percent-encoding where it is essential.</t>
   <t>Always use uppercase A-through-F characters when percent-encoding.</t>
   <t>Prevent /./ and /../ from appearing in non-relative URI paths.</t>
+  <t>Omit delimiters when their associated (sub-)component is empty.</t>
+  <t>For schemes that define an empty authority to be equivalent to
+     "localhost", use "localhost".</t>
   <t>For schemes that define an empty path to be equivalent to a path
      of "/", use "/".</t>
 </list>
@@ -1919,26 +2000,29 @@ retrieval of a representation, will in fact cause a possibly damaging
 remote operation to occur.  The unsafe URI is typically constructed by
 specifying a port number other than that reserved for the network protocol
 in question.  The client unwittingly contacts a site that is running a
-different protocol service.  The content of the URI contains instructions
+different protocol service and data within the URI contains instructions
 that, when interpreted according to this other protocol, cause an
-unexpected operation.
+unexpected operation.  A frequent example of such abuse has been the use
+of a protocol-based scheme with a port component of "25", thereby fooling
+user agent software into sending an unintended or impersonating message
+via an SMTP server.
 </t>
 <t>
-Caution should be used when dereferencing a URI that specifies a TCP port
-number other than the default for the scheme, especially when it is
-a number within the reserved space.  A frequent example of abuse has
-been the use of a network protocol-based scheme with a port component
-of "25", thereby fooling user agent software into sending an
-unintended or impersonating message via an SMTP server.
+Applications should prevent dereference of a URI that specifies a
+TCP port number within the "well-known port" range (0 - 1023) unless
+the protocol being used to dereference that URI is compatible with the
+protocol expected on that well-known port. Although IANA maintains a
+registy of well-known ports, applications should make such restrictions
+user-configurable to avoid preventing the deployment of new services.
 </t>
 <t>
-Care should be taken when a URI contains percent-encoded octets that match
-the delimiters for a given protocol (for example, CR and LF characters for
-telnet protocols) that these percent-encoded octets are not decoded before
-transmission.  Transfer of the percent-encoding might violate the protocol,
-but that is less harmful than allowing decoded octets to be interpreted as
-additional operations or parameters, triggering an unexpected and possibly
-harmful remote operation.
+When a URI contains percent-encoded octets that match the delimiters for
+a given resolution or dereference protocol (for example, CR and LF characters
+for the TELNET protocol), such percent-encoded octets must not be decoded
+before transmission across that protocol.  Transfer of the percent-encoding,
+which might violate the protocol, is less harmful than allowing decoded
+octets to be interpreted as additional operations or parameters, perhaps
+triggering an unexpected and possibly harmful remote operation.
 </t>
 </section>
 <section title="Rare IP Address Formats" anchor="security-ipv4">
@@ -1976,11 +2060,13 @@ rather than a prefix or suffix of the string form.
 </section>
 <section title="Sensitive Information" anchor="security-sensitive">
 <t>
-It is clearly unwise to use a URI that contains a password which is
-intended to be secret. In particular, the use of a password within
-the userinfo component of a URI is strongly discouraged except
-in those rare cases where the 'password' parameter is intended to be
-public.
+It is clearly unwise to use a URI that contains a username or
+password which is intended to be secret: they are frequently
+displayed by browsers, stored in clear text bookmarks, and logged
+by user agent history and intermediary applications (proxies).
+A password appearing within the userinfo component is deprecated and
+should be considered an error (or simply ignored) except in those
+rare cases where the 'password' parameter is intended to be public.
 </t>
 </section>
 <section title="Semantic Attacks" anchor="security-semantic">
@@ -2001,7 +2087,7 @@ could be much longer than the example above.
 A misleading URI, such as the one above, is an attack on the user's
 preconceived notions about the meaning of a URI, rather than an attack
 on the software itself.  User agents may be able to reduce the impact
-of such attacks by visually distinguishing the various components of
+of such attacks by distinguishing the various components of
 the URI when rendered, such as by using a different color or tone to
 render userinfo if any is present, though there is no general panacea.
 More information on URI-based semantic attacks can be found in
@@ -2021,9 +2107,9 @@ and Larry Masinter in <xref target="RFC2732"/>.
 In addition, contributions by Reese Anschultz, Daniel Barclay, Tim Bray,
 Mike Brown, Rob Cameron, Jeremy Carroll, John C. Klensin, Dan Connolly,
 Adam M. Costello, John Cowan, Jason Diamond, Martin Duerst, Stefan Eissing,
-Clive D.W. Feather, Tony Hammond, Pat Hayes, Henry Holtzman, Graham Klyne,
-Dan Kohn, Bruce Lilly, Andrew Main, Ira McDonald, Michael Mealling,
-Stephen Pollei,
+Clive D.W. Feather, Tony Hammond, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
+Graham Klyne, Dan Kohn, Bruce Lilly,
+Andrew Main, Ira McDonald, Michael Mealling, Stephen Pollei,
 Julian Reschke, Tomas Rokicki, Miles Sabin, Mark Thomson, Ronald Tschalaer,
 Norm Walsh, Marc Warne, Stuart Williams, and Henry Zongaro
 are gratefully acknowledged.
@@ -2699,7 +2785,7 @@ Science, University of California, Irvine</organization>
  scheme        = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
 
  authority     = [ userinfo "@" ] host [ ":" port ]
- userinfo      = *( unreserved / pct-encoded / sub-delims )
+ userinfo      = *( unreserved / pct-encoded / sub-delims / ":" )
  host          = IP-literal / IPv4address / reg-name
  port          = *DIGIT
 
@@ -2902,7 +2988,7 @@ has been completely rewritten and extended using input from Tim Bray
 and discussion within the W3C Technical Architecture Group.
 </t>
 <t>
-An ABNF production for URI has been introduced to correspond to the
+An ABNF rule for URI has been introduced to correspond to the
 common usage of the term: an absolute URI with optional fragment.
 </t>
 </section>
@@ -2933,7 +3019,7 @@ The ABNF for URI and URI-reference has been redesigned to make them
 more friendly to LALR parsers and significantly reduce complexity.
 As a result, the layout form of syntax description has been removed,
 along with the uric, uric_no_slash, hier_part, opaque_part, net_path,
-abs_path, rel_path, path_segments, rel_segment, and mark productions.
+abs_path, rel_path, path_segments, rel_segment, and mark rules.
 All references to "opaque" URIs have been replaced with a better
 description of how the path component may be opaque to hierarchy.
 The ambiguity regarding the parsing of URI-reference as a URI or a
@@ -2943,7 +3029,7 @@ and disambiguated in the section defining relative-URI.
 <t>
 The fragment identifier has been moved back into the section on
 generic syntax components and within the URI and relative-URI
-productions, though it remains excluded from absolute-URI.
+rules, though it remains excluded from absolute-URI.
 The number sign ("#") character has been moved back to the reserved set
 as a result of reintegrating the fragment syntax.
 </t>
@@ -2957,7 +3043,7 @@ is now explained and disambiguated in the same section.
 </t>
 <t>
 Registry-based naming authorities that use the generic syntax are now
-defined within the host production and limited to 255 path characters.
+defined within the host rule and limited to 255 path characters.
 This change allows current implementations, where whatever name provided
 is simply fed to the local name resolution mechanism, to be consistent
 with the specification and removes the need to re-specify DNS name
@@ -2967,7 +3053,7 @@ provided in URIs, processed in their native character encodings at the
 application layers above URI processing, and passed to an IDNA library
 as a registered name in the UTF-8 character encoding.
 The server, hostport, hostname, domainlabel, toplabel, and alphanum
-productions have been removed.
+rules have been removed.
 </t>
 <t>
 The resolving relative references algorithm of <xref target="RFC2396"/>
@@ -2987,7 +3073,7 @@ then the target URI inherits the base URI's path component.
 Removed the special-case treatment of same-document references
 within the URI parser in favor of a section that explains when a
 reference should be interpreted by a dereferencing engine as a
-same-document reference: when the resolved target URI and base URI,
+same-document reference: when the target URI and base URI,
 excluding fragments, match.  This change does not modify the behavior
 of existing same-document references as defined by RFC 2396
 (fragment-only references); it merely adds the same-document distinction
