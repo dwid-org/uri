@@ -888,30 +888,27 @@ URI character sequence->octet sequence->original character sequence
    within the scope of that scheme and authority.
 <iref item="path-segments" primary="true"/>
 <iref item="segment" primary="true"/>
-<iref item="param" primary="true"/>
 <iref item="pchar" primary="true"/>
 <iref item="URI grammar" subitem="path" primary="true"/>
 <iref item="URI grammar" subitem="path-segments" primary="true"/>
 <iref item="URI grammar" subitem="segment" primary="true"/>
-<iref item="URI grammar" subitem="param" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="true"/>
 </preamble><artwork>
    path          = [ abs-path / opaque-part ]
 
    path-segments = segment *( "/" segment )
-   segment       = *pchar *( ";" param )
-   param         = *pchar
+   segment       = *pchar
 
-   pchar         = unreserved / escaped /
+   pchar         = unreserved / escaped / ";" /
                    ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 </artwork></figure>
 <t>
    The path may consist of a sequence of path segments separated by a
    single slash "/" character.  Within a path segment, the characters
-   "/", ";", "=", and "?" are reserved.  Each path segment may include a
-   sequence of parameters, indicated by the semicolon ";" character.
-   The parameters are not significant to the parsing of relative
-   references.
+   "/", ";", "=", and "?" are reserved.  The semicolon (";") and
+   equals ("=") characters have the reserved purpose of delimiting
+   parameters and parameter values within a path segment.  However,
+   parameters are not significant to the parsing of relative references.
 </t>
 </section>
 
@@ -922,8 +919,7 @@ URI character sequence->octet sequence->original character sequence
    the resource.
 <iref item="URI grammar" subitem="query" primary="true"/>
 </preamble><artwork>
-   query         = unreserved / escaped / ";" / "/" / "?" / 
-                   ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
+   query         = *( pchar / "/" / "?" )
 </artwork></figure>
 <t>
    Within a query component, the characters ";", "/", "?", ":", "@",
@@ -977,8 +973,7 @@ URI character sequence->octet sequence->original character sequence
    part of a URI, but is often used in conjunction with a URI.
 <iref item="URI grammar" subitem="fragment" primary="true"/>
 </preamble><artwork>
-   fragment      = unreserved / escaped / ";" / "/" / "?" /
-                   ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
+   fragment      = *( pchar / "/" / "?" )
 </artwork></figure>
 <t>
    The semantics of a fragment identifier is a property of the data
@@ -1474,7 +1469,7 @@ next component separator or the end of the reference.
    in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
    and Larry Masinter in <xref target="RFC2732"/>.
    In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
-   Adam M. Costello, Jason Diamond, Henry Holtzman, Bruce Lilly,
+   Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman, Bruce Lilly,
    Michael Mealling, Julian Reschke, Miles Sabin, Ronald Tschalaer,
    Marc Warne, and Henry Zongaro are gratefully acknowledged.
 </t>
@@ -2095,17 +2090,14 @@ h4            = 1*4HEXDIG
 
 path          = [ abs-path / opaque-part ]
 path-segments = segment *( "/" segment )
-segment       = *pchar *( ";" param )
-param         = *pchar
-pchar         = unreserved / escaped /
+segment       = *pchar
+
+pchar         = unreserved / escaped / ";" /
                 ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 
-query         = unreserved / escaped / ";" / "/" / "?" / 
-                ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
-
-fragment      = unreserved / escaped / ";" / "/" / "?" / 
-                ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
-
+query         = *( pchar / "/" / "?" )
+fragment      = *( pchar / "/" / "?" )
+ 
 uric          = reserved / unreserved / escaped
 reserved      = "[" / "]" / ";" / "/" / "?" / 
                 ":" / "@" / "&amp;" / "=" / "+" / "$" / ","

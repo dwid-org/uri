@@ -1908,7 +1908,7 @@ to be a resource.  None of the other suggestions do that.
  <type>syntax</type>
  <name>025-rel_segment</name>
  <title>rel_segment is defined without distinguishing param</title>
- <status>accepted</status>
+ <status>fixed 00</status>
  <report>
   <author email="duerst_AT_w3.org">Martin Duerst</author>
   <date sort="20021010">10 Oct 2002</date>
@@ -1949,6 +1949,15 @@ Is this an error in the syntax, or can somebody explain this?
 No, but I agree that it is confusing.  They are defined differently
 because rel_segment cannot be empty.  Syntactically they are equivalent.
 I'll find a better way to write it.
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021028">28 Oct 2002</date>
+  <where>draft 00</where>
+<pre>
+Fixed by removing the rule for param and simply stating why ";" and "="
+are reserved within path segments.
 </pre>
  </action>
 </issue>

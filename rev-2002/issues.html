@@ -18,9 +18,6 @@
 <td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td>accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#025-rel_segment">025-rel_segment</a></td><td>rel_segment is defined without distinguishing param</td><td>syntax</td><td>accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td bgcolor="#FFFFCC">URI versus URI Reference</td><td>uri</td><td>pending</td>
 </tr>
 <tr>
@@ -85,6 +82,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#023-URI-plural">023-URI-plural</a></td><td>URI or URIs for plural</td><td>intro</td><td>fixed 00</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#025-rel_segment">025-rel_segment</a></td><td>rel_segment is defined without distinguishing param</td><td>syntax</td><td>fixed 00</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#026-ABNF">026-ABNF</a></td><td>replace existing BNF with standard ABNF of RFC 2234</td><td>formalism</td><td>fixed 00</td>
@@ -2166,7 +2166,7 @@ to be a resource.  None of the other suggestions do that.
       rel_segment is defined without distinguishing param</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax</th><th>accepted</th>
+<th width="40%">syntax</th><th>fixed 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2211,6 +2211,17 @@ Is this an error in the syntax, or can somebody explain this?
 No, but I agree that it is confusing.  They are defined differently
 because rel_segment cannot be empty.  Syntactically they are equivalent.
 I'll find a better way to write it.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  28 Oct 2002,
+  draft 00:
+  <pre>
+Fixed by removing the rule for param and simply stating why ";" and "="
+are reserved within path segments.
 </pre>
 </td>
 </tr>
