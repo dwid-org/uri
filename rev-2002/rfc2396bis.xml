@@ -1443,7 +1443,7 @@ next component separator or the end of the reference.
 <t>
    It is clearly unwise to use a URI that contains a password which is
    intended to be secret. In particular, the use of a password within
-   the 'userinfo' component of a URI is strongly disrecommended except
+   the 'userinfo' component of a URI is strongly discouraged except
    in those rare cases where the 'password' parameter is intended to be
    public.
 </t>
