@@ -119,9 +119,15 @@ portions of RFC 1738 that defined the specific syntax of individual
 URI schemes; those portions will be updated as separate documents.
 The process for registration of new URI schemes is defined separately
 by <xref target="RFC2717"/>.
+Advice for designers of new URI schemes can be found in
+<xref target="RFC2718"/>.
 </t>
 <t>
 All significant changes from RFC 2396 are noted in <xref target="changes"/>.
+</t>
+<t>
+This specification uses the terms "character" and "character encoding"
+in accordance with the definitions provided in <xref target="RFC2978"/>.
 </t>
 
 <section title="Overview of URIs" anchor="overview">
@@ -260,7 +266,6 @@ the more restrictive terms URL and URN <xref target="RFC3305"/>.
 
 </section>
 <section title="Design Considerations" anchor="design">
-
 <section title="Transcription" anchor="transcription">        
 <iref item="transcription" primary="true"/>        
 <t>
@@ -269,7 +274,7 @@ its main considerations.  A URI is a sequence of characters from a very
 limited set: the letters of the basic Latin alphabet, digits,
 and a few special characters.  A URI may be represented in a variety
 of ways: e.g., ink on paper, pixels on a screen, or a sequence of
-octets in a coded character set.  The interpretation of a URI depends
+integers from a coded character set.  The interpretation of a URI depends
 only on the characters used and not how those characters are
 represented in a network protocol.
 </t>
@@ -388,14 +393,14 @@ a representation isn't found in a local cache).
 <iref item="hierarchical" primary="true"/>        
 <t>
 The URI syntax is organized hierarchically, with components listed
-in decreasing order from left to right.  For some URI schemes, the
-visible hierarchy is limited to the scheme itself: everything after
-the scheme component delimiter is considered opaque to URI processing.
+in order of decreasing significance from left to right.  For some URI schemes,
+the visible hierarchy is limited to the scheme itself: everything after
+the scheme component delimiter (":") is considered opaque to URI processing.
 Other URI schemes make the hierarchy explicit and visible to
 generic parsing algorithms.
 </t>
 <t>
-The URI syntax reserves the slash ("/"), question-mark ("?"), and
+The generic syntax uses the slash ("/"), question-mark ("?"), and
 number-sign ("#") characters for the purpose of delimiting components
 that are significant to the generic parser's hierarchical interpretation
 of an identifier.  In addition to aiding the readability of such
@@ -403,11 +408,22 @@ identifiers through the consistent use of familiar syntax, this
 uniform representation of hierarchy across naming schemes allows
 scheme-independent references to be made relative to that hierarchy.
 </t>
+<t>
+The slash ("/") character indicates hierarchy between the
+<xref target="scheme">scheme</xref> and the first question-mark ("?"),
+number-sign ("#"), or the end of the URI string.  In other words,
+the slash ("/") character does not indicate hierarchy within the
+the query (<xref target="query"/>) and fragment (<xref target="fragment"/>)
+components of a URI. URI schemes that do not adhere to the generic
+parser's hierarchical syntax may still use the slash ("/") character
+for any purpose, since its hierarchical interpretation is only relevant
+during the parsing of relative references.
+</t>
 <iref item="relative" primary="true"/>        
 <t>
 It is often the case that a group or "tree" of documents has been
-constructed to serve a common purpose; the vast majority of URIs in
-these documents point to resources within the tree rather than
+constructed to serve a common purpose, wherein the vast majority of URIs
+in these documents point to resources within the tree rather than
 outside of it.  Similarly, documents located at a particular site are
 much more likely to refer to other resources at that site than to
 resources at remote sites.
@@ -424,7 +440,11 @@ A relative URI reference (<xref target="relative-uri"/>) refers to a
 resource by describing the difference within a hierarchical name space
 between the current context and the target URI.  The reference resolution
 algorithm, presented in <xref target="reference-resolution"/>, defines
-how such references are resolved.
+how such references are resolved.  Since relative references can only
+be used within the context of a hierarchical URI, designers of new URI
+schemes should use a syntax conforming to the generic hierarchical syntax
+unless there are compelling reasons to forbid relative referencing
+within that scheme.
 </t>
 </section>
 
@@ -432,17 +452,6 @@ how such references are resolved.
 
 <section title="Syntax Notation" anchor="notation">
 <iref item="ABNF" primary="true"/>        
-<t>
-This specification uses the Augmented Backus-Naur Form (ABNF) notation of
-<xref target="RFC2234"/> to define the URI syntax.
-Although the ABNF defines syntax in terms of the US-ASCII character
-encoding <xref target="ASCII"/>, the URI syntax should be interpreted
-in terms of the character that the ASCII-encoded octet represents,
-rather than the octet encoding itself.  How a URI is represented
-in terms of bits and bytes on the wire is dependent upon
-the character encoding of the protocol used to transport it, or the
-charset of the document that contains it.
-</t>
 <iref item="URI grammar" subitem="ALPHA" primary="true"/>
 <iref item="URI grammar" subitem="CR" primary="true"/>
 <iref item="URI grammar" subitem="CTL" primary="true"/>
@@ -453,9 +462,12 @@ charset of the document that contains it.
 <iref item="URI grammar" subitem="OCTET" primary="true"/>
 <iref item="URI grammar" subitem="SP" primary="true"/>
 <t>
-The following core ABNF productions are used by this specification
-as defined by Section 6.1 of <xref target="RFC2234"/>:
-ALPHA, CR, CTL, DIGIT, DQUOTE, HEXDIG, LF, OCTET, and SP.
+This specification uses the Augmented Backus-Naur Form (ABNF) notation of
+<xref target="RFC2234"/>, including the following core ABNF productions
+defined by that specification:
+ALPHA (letters), CR (carriage return), CTL (control characters),
+DIGIT (decimal digits), DQUOTE (double quote), HEXDIG (hexadecimal digits),
+LF (line feed), and SP (space).
 The complete URI syntax is collected in <xref target="collected-abnf"/>.
 </t>
 </section>
@@ -463,55 +475,56 @@ The complete URI syntax is collected in <xref target="collected-abnf"/>.
 </section>
 
 <section title="Characters" anchor="characters">
-<iref item="uric" primary="true"/>
-<figure><preamble>
-A URI consists of a restricted set of characters, primarily chosen to
-aid transcription and usability both in computer systems and in
-non-computer communications.  Characters used conventionally as
-delimiters around a URI are excluded.  The set of URI characters
-consists of digits, letters, and a few graphic symbols
-chosen from those common to most of the character encodings and
-input facilities available to Internet users.
-<iref item="URI grammar" subitem="uric" primary="true"/>
-</preamble><artwork type="abnf">
-   uric        = reserved / unreserved / escaped
-</artwork></figure>
+<iref item="characters" primary="true"/>
 <t>
-Within a URI, reserved characters are used to delimit syntax components,
-unreserved characters are used to describe registered names, and
-unreserved, non-delimiting reserved, and escaped characters are used to
-represent strings of data (1*OCTET) within the components.
+Although ABNF notation defines its terminal values to be non-negative
+integers based on the US-ASCII coded character set <xref target="ASCII"/>,
+we must invert that relation in order to understand the URI syntax,
+since URIs are defined as strings of characters independent of any
+particular encoding.  Therefore, the integer values must be mapped
+back to their corresponding characters via US-ASCII in order to complete
+the syntax rules.
+</t>
+<t>
+This specification does not mandate the use of any particular
+character encoding scheme for mapping between URI characters
+and the octets used to store or transmit those characters.
+When a URI appears in a protocol element, the character encoding is
+defined by that protocol; absent such a definition, a URI is assumed
+to use the same character encoding as the surrounding text.
+</t>
+<t>
+A URI is composed from a limited set of characters consisting of
+digits, letters, and a few graphic symbols.
+A <xref target="reserved">reserved</xref> subset of those characters
+may be used to delimit syntax components within a URI, while the remaining
+characters, including both the <xref target="unreserved">unreserved</xref>
+set and those reserved characters not acting as delimiters, define each
+component's data.
 </t>
 
-<section title="Encoding of Characters" anchor="encoding">
-<t>
-As described <xref target="notation">above</xref>, the URI syntax
-is defined in terms of characters by reference to the US-ASCII encoding
-of characters to octets.  This specification does not mandate the use of
-any particular mapping between its character set and the octets used to
-store or transmit those characters.  When a URI appears in a protocol
-element, the character encoding is defined by that protocol; absent such
-a definition, the URI is assumed to be encoded in the same character
-encoding as the surrounding text.
-</t>
-<t>
-URI characters representing strings of data within a component may, if
-allowed by the component production, represent an arbitrary sequence of
-octets.  For example, portions of a given URI might correspond to a filename
-on a non-ASCII file system, a query on non-ASCII data, numeric coordinates
-on a map, etc.  Some URI schemes define a specific encoding of raw data
-to US-ASCII characters as part of their scheme-specific requirements.
-Most URI schemes represent data octets by the US-ASCII character
-corresponding to that octet, either directly in the form of the
-character's glyph or by use of a percent-encoding (<xref target="escaped"/>).
-</t>
-<t>
-When a URI scheme defines a component that represents textual data
-consisting of characters from the Unicode (ISO 10646) character
-set, we recommend that the data be encoded first as octets according
-to the UTF-8 <xref target="RFC2279"/> character encoding, and then
-escaping only those octets that are not in the unreserved character set.
-</t>
+<section title="Percent Encoding" anchor="percent-encoding">
+<figure><preamble>
+<iref item="percent-encoding" primary="true"/>
+<iref item="pct-encoded" primary="true"/>
+A percent-encoding mechanism is used to represent a data octet in a
+component when that octet's corresponding character is outside
+the allowed set or is being used as a delimiter of, or within, the component.
+A percent-encoded octet is encoded as a character triplet, consisting of the
+percent character "%" followed by the two hexadecimal digits representing
+that octet's numeric value.  For example, "%20" is the percent-encoding
+for the binary octet "00100000" (ABNF: %x20), which in US-ASCII corresponds
+to the space character (SP).
+<iref item="URI grammar" subitem="pct-encoded" primary="true"/>
+</preamble><artwork type="abnf">
+   pct-encoded = "%" HEXDIG HEXDIG
+</artwork><postamble>
+The uppercase hexadecimal digits 'A' through 'F' are equivalent to the
+lowercase digits 'a' through 'f', respectively.  Two URIs that differ
+only in the case of hexadecimal digits used in percent-encoded octets are
+equivalent.  For consistency, URI generators and normalizers should
+use uppercase hexadecimal digits for all percent-encodings.
+</postamble></figure>
 </section>
 
 <section title="Reserved Characters" anchor="reserved">
@@ -523,8 +536,7 @@ because they may (or may not) be defined as delimiters by the generic
 syntax, by each scheme-specific syntax, or by the implementation-specific
 syntax of a URI's dereferencing algorithm.  If data for a URI component
 would conflict with a reserved character's purpose as a delimiter,
-then the conflicting data must be <xref target="escaped">escaped</xref>
-before forming the URI.
+then the conflicting data must be percent-encoded before forming the URI.
 <iref item="gen-delims" primary="true"/>
 <iref item="sub-delims" primary="true"/>
 <iref item="URI grammar" subitem="reserved" primary="true"/>
@@ -540,24 +552,20 @@ before forming the URI.
 </artwork></figure>
 <t>
 A subset of the reserved characters (gen-delims) are used as delimiters
-of the generic URI components described in <xref target="components"/>
-and <xref target="authority"/>.  The remaining characters, including
-those in the sub-delims set and any of the gen-delims that are not defined
-as a delimiter of a given component, are reserved for use as sub-component
-delimiters within the component.  Only the most common sub-components are
-defined by this specification; other sub-components may be defined by each
-URI scheme's specification, or by whatever software is used to service a
-dereference of the URI, provided that such sub-components are delimited
-by characters in the reserved set.
-</t>
-<t>
+of the generic URI components described in <xref target="components"/>.
 A component's ABNF syntax rule will not use the "reserved" production
 directly; instead, each rule lists those reserved characters that are
-allowed within that component.  Each allowed reserved character may be
-assigned a sub-component delimiting role by the generic syntax, the
-scheme syntax, or the implementation syntax (listed in order of supremacy).
-If no such delimiting role has been assigned, then the reserved character
-is data.
+allowed within that component (i.e., not delimiting it).  The allowed
+reserved characters, including those in the sub-delims set and any of
+the gen-delims that are not a delimiter of that component, are reserved
+for use as sub-component delimiters within the component.  Only the most
+common sub-components are defined by this specification; other
+sub-components may be defined by a URI scheme's specification, or by the
+implementation-specific syntax of a URI's dereferencing algorithm,
+provided that such sub-components are delimited by characters in that
+component's reserved set.  If no such delimiting role has been assigned,
+then a reserved character appearing in a component represents the
+data octet corresponding to its encoding in US-ASCII.
 </t>
 <t>
 URIs that differ in the replacement of a reserved character with its
@@ -566,40 +574,18 @@ a reserved character, or decoding a percent-encoded octet that
 corresponds to a reserved character, will change how the URI is
 interpreted by most applications.
 </t>
-<t>
-The slash ("/"), question-mark ("?"), and number-sign ("#") characters
-are reserved in all URIs for the purpose of delimiting components
-that are significant to the generic parser's hierarchical interpretation
-of an identifier.  The hierarchical prefix of a URI, wherein the
-slash ("/") character signifies a hierarchy delimiter, extends from
-the <xref target="scheme">scheme</xref> through to the first
-question-mark ("?"), number-sign ("#"), or the end of the URI string.
-In other words, the slash ("/") character is not treated as a
-hierarchical separator within the query (<xref target="query"/>) and
-fragment (<xref target="fragment"/>) components of a URI.
-</t>
-<t>
-URI schemes that do not adhere to the generic parser's hierarchical
-syntax may use the slash ("/") character for any purpose, since the
-hierarchical interpretation of slash is only relevant during the parsing
-of relative references (<xref target="relative"/>).
-</t>
 </section>
 
 <section title="Unreserved Characters" anchor="unreserved">
 <figure><preamble>
 <iref item="unreserved" primary="true"/>
-<iref item="mark" primary="true"/>
 Characters that are allowed in a URI but do not have a reserved
 purpose are called unreserved.  These include uppercase and lowercase
-letters, decimal digits, and a limited set of punctuation marks and
-symbols.
+letters, decimal digits, hyphen, period, underscore, and tilde.
 <iref item="URI grammar" subitem="unreserved" primary="true"/>
 <iref item="URI grammar" subitem="mark" primary="true"/>
 </preamble><artwork type="abnf">
-   unreserved  = ALPHA / DIGIT / mark
-
-   mark        = "-" / "." / "_" / "~"
+   unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
 </artwork></figure>
 <t>
 URIs that differ in the replacement of an unreserved character with
@@ -615,127 +601,68 @@ unreserved character by URI normalizers.
 </t>
 </section>
 
-<section title="Escaped Characters" anchor="escaped">
+<section title="When to Encode or Decode" anchor="when-to-percent-encode">
 <t>
-Data must be escaped if it does not have a representation using an
-unreserved character; this includes data that does not correspond to
-a printable character of the US-ASCII coded character set or corresponds
-to a US-ASCII character that delimits the component from others,
-is reserved in that component for delimiting sub-components, or is
-excluded from any use within a URI (<xref target="excluded"/>).
-</t>
-
-<section title="Escaped Encoding" anchor="percent-encoding">
-<figure><preamble>
-<iref item="escaped" primary="true"/>
-An escaped octet is encoded as a character triplet, consisting of the
-percent character "%" followed by the two hexadecimal digits representing
-that octet's numeric value.  For example, "%20" is the escaped encoding
-for the binary octet "00100000" (ABNF: %x20), which corresponds to the
-US-ASCII space character (SP).  This is referred to as "percent-encoding"
-the octet.
-<iref item="URI grammar" subitem="escaped" primary="true"/>
-</preamble><artwork type="abnf">
-   escaped     = "%" HEXDIG HEXDIG
-</artwork><postamble>
-The uppercase hexadecimal digits 'A' through 'F' are equivalent to the
-lowercase digits 'a' through 'f', respectively.  Two URIs that differ
-only in the case of hexadecimal digits used in escaped octets are
-equivalent.  For consistency, URI generators and normalizers should
-use uppercase hexadecimal digits for all percent-encodings.
-</postamble></figure>
-</section>
-
-<section title="When to Escape and Unescape" anchor="when-to-escape">
-<t>
-Under normal circumstances, the only time that characters within a
-URI string are escaped is during the process of generating the URI from
-its component parts.  Each component may have its own set of characters
-that are reserved, so only the mechanism responsible for generating or
-interpreting that component can determine whether or not escaping a
-reserved character will change its semantics.
+Under normal circumstances, the only time that octets within a
+URI string are percent-encoded is during the process of generating
+the URI from its component parts.  It is during that process that an
+implementation determines which of the reserved characters are to be
+used as sub-component delimiters and which can be safely used as data.
+Once generated, a URI is always in its percent-encoded form.
 </t>
 <t>
-Once generated, a URI is always in an escaped form.  When a URI is
-resolved, the components significant to that scheme-specific
-resolution process (if any) must be parsed and separated before the
-escaped characters within those components can be safely unescaped.
-The only exception is for escaped octets corresponding to characters
-in the unreserved set, which can be unescaped at any time.
-For example, "%7E" is sometimes used instead of tilde ("~") in an
-"http" URI path and can be converted to "~" without changing the
-interpretation of the URI.
+When a URI is dereferenced, the components and sub-components significant
+to the scheme-specific dereferencing process (if any) must be parsed and
+separated before the percent-encoded octets within those components
+can be safely decoded, since otherwise the data may be mistaken for
+component delimiters.  The only exception is for percent-encoded octets
+corresponding to characters in the unreserved set, which can be decoded
+at any time.  For example, the octet corresponding to the tilde ("~")
+character is often encoded as "%7E" by older URI processing software;
+the "%7E" can be replaced by "~" without changing its interpretation.
 </t>
 <t>
-In all cases, a URI character is equivalent to its corresponding
-ASCII-encoded octet, even when that octet is represented as a percent-escape.
-URI characters are provided as an external ASCII interface for identification
+Because the percent ("%") character serves as the indicator for
+percent-encoded octets, it must be percent-encoded as "%25" in order
+for that octet to be used as data within a URI.  Implementations must not
+percent-encode or decode the same string more than once, since decoding
+an already decoded string might lead to misinterpreting a percent data
+octet as the beginning of a percent-encoding, or vice versa in the case
+of percent-encoding an already percent-encoded string.
+</t>
+<t>
+URI characters serve as an external interface for identification
 between systems.  A system that internally provides identifiers in the
 form of a different character encoding, such as EBCDIC, will generally
-perform character translation of textual identifiers to UTF-8 at some
-internal interface, thus providing meaningful identifiers in ASCII even
-though the back-end identifiers are in a different encoding.  Escaped
-octets must be unescaped before such a transcoding is applied.  Although
-this specification does not define the character encoding of escaped
-octets outside the ASCII range, the general principle of unescaping
-before transcoding should be applied for all character encodings.
+perform character translation of textual identifiers to UTF-8 (or some
+other superset of the US-ASCII character encoding) at an internal interface,
+since that results in more meaningful identifiers than simply
+percent-encoding the original octets.  When interpreting an incoming
+URI on such an interface, percent-encoded octets must be decoded before
+the reverse transcoding can be applied.
 </t>
 <t>
-Because the percent ("%") character serves as the escape indicator,
-it must be escaped as "%25" in order for that octet to be used as data
-within a URI.  Implementers should be careful not to escape or unescape
-the same string more than once, since unescaping an already unescaped
-string might lead to misinterpreting a percent data character as
-another escaped character, or vice versa in the case of escaping
-an already escaped string.
+In some cases, the interface between a URI component and the identifying
+data it has been crafted to represent is much less direct than a character
+encoding translation.  For example, portions of a URI might reflect a
+query on non-ASCII data, numeric coordinates on a map, etc.  Likewise,
+a URI scheme may define components with additional encoding requirements,
+such as base64, that are applied prior to forming the component and
+generating the URI.
 </t>
-</section>
+<t>
+When a URI scheme defines a component that represents textual data
+consisting of characters from the Unicode (ISO 10646) character
+set, the data should be encoded first as octets according to the
+UTF-8 <xref target="RFC2279"/> character encoding, and then only those
+octets that do not correspond to characters in the unreserved set
+should be percent-encoded.  For example, the character A would be
+represented as "A", the character LATIN CAPITAL LETTER A WITH GRAVE
+would be represented as "%C3%80", and the character KATAKANA LETTER A
+would be represented as "%E3%82%A2".
+</t>
 </section>
 
-<section title="Excluded Characters" anchor="excluded">
-<iref item="excluded" primary="true"/>
-<figure><preamble>
-Although they are disallowed within the URI syntax, we include here a
-description of those characters that have been excluded and
-the reasons for their exclusion.
-</preamble><artwork>
-   excluded    = invisible / delims / unwise
-</artwork></figure>
-<figure><preamble>
-<iref item="invisible" primary="true"/>
-The control characters (CTL) in the US-ASCII coded character set are not
-used within a URI, both because they are non-printable and because
-they are likely to be misinterpreted by some control mechanisms.
-The space character (SP) is excluded because significant spaces may
-disappear and insignificant spaces may be introduced when a URI is
-transcribed, typeset, or subjected to the treatment of word-processing
-programs.  Whitespace is also used to delimit a URI in many contexts.
-Characters outside the US-ASCII set are excluded as well.
-</preamble><artwork>
-   invisible   = CTL / SP / %x80-FF
-</artwork></figure>
-<figure><preamble>
-<iref item="delims" primary="true"/>
-The angle-bracket ("&lt;" and "&gt;") and double-quote (") characters are
-excluded because they are often used as the delimiters around a URI in
-text documents and protocol fields.  The percent character ("%")
-is excluded because it is used for the encoding of 
-<xref target="escaped">escaped</xref> characters.
-</preamble><artwork>
-   delims      = "&lt;" / "&gt;" / "%" / DQUOTE
-</artwork></figure>
-<figure><preamble>
-<iref item="unwise" primary="true"/>
-Other characters are excluded because gateways and other transport
-agents are known to sometimes modify such characters.
-</preamble><artwork>
-   unwise      = "{" / "}" / "|" / "\" / "^" / "`"
-</artwork></figure>
-<t>
-Data octets corresponding to excluded characters must be escaped in order to
-be represented within a URI.
-</t>
-</section>
 </section>
 
 <section title="Syntax Components" anchor="components">
@@ -825,8 +752,10 @@ but should only generate lowercase scheme names, for consistency.
 </artwork><postamble>
 Individual schemes are not specified by this document.
 The process for registration of new URI schemes is defined separately
-by <xref target="RFC2717"/>.  The scheme registry maintains the mapping
-between scheme names and their specifications.
+by <xref target="RFC2717"/>.  The scheme registry maintains
+the mapping between scheme names and their specifications.
+Advice for designers of new URI schemes can be found in
+<xref target="RFC2718"/>.
 </postamble></figure>
 </section>
 
@@ -872,7 +801,7 @@ the server.  The user information, if present, is followed by a
 commercial at-sign ("@") that delimits it from the host.
 <iref item="URI grammar" subitem="userinfo" primary="true"/>
 </preamble><artwork type="abnf">
-   userinfo    = *( unreserved / escaped / sub-delims )
+   userinfo    = *( unreserved / pct-encoded / sub-delims )
 </artwork></figure>
 <t>
 Some URI schemes use the format "user:password" in the userinfo
@@ -1036,7 +965,7 @@ number-sign ("#") character, or by the end of the URI.
    path-segments = segment *( "/" segment )
    segment       = *pchar
 
-   pchar         = unreserved / escaped / sub-delims / ":" / "@"
+   pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 </artwork></figure>
 <t>
 The path consists of a sequence of path segments separated by a
@@ -1060,7 +989,7 @@ as part of the URI normalization or resolution process, as described in
 </t>
 <t>
 Aside from dot-segments in hierarchical paths, a path segment is
-considered opaque by the generic syntax.  URI generating applications
+considered opaque by the generic syntax.  URI-generating applications
 often use the reserved characters allowed in segment for the purpose
 of delimiting scheme-specific or generator-specific sub-components.
 For example, the semicolon (";") and equals ("=") reserved characters
@@ -1097,7 +1026,7 @@ non-interoperable results while parsing relative references.  However,
 since query components are often used to carry identifying information
 in the form of "key=value" pairs, and one frequently used value is a
 reference to another URI, it is sometimes better for usability to
-include those characters unescaped.
+avoid percent-encoding those characters.
 <list>
 <t>
 Note: Some client applications will fail to separate a reference's
@@ -1848,7 +1777,7 @@ could reasonably consider the following two URIs equivalent:
 Web user agents, such as browsers, typically apply this type of URI
 normalization when determining whether a cached response is available.
 Syntax-based normalization includes such techniques as case normalization,
-escape normalization, and removal of dot-segments.
+encoding normalization, and removal of dot-segments.
 </postamble></figure>
 
 <section title="Case Normalization" anchor="normalize-case">
@@ -1861,23 +1790,22 @@ equivalent to &lt;http://www.example.com/&gt;.
 </t>
 </section>
 
-<section title="Escape Normalization" anchor="normalize-escape">
+<section title="Encoding Normalization" anchor="normalize-encoding">
 <t>
-The percent-escape mechanism described in <xref target="escaped"/>
+The percent-encoding mechanism (<xref target="percent-encoding"/>)
 is a frequent source of variance among otherwise identical URIs.
 One cause is the choice of uppercase or lowercase letters for the
-hexadecimal digits within the escape sequence (e.g., "%3a" versus "%3A").
+hexadecimal digits within the encoding triplet (e.g., "%3a" versus "%3A").
 Such sequences are always equivalent; for the sake of uniformity, URI
-generators and normalizers are strongly encouraged to use uppercase
-letters for the hex digits A-F.
+generators and normalizers should use uppercase letters for the
+hex digits A-F.
 </t>
 <t>
-Only characters that are excluded from or reserved within the URI
-syntax must be escaped when used as data.  However, some URI generators
-go beyond that and escape characters that do not require escaping,
-resulting in URIs that are equivalent to their unescaped counterparts.
-Such URIs can be normalized by unescaping sequences that represent
-the unreserved characters, as described in <xref target="unreserved"/>.
+Some URI generators percent-encode octets that do not require
+percent-encoding, resulting in URIs that are equivalent to their
+non-encoded counterparts.  Such URIs should be normalized by
+decoding any percent-encoded octet that corresponds to an unreserved
+character, as described in <xref target="unreserved"/>.
 </t>
 </section>
 
@@ -1946,8 +1874,8 @@ with respect to their scheme.  Specifically:
 <list style="symbols">
   <t>Always provide the URI scheme in lowercase characters.</t>
   <t>Always provide the hostname, if any, in lowercase characters.</t>
-  <t>Only perform percent-escaping where it is essential.</t>
-  <t>Always use uppercase A-through-F characters when percent-escaping.</t>
+  <t>Only perform percent-encoding where it is essential.</t>
+  <t>Always use uppercase A-through-F characters when percent-encoding.</t>
   <t>Prevent /./ and /../ from appearing in non-relative URI paths.</t>
 </list>
 </t>
@@ -2002,13 +1930,13 @@ of "25", thereby fooling user agent software into sending an
 unintended or impersonating message via an SMTP server.
 </t>
 <t>
-Care should be taken when a URI contains escaped delimiters for a
-given protocol (for example, CR and LF characters for telnet
-protocols) that these octets are not unescaped before transmission.
-This might violate the protocol, but avoids the potential for such
-characters to be used to simulate an extra operation or parameter in
-that protocol which might lead to an unexpected and possibly harmful
-remote operation being performed.
+Care should be taken when a URI contains percent-encoded octets that match
+the delimiters for a given protocol (for example, CR and LF characters for
+telnet protocols) that these percent-encoded octets are not decoded before
+transmission.  Transfer of the percent-encoding might violate the protocol,
+but that is less harmful than allowing decoded octets to be interpreted as
+additional operations or parameters, triggering an unexpected and possibly
+harmful remote operation.
 </t>
 </section>
 <section title="Rare IP Address Formats" anchor="security-ipv4">
@@ -2088,13 +2016,13 @@ the acknowledgments in those documents still apply.
 It also incorporates the update (with corrections) for IPv6 literals
 in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
 and Larry Masinter in <xref target="RFC2732"/>.
-In addition, contributions by Reese Anschultz, Tim Bray, Rob Cameron,
-Dan Connolly, Adam M. Costello, John Cowan, Jason Diamond, Martin Duerst,
-Stefan Eissing, Clive D.W. Feather, Tony Hammond,
-Pat Hayes, Henry Holtzman, Graham Klyne, Dan Kohn,
-Bruce Lilly, Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
-Miles Sabin, Ronald Tschalaer, Norm Walsh, Marc Warne, Stuart Williams,
-and Henry Zongaro
+In addition, contributions by Reese Anschultz, Daniel Barclay, Tim Bray,
+Rob Cameron, John C. Klensin, Dan Connolly, Adam M. Costello, John Cowan,
+Jason Diamond, Martin Duerst, Stefan Eissing, Clive D.W. Feather,
+Tony Hammond, Pat Hayes, Henry Holtzman, Graham Klyne, Dan Kohn,
+Bruce Lilly, Andrew Main, Ira McDonald, Michael Mealling,
+Julian Reschke, Tomas Rokicki, Miles Sabin, Ronald Tschalaer, Norm Walsh,
+Marc Warne, Stuart Williams, and Henry Zongaro
 are gratefully acknowledged.
 </t>
 </section>
@@ -2344,6 +2272,20 @@ are gratefully acknowledged.
 <seriesInfo name='RFC' value='2046' />
 </reference>
 
+<reference anchor='RFC2978'>
+<front>
+<title>IANA Charset Registration Procedures</title>
+<author initials='N.' surname='Freed' fullname='N. Freed'>
+<organization /></author>
+<author initials='J.' surname='Postel' fullname='J. Postel'>
+<organization /></author>
+<date month='October' year='2000' />
+</front>
+<seriesInfo name='BCP' value='19' />
+<seriesInfo name='RFC' value='2978' />
+<format type='TXT' octets='21615' target='http://www.ietf.org/rfc/rfc2978.txt' />
+</reference>
+
 <reference anchor='RFC1535'>
 <front>
 <title abbrev='DNS Software Enhancements'>A Security Problem and Proposed Correction With Widely Deployed DNS Software</title>
@@ -2498,6 +2440,60 @@ Science, University of California, Irvine</organization>
 <email>jak@violet.berkeley.edu</email></address></author>
 <date month='February' year='1995'></date></front>
 <seriesInfo name='RFC' value='1736' />
+</reference>
+
+<reference anchor='RFC2718'>
+<front>
+<title>Guidelines for new URL Schemes</title>
+<author initials='L.' surname='Masinter' fullname='Larry Masinter'>
+<organization>Xerox Corporation, Palo Alto Research Center</organization>
+<address>
+<postal>
+<street>3333 Coyote Hill Road</street>
+<city>Palo Alto</city>
+<region>CA</region>
+<code>94304</code>
+<country>US</country></postal>
+<email>masinter@parc.xerox.com</email></address></author>
+<author initials='H.' surname='Alvestrand' fullname='Harald Tveit Alvestrand'>
+<organization>Maxware</organization>
+<address>
+<postal>
+<street>N-7005 Trondheim</street>
+<city>Pirsenteret</city>
+<region />
+<code />
+<country>NO</country></postal>
+<phone>+47 73 545700</phone>
+<email>harald.alvestrand@maxware.no</email></address></author>
+<author initials='D.' surname='Zigmond' fullname='Dan Zigmond'>
+<organization>WebTV Networks, Inc.</organization>
+<address>
+<postal>
+<street>305 Lytton Avenue</street>
+<city>Palo Alto</city>
+<region>CA</region>
+<code>94301</code>
+<country>US</country></postal>
+<phone>+1 650 614 6071</phone>
+<email>djz@corp.webtv.net</email></address></author>
+<author initials='R.' surname='Petke' fullname='Rich Petke'>
+<organization>UUNET Technologies</organization>
+<address>
+<postal>
+<street>5000 Britton Road</street>
+<street>P. O. Box 5000</street>
+<city>Hilliard</city>
+<region>OH</region>
+<code>43026-5000</code>
+<country>US</country></postal>
+<phone>+1 614 723 4157</phone>
+<facsimile>+1 614 723 8407</facsimile>
+<email>rpetke@wcom.net</email></address></author>
+<date month='November' year='1999' />
+</front>
+<seriesInfo name='RFC' value='2718' />
+<format type='TXT' octets='19208' target='http://www.ietf.org/rfc/rfc2718.txt' />
 </reference>
 
 <reference anchor='RFC1737'>
@@ -2705,7 +2701,7 @@ Science, University of California, Irvine</organization>
 
  domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
 
- escaped       = "%" HEXDIG HEXDIG
+ pct-encoded   = "%" HEXDIG HEXDIG
 
  fragment      = *( pchar / "/" / "?" )
 
@@ -2735,13 +2731,11 @@ Science, University of California, Irvine</organization>
 
  ls32          = ( h4 ":" h4 ) / IPv4address
 
- mark          = "-" / "." / "_" / "~"
-
  net-path      = "//" authority [ abs-path ]
 
  path-segments = segment *( "/" segment )
 
- pchar         = unreserved / escaped / sub-delims / ":" / "@"
+ pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 
  port          = *DIGIT
 
@@ -2762,15 +2756,13 @@ Science, University of California, Irvine</organization>
  sub-delims    = "!" / "$" / "&amp;" / "'" / "(" / ")"
                / "*" / "+" / "," / ":" / ";" / "="
 
- unreserved    = ALPHA / DIGIT / mark
+ unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
 
  URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 
  URI-reference = URI / relative-URI
 
- uric          = reserved / unreserved / escaped
-
- userinfo      = *( unreserved / escaped / sub-delims )
+ userinfo      = *( unreserved / pct-encoded / sub-delims )
 </artwork></figure>
 </section>
 
@@ -2861,7 +2853,7 @@ No whitespace should be introduced after a hyphen ("-") character.
 Because some typesetters and printers may (erroneously) introduce a
 hyphen at the end of line when breaking a line, the interpreter of a
 URI containing a line break immediately after a hyphen should ignore
-all unescaped whitespace around the line break, and should be aware
+all whitespace around the line break, and should be aware
 that the hyphen may or may not actually be part of the URI.
 </t>
 <t>
@@ -2904,7 +2896,7 @@ contains the URI references
 IPv6 literals have been added to the list of possible identifiers
 for the host portion of a authority component, as described by
 <xref target="RFC2732"/>, with the addition of "[" and "]" to
-the reserved and uric sets.  Square brackets are now specified as
+the reserved set.  Square brackets are now specified as
 reserved within the authority component and not allowed outside
 their use as delimiters for an IPv6reference within host.  In order
 to make this change without changing the technical definition of the
@@ -2926,8 +2918,7 @@ domain names.
 <t>
 <xref target="comparison">Section 6</xref> on URI normalization and comparison
 has been completely rewritten and extended using input from Tim Bray
-and discussion within the W3C Technical Architecture Group.  Likewise,
-<xref target="encoding"/> on the encoding of characters has been replaced.
+and discussion within the W3C Technical Architecture Group.
 </t>
 <t>
 An ABNF production for URI has been introduced to correspond to the
@@ -2942,18 +2933,19 @@ The ad-hoc BNF syntax has been replaced with the ABNF of
 formerly included underscore characters to be renamed with a dash instead.
 </t>
 <t>
-Section 2.2 on reserved characters has been rewritten to clearly explain
-what characters are reserved, when they are reserved, and why they are
-reserved even when not used as delimiters by the generic syntax.
+Section 2 on characters has been rewritten to explain what characters
+are reserved, when they are reserved, and why they are reserved even
+when not used as delimiters by the generic syntax.
 The mark characters that are typically unsafe to decode, including
 the exclamation mark ("!"), asterisk ("*"), single-quote ("'"), and
 open and close parentheses ("(" and ")"), have been moved to the reserved
 set in order to clarify the distinction between reserved and unreserved
 and hopefully answer the most common question of scheme designers.
-Likewise, the section on escaped characters has been rewritten, and
-URI normalizers are now given license to unescape any octets
-corresponding to unreserved characters.  The number-sign ("#") character
-has been moved back from the excluded delims to the reserved set.
+Likewise, the section on percent-encoded characters has been rewritten, and
+URI normalizers are now given license to decode any percent-encoded octets
+corresponding to unreserved characters.  In general, the terms "escaped"
+and "unescaped" have been replaced with "percent-encoded" and "decoded",
+respectively, to reduce confusion with other forms of escape mechanisms.
 </t>
 <t>
 The ABNF for URI and URI-reference has been redesigned to make them
@@ -2970,11 +2962,16 @@ relative-URI with a colon in the first segment is now explained
 and disambiguated in the section defining relative-URI.
 </t>
 <t>
+The number-sign ("#") character has been moved back to the reserved set
+as a result of reintegrating the fragment syntax.  The uric and mark
+productions have been removed.
+</t>
+<t>
 The ABNF of hier-part and relative-URI has been corrected
 to allow a relative URI path to be empty.  This also allows an
 absolute-URI to consist of nothing after the "scheme:", as is present
 in practice with the "dav:" namespace <xref target="RFC2518"/> and
-the "about:" scheme used internally by many browser implementations.
+the "about:" scheme used internally by many WWW browser implementations.
 The ambiguity regarding the parsing of net-path, abs-path, and rel-path
 is now explained and disambiguated in the same section.
 </t>
@@ -3010,10 +3007,14 @@ then the target URI inherits the base URI's path component.
 </t>
 <t>
 Removed the special-case treatment of same-document references
-in favor of a section that explains that a new retrieval action
-should not be made if the target URI and base URI, excluding
-fragments, match.  This change has no impact on user agent behavior
-aside from how the resolved reference might be described to the user.
+within the URI parser in favor of a section that explains when a
+reference should be interpreted by a dereferencing engine as a
+same-document reference: when the resolved target URI and base URI,
+excluding fragments, match.  This change does not modify the behavior
+of existing same-document references as defined by RFC 2396
+(fragment-only references); it merely adds the same-document distinction
+to other references that refer to the base URI, as is consistent with
+the internal architecture of deployed URI processing implementations.
 </t>
 <t>
 Separated the path merge routine into two routines: merge, for
