@@ -4536,32 +4536,209 @@ I don't know if handling bad relative URI references is worth the hassle.
  </action>
 </issue>
 
-<!--
-
 <issue>
- <type>query</type>
- <name>046-def</name>
- <title></title>
+ <type>editorial</type>
+ <name>046-lc-edit-relative-URI</name>
+ <title>Rename relative-URI to relative-ref</title>
  <status>accepted</status>
  <report>
-  <author email=""></author>
-  <date sort="20030604">04 Jun 2003</date>
+  <author email="elharo_AT_metalab.unc.edu">Elliotte Rusty Harold</author>
+  <date sort="20040817">17 Aug 2004</date>
   <where>URI-WG mailing list</where>
 <pre>
+The July 15 draft of RFC2396bis appears to go a little further than RFC2396
+did in clarifying that there's no such thing as a relative URI, only
+relative URI references.
+
+Assuming I'm correctly reading the spec, and the intent is that the only
+relative things are URI references, never URIs, then there are two mistakes
+that are likely to lead to continuing confusion and debate on this point:
+
+1. The title of section 4.2 should be "Relative URI References", not
+"Relative URI".
+
+2. The first BNF production in section 4.2 should be titled
+"relative-URI-reference", not "relative-URI". And of course rename it
+where this production is referenced as well.
 </pre>
  </report>
  <action>
   <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
-  <date sort="20040205">05 Feb 2004</date>
+  <date sort="20040817">17 Aug 2004</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Those are not mistakes.  The section is named after the ABNF rule.
+The rule is named to retain backward compatibility and ease-of-use
+for other specifications that migrate to rfc2396bis.
+
+The question of "what is a URI" is answered elsewhere in the document.
+That won't stop some people from debating the point, but there is no
+basis for any technical argument.
+</pre>
+ </action>
+ <report>
+  <author>various</author>
+  <date sort="20040819">19 Aug 2004</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Various folks chimed in to say that the confusion was "obvious"
+because relative URI are assumed to be a subset of URI by nature
+of the adjective in front of the name.  [Never mind the fact that
+no such assumption is supported by human languages --
+e.g., "the little death", "Dynamic HTML", "firewall", etc.]
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040908">08 Sep 2004</date>
   <where>issues list</where>
 <pre>
+The change described in
+
+   <a href ="http://lists.w3.org/Archives/Public/uri/2004Aug/0102.html">http://lists.w3.org/Archives/Public/uri/2004Aug/0102.html</a>
+
+has been committed to the author's draft.
 </pre>
  </action>
 </issue>
 
 <issue>
+ <type>editorial</type>
+ <name>047-lc-edit-canonical</name>
+ <title>Canonical form seems to be less baked</title>
+ <status>pending</status>
+ <report>
+  <author>various</author>
+  <date sort="20040806">06 Aug 2004</date>
+  <where>IETF-60 urirev BOF</where>
+<pre>
+We discussed Section 6.3 (Canonical Form):
+The discussion started with questions: are the following normalized?
+'http://www.w3.org/2000/01/rdf-schema#' (empty fragment identifier)
+'http://example.com:80/' (port number = default port)  [Sam Ruby]
+
+Roy noted there had been a normalization step which removed empty
+fragment identifiers, but it was removed on request. The removal of a
+default port was considered a 'scheme-specific' normalization.  We
+discussed other possible normalizations by invoking other equivalences
+listed in section 6, e.g., '6.1' and '6.2', etc.  It was noted that
+different software uses different canonical forms, e.g., XML
+namespaces vs. HTTP proxy.
+
+Roy concluded that Section 6.3 says exactly what it was meant to say,
+and nothing was left out on purpose.  Larry suggested removing section
+6.3 from the 'Standard' document and, if desired, having a separate
+Proposed Standard for a URI canonical form.
+
+Otherwise, the list in section 6.3 seems to be missing:
+
+   Remove ":port" if the given port is the default for scheme.
+
+and it would be nice to clarify that other component separators
+(query and fragment) should not be normalized away even if their
+component is empty.
+</pre>
+ </report>
+ <report>
+  <author email="rubys_AT_intertwingly.net">Sam Ruby</author>
+  <date sort="20040819">19 Aug 2004</date>
+  <where>URI-WG mailing list</where>
+<pre>
+The fifth bullet of section 6.3:
+
+   Prevent dot-segments appearing in non-relative URI paths.
+
+I'll suggest dropping the words "non-relative" from this text.
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040819">19 Aug 2004</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Yes, that is a bug.  A suggestion was made at the IETF meeting to
+drop the entire section on the basis that it just repeats most of
+what has already been said better elsewhere.
+</pre>
+ </action>
+ <report>
+  <author email="rubys_AT_intertwingly.net">Sam Ruby</author>
+  <date sort="20040819">19 Aug 2004</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I believe that was in part based on my pointing out of a few things that
+were less than clear as to whether or not they were to be consider
+normalized (e.g., null queries, fragments, authorities containing "@"
+with a null userinfo or ":" with a null port).
+
+I personally am quite OK with the removal of section 6.3, but I'm hoping
+that these questions get clarified some place in the text.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>editorial</type>
+ <name>048-lc-edit-iana</name>
+ <title>Add a sentence to IANA considerations</title>
+ <status>accepted</status>
+ <report>
+  <author email="cotton_AT_icann.org">Michelle S. Cotton</author>
+  <date sort="20040819">19 Aug 2004</date>
+  <where>IESG mailing list</where>
+<pre>
+The IANA has reviewed the following Internet-Draft which is 
+in Last Call: &lt;draft-fielding-uri-rfc2396bis-06.txt&gt;, and 
+has the following comments with regards to the publication of 
+this document:
+
+The IANA Considerations section says the following:
+
+   URI scheme names, as defined by &lt;scheme&gt; in Section 3.1, form a
+   registered name space that is managed by IANA according to the
+   procedures defined in [BCP35].
+
+Is this a request for a registration in the following registry?
+  <a href="http://www.iana.org/assignments/uri-schemes">http://www.iana.org/assignments/uri-schemes</a>
+If so, it should state more clearly in the IANA Considerations section
+the scheme name to be registered.  Or is this section just pointing out
+that there is a registry?
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040819">19 Aug 2004</date>
+  <where>IESG mailing list</where>
+<pre>
+The latter -- the section is pointing out that the registry for
+schemes already exists and is defined by BCP35.
+</pre>
+ </action>
+ <report>
+  <author email="cotton_AT_icann.org">Michelle S. Cotton</author>
+  <date sort="20040825">25 Aug 2004</date>
+  <where>IESG mailing list</where>
+<pre>
+Thank you for your clarification.  It may be useful to add a 
+sentence that just says something like "No IANA actions are 
+required by this document".
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040825">25 Aug 2004</date>
+  <where>issues list</where>
+<pre>
+Okay, I will add that during the author 48 hours.
+</pre>
+ </action>
+</issue>
+
+<!--
+
+<issue>
  <type>query</type>
- <name>047-def</name>
+ <name>049-def</name>
  <title></title>
  <status>accepted</status>
  <report>

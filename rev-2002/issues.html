@@ -57,6 +57,15 @@
 <tr>
 <th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
 </tr>
+<tr>
+<td nowrap="nowrap"><a href="#046-lc-edit-relative-URI">046-lc-edit-relative-URI</a></td><td>Rename relative-URI to relative-ref</td><td>editorial</td><td nowrap="nowrap">accepted</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#048-lc-edit-iana">048-lc-edit-iana</a></td><td>Add a sentence to IANA considerations</td><td>editorial</td><td nowrap="nowrap">accepted</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#047-lc-edit-canonical">047-lc-edit-canonical</a></td><td>Canonical form seems to be less baked</td><td>editorial</td><td nowrap="nowrap">pending</td>
+</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -5116,6 +5125,234 @@ recomposition algorithms)
   issues list:
     <pre>
 I don't know if handling bad relative URI references is worth the hassle.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="046-lc-edit-relative-URI">046-lc-edit-relative-URI</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Rename relative-URI to relative-ref</font></th>
+</tr>
+<tr>
+<th>accepted</th><th align="left">editorial</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:elharo_AT_metalab.unc.edu">Elliotte Rusty Harold</a>,
+  17 Aug 2004,
+  URI-WG mailing list:
+    <pre>
+The July 15 draft of RFC2396bis appears to go a little further than RFC2396
+did in clarifying that there's no such thing as a relative URI, only
+relative URI references.
+
+Assuming I'm correctly reading the spec, and the intent is that the only
+relative things are URI references, never URIs, then there are two mistakes
+that are likely to lead to continuing confusion and debate on this point:
+
+1. The title of section 4.2 should be "Relative URI References", not
+"Relative URI".
+
+2. The first BNF production in section 4.2 should be titled
+"relative-URI-reference", not "relative-URI". And of course rename it
+where this production is referenced as well.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  17 Aug 2004,
+  URI-WG mailing list:
+    <pre>
+Those are not mistakes.  The section is named after the ABNF rule.
+The rule is named to retain backward compatibility and ease-of-use
+for other specifications that migrate to rfc2396bis.
+
+The question of "what is a URI" is answered elsewhere in the document.
+That won't stop some people from debating the point, but there is no
+basis for any technical argument.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:">various</a>,
+  19 Aug 2004,
+  URI-WG mailing list:
+    <pre>
+Various folks chimed in to say that the confusion was "obvious"
+because relative URI are assumed to be a subset of URI by nature
+of the adjective in front of the name.  [Never mind the fact that
+no such assumption is supported by human languages --
+e.g., "the little death", "Dynamic HTML", "firewall", etc.]
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  08 Sep 2004,
+  issues list:
+    <pre>
+The change described in
+
+   <a href="http://lists.w3.org/Archives/Public/uri/2004Aug/0102.html">http://lists.w3.org/Archives/Public/uri/2004Aug/0102.html</a>
+
+has been committed to the author's draft.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="047-lc-edit-canonical">047-lc-edit-canonical</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Canonical form seems to be less baked</font></th>
+</tr>
+<tr>
+<th>pending</th><th align="left">editorial</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:">various</a>,
+  06 Aug 2004,
+  IETF-60 urirev BOF:
+    <pre>
+We discussed Section 6.3 (Canonical Form):
+The discussion started with questions: are the following normalized?
+'http://www.w3.org/2000/01/rdf-schema#' (empty fragment identifier)
+'http://example.com:80/' (port number = default port)  [Sam Ruby]
+
+Roy noted there had been a normalization step which removed empty
+fragment identifiers, but it was removed on request. The removal of a
+default port was considered a 'scheme-specific' normalization.  We
+discussed other possible normalizations by invoking other equivalences
+listed in section 6, e.g., '6.1' and '6.2', etc.  It was noted that
+different software uses different canonical forms, e.g., XML
+namespaces vs. HTTP proxy.
+
+Roy concluded that Section 6.3 says exactly what it was meant to say,
+and nothing was left out on purpose.  Larry suggested removing section
+6.3 from the 'Standard' document and, if desired, having a separate
+Proposed Standard for a URI canonical form.
+
+Otherwise, the list in section 6.3 seems to be missing:
+
+   Remove ":port" if the given port is the default for scheme.
+
+and it would be nice to clarify that other component separators
+(query and fragment) should not be normalized away even if their
+component is empty.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:rubys_AT_intertwingly.net">Sam Ruby</a>,
+  19 Aug 2004,
+  URI-WG mailing list:
+    <pre>
+The fifth bullet of section 6.3:
+
+   Prevent dot-segments appearing in non-relative URI paths.
+
+I'll suggest dropping the words "non-relative" from this text.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  19 Aug 2004,
+  URI-WG mailing list:
+    <pre>
+Yes, that is a bug.  A suggestion was made at the IETF meeting to
+drop the entire section on the basis that it just repeats most of
+what has already been said better elsewhere.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:rubys_AT_intertwingly.net">Sam Ruby</a>,
+  19 Aug 2004,
+  URI-WG mailing list:
+    <pre>
+I believe that was in part based on my pointing out of a few things that
+were less than clear as to whether or not they were to be consider
+normalized (e.g., null queries, fragments, authorities containing "@"
+with a null userinfo or ":" with a null port).
+
+I personally am quite OK with the removal of section 6.3, but I'm hoping
+that these questions get clarified some place in the text.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="048-lc-edit-iana">048-lc-edit-iana</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Add a sentence to IANA considerations</font></th>
+</tr>
+<tr>
+<th>accepted</th><th align="left">editorial</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:cotton_AT_icann.org">Michelle S. Cotton</a>,
+  19 Aug 2004,
+  IESG mailing list:
+    <pre>
+The IANA has reviewed the following Internet-Draft which is 
+in Last Call: &lt;draft-fielding-uri-rfc2396bis-06.txt&gt;, and 
+has the following comments with regards to the publication of 
+this document:
+
+The IANA Considerations section says the following:
+
+   URI scheme names, as defined by &lt;scheme&gt; in Section 3.1, form a
+   registered name space that is managed by IANA according to the
+   procedures defined in [BCP35].
+
+Is this a request for a registration in the following registry?
+  <a href="http://www.iana.org/assignments/uri-schemes">http://www.iana.org/assignments/uri-schemes</a>
+If so, it should state more clearly in the IANA Considerations section
+the scheme name to be registered.  Or is this section just pointing out
+that there is a registry?
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  19 Aug 2004,
+  IESG mailing list:
+    <pre>
+The latter -- the section is pointing out that the registry for
+schemes already exists and is defined by BCP35.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:cotton_AT_icann.org">Michelle S. Cotton</a>,
+  25 Aug 2004,
+  IESG mailing list:
+    <pre>
+Thank you for your clarification.  It may be useful to add a 
+sentence that just says something like "No IANA actions are 
+required by this document".
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  25 Aug 2004,
+  issues list:
+    <pre>
+Okay, I will add that during the author 48 hours.
 </pre>
 </td>
 </tr>
