@@ -1,34 +1,42 @@
 <H1>URL specification update area</H1>
 
-I am working on a revision of RFC 1738 (Uniform Resource Locators)
+We have been working on a revision of RFC 1738 (Uniform Resource Locators)
 and RFC 1808 (Relative Uniform Resource Locators).  This is my active
-work area, so don't be surprised if the documents change rapidly.
+work area.
 
 <P>The work is progressing as follows:
 
 <OL>
 <LI>I grabbed the current set of URL RFCs and removed the header/footer
     garbage that makes diff comparisons difficult.
-<LI>I created a base document (a copy of the original content of RFC 1738
-    and RFC 1808) which merges the two specs without changing any of the
+<LI>I created a <a href="base.txt">base document</a> that merges
+    <a href="rfc1738.txt">RFC 1738</a> and
+    <a href="rfc1808.txt">RFC 1808</a> without changing any of the
     effective content, except in that all of the scheme-specific definitions
-    are removed.  I was going to use it for diffs, but the extent of
-    editorial changes necessary to really merge the two specs makes that
-    impossible.
-<LI>The <a href="draft-fielding-url-syntax-00.txt">first complete draft</a>
-    is available.
-<LI>The <a href="draft-fielding-url-syntax-01.txt">second complete draft</a> is
-    available.  I also made a <a href="diff00to01.txt">diff from 00 to 01</a>.
-<LI>I have created three test pages for relative URL parsing, parts
-    <a href="test1.html">one</a>, <a href="test2.html">two</a>, and
-    <a href="test3.html">three</a>, 
-    and have tested a few common browsers.  I need more testers.  If all
-    (or almost all) of the browsers do things differently than the spec,
-    and it isn't an obvious bug in those browsers, then the spec will
-    need to change.  Actually, it already has for draft 01 and 02.
-<LI>The <a href="draft-fielding-url-syntax-02.txt">third complete draft</a> is
-    available.  This is my final draft -- it is in Larry Masinter's care
-    from now on.  I also made a <a href="diff01to02.txt">diff from 01 to 02</a>.
-    Changes from the RFCs are noted in the last appendix.
+    are removed.
+<LI>I created test pages for relative URL parsing, parts
+    <a href="test1.html">one</a>, <a href="test2.html">two</a>, 
+    <a href="test3.html">three</a>, <a href="test4.html">four</a>, and
+    <a href="test5.html">five</a>, and have tested a few common browsers.
+<LI>I wrote the first three drafts (changes noted in the last appendix):
+    <UL>
+    <LI><a href="draft-fielding-url-syntax-00.txt">draft-fielding-url-syntax-00.txt</a>
+    <LI><a href="diff00to01.txt">diff from 00 to 01</a>
+    <LI><a href="draft-fielding-url-syntax-01.txt">draft-fielding-url-syntax-01.txt</a>
+    <LI><a href="diff01to02.txt">diff from 01 to 02</a>
+    <LI><a href="draft-fielding-url-syntax-02.txt">draft-fielding-url-syntax-02.txt</a>
+    </UL>
+    and then passed the editor's baton to Larry Masinter for the next three
+    <UL>
+    <LI><a href="diff02to03.txt">diff from 02 to 03</a>
+    <LI><a href="draft-fielding-url-syntax-03.txt">draft-fielding-url-syntax-03.txt</a>
+    <LI><a href="diff03to04.txt">diff from 03 to 04</a>
+    <LI><a href="draft-fielding-url-syntax-04.txt">draft-fielding-url-syntax-04.txt</a>
+    <LI><a href="diff04to05.txt">diff from 04 to 05</a>
+    <LI><a href="draft-fielding-url-syntax-05.txt">draft-fielding-url-syntax-05.txt</a>
+    </UL>
+<LI>Discussion on these drafts is taking place on the 
+    <a href="http://www.acl.lanl.gov/URI/archive/uri-96.messages/">URI
+    mailing list</a> (uri@bunyip.com).
 </OL>
 
