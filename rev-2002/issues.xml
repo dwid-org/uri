@@ -205,10 +205,11 @@ Thank you.
  <type>relativeURI</type>
  <name>004-pathless-base</name>
  <title>resolution algorithm fails for base URI with no path</title>
- <status>accepted</status>
+ <status>fixed 00</status>
  <report>
   <author email="ronald_AT_innovation.ch">Ronald Tschalär</author>
   <date sort="19990916">16 Sep 1999</date>
+  <where>private mail</where>
 <pre>
 I tried to follow the algorithm in my implementation, but it gives
 http://ab :-( 
@@ -304,6 +305,14 @@ I guess step 6a should be
          last (right-most) slash character, if any, are excluded.
          If the base URI's path component is the empty string, then
          a single slash character ("/") is copied to the buffer.
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20020914">14 Sep 2002</date>
+  <where>draft 00</where>
+<pre>
+Fixed as described above.
 </pre>
  </action>
 </issue>
@@ -436,7 +445,7 @@ Something like absoluteURIref will be added to the BNF.
  <type>syntax: relative</type>
  <name>007-empty-rel_path</name>
  <title>relative URI syntax does not allow empty path</title>
- <status>accepted</status>
+ <status>fixed 00</status>
  <report>
   <author email="ranschultz_AT_symantec.com">Reese Anschultz</author>
   <date sort="20000217">17 Feb 2000</date>
@@ -521,6 +530,24 @@ to (in 03):
 
       rel_segment   = 1*( unreserved | escaped |
                           ";" | "@" | "&amp;" | "=" | "+" | "$" | "," )
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20020914">14 Sep 2002</date>
+  <where>draft 00</where>
+<pre>
+Fixed by making the path optional in the BNF:
+
+2396:
+
+   relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
+   hier_part     = ( net_path | abs_path ) [ "?" query ]
+
+draft-00:
+   relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
+   hier_part     = [ net_path | abs_path ] [ "?" query ]
+
 </pre>
  </action>
 </issue>
@@ -944,7 +971,7 @@ meaning is intended).
  <type>syntax: opaque_part</type>
  <name>014-empty-opaque_part</name>
  <title>syntax does not allow "dav:" or "about:" as URI</title>
- <status>accepted</status>
+ <status>fixed 00</status>
  <report>
   <author email="julian.reschke_AT_gmx.de">Julian Reschke</author>
   <date sort="20011119">19 Nov 2001</date>
@@ -977,6 +1004,24 @@ academic before).
   <where>private mail</where>
 <pre>
 will fix BNF
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20020914">14 Sep 2002</date>
+  <where>draft 00</where>
+<pre>
+Fixed by making the path optional in the BNF:
+
+2396:
+
+   relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
+   hier_part     = ( net_path | abs_path ) [ "?" query ]
+
+draft-00:
+   relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
+   hier_part     = [ net_path | abs_path ] [ "?" query ]
+
 </pre>
  </action>
 </issue>

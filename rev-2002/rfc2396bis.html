@@ -161,7 +161,8 @@ ins
 </tr>
 <tr>
 <td class="header" bgcolor="#666666" width="33%">
-        Obsoletes: <a xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rcf2629.xslt" href="http://www.ietf.org/rfc/rfc2396.txt">2396</a>,
+        Obsoletes: <a xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rcf2629.xslt" href="http://www.ietf.org/rfc/rfc2732.txt">2732</a>,
+        	<a xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rcf2629.xslt" href="http://www.ietf.org/rfc/rfc2396.txt">2396</a>,
         	<a xmlns:myns="mailto:julian.reschke@greenbytes.de?subject=rcf2629.xslt" href="http://www.ietf.org/rfc/rfc1808.txt">1808</a>&nbsp;</td><td class="header" bgcolor="#666666" width="33%">Day Software&nbsp;</td>
 </tr>
 <tr>
@@ -744,41 +745,9 @@ ins
 
 
 
-
-
 <b>&nbsp;G.2&nbsp;
-        <a href="#rfc.section.G.2">Modifications from both RFC 1738 and RFC 1808</a></b>
+        <a href="#rfc.section.G.2">Modifications from RFC 2396</a></b>
 <br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<b>&nbsp;G.3&nbsp;
-        <a href="#rfc.section.G.3">Modifications from RFC 1738</a></b>
-<br>
-
-
-
-
-
-
-
-<b>&nbsp;G.4&nbsp;
-        <a href="#rfc.section.G.4">Modifications from RFC 1808</a></b>
-<br>
-
-
-
-
 
 
 
@@ -1504,7 +1473,7 @@ hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
 <a name="rfc.iref.35"></a><a name="rfc.iref.36"></a>
 <a name="rfc.iref.37"></a><a name="rfc.iref.38"></a>
 
-<pre>hier_part     = ( net_path | abs_path ) [ "?" query ]
+<pre>hier_part     = [ net_path | abs_path ] [ "?" query ]
 
 net_path      = "//" authority [ abs_path ]
 
@@ -1913,7 +1882,7 @@ pchar         = unreserved | escaped |
 <a name="rfc.figure.u.34"></a>
 <a name="rfc.iref.83"></a><a name="rfc.iref.84"></a>
 
-<pre>relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
+<pre>relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
 </pre>
 <p>
 <a name="rfc.section.5.p.5"></a>
@@ -2173,6 +2142,8 @@ rel_segment   = 1*( unreserved | escaped |
          All but the last segment of the base URI's path component is
          copied to the buffer.  In other words, any characters after the
          last (right-most) slash character, if any, are excluded.
+         If the base URI's path component is the empty string, then
+         a single slash character ("/") is copied to the buffer.
         </li>
         
 <li>
@@ -2399,11 +2370,11 @@ return result
     Acknowledgements</h1>
 <p>
 <a name="rfc.section.8.p.1"></a>
-   This document was derived from RFC 1738 <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a> and RFC 1808
-   <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a>; the acknowledgements in those specifications still apply.
-   In addition, contributions by Gisle Aas, Martin Beet, Martin Duerst,
-   Jim Gettys, Martijn Koster, Dave Kristol, Daniel LaLiberte, Foteos
-   Macrides, James Marshall, Ryan Moats, Keith Moore, and Lauren Wood
+   This document was derived from RFC 2396 <a href="#RFC2396" title="">[]</a>,
+   RFC 1738 <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a> and RFC 1808 <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a>;
+   the acknowledgements in those specifications still apply.
+   In addition, contributions by Reese Anschultz, Adam M. Costello,
+   Bruce Lilly, Julian Reschke, Ronald Tschalaer, and Henry Zongaro
    are gratefully acknowledged.
 </p>
 
@@ -2610,9 +2581,9 @@ return result
 <a name="rfc.figure.u.38"></a>
 <pre>URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
 absoluteURI   = scheme ":" ( hier_part | opaque_part )
-relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
+relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
 
-hier_part     = ( net_path | abs_path ) [ "?" query ]
+hier_part     = [ net_path | abs_path ] [ "?" query ]
 opaque_part   = uric_no_slash *uric
 
 uric_no_slash = unreserved | escaped | ";" | "?" | ":" | "@" |
@@ -3078,186 +3049,23 @@ http://www.ics.uci.edu/pub/ietf/uri/historical.html#WARNING
     Additions</h2>
 <p>
 <a name="rfc.section.G.1.p.1"></a>
-   Section 4 (URI References) was added to stem the confusion regarding
-   "what is a URI" and how to describe fragment identifiers given that
-   they are not part of the URI, but are part of the URI syntax and
-   parsing concerns.  In addition, it provides a reference definition
-   for use by other IETF specifications (HTML, HTTP, etc.) that have
-   previously attempted to redefine the URI syntax in order to account
-   for the presence of fragment identifiers in URI references.
-</p>
-<p>
-<a name="rfc.section.G.1.p.2"></a>
-   Section 2.4 was rewritten to clarify a number of misinterpretations
-   and to leave room for fully internationalized URI.
-</p>
-<p>
-<a name="rfc.section.G.1.p.3"></a>
-   Appendix F on abbreviated URLs was added to describe the shortened
-   references often seen on television and magazine advertisements and
-   explain why they are not used in other contexts.
+none yet
 </p>
 <h2>
 <a name="rfc.section.G.2">G.2</a>&nbsp;
-    Modifications from both RFC 1738 and RFC 1808</h2>
+    Modifications from RFC 2396</h2>
 <p>
 <a name="rfc.section.G.2.p.1"></a>
-   Changed to URI syntax instead of just URL.
+The relative path resolution algorithm of section 5.2, step 6a, has
+been corrected to account for a base URI with no path.
 </p>
 <p>
 <a name="rfc.section.G.2.p.2"></a>
-   Confusion regarding the terms "character encoding", the URI
-   "character set", and the escaping of characters with %&lt;hex&gt;&lt;hex&gt;
-   equivalents has (hopefully) been reduced.  Many of the BNF rule names
-   regarding the character sets have been changed to more accurately
-   describe their purpose and to encompass all "characters" rather than
-   just US-ASCII octets.  Unless otherwise noted here, these
-   modifications do not affect the URI syntax.
-</p>
-<p>
-<a name="rfc.section.G.2.p.3"></a>
-   Both RFC 1738 and RFC 1808 refer to the "reserved" set of characters
-   as if URI-interpreting software were limited to a single set of
-   characters with a reserved purpose (i.e., as meaning something other
-   than the data to which the characters correspond), and that this set
-   was fixed by the URI scheme.  However, this has not been true in
-   practice; any character that is interpreted differently when it is
-   escaped is, in effect, reserved.  Furthermore, the interpreting
-   engine on a HTTP server is often dependent on the resource, not just
-   the URI scheme.  The description of reserved characters has been
-   changed accordingly.
-</p>
-<p>
-<a name="rfc.section.G.2.p.4"></a>
-   The plus "+", dollar "$", and comma "," characters have been added to
-   those in the "reserved" set, since they are treated as reserved
-   within the query component.
-</p>
-<p>
-<a name="rfc.section.G.2.p.5"></a>
-   The tilde "~" character was added to those in the "unreserved" set,
-   since it is extensively used on the Internet in spite of the
-   difficulty to transcribe it with some keyboards.
-</p>
-<p>
-<a name="rfc.section.G.2.p.6"></a>
-   The syntax for URI scheme has been changed to require that all
-   schemes begin with an alpha character.
-</p>
-<p>
-<a name="rfc.section.G.2.p.7"></a>
-   The "user:password" form in the previous BNF was changed to a
-   "userinfo" token, and the possibility that it might be
-   "user:password" made scheme specific. In particular, the use of
-   passwords in the clear is not even suggested by the syntax.
-</p>
-<p>
-<a name="rfc.section.G.2.p.8"></a>
-   The question-mark "?" character was removed from the set of allowed
-   characters for the userinfo in the authority component, since testing
-   showed that many applications treat it as reserved for separating the
-   query component from the rest of the URI.
-</p>
-<p>
-<a name="rfc.section.G.2.p.9"></a>
-   The semicolon ";" character was added to those stated as being
-   reserved within the authority component, since several new schemes
-   are using it as a separator within userinfo to indicate the type of
-   user authentication.
-</p>
-<p>
-<a name="rfc.section.G.2.p.10"></a>
-   RFC 1738 specified that the path was separated from the authority
-   portion of a URI by a slash.  RFC 1808 followed suit, but with a
-   fudge of carrying around the separator as a "prefix" in order to
-   describe the parsing algorithm.  RFC 1630 never had this problem,
-   since it considered the slash to be part of the path.  In writing
-   this specification, it was found to be impossible to accurately
-   describe and retain the difference between the two URI
-      &lt;foo:/bar&gt;   and   &lt;foo:bar&gt;
-   without either considering the slash to be part of the path (as
-   corresponds to actual practice) or creating a separate component just
-   to hold that slash.  We chose the former.
-</p>
-<h2>
-<a name="rfc.section.G.3">G.3</a>&nbsp;
-    Modifications from RFC 1738</h2>
-<p>
-<a name="rfc.section.G.3.p.1"></a>
-   The definition of specific URL schemes and their scheme-specific
-   syntax and semantics has been moved to separate documents.
-</p>
-<p>
-<a name="rfc.section.G.3.p.2"></a>
-   The URL host was defined as a fully-qualified domain name.  However,
-   many URLs are used without fully-qualified domain names (in contexts
-   for which the full qualification is not necessary), without any host
-   (as in some file URLs), or with a host of "localhost".
-</p>
-<p>
-<a name="rfc.section.G.3.p.3"></a>
-   The URL port is now *digit instead of 1*digit, since systems are
-   expected to handle the case where the ":" separator between host and
-   port is supplied without a port.
-</p>
-<p>
-<a name="rfc.section.G.3.p.4"></a>
-   The recommendations for delimiting URI in context (Appendix E) have
-   been adjusted to reflect current practice.
-</p>
-<h2>
-<a name="rfc.section.G.4">G.4</a>&nbsp;
-    Modifications from RFC 1808</h2>
-<p>
-<a name="rfc.section.G.4.p.1"></a>
-   RFC 1808 (Section 4) defined an empty URL reference (a reference
-   containing nothing aside from the fragment identifier) as being a
-   reference to the base URL.  Unfortunately, that definition could be
-   interpreted, upon selection of such a reference, as a new retrieval
-   action on that resource.  Since the normal intent of such references
-   is for the user agent to change its view of the current document to
-   the beginning of the specified fragment within that document, not to
-   make an additional request of the resource, a description of how to
-   correctly interpret an empty reference has been added in Section 4.
-</p>
-<p>
-<a name="rfc.section.G.4.p.2"></a>
-   The description of the mythical Base header field has been replaced
-   with a reference to the Content-Location header field defined by
-   MHTML <a href="#RFC2110" title="MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)">[RFC2110]</a>.
-</p>
-<p>
-<a name="rfc.section.G.4.p.3"></a>
-   RFC 1808 described various schemes as either having or not having the
-   properties of the generic URI syntax.  However, the only requirement
-   is that the particular document containing the relative references
-   have a base URI that abides by the generic URI syntax, regardless of
-   the URI scheme, so the associated description has been updated to
-   reflect that.
-</p>
-<p>
-<a name="rfc.section.G.4.p.4"></a>
-   The BNF term &lt;net_loc&gt; has been replaced with &lt;authority&gt;, since the
-   latter more accurately describes its use and purpose.  Likewise, the
-   authority is no longer restricted to the IP server syntax.
-</p>
-<p>
-<a name="rfc.section.G.4.p.5"></a>
-   Extensive testing of current client applications demonstrated that
-   the majority of deployed systems do not use the ";" character to
-   indicate trailing parameter information, and that the presence of a
-   semicolon in a path segment does not affect the relative parsing of
-   that segment.  Therefore, parameters have been removed as a separate
-   component and may now appear in any path segment.  Their influence
-   has been removed from the algorithm for resolving a relative URI
-   reference.  The resolution examples in Appendix C have been modified
-   to reflect this change.
-</p>
-<p>
-<a name="rfc.section.G.4.p.6"></a>
-   Implementations are now allowed to work around misformed relative
-   references that are prefixed by the same scheme as the base URI, but
-   only for schemes known to use the &lt;hier_part&gt; syntax.
+The BNF of hier_part and relativeURI (Section 3) has been corrected
+to allow a relative URI path to be empty.  This also allows an
+absoluteURI to consist of nothing after the "scheme:", as is present
+in practice with the "DAV:" namespace <a href="#RFC2518" title="">[]</a> and
+the "about:" URI used by many browser implementations.
 </p>
 <hr class="noprint">
 <table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">

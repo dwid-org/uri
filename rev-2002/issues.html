@@ -21,7 +21,7 @@
 <td nowrap="nowrap"><a href="#003-relative-query">003-relative-query</a></td><td>inconsistent resolution of query-only relative URI</td><td>relativeURI</td><td>pending</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#004-pathless-base">004-pathless-base</a></td><td>resolution algorithm fails for base URI with no path</td><td>relativeURI</td><td>accepted</td>
+<td nowrap="nowrap"><a href="#004-pathless-base">004-pathless-base</a></td><td>resolution algorithm fails for base URI with no path</td><td>relativeURI</td><td>fixed 00</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#005-ftp">005-ftp</a></td><td>background on ftp extensions</td><td>scheme: ftp</td><td>postponed</td>
@@ -30,7 +30,7 @@
 <td nowrap="nowrap"><a href="#006-absoluteURIref">006-absoluteURIref</a></td><td>need BNF term for absolute URI with optional fragment</td><td>syntax</td><td>accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#007-empty-rel_path">007-empty-rel_path</a></td><td>relative URI syntax does not allow empty path</td><td>syntax: relative</td><td>accepted</td>
+<td nowrap="nowrap"><a href="#007-empty-rel_path">007-empty-rel_path</a></td><td>relative URI syntax does not allow empty path</td><td>syntax: relative</td><td>fixed 00</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>uri</td><td>pending</td>
@@ -51,7 +51,7 @@
 <td nowrap="nowrap"><a href="#013-query-slash">013-query-slash</a></td><td>slash character should be forbidden in query</td><td>syntax: query</td><td>rejected</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#014-empty-opaque_part">014-empty-opaque_part</a></td><td>syntax does not allow "dav:" or "about:" as URI</td><td>syntax: opaque_part</td><td>accepted</td>
+<td nowrap="nowrap"><a href="#014-empty-opaque_part">014-empty-opaque_part</a></td><td>syntax does not allow "dav:" or "about:" as URI</td><td>syntax: opaque_part</td><td>fixed 00</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#015-fragment-handling">015-fragment-handling</a></td><td>clarify how URI processor is expected to handle fragment</td><td>syntax: fragment</td><td>pending</td>
@@ -299,13 +299,13 @@ Thank you.
       resolution algorithm fails for base URI with no path</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">relativeURI</th><th>accepted</th>
+<th width="40%">relativeURI</th><th>fixed 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
   <a href="mailto:ronald_AT_innovation.ch">Ronald Tschal&auml;r</a>,
   16 Sep 1999,
-  :
+  private mail:
   <pre>
 I tried to follow the algorithm in my implementation, but it gives
 http://ab :-( 
@@ -405,6 +405,16 @@ I guess step 6a should be
          last (right-most) slash character, if any, are excluded.
          If the base URI's path component is the empty string, then
          a single slash character ("/") is copied to the buffer.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  14 Sep 2002,
+  draft 00:
+  <pre>
+Fixed as described above.
 </pre>
 </td>
 </tr>
@@ -549,7 +559,7 @@ Something like absoluteURIref will be added to the BNF.
       relative URI syntax does not allow empty path</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax: relative</th><th>accepted</th>
+<th width="40%">syntax: relative</th><th>fixed 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -642,6 +652,26 @@ to (in 03):
 
       rel_segment   = 1*( unreserved | escaped |
                           ";" | "@" | "&amp;" | "=" | "+" | "$" | "," )
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  14 Sep 2002,
+  draft 00:
+  <pre>
+Fixed by making the path optional in the BNF:
+
+2396:
+
+   relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
+   hier_part     = ( net_path | abs_path ) [ "?" query ]
+
+draft-00:
+   relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
+   hier_part     = [ net_path | abs_path ] [ "?" query ]
+
 </pre>
 </td>
 </tr>
@@ -1105,7 +1135,7 @@ meaning is intended).
       syntax does not allow "dav:" or "about:" as URI</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax: opaque_part</th><th>accepted</th>
+<th width="40%">syntax: opaque_part</th><th>fixed 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1142,6 +1172,26 @@ academic before).
   private mail:
   <pre>
 will fix BNF
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  14 Sep 2002,
+  draft 00:
+  <pre>
+Fixed by making the path optional in the BNF:
+
+2396:
+
+   relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
+   hier_part     = ( net_path | abs_path ) [ "?" query ]
+
+draft-00:
+   relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
+   hier_part     = [ net_path | abs_path ] [ "?" query ]
+
 </pre>
 </td>
 </tr>
