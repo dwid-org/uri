@@ -2,12 +2,12 @@
 
 Network Working Group                                     T. Berners-Lee
 INTERNET-DRAFT                                                   MIT/LCS
-<draft-fielding-uri-url-00e>                                 R. Fielding
+<draft-uri-url-syntax-00>                                    R. Fielding
 Expires six months after publication date.                   U.C. Irvine
                                                              L. Masinter
                                                        Xerox Corporation
 
-                                                        11 November 1996
+                                                        13 November 1996
 
 
                     Uniform Resource Locators (URL)
@@ -31,6 +31,14 @@ Status of this Memo
    Shadow Directories on ftp.is.co.za (Africa), nic.nordu.net (Europe),
    munnari.oz.au (Pacific Rim), ds.internic.net (US East Coast),
    or ftp.isi.edu (US West Coast).
+
+   Issues:
+      1. The descriptions of the components in Section 4 are not yet
+         complete.
+      2. We need to define a mechanism for using IPv6 addresses in the
+         URL hostname which will not break existing systems too badly.
+      3. Section 7 (New URL Schemes) needs input from the Applications
+         Area A.D.'s.
 
 
 Abstract
@@ -234,9 +242,6 @@ Abstract
 
       urlchar     = reserved | unreserved | escaped
 
-      uchar       = unreserved | escaped
-      pchar       = uchar | ":" | "@" | "&" | "=" | "+"
-
 2.1. Reserved Characters
 
    Many URLs include components consisting of, or delimited by, certain
@@ -254,7 +259,7 @@ Abstract
    are used as delimiters of the components described in Section 4.
 
    Characters in the "reserved" set are not always reserved.  The set of
-   characters actually reserved within any given URL component are
+   characters actually reserved within any given URL component is
    defined by that component.  In general, a character is reserved if
    escaping that character would change the semantics of the URL.
 
@@ -545,21 +550,15 @@ Abstract
 
       server         = [ [ user [ ":" password ] "@" ] hostport ]
 
-      user           = *[ uchar | ";" | "?" | "&" | "=" | "+" ]
+      user           = *[ unreserved | escaped |
+			  ";" | "?" | "&" | "=" | "+" ]
 
-      password       = *[ uchar | ";" | "?" | "&" | "=" | "+" ]
-
-    user
-        An optional user name.  Some schemes (e.g., ftp) allow the
-        specification of a user name.
-
-    password
-        An optional password.  If present, it follows the user
-        name, separated from it by a colon.
+      password       = *[ unreserved | escaped |
+			  ";" | "?" | "&" | "=" | "+" ]
 
    The user name (and password), if present, are followed by a
-   commercial at-sign "@".  Within the user and password field, any ":",
-   "@", or "/" must be encoded.
+   commercial at-sign "@".  Within the user and password fields, the
+   characters ":", "@", and "/" are reserved.
 
    Note that an empty user name or password is different than no user
    name or password; there is no way to specify a password without
@@ -567,18 +566,6 @@ Abstract
    user name and no password, <ftp://host.com/> has no user name,
    while <ftp://foo:@host.com/> has a user name of "foo" and an
    empty password.
-
-    host
-        The fully qualified domain name of a network host, or its IP
-        address as a set of four decimal digit groups separated by
-        ".".  Fully qualified domain names take the form as described
-        in Section 3.5 of RFC 1034 [9] and Section 2.1 of RFC 1123 [5]:
-        a sequence of domain labels separated by ".", each domain label
-        starting and ending with an alphanumerical character and
-        possibly also containing "-" characters.  The rightmost domain
-        label will never start with a digit, though, which
-        syntactically distinguishes all domain names from the IP
-        addresses.
 
       hostport     = host [ ":" port ]
       host         = hostname | hostnumber
@@ -588,12 +575,21 @@ Abstract
       hostnumber   = 1*digit "." 1*digit "." 1*digit "." 1*digit
       port         = *digit
 
-    port
-        The port number to connect to.  Most schemes designate
-        protocols that have a default port number.  Another port number
-        may optionally be supplied, in decimal, separated from the
-        host by a colon.  If the port is omitted, the default port
-        number is assumed.
+   The host is a domain name of a network host, or its IP address as a
+   set of four decimal digit groups separated by ".".  Fully qualified
+   domain names take the form as described in Section 3.5 of RFC 1034
+   [9] and Section 2.1 of RFC 1123 [5]: a sequence of domain labels
+   separated by ".", each domain label starting and ending with an
+   alphanumerical character and possibly also containing "-" characters.
+   The rightmost domain label will never start with a digit, though,
+   which syntactically distinguishes all domain names from the IP
+   addresses.
+
+   The port is the network port number for the server.  Most schemes
+   designate protocols that have a default port number.  Another port
+   number may optionally be supplied, in decimal, separated from the
+   host by a colon.  If the port is omitted, the default port number is
+   assumed.
 
    When parsing a URL reference, the server component (if any) is
    extracted after the scheme.  If the remaining reference begins with a
@@ -605,19 +601,16 @@ Abstract
 
 4.3.2. Path Component
 
-    path
-        The rest of the locator consists of data specific to the
-        scheme, and is known as the "path".  It supplies the
-        details of how the specified resource can be accessed.  Note
-        that the "/" between the host (or port) and the url-path is
-        NOT part of the url-path.
+   The path component contains data specific to the scheme or server.
+   It typically specifies the details of how the resource can be
+   accessed.  Note that the "/" between the host (or port) and the
+   url-path is NOT part of the url-path.
 
       path        = fsegment *( "/" segment )
       fsegment    = 1*pchar
       segment     =  *pchar
 
-   The path syntax depends on the scheme being used, as does the
-   manner in which it is interpreted.
+      pchar       = unreserved | escaped | ":" | "@" | "&" | "=" | "+"
 
    When parsing a URL reference, the path is extracted after all other
    components.  The remaining reference is the URL path and the slash
@@ -635,6 +628,9 @@ Abstract
 
 4.3.3. Parameters Component
 
+   The parameters component is a sequence of semi-colon-separated
+   attributes.
+
       parameters  = param *( ";" param )
       param       = *( pchar | "/" )
 
@@ -647,6 +643,9 @@ Abstract
    semicolon separator is discarded.
 
 4.3.4. Query Component
+
+   The query component is a string of information to be interpreted by
+   the resource.
 
       query       = *urlchar
 
@@ -770,7 +769,7 @@ Abstract
 
 5.4. Default Base URL
 
-   If none of the conditions described in Sections 3.1 -- 3.3 apply,
+   If none of the conditions described in Sections 5.1 -- 5.3 apply,
    then the base URL is considered to be the empty string and all
    URL references within that document are assumed to be absolute URLs.
 
@@ -999,8 +998,7 @@ Abstract
    3333 Coyote Hill Road
    Palo Alto, CA 94034
 
-   Phone: (415) 812-4365
-   Fax: (415) 812-4333
+   Fax: +1(415)812-4333
    EMail: masinter@parc.xerox.com
 
 
@@ -1222,6 +1220,11 @@ E.3. Modifications from RFC 1738
    The definition of specific URL schemes and their scheme-specific
    syntax and semantics has been moved to separate documents.
 
+   The URL host was defined as a fully-qualified domain name.  However,
+   many URLs are used without fully-qualified domain names (in contexts
+   for which the full qualification is not necessary), without any host
+   (as in some file URLs), or with a host of "localhost".
+
    The URL port is now *digit instead of 1*digit, since systems are
    expected to handle the case where the ":" separator between host and
    port is supplied without a port.
@@ -1236,7 +1239,7 @@ E.4. Modifications from RFC 1808
    is for the user agent to change its view of the current document to
    the beginning of the specified fragment within that document, not to
    make an additional request of the resource, a description of how to
-   correctly interpret an empty reference has been added in Section 2.
+   correctly interpret an empty reference has been added in Section 3.
 
    The description of the mythical Base header field has been replaced
    with the Content-Base and Content-Location header fields defined by
