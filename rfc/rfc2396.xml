@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="us-ascii" standalone="no" ?>
-<?xml-stylesheet type="text/xsl" href="../rfc2629.xslt" ?>
-<!DOCTYPE rfc SYSTEM "../rfc2629.dtd">
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <?rfc toc="yes" ?>
 <?rfc symrefs="yes" ?>
+<?rfc sortrefs="no"?>
+<?rfc toc="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc linkmailto="no"?>
+<?rfc editing="no"?>
+<?rfc-ext parse-xml-in-artwork="yes" ?>
+<?rfc-ext sec-no-trailing-dots="yes" ?>
 
-<rfc number="2396" obsoletes="1808, 1738" category="std">
+<rfc number="2396" updates="1808, 1738" category="std">
 
 <front>
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifiers (URI): Generic Syntax</title>
@@ -23,7 +31,7 @@
       <email>timbl@w3.org</email>
     </address>
   </author>
-  <author initials='R.T.' surname='Fielding' fullname='Roy T. Fielding'>
+  <author initials='R.' surname='Fielding' fullname='Roy T. Fielding'>
     <organization abbrev="U.C. Irvine">Department of Information and Computer Science</organization>
     <address>
       <postal>
@@ -367,12 +375,12 @@ telnet://melvyl.ucop.edu/
 </t>
 <figure><preamble>
    The following definitions are common to many elements:
-</preamble>
 <iref item="alpha" primary="true"/><iref item="URI grammar" subitem="alpha" primary="true"/>
 <iref item="lowalpha" primary="true"/><iref item="URI grammar" subitem="lowalpha" primary="true"/>
 <iref item="upalpha" primary="true"/><iref item="URI grammar" subitem="upalpha" primary="true"/>
 <iref item="digit" primary="true"/><iref item="URI grammar" subitem="digit" primary="true"/>
 <iref item="alphanum" primary="true"/><iref item="URI grammar" subitem="alphanum" primary="true"/>
+</preamble>
 <artwork>
     alpha    = lowalpha | upalpha
 
@@ -405,8 +413,8 @@ telnet://melvyl.ucop.edu/
    were chosen from those common to most of the character encodings and
    input facilities available to Internet users.
 </t>
-<figure>
 <iref item="uric" primary="true"/><iref item="URI grammar" subitem="uric" primary="true"/>
+<figure>
 <artwork>
 uric          = reserved | unreserved | escaped
 </artwork></figure>
@@ -487,8 +495,8 @@ URI character sequence->octet sequence->original character sequence
    reserved purpose, then the conflicting data must be escaped before
    forming the URI.
 </t>
-<figure>
 <iref item="reserved" primary="true"/><iref item="URI grammar" subitem="reserved" primary="true"/>
+<figure>
 <artwork>
 reserved    = ";" | "/" | "?" | ":" | "@" | "&amp;" | "=" | "+" |
               "$" | ","
@@ -515,9 +523,9 @@ reserved    = ";" | "/" | "?" | ":" | "@" | "&amp;" | "=" | "+" |
    letters, decimal digits, and a limited set of punctuation marks and
    symbols.
 </t>
-<figure>
 <iref item="unreserved" primary="true"/><iref item="URI grammar" subitem="unreserved" primary="true"/>
 <iref item="mark" primary="true"/><iref item="URI grammar" subitem="mark" primary="true"/>
+<figure>
 <artwork>
 unreserved  = alphanum | mark
 
@@ -546,9 +554,9 @@ mark        = "-" | "_" | "." | "!" | "~" | "*" | "'" | "(" | ")"
    representing the octet code. For example, "%20" is the escaped
    encoding for the US-ASCII space character.
 </t>
-<figure>
 <iref item="escaped" primary="true"/><iref item="URI grammar" subitem="escaped" primary="true"/>
 <iref item="hex" primary="true"/><iref item="URI grammar" subitem="hex" primary="true"/>
+<figure>
 <artwork>
 escaped     = "%" hex hex
 hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
@@ -599,8 +607,8 @@ hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
    used within a URI, both because they are non-printable and because
    they are likely to be misinterpreted by some control mechanisms.
 </t>
-<figure>
 <iref item="control" primary="true"/><iref item="URI grammar" subitem="control" primary="true"/>
+<figure>
 <artwork>
 control     = &lt;US-ASCII coded characters 00-1F and 7F hexadecimal&gt;
 </artwork></figure>
@@ -611,8 +619,8 @@ control     = &lt;US-ASCII coded characters 00-1F and 7F hexadecimal&gt;
    programs.  Whitespace is also used to delimit URI in many
    contexts.
 </t>
-<figure>
 <iref item="space" primary="true"/><iref item="URI grammar" subitem="space" primary="true"/>
+<figure>
 <artwork>
 space       = &lt;US-ASCII coded character 20 hexadecimal&gt;
 </artwork></figure>
@@ -624,8 +632,8 @@ space       = &lt;US-ASCII coded character 20 hexadecimal&gt;
    references (Section 4). The percent character "%" is excluded because
    it is used for the encoding of escaped characters.
 </t>
-<figure>
 <iref item="delims" primary="true"/><iref item="URI grammar" subitem="delims" primary="true"/>
+<figure>
 <artwork>
 delims      = "&lt;" | "&gt;" | "#" | "%" | &lt;"&gt;
 </artwork></figure>
@@ -634,8 +642,8 @@ delims      = "&lt;" | "&gt;" | "#" | "%" | &lt;"&gt;
    agents are known to sometimes modify such characters, or they are
    used as delimiters.
 </t>
-<figure>
 <iref item="unwise" primary="true"/><iref item="URI grammar" subitem="unwise" primary="true"/>
+<figure>
 <artwork>
 unwise      = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
 </artwork></figure>
@@ -675,8 +683,8 @@ unwise      = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
    For example, some URI schemes do not allow an &lt;authority&gt; component,
    and others do not use a &lt;query&gt; component.
 </t>
-<figure>
 <iref item="absoluteURI" primary="true"/><iref item="URI grammar" subitem="absoluteURI" primary="true"/>
+<figure>
 <artwork>
 absoluteURI   = scheme ":" ( hier_part | opaque_part )
 </artwork></figure>
@@ -689,10 +697,10 @@ absoluteURI   = scheme ":" ( hier_part | opaque_part )
    the resource is a file or that the URI maps to an actual filesystem
    pathname.
 </t>
-<figure>
 <iref item="hier_part" primary="true"/><iref item="URI grammar" subitem="hier_part" primary="true"/>
 <iref item="net_path" primary="true"/><iref item="URI grammar" subitem="net_path" primary="true"/>
 <iref item="abs_path" primary="true"/><iref item="URI grammar" subitem="abs_path" primary="true"/>
+<figure>
 <artwork>
 hier_part     = ( net_path | abs_path ) [ "?" query ]
 
@@ -705,9 +713,9 @@ abs_path      = "/"  path_segments
    hierarchical components are considered opaque by the generic URI
    parser.
 </t>
-<figure>
 <iref item="opaque_part" primary="true"/><iref item="URI grammar" subitem="opaque_part" primary="true"/>
 <iref item="uric_no_slash" primary="true"/><iref item="URI grammar" subitem="uric_no_slash" primary="true"/>
+<figure>
 <artwork>
 opaque_part   = uric_no_slash *uric
 
@@ -736,8 +744,8 @@ uric_no_slash = unreserved | escaped | ";" | "?" | ":" | "@" |
    as equivalent to lower case in scheme names (e.g., allow "HTTP" as
    well as "http").
 </t>
-<figure>
 <iref item="scheme" primary="true"/><iref item="URI grammar" subitem="scheme" primary="true"/>
+<figure>
 <artwork>
 scheme        = alpha *( alpha | digit | "+" | "-" | "." )
 </artwork></figure>
@@ -756,8 +764,8 @@ scheme        = alpha *( alpha | digit | "+" | "-" | "." )
    typically defined by an Internet-based server or a scheme-specific
    registry of naming authorities.
 </t>
-<figure>
 <iref item="authority" primary="true"/><iref item="URI grammar" subitem="authority" primary="true"/>
+<figure>
 <artwork>
 authority     = server | reg_name
 </artwork></figure>
@@ -780,8 +788,8 @@ authority     = server | reg_name
    URI scheme, but constrained to the allowed characters for an
    authority component.
 </t>
-<figure>
 <iref item="reg_name" primary="true"/><iref item="URI grammar" subitem="reg_name" primary="true"/>
+<figure>
 <artwork>
 reg_name      = 1*( unreserved | escaped | "$" | "," |
                     ";" | ":" | "@" | "&amp;" | "=" | "+" )
@@ -802,8 +810,8 @@ reg_name      = 1*( unreserved | escaped | "$" | "," |
    scheme-specific information about how to gain authorization to access the
    server.  The parts "&lt;userinfo&gt;@" and ":&lt;port&gt;" may be omitted.
 </t>
-<figure>
 <iref item="server" primary="true"/><iref item="URI grammar" subitem="server" primary="true"/>
+<figure>
 <artwork>
 server        = [ [ userinfo "@" ] hostport ]
 </artwork></figure>
@@ -811,8 +819,8 @@ server        = [ [ userinfo "@" ] hostport ]
    The user information, if present, is followed by a commercial at-sign
    "@".
 </t>
-<figure>
 <iref item="userinfo" primary="true"/><iref item="URI grammar" subitem="userinfo" primary="true"/>
+<figure>
 <artwork>
 userinfo      = *( unreserved | escaped |
                    ";" | ":" | "&amp;" | "=" | "+" | "$" | "," )
@@ -828,7 +836,6 @@ userinfo      = *( unreserved | escaped |
    set of four decimal digit groups separated by ".".  Literal IPv6
    addresses are not supported.
 </t>
-<figure>
 <iref item="hostport" primary="true"/><iref item="URI grammar" subitem="hostport" primary="true"/>
 <iref item="host" primary="true"/><iref item="URI grammar" subitem="host" primary="true"/>
 <iref item="hostname" primary="true"/><iref item="URI grammar" subitem="hostname" primary="true"/>
@@ -836,6 +843,7 @@ userinfo      = *( unreserved | escaped |
 <iref item="toplabel" primary="true"/><iref item="URI grammar" subitem="toplabel" primary="true"/>
 <iref item="IPv4address" primary="true"/><iref item="URI grammar" subitem="IPv4address" primary="true"/>
 <iref item="port" primary="true"/><iref item="URI grammar" subitem="port" primary="true"/>
+<figure>
 <artwork>
 hostport      = host [ ":" port ]
 host          = hostname | IPv4address
@@ -881,12 +889,12 @@ port          = *digit
    scheme if there is no authority component), identifying the resource
    within the scope of that scheme and authority.
 </t>
-<figure>
 <iref item="path" primary="true"/><iref item="URI grammar" subitem="path" primary="true"/>
 <iref item="path_segments" primary="true"/><iref item="URI grammar" subitem="path_segments" primary="true"/>
 <iref item="segment" primary="true"/><iref item="URI grammar" subitem="segment" primary="true"/>
 <iref item="param" primary="true"/><iref item="URI grammar" subitem="param" primary="true"/>
 <iref item="pchar" primary="true"/><iref item="URI grammar" subitem="pchar" primary="true"/>
+<figure>
 <artwork>
 path          = [ abs_path | opaque_part ]
 
@@ -912,8 +920,8 @@ pchar         = unreserved | escaped |
    The query component is a string of information to be interpreted by
    the resource.
 </t>
-<figure>
 <iref item="query" primary="true"/><iref item="URI grammar" subitem="query" primary="true"/>
+<figure>
 <artwork>
 query         = *uric
 </artwork></figure>
@@ -938,8 +946,8 @@ query         = *uric
    impossible to obtain the URI from such a reference without also
    parsing the fragment and resolving the relative form.
 </t>
-<figure>
 <iref item="URI-reference" primary="true"/><iref item="URI grammar" subitem="URI-reference" primary="true"/>
+<figure>
 <artwork>
 URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
 </artwork></figure>
@@ -960,8 +968,8 @@ URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
    retrieval action has been successfully completed.  As such, it is not
    part of a URI, but is often used in conjunction with a URI.
 </t>
-<figure>
 <iref item="fragment" primary="true"/><iref item="URI grammar" subitem="fragment" primary="true"/>
+<figure>
 <artwork>
 fragment      = *uric
 </artwork></figure>
@@ -1047,8 +1055,8 @@ fragment      = *uric
    of &lt;absoluteURI&gt; (Section 3) in order to express a reference that is
    relative to the namespace of another hierarchical URI.
 </t>
-<figure>
 <iref item="relativeURI" primary="true"/><iref item="URI grammar" subitem="relativeURI" primary="true"/>
+<figure>
 <artwork>
 relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
 </artwork></figure>
@@ -1066,9 +1074,9 @@ relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
    A relative reference that does not begin with a scheme name or a
    slash character is termed a relative-path reference.
 </t>
-<figure>
 <iref item="rel_path" primary="true"/><iref item="URI grammar" subitem="rel_path" primary="true"/>
 <iref item="rel_segment" primary="true"/><iref item="URI grammar" subitem="rel_segment" primary="true"/>
+<figure>
 <artwork>
 rel_path      = rel_segment [ abs_path ]
 
