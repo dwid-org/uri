@@ -400,8 +400,8 @@ Other URI schemes make the hierarchy explicit and visible to
 generic parsing algorithms.
 </t>
 <t>
-The generic syntax uses the slash ("/"), question-mark ("?"), and
-number-sign ("#") characters for the purpose of delimiting components
+The generic syntax uses the slash ("/"), question mark ("?"), and
+number sign ("#") characters for the purpose of delimiting components
 that are significant to the generic parser's hierarchical interpretation
 of an identifier.  In addition to aiding the readability of such
 identifiers through the consistent use of familiar syntax, this
@@ -410,8 +410,8 @@ scheme-independent references to be made relative to that hierarchy.
 </t>
 <t>
 The slash ("/") character indicates hierarchy between the
-<xref target="scheme">scheme</xref> and the first question-mark ("?"),
-number-sign ("#"), or the end of the URI string.  In other words,
+<xref target="scheme">scheme</xref> and the first question mark ("?") or
+number sign ("#"), or the end of the URI string.  In other words,
 the slash ("/") character does not indicate hierarchy within the
 the query (<xref target="query"/>) and fragment (<xref target="fragment"/>)
 components of a URI. URI schemes that do not adhere to the generic
@@ -548,7 +548,7 @@ then the conflicting data must be percent-encoded before forming the URI.
    gen-delims  = ":" / "/" / "?" / "#" / "[" / "]" / "@"
 
    sub-delims  = "!" / "$" / "&amp;" / "'" / "(" / ")"
-               / "*" / "+" / "," / ":" / ";" / "="
+               / "*" / "+" / "," / ";" / "="
 </artwork></figure>
 <t>
 A subset of the reserved characters (gen-delims) are used as delimiters
@@ -742,8 +742,8 @@ or server address, along with optional port and user information.
 </t>
 <figure><preamble>
 The authority component is preceded by a double slash ("//") and is
-terminated by the next slash ("/"), question-mark ("?"), or
-number-sign ("#") character, or by the end of the URI.
+terminated by the next slash ("/"), question mark ("?"), or
+number sign ("#") character, or by the end of the URI.
 <iref item="URI grammar" subitem="authority" primary="true"/>
 <iref item="URI grammar" subitem="userinfo" primary="false"/>
 <iref item="URI grammar" subitem="host" primary="false"/>
@@ -751,9 +751,6 @@ number-sign ("#") character, or by the end of the URI.
 </preamble><artwork type="abnf">
    authority   = [ userinfo "@" ] host [ ":" port ]
 </artwork><postamble>
-The parts "&lt;userinfo&gt;@" and ":&lt;port&gt;" may be omitted.
-</postamble></figure>
-<t>
 Some schemes do not allow the userinfo and/or port sub-components.
 When presented with a URI that violates one or more scheme-specific
 restrictions, the scheme-specific URI resolution process should flag
@@ -761,7 +758,7 @@ the reference as an error rather than ignore the unused parts; doing so
 reduces the number of equivalent URIs and helps detect abuses of the
 generic syntax that might indicate the URI has been constructed to
 mislead the user (<xref target="security-semantic"/>).
-</t>
+</postamble></figure>
 
 <section title="User Information" anchor="userinfo">
 <iref item="userinfo" primary="true"/>
@@ -788,12 +785,12 @@ domain name in order to mislead users, as described in
 <section title="Host" anchor="host">
 <iref item="host" primary="true"/>
 <figure><preamble>
-The host sub-component of authority is identified by an IPv6 literal
+The host sub-component of authority is identified by an IP literal
 encapsulated within square brackets, an IPv4 address in dotted-decimal form,
-or a domain name.
+or a host name.
 <iref item="URI grammar" subitem="host" primary="true"/>
 </preamble><artwork type="abnf">
-   host        = [ IPv6reference / IPv4address / hostname ]
+   host        = IP-literal / IPv4address / reg-name
 </artwork><postamble>
 If host is omitted, a default may be defined by the scheme-specific
 semantics of the URI.  For example, the "file" URI scheme defaults to
@@ -802,28 +799,50 @@ omitted.
 </postamble></figure>
 <t>
 The production for host is ambiguous because it does not completely
-distinguish between an IPv4address and a hostname.  Again, the
+distinguish between an IPv4address and a reg-name.  Again, the
 "first-match-wins" algorithm applies: If host matches the production for
 IPv4address, then it should be considered an IPv4 address literal
-and not a hostname.
+and not a reg-name.
 </t>
 <figure><preamble>
 <iref item="IPv6" primary="true"/>
-<iref item="IPv6reference" primary="true"/>
+<iref item="IP-literal" primary="true"/>
 <iref item="IPv6address" primary="true"/>
 <iref item="ls32" primary="true"/>
 <iref item="h4" primary="true"/>
-A host identified by an IPv6 literal address <xref target="RFC3513"/>
-is distinguished by enclosing the IPv6 literal within square-brackets
-("[" and "]").  This is the only place where square-bracket characters
-are allowed in the URI syntax.
-<iref item="URI grammar" subitem="IPv6reference" primary="true"/>
+<iref item="vflag" primary="true"/>
+A host identified by an Internet Protocol literal address, version 6
+<xref target="RFC3513"/> or later, is distinguished by enclosing the IP
+literal within square-brackets ("[" and "]").  This is the only place
+where square-bracket characters are allowed in the URI syntax.
+In anticipation of future, as-yet-undefined IP literal address formats,
+an optional version flag may be used to indicate such a format
+explicitly rather than relying on heuristic determination.
+<iref item="URI grammar" subitem="IP-literal" primary="true"/>
+<iref item="URI grammar" subitem="IPv6address" primary="false"/>
+<iref item="URI grammar" subitem="vflag" primary="true"/>
+</preamble><artwork type="abnf">
+   IP-literal = "[" ( IPv6address | vflag "." 1*pchar ) "]"
+
+   vflag       = "v" HEXDIG
+</artwork><postamble>
+The version flag does not indicate the IP version; rather, it indicates
+future versions of the literal format.  As such, implementations must
+not provide the vflag for existing IPv4 and IPv6 literal addresses.
+If a URI containing an IP-literal that starts with "v" (case-insensitive),
+indicating that the version flag is present, is dereferenced by an application
+that does not know the meaning of that version flag, then the application
+should return an appropriate error for "address mechanism not supported".
+</postamble></figure>
+<figure><preamble>
+A host identified by an IPv6 literal address is represented inside
+the square brackets without a preceding version flag.  The ABNF provided
+here is a translation of the text definition of an IPv6 literal address
+provided in <xref target="RFC3513"/>.
 <iref item="URI grammar" subitem="IPv6address" primary="true"/>
 <iref item="URI grammar" subitem="ls32" primary="true"/>
 <iref item="URI grammar" subitem="h4" primary="true"/>
 </preamble><artwork type="abnf">
-   IPv6reference = "[" IPv6address "]"
-
    IPv6address =                          6( h4 ":" ) ls32
                /                     "::" 5( h4 ":" ) ls32
                / [              h4 ] "::" 4( h4 ":" ) ls32
@@ -862,27 +881,41 @@ four octets is allowed by this grammar.
                / "25" %x30-35          ; 250-255
 </artwork></figure>
 <figure><preamble>
-<iref item="hostname" primary="true"/>
-<iref item="qualified" primary="true"/>
-<iref item="domainlabel" primary="true"/>
-<iref item="alphanum" primary="true"/>
-A hostname takes the form described in Section 3 of <xref target="RFC1034"/>
-and Section 2.1 of <xref target="RFC1123"/>: a sequence of domain labels
-separated by ".", each domain label starting and ending with an alphanumeric
-character and possibly also containing "-" characters.  The rightmost
-domain label of a fully qualified domain name may be followed by a
-single "." and should be followed by one if it is necessary to
-distinguish between the complete domain name and some local domain.
-<iref item="URI grammar" subitem="hostname" primary="true"/>
-<iref item="URI grammar" subitem="qualified" primary="true"/>
-<iref item="URI grammar" subitem="domainlabel" primary="true"/>
-<iref item="URI grammar" subitem="alphanum" primary="true"/>
+<iref item="reg-name" primary="true"/>
+<iref item="registered name" primary="true"/>
+A host identified by a registered name consists of 0 to 255 path
+characters that are intended for lookup within a locally-defined host or
+service name registry.  The most common of such registry mechanisms, and
+the format required for globally-scoped identifiers, is the Domain Name
+System (DNS), as defined by Section 3 of <xref target="RFC1034"/> and
+Section 2.1 of <xref target="RFC1123"/>.  A DNS name consists of a
+sequence of domain labels separated by ".", each domain label starting and
+ending with an alphanumeric character and possibly also containing "-"
+characters.  The rightmost domain label of a fully qualified domain name
+in DNS may be followed by a single "." and should be followed by one
+if it is necessary to distinguish between the complete domain name and
+some local domain.
+<iref item="URI grammar" subitem="reg-name" primary="true"/>
 </preamble><artwork type="abnf">
-   hostname    = domainlabel qualified
-   qualified   = *( "." domainlabel ) [ "." ]
-   domainlabel = alphanum [ 0*61( alphanum / "-" ) alphanum ]
-   alphanum    = ALPHA / DIGIT
-</artwork></figure>
+   reg-name    = 0*255( pchar )
+</artwork><postamble>
+If the host component is defined and the registered name is empty
+(zero length), then the registered name defaults to "localhost".
+The reg-name syntax allows for percent-encoded octets, which is necessary
+to enable internationalized domain names to be provided in URIs; such octets
+must represent characters encoded in the UTF-8 character encoding prior
+to being percent-encoded.
+</postamble></figure>
+<t>
+This specification does not mandate a particular registered name lookup
+technology, and therefore does not restrict the syntax of reg-name beyond
+that necessary for interoperability.  A URI resolution implementation might
+use DNS, host tables, yellow pages, NetInfo, WINS, or any other system
+for lookup of host and service names.  However, a globally-scoped naming
+system, such as DNS fully-qualified domain names, is necessary for URIs
+that are intended to have global scope, and thus names conforming to the
+DNS syntax are strongly recommended.
+</t>
 <t>
 The presence of host within a URI does not imply that the scheme
 requires access to the given host on the Internet.  In many cases,
@@ -904,10 +937,12 @@ a single colon (":") character.
 </preamble><artwork type="abnf">
    port        = *DIGIT
 </artwork><postamble>
-If port is omitted, a default may be defined by the scheme-specific
-semantics of the URI.  Likewise, the type of network port designated by
-the port number (e.g., TCP, UDP, SCTP, etc.) is defined by the URI scheme.
-For example, the "http" URI scheme defines a default of TCP port 80.
+A scheme may define a default port.  For example, the "http" scheme defines
+a default port of "80", corresponding to its reserved TCP port number.
+The type of port designated by the port number (e.g., TCP, UDP, SCTP, etc.)
+is defined by the URI scheme.  URI generators and normalizers should omit
+the port component and its ":" delimiter if port is empty or its value
+would be the same as the scheme's default.
 </postamble></figure>
 </section>
 
@@ -924,7 +959,7 @@ component, serves to identify a resource within the scope of the URI's
 scheme and naming authority (if any).  If a URI contains an authority
 component, then the initial path segment must be empty (i.e., the path must
 begin with a slash ("/") character or be entirely empty).  The path is
-terminated by the first question-mark ("?") or number-sign ("#") character,
+terminated by the first question mark ("?") or number sign ("#") character,
 or by the end of the URI.
 <iref item="URI grammar" subitem="path-segments" primary="true"/>
 <iref item="URI grammar" subitem="segment" primary="true"/>
@@ -980,15 +1015,15 @@ of the URI's dereferencing algorithm.
 The query component contains non-hierarchical data that, along with data
 in the <xref target="path">path</xref> component, serves to identify a
 resource within the scope of the URI's scheme and naming authority (if any).
-The query component is indicated by the first question-mark ("?") character 
-and terminated by a number-sign ("#") character or by the end of the URI.
+The query component is indicated by the first question mark ("?") character 
+and terminated by a number sign ("#") character or by the end of the URI.
 <iref item="URI grammar" subitem="query" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="false"/>
 </preamble><artwork type="abnf">
    query       = *( pchar / "/" / "?" )
 </artwork></figure>
 <t>
-The characters slash ("/") and question-mark ("?") are allowed to
+The characters slash ("/") and question mark ("?") are allowed to
 represent data within the query component, but such use is discouraged;
 incorrect implementations of reference resolution often fail to
 distinguish them from hierarchical separators, thus resulting in
@@ -1017,7 +1052,7 @@ of a secondary resource by reference to a primary resource and additional
 identifying information.  The identified secondary resource may be some
 portion or subset of the primary resource, some view on representations
 of the primary resource, or some other resource.  A fragment identifier
-component is indicated by the presence of a number-sign ("#") character
+component is indicated by the presence of a number sign ("#") character
 and terminated by the end of the URI string.
 <iref item="URI grammar" subitem="fragment" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="false"/>
@@ -1065,7 +1100,7 @@ providers from denying reference authors the right to selectively
 refer to information within a resource.
 </t>
 <t>
-The characters slash ("/") and question-mark ("?") are allowed to
+The characters slash ("/") and question mark ("?") are allowed to
 represent data within the fragment identifier, but such use is
 discouraged for the same reasons as described above for query.
 </t>
@@ -1172,7 +1207,7 @@ to a URI that is, aside from its fragment component (if any),
 identical to the base URI (<xref target="base-uri"/>), that reference
 is called a "same-document" reference.  The most frequent examples
 of same-document references are relative references that are empty
-or include only the number-sign ("#") separator followed by a fragment
+or include only the number sign ("#") separator followed by a fragment
 identifier.
 </t>
 <t>
@@ -1197,10 +1232,10 @@ portions of the URI, such as
    www.w3.org/Addressing/
 </artwork></figure>
 <t>
-or simply the DNS hostname on its own.  Such references are primarily
+or simply a DNS registered name on its own.  Such references are primarily
 intended for human interpretation rather than machine, with the
 assumption that context-based heuristics are sufficient to complete
-the URI (e.g., most hostnames beginning with "www" are likely to have
+the URI (e.g., most host names beginning with "www" are likely to have
 a URI prefix of "http://").  Although there is no standard set of
 heuristics for disambiguating a URI suffix, many client implementations
 allow them to be entered by the user and heuristically resolved.
@@ -1752,7 +1787,7 @@ encoding normalization, and removal of dot-segments.
 <t>
 When a URI scheme uses components of the generic syntax, it will
 also use the common syntax equivalence rules, namely that the scheme
-and hostname are case insensitive and therefore can be normalized
+and host are case insensitive and therefore can be normalized
 to lowercase.  For example, the URI &lt;HTTP://www.EXAMPLE.com/&gt; is
 equivalent to &lt;http://www.example.com/&gt;.
 </t>
@@ -1794,19 +1829,22 @@ remove_dot_segments algorithm to the path, as described in
 The syntax and semantics of URIs vary from scheme to scheme, as described
 by the defining specification for each scheme.  Software may use
 scheme-specific rules, at further processing cost, to reduce the
-probability of false negatives.  For example, Web spiders that populate
-most large search engines would consider the following two URIs to be
-equivalent:
+probability of false negatives.  For example, since the "http" scheme
+makes use of an authority component, has a default port of "80", and
+defines an empty path to be equivalent to "/", the following four URIs
+are equivalent:
 </preamble><artwork>
+   http://example.com
    http://example.com/
+   http://example.com:/
    http://example.com:80/
 </artwork><postamble>
-This behavior is based on the rules provided by the syntax and semantics
-of the "http" URI scheme, which defines an empty port component as being
-equivalent to the default TCP port for HTTP (port 80).  In general, a
-URI scheme that uses the generic syntax for authority is defined such that
-a URI with an explicit ":port", where the port is the default for the
-scheme, is equivalent to one where the port is elided.
+In general, a URI that uses the generic syntax for authority with an
+empty path should be normalized to a path of "/"; likewise, an explicit
+":port", where the port is empty or the default for the scheme, is
+equivalent to one where the port and its ":" delimiter are elided.
+In other words, the second of the above URI examples is the normal form
+for the "http" scheme.
 </postamble></figure>
 </section>
 
@@ -1841,10 +1879,12 @@ consistently providing them in a form that is reasonably canonical
 with respect to their scheme.  Specifically:
 <list style="symbols">
   <t>Always provide the URI scheme in lowercase characters.</t>
-  <t>Always provide the hostname, if any, in lowercase characters.</t>
+  <t>Always provide the host, if any, in lowercase characters.</t>
   <t>Only perform percent-encoding where it is essential.</t>
   <t>Always use uppercase A-through-F characters when percent-encoding.</t>
   <t>Prevent /./ and /../ from appearing in non-relative URI paths.</t>
+  <t>For schemes that define an empty path to be equivalent to a path
+     of "/", use "/".</t>
 </list>
 </t>
 <t>
@@ -1952,7 +1992,7 @@ public.
 <section title="Semantic Attacks" anchor="security-semantic">
 <figure><preamble>
 Because the userinfo component is rarely used and appears before the
-hostname in the authority component, it can be used to construct a URI
+host in the authority component, it can be used to construct a URI
 that is intended to mislead a human user by appearing to identify one
 (trusted) naming authority while actually identifying a different
 authority hidden behind the noise.  For example
@@ -1985,10 +2025,10 @@ It also incorporates the update (with corrections) for IPv6 literals
 in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
 and Larry Masinter in <xref target="RFC2732"/>.
 In addition, contributions by Reese Anschultz, Daniel Barclay, Tim Bray,
-Rob Cameron, John C. Klensin, Dan Connolly, Adam M. Costello, John Cowan,
-Jason Diamond, Martin Duerst, Stefan Eissing, Clive D.W. Feather,
-Tony Hammond, Pat Hayes, Henry Holtzman, Graham Klyne, Dan Kohn,
-Bruce Lilly, Andrew Main, Ira McDonald, Michael Mealling,
+Mike Brown, Rob Cameron, Jeremy Carroll, John C. Klensin, Dan Connolly,
+Adam M. Costello, John Cowan, Jason Diamond, Martin Duerst, Stefan Eissing,
+Clive D.W. Feather, Tony Hammond, Pat Hayes, Henry Holtzman, Graham Klyne,
+Dan Kohn, Bruce Lilly, Andrew Main, Ira McDonald, Michael Mealling,
 Julian Reschke, Tomas Rokicki, Miles Sabin, Mark Thomson, Ronald Tschalaer,
 Norm Walsh, Marc Warne, Stuart Williams, and Henry Zongaro
 are gratefully acknowledged.
@@ -2665,10 +2705,12 @@ Science, University of California, Irvine</organization>
 
  authority     = [ userinfo "@" ] host [ ":" port ]
  userinfo      = *( unreserved / pct-encoded / sub-delims )
- host          = [ IPv6reference / IPv4address / hostname ]
+ host          = IP-literal / IPv4address / reg-name
  port          = *DIGIT
 
- IPv6reference = "[" IPv6address "]"
+ IP-literal    = "[" ( IPv6address | vflag "." 1*pchar ) "]"
+
+ vflag         = "v" HEXDIG
 
  IPv6address   =                          6( h4 ":" ) ls32
                /                     "::" 5( h4 ":" ) ls32
@@ -2691,15 +2733,10 @@ Science, University of California, Irvine</organization>
                / "2" %x30-34 DIGIT     ; 200-249
                / "25" %x30-35          ; 250-255
 
- hostname      = domainlabel qualified
- domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
- qualified     = *( "." domainlabel ) [ "." ]
-
- alphanum      = ALPHA / DIGIT
+ reg-name      = 0*255( pchar )
 
  path          = segment *( "/" segment )
  segment       = *pchar
- pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 
  query         = *( pchar / "/" / "?" )
 
@@ -2707,11 +2744,13 @@ Science, University of California, Irvine</organization>
 
  pct-encoded   = "%" HEXDIG HEXDIG
 
+ pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
+
  unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
  reserved      = gen-delims / sub-delims
  gen-delims    = ":" / "/" / "?" / "#" / "[" / "]" / "@"
  sub-delims    = "!" / "$" / "&amp;" / "'" / "(" / ")"
-               / "*" / "+" / "," / ":" / ";" / "="
+               / "*" / "+" / "," / ";" / "="
 </artwork></figure>
 </section>
 
@@ -2842,16 +2881,16 @@ contains the URI references
 
 <section title="Additions" anchor="additions">
 <t>
-IPv6 literals have been added to the list of possible identifiers
+IPv6 (and later) literals have been added to the list of possible identifiers
 for the host portion of a authority component, as described by
 <xref target="RFC2732"/>, with the addition of "[" and "]" to
-the reserved set.  Square brackets are now specified as
-reserved within the authority component and not allowed outside
-their use as delimiters for an IPv6reference within host.  In order
-to make this change without changing the technical definition of the
-path, query, and fragment components, those rules were redefined to
-directly specify the characters allowed rather than be defined in
-terms of uric.
+the reserved set and a version flag to anticipate future versions of
+IP literals.  Square brackets are now specified as reserved within the
+authority component and not allowed outside their use as delimiters for
+an IP literal within host.  In order to make this change without changing
+the technical definition of the path, query, and fragment components,
+those rules were redefined to directly specify the characters allowed
+rather than be defined in terms of uric.
 </t>
 <t>
 Since <xref target="RFC2732"/> defers to <xref target="RFC3513"/>
@@ -2860,9 +2899,7 @@ an ABNF description of IPv6address, we created a new ABNF rule
 for IPv6address that matches the text representations defined by
 Section 2.2 of <xref target="RFC3513"/>.  Likewise, the definition
 of IPv4address has been improved in order to limit each decimal
-octet to the range 0-255, and the definition of hostname has been
-improved to better specify length limitations and partially-qualified
-domain names.
+octet to the range 0-255.
 </t>
 <t>
 <xref target="comparison">Section 6</xref> on URI normalization and comparison
@@ -2912,7 +2949,7 @@ and disambiguated in the section defining relative-URI.
 The fragment identifier has been moved back into the section on
 generic syntax components and within the URI and relative-URI
 productions, though it remains excluded from absolute-URI.
-The number-sign ("#") character has been moved back to the reserved set
+The number sign ("#") character has been moved back to the reserved set
 as a result of reintegrating the fragment syntax.
 </t>
 <t>
@@ -2924,20 +2961,18 @@ The ambiguity regarding the boundary between authority and path
 is now explained and disambiguated in the same section.
 </t>
 <t>
-Registry-based naming authorities that use the generic syntax
-authority component are now limited to DNS hostnames, since those have
-been the only such URIs in deployment.  This change was necessary to
-enable internationalized domain names to be processed in their native
-character encodings at the application layers above URI processing.
-The reg_name, server, and hostport productions have been removed
-to simplify parsing of the URI syntax.
-</t>
-<t>
-The ABNF of qualified has been simplified to remove a parsing ambiguity
-without changing the allowed syntax.  The toplabel production has been
-removed because it served no useful purpose.
-The ambiguity regarding the parsing of host as IPv4address or hostname
-is now explained and disambiguated in the same section.
+Registry-based naming authorities that use the generic syntax are now
+defined within the host production and limited to 255 path characters.
+This change allows current implementations, where whatever name provided
+is simply fed to the local name resolution mechanism, to be consistent
+with the specification and removes the need to re-specify DNS name
+formats here.  It also allows the host component to contain percent-encoded
+octets, which is necessary to enable internationalized domain names to be
+provided in URIs, processed in their native character encodings at the
+application layers above URI processing, and passed to an IDNA library
+as a registered name in the UTF-8 character encoding.
+The server, hostport, hostname, domainlabel, toplabel, and alphanum
+productions have been removed.
 </t>
 <t>
 The resolving relative references algorithm of <xref target="RFC2396"/>
