@@ -624,6 +624,7 @@ table.closedissue {
          
          
          
+         
          <b>4&nbsp;
             <a href="#usage">Usage</a></b><br>
          
@@ -1091,7 +1092,7 @@ table.closedissue {
          from all other things.  URIs that identify in relation to the end-user's
          local context should only be used when the context itself is a defining
          aspect of the resource, such as when an on-line Linux manual refers to a
-         file on the end-user's filesystem (e.g., "file:/etc/hosts").
+         file on the end-user's filesystem (e.g., "file:///etc/hosts").
          
       </p>
       <h3><a name="rfc.iref.4"></a><a name="rfc.section.1.1.1">1.1.1</a>&nbsp;
@@ -2201,7 +2202,14 @@ table.closedissue {
          resource. The fragment's format and resolution is therefore dependent on
          the media type <a href="#RFC2046" title="Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types">[RFC2046]</a> of a potentially retrieved
          representation, even though such a retrieval is only performed if the URI
-         is dereferenced.
+         is dereferenced.  If no such representation exists, then the semantics of
+         the fragment are considered unknown and, effectively, unconstrained.
+         Fragment identifier semantics are independent of the URI scheme and
+         thus cannot be redefined by scheme specifications.
+         
+      </p>
+      <div><a name="rfc.section.3.5.p.3"></a></div>
+      <p>
          Individual media types may define their own restrictions on, or structure
          within, the fragment identifier syntax for specifying different types of
          subsets, views, or external references that are identifiable as secondary
@@ -2215,7 +2223,7 @@ table.closedissue {
          left undefined by the representation (i.e., not found).
          
       </p>
-      <div><a name="rfc.section.3.5.p.3"></a></div>
+      <div><a name="rfc.section.3.5.p.4"></a></div>
       <p>
          As with any URI, use of a fragment identifier component does not imply
          that a retrieval action will take place.  A URI with a fragment identifier
@@ -2223,26 +2231,28 @@ table.closedissue {
          that the primary resource is accessible or will ever be accessed.
          
       </p>
-      <div><a name="rfc.section.3.5.p.4"></a></div>
+      <div><a name="rfc.section.3.5.p.5"></a></div>
       <p>
          Fragment identifiers have a special role in information systems as
          the primary form of client-side indirect referencing, allowing
          an author to specifically identify those aspects of an existing
          resource that are only indirectly provided by the resource owner.
-         As such, interpretation of the fragment identifier during a retrieval
-         action is performed solely by the user agent; the fragment identifier
-         is not passed to other systems during the process of retrieval.
-         Although this is often perceived to be a loss of information,
-         particularly in regards to accurate redirection of references as
-         content moves over time, it also serves to prevent information
+         As such, the fragment identifier is not used in the scheme-specific
+         processing of a URI; instead, the fragment identifier is separated
+         from the rest of the URI prior to a dereference, and thus the identifying
+         information within the fragment itself is dereferenced solely by the
+         user agent and regardless of the URI scheme.
+         Although this separate handling is often perceived to be a loss of
+         information, particularly in regards to accurate redirection of references
+         as resources move over time, it also serves to prevent information
          providers from denying reference authors the right to selectively
-         refer to information within a resource.  Likewise, indirect referencing
+         refer to information within a resource.  Indirect referencing also
          provides additional flexibility and extensibility to systems that use
          URIs, since new media types are easier to define and deploy than
          new schemes of identification.
          
       </p>
-      <div><a name="rfc.section.3.5.p.5"></a></div>
+      <div><a name="rfc.section.3.5.p.6"></a></div>
       <p>
          The characters slash ("/") and question mark ("?") are allowed to
          represent data within the fragment identifier.  Beware that some older,

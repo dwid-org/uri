@@ -213,7 +213,7 @@ globally unique thing must use a URI that distinguishes that resource
 from all other things.  URIs that identify in relation to the end-user's
 local context should only be used when the context itself is a defining
 aspect of the resource, such as when an on-line Linux manual refers to a
-file on the end-user's filesystem (e.g., "file:/etc/hosts").
+file on the end-user's filesystem (e.g., "file:///etc/hosts").
 </t>
 
 <section title="Generic Syntax" anchor="generic-syntax">
@@ -1254,7 +1254,12 @@ representations that might result from a retrieval action on the primary
 resource. The fragment's format and resolution is therefore dependent on
 the media type <xref target="RFC2046"/> of a potentially retrieved
 representation, even though such a retrieval is only performed if the URI
-is dereferenced.
+is dereferenced.  If no such representation exists, then the semantics of
+the fragment are considered unknown and, effectively, unconstrained.
+Fragment identifier semantics are independent of the URI scheme and
+thus cannot be redefined by scheme specifications.
+</t>
+<t>
 Individual media types may define their own restrictions on, or structure
 within, the fragment identifier syntax for specifying different types of
 subsets, views, or external references that are identifiable as secondary
@@ -1278,14 +1283,16 @@ Fragment identifiers have a special role in information systems as
 the primary form of client-side indirect referencing, allowing
 an author to specifically identify those aspects of an existing
 resource that are only indirectly provided by the resource owner.
-As such, interpretation of the fragment identifier during a retrieval
-action is performed solely by the user agent; the fragment identifier
-is not passed to other systems during the process of retrieval.
-Although this is often perceived to be a loss of information,
-particularly in regards to accurate redirection of references as
-content moves over time, it also serves to prevent information
+As such, the fragment identifier is not used in the scheme-specific
+processing of a URI; instead, the fragment identifier is separated
+from the rest of the URI prior to a dereference, and thus the identifying
+information within the fragment itself is dereferenced solely by the
+user agent and regardless of the URI scheme.
+Although this separate handling is often perceived to be a loss of
+information, particularly in regards to accurate redirection of references
+as resources move over time, it also serves to prevent information
 providers from denying reference authors the right to selectively
-refer to information within a resource.  Likewise, indirect referencing
+refer to information within a resource.  Indirect referencing also
 provides additional flexibility and extensibility to systems that use
 URIs, since new media types are easier to define and deploy than
 new schemes of identification.
