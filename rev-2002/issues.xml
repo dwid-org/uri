@@ -4,11 +4,12 @@
 <DOCTYPE issuelist SYSTEM "issuelist.dtd">
  -->
 <issuelist>
-<title>URI specification (RFC 2396 revision)</title>
+<title>URI specification revision (RFC 2396 to RFC 3986)</title>
 
 <links>
- <li>Drafts in-progress: <a href="rfc2396bis.html">rfc2396bis.html</a>,
-                         <a href="rfc2396bis.xml">rfc2396bis.xml</a></li>
+ <li>RFC 3986: <a href="../rfc/rfc3986.html">rfc3986.html</a>,
+               <a href="../rfc/rfc3986.txt">rfc3986.txt</a>,
+               <a href="../rfc/rfc3986.xml">rfc3986.xml</a></li>
  <li>Example <a href="uri_test.pl">URI reference parser</a> with
              <a href="example_uri_refs.txt">input</a> and
              <a href="example_uri_refs.out">output</a></li>
@@ -30,7 +31,9 @@
        <a href="draft-fielding-uri-rfc2396bis-01.html">01.html</a>,
        <a href="draft-fielding-uri-rfc2396bis-00.txt">00.txt</a>,
        <a href="draft-fielding-uri-rfc2396bis-00.html">00.html</a></li>
- <li><a href="../rfc/rfc2396.html">RFC 2396</a></li>
+ <li>RFC 2396: <a href="../rfc/rfc2396.html">rfc2396.html</a>,
+               <a href="../rfc/rfc2396.txt">rfc2396.txt</a>,
+               <a href="../rfc/rfc2396.xml">rfc2396.xml</a></li>
  <li><a href="http://cvs.apache.org/viewcvs.cgi/ietf-uri/rev-2002/">CVS web view of editor revisions</a></li>
  <li><a href="http://lists.w3.org/Archives/Public/uri/">Archive of
  &lt;uri&#64;w3.org&gt; mailing list discussions</a></li>
