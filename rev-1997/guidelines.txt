@@ -1,0 +1,87 @@
+Guidelines to Authors of Internet-Drafts
+
+The Internet-Drafts directories are available to provide authors with
+the ability to distribute and solicit comments on documents they may
+submit to the IESG or RFC Editor for publication as an RFC. Submissions
+to the directories should be sent to ``internet-drafts@ietf.org''.
+
+Internet-Drafts are not an archival document series.  These documents
+should not be cited or quoted in any formal document.  Unrevised
+documents placed in the Internet-Drafts directories have a maximum life
+of six months.  After that time, they must be updated, or they will be
+deleted.  After a document becomes an RFC, it will be replaced in the
+Internet-Drafts Directories with an announcement to that effect.
+
+Internet-Drafts are generally in the format of an RFC, although they are
+expected to be rough drafts.  This format is specified fully in RFC 1543.
+In brief, an Internet-Draft must be submitted in ASCII text, limited to
+72 characters per line and 58 lines per page, followed by a formfeed
+character.  Overstriking to achieve underlining is not acceptable.
+
+PostScript is acceptable, but only when submitted with a matching ASCII
+version (even if figures must be deleted).  PostScript should be
+formatted for use on 8.5x11 inch paper.  If A4 paper is used, an image
+area less than 10 inches high should be used to avoid printing extra
+pages when printed on 8.5x11 paper.
+
+There are differences between the RFC and Internet-Draft format.  The
+Internet-Drafts are NOT RFCs and are NOT a numbered document series.
+The words ``INTERNET-DRAFT'' should appear in the upper left hand corner
+of the first page.  The document should NOT refer to itself as an RFC or
+a draft RFC.
+
+The Internet-Draft should neither state nor imply that it has any
+standards status; to do so conflicts with the role of the RFC Editor and
+the IESG. The title of the document should not infer a status.  Avoid the
+use of the terms Standard, Proposed, Draft, Experimental, Historic,
+Required, Recommended, Elective, or Restricted in the title of the
+Internet-Draft.  All Internet-Drafts should include a section on the first
+page containing the following verbatim statement:
+
+     This document is an Internet-Draft.  Internet-Drafts are working
+     documents of the Internet Engineering Task Force (IETF), its
+     areas, and its working groups.  Note that other groups may also
+     distribute working documents as Internet-Drafts.
+
+     Internet-Drafts are draft documents valid for a maximum of six
+     months and may be updated, replaced, or obsoleted by other
+     documents at any time.  It is inappropriate to use Internet-
+     Drafts as reference material or to cite them other than as
+     ``work in progress.''
+
+     To learn the current status of any Internet-Draft, please check
+     the ``1id-abstracts.txt'' listing contained in the Internet-
+     Drafts Shadow Directories on ftp.is.co.za (Africa),
+     nic.nordu.net (Europe), munnari.oz.au (Pacific Rim),
+     ds.internic.net (US East Coast), or ftp.isi.edu (US West Coast).
+
+The document should have an abstract section, containing a two-to-three
+paragraph description suitable for referencing, archiving, and
+announcing the document.  This abstract will be used in the
+1id-abstracts.txt index, and in the announcement of the Internet-Draft.
+The abstract should follow the ``Status of this Memo'' section.  In
+addition, the Internet-Draft should contain a section giving name and
+contact information (postal mail, voice/fax number and/or e-mail) for
+the authors.
+
+All Internet-Drafts should contain the full filename (beginning with
+draft- and including the version number) in the text of the document.
+The filename information should, at a minimum, appear on the first page
+(possibly with the title).
+
+For those authors submitting updates to existing Internet-Drafts, the
+choice of the file name is easily determined (up the version by 1).  For
+new documents, send a message to ``internet-drafts@ietf.org''
+with the document title, if it is a product of a working group (and the
+name of the group), and an abstract.  The file name to be assigned will
+be included in a response.  Simply add the filename text to the document
+(ASCII and PostScript versions) and submit the Internet-Draft.
+
+A document expiration date must appear on the first and last page of the
+Internet-Draft.  The expiration date is six months following the
+submission of the document as an Internet-Draft.  Authors can calculate
+the six month period by adding five days to the date when the final
+version is completed to cover processing time.
+
+If the Internet-Draft is lengthy, please include, on the second page, a
+table of contents to make the document easier to reference.

@@ -1,0 +1,440 @@
+*** rfc1738.txt	Mon Oct 28 01:25:54 1996
+--- larry1.txt	Mon Oct 28 01:43:09 1996
+***************
+*** 1,30 ****
+  
+  
+- Network Working Group                                     T. Berners-Lee
+- Request for Comments: 1738                                          CERN
+- Category: Standards Track                                    L. Masinter
+-                                                        Xerox Corporation
+-                                                              M. McCahill
+-                                                  University of Minnesota
+-                                                                  Editors
+-                                                            December 1994
+- 
+- 
+-                     Uniform Resource Locators (URL)
+- 
+  Status of this Memo
+  
+!    This document specifies an Internet standards track protocol for the
+!    Internet community, and requests discussion and suggestions for
+!    improvements.  Please refer to the current edition of the "Internet
+!    Official Protocol Standards" (STD 1) for the standardization state
+!    and status of this protocol.  Distribution of this memo is unlimited.
+  
+  Abstract
+  
+!    This document specifies a Uniform Resource Locator (URL), the syntax
+!    and semantics of formalized information for location and access of
+!    resources via the Internet.
+  
+  1. Introduction
+  
+--- 1,52 ----
++ INTERNET DRAFT						Larry Masinter
++ 						Xerox Corporation
++ 							Roy Fielding
++ 							UC Irvine
++ Expires in six months					May 25, 1996
+  
++        Uniform Resource Locators and Relative Uniform Resource Locators
+  
+  Status of this Memo
+  
+!    This document is an Internet draft. Internet drafts are working
+!    documents of the Internet Engineering Task Force (IETF), its areas
+!    and its working groups. Note that other groups may also distribute
+!    working information as Internet drafts. 
+! 
+!    Internet Drafts are draft documents valid for a maximum of six
+!    months and can be updated, replaced or obsoleted by other documents
+!    at any time. It is inappropriate to use Internet drafts as reference
+!    material or to cite them as other than as "work in progress". 
+! 
+!    To learn the current status of any Internet draft please check the
+!    "lid-abstracts.txt" listing contained in the Internet drafts shadow
+!    directories on ftp.is.co.za (Africa), nic.nordu.net (Europe),
+!    munnari.oz.au (Pacific Rim), ds.internic.net (US East coast) or
+!    ftp.isi.edu (US West coast). Further information about the IETF can
+!    be found at URL: http://www.cnri.reston.va.us/ 
+  
+  Abstract
+  
+!    This document updates and merges RFC 1738 "Uniform Resource
+!    Locators (URL)" and RFC 1808 "Relative Uniform Resource Locators".
+!    It specifies a Uniform Resource Locator (URL), the syntax and
+!    semantics of formalized information for location and access of
+!    resources via the Internet. In addition, it describes the syntax
+!    and semantics for "relative" Uniform Resource Locators (relative
+!    URLs): a compact representation of the location of a resource
+!    relative to an absolute base URL.
+! 
+!    It clarifies the definition of several URL schemes, establishes
+!    the guidelines for new URL schemes.
+! 
+!    ISSUES:
+! 	<URL: should go, it's not used>
+! 	resolve incompatibilties in BNF between relative and absolute 
+! 	ftp should be rewritten to reflect actual practice
+! 	no prospero: not implemented
+! 	wais changed?
+!         add data:
+!         mailto: uses ? addressing
+  
+  1. Introduction
+  
+***************
+*** 39,49 ****
+     requirements laid out in "Functional Requirements for Internet
+     Resource Locators" [12].
+  
+-    This document was written by the URI working group of the Internet
+-    Engineering Task Force.  Comments may be addressed to the editors, or
+-    to the URI-WG <uri@bunyip.com>. Discussions of the group are archived
+-    at <URL:http://www.acl.lanl.gov/URI/archive/uri-archive.index.html>
+- 
+  2. General URL Syntax
+  
+     Just as there are many different methods of access to resources,
+--- 101,106 ----
+***************
+*** 251,262 ****
+      url-path
+          The rest of the locator consists of data specific to the
+          scheme, and is known as the "url-path". It supplies the
+!         details of how the specified resource can be accessed. Note
+!         that the "/" between the host (or port) and the url-path is
+!         NOT part of the url-path.
+  
+!    The url-path syntax depends on the scheme being used, as does the
+!    manner in which it is interpreted.
+  
+  3.2. FTP
+  
+--- 308,317 ----
+      url-path
+          The rest of the locator consists of data specific to the
+          scheme, and is known as the "url-path". It supplies the
+!         details of how the specified resource can be accessed.
+  
+!    While the url-path syntax depends on the scheme being used, there
+!    is a common syntax assumed for the matter of computation of relative URLs. 
+  
+  3.2. FTP
+  
+***************
+*** 748,753 ****
+--- 803,813 ----
+     software have provision for being configured to use specific gateway
+     locators for indirect access through new naming schemes.
+  
++    We recommend that new schemes be designed to be parsable via the
++    generic-RL syntax if they are intended to be used with relative URLs.
++    A description of the allowed relative forms should be included when a
++    new scheme is registered.
++ 
+     The following scheme have been proposed at various times, but this
+     document does not define their syntax or use at this time. It is
+     suggested that IANA reserve their scheme names for future definition:
+***************
+*** 760,767 ****
+     mailserver       Access to data available from mail servers.
+     z39.50           Access to ANSI Z39.50 services.
+  
+! 5. BNF for specific URL schemes
+  
+     This is a BNF-like description of the Uniform Resource Locator
+     syntax, using the conventions of RFC822, except that "|" is used to
+     designate alternatives, and brackets [] are used around optional or
+--- 820,889 ----
+     mailserver       Access to data available from mail servers.
+     z39.50           Access to ANSI Z39.50 services.
+  
+! 5. Relative URL Syntax
+  
++    The syntax for relative URLs is a shortened form of that for absolute
++    URLs, where some prefix of the URL is missing and certain path
++    components ("." and "..") have a special meaning when interpreting a
++    relative path.  Because a relative URL may appear in any context that
++    could hold an absolute URL, systems that support relative URLs must
++    be able to recognize them as part of the URL parsing process.
++ 
++    A relative URL is only useful when there is a base URL that fits
++    the generic-RL syntax described below.  Although some URL schemes
++    do not require this generic-RL syntax, any relative reference will
++    only make sense when the base URL that obeys the syntax.
++ 
++ 5.1.  Specific Schemes and their Syntactic Categories
++ 
++    Each URL scheme has its own rules regarding the presence or absence
++    of the syntactic components described in Sections ??? and ???.  In
++    addition, some schemes are never appropriate for use with relative
++    URLs.  However, since relative URLs will only be used within contexts
++    in which they are useful, these scheme-specific differences can be
++    ignored by the resolution process.
++ 
++    The following schemes are
++    never used with relative URLs:
++ 
++       mailto     Electronic Mail
++       news       USENET news
++       telnet     TELNET Protocol for Interactive Sessions
++ 
++    Some URL schemes allow the use of reserved characters for purposes
++    outside the generic-RL syntax given above.  However, such use is
++    rare.  Relative URLs can be used with these schemes whenever the
++    applicable base URL follows the generic-RL syntax.
++ 
++       gopher     Gopher and Gopher+ Protocols
++       prospero   Prospero Directory Service
++       wais       Wide Area Information Servers Protocol
++ 
++    Users of gopher URLs should note that gopher-type information is
++    almost always included at the beginning of what would be the
++    generic-RL path.  If present, this type information prevents
++    relative-path references to documents with differing gopher-types.
++ 
++    Finally, the following schemes can always be parsed using the
++    generic-RL syntax.  This does not necessarily imply that relative
++    URLs will be useful with these schemes -- that decision is left to
++    the system implementation and the author of the base document.
++ 
++       file       Host-specific Files
++       ftp        File Transfer Protocol
++       http       Hypertext Transfer Protocol
++       nntp       USENET news using NNTP access
++ 
++ 6. BNF for URLs
++ 
++ #   NOTE: Section 5 of RFC 1738 specifies that the question-mark
++ #         character ("?") is allowed in an ftp or file path segment.
++ #         However, this is not true in practice and is believed to be an
++ #         error in the RFC.  Similarly, RFC 1738 allows the reserved
++ #         character semicolon (";") within an http path segment, but does
++ #         not define its semantics; the correct semantics are as defined
++ #         by this document for <params>.
++ 
+     This is a BNF-like description of the Uniform Resource Locator
+     syntax, using the conventions of RFC822, except that "|" is used to
+     designate alternatives, and brackets [] are used around optional or
+***************
+*** 787,800 ****
+  
+  ; the scheme is in lower case; interpreters should use case-ignore
+  scheme         = 1*[ lowalpha | digit | "+" | "-" | "." ]
+  schemepart     = *xchar | ip-schemepart
+  
+  
+  ; URL schemeparts for ip based protocols:
+  
+! ip-schemepart  = "//" login [ "/" urlpath ]
+  
+! login          = [ user [ ":" password ] "@" ] hostport
+  hostport       = host [ ":" port ]
+  host           = hostname | hostnumber
+  hostname       = *[ domainlabel "." ] toplabel
+--- 909,923 ----
+  
+  ; the scheme is in lower case; interpreters should use case-ignore
+  scheme         = 1*[ lowalpha | digit | "+" | "-" | "." ]
++ 
+  schemepart     = *xchar | ip-schemepart
+  
+  
+  ; URL schemeparts for ip based protocols:
+  
+! ip-schemepart  = "//" net_loc [ "/" urlpath ]
+  
+! net_loc          = [ user [ ":" password ] "@" ] hostport
+  hostport       = host [ ":" port ]
+  host           = hostname | hostnumber
+  hostname       = *[ domainlabel "." ] toplabel
+***************
+*** 811,817 ****
+  
+  ; FTP (see also RFC959)
+  
+! ftpurl         = "ftp://" login [ "/" fpath [ ";type=" ftptype ]]
+  fpath          = fsegment *[ "/" fsegment ]
+  fsegment       = *[ uchar | "?" | ":" | "@" | "&" | "=" ]
+  ftptype        = "A" | "I" | "D" | "a" | "i" | "d"
+--- 934,940 ----
+  
+  ; FTP (see also RFC959)
+  
+! ftpurl         = "ftp://" net_loc [ "/" fpath [ ";type=" ftptype ]]
+  fpath          = fsegment *[ "/" fsegment ]
+  fsegment       = *[ uchar | "?" | ":" | "@" | "&" | "=" ]
+  ftptype        = "A" | "I" | "D" | "a" | "i" | "d"
+***************
+*** 853,859 ****
+  
+  ; TELNET
+  
+! telneturl      = "telnet://" login [ "/" ]
+  
+  ; WAIS (see also RFC1625)
+  
+--- 976,982 ----
+  
+  ; TELNET
+  
+! telneturl      = "telnet://" net_loc [ "/" ]
+  
+  ; WAIS (see also RFC1625)
+  
+***************
+*** 890,898 ****
+  safe           = "$" | "-" | "_" | "." | "+"
+  extra          = "!" | "*" | "'" | "(" | ")" | ","
+  national       = "{" | "}" | "|" | "\" | "^" | "~" | "[" | "]" | "`"
+- punctuation    = "<" | ">" | "#" | "%" | <">
+- 
+  
+  reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
+  hex            = digit | "A" | "B" | "C" | "D" | "E" | "F" |
+                   "a" | "b" | "c" | "d" | "e" | "f"
+--- 1013,1020 ----
+  safe           = "$" | "-" | "_" | "." | "+"
+  extra          = "!" | "*" | "'" | "(" | ")" | ","
+  national       = "{" | "}" | "|" | "\" | "^" | "~" | "[" | "]" | "`"
+  
++ punctuation    = "<" | ">" | "#" | "%" | <">
+  reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
+  hex            = digit | "A" | "B" | "C" | "D" | "E" | "F" |
+                   "a" | "b" | "c" | "d" | "e" | "f"
+***************
+*** 903,910 ****
+  xchar          = unreserved | reserved | escape
+  digits         = 1*digit
+  
+--- 1025,1056 ----
+  xchar          = unreserved | reserved | escape
+  digits         = 1*digit
+  
++ ; definitions from relative URL document
++    URL         = ( absoluteURL | relativeURL ) [ "#" fragment ]
++    absoluteURL = generic-RL | ( scheme ":" *( uchar | reserved ) )
++    generic-RL  = scheme ":" relativeURL
++    relativeURL = net_path | abs_path | rel_path
++    net_path    = "//" net_loc [ abs_path ]
++    abs_path    = "/"  rel_path
++    rel_path    = [ path ] [ ";" params ] [ "?" query ]
++ 
++    path        = fsegment *( "/" segment )
++    fsegment    = 1*pchar
++    segment     =  *pchar
++ 
++    params      = param *( ";" param )
++    param       = *( pchar | "/" )
++    net_loc     =  *( pchar | ";" | "?" )
++    query       =  *( uchar | reserved )
++    fragment    =  *( uchar | reserved )
++    pchar       = uchar | ":" | "@" | "&" | "="
++ 
+***************
+*** 936,955 ****
+     The use of URLs containing passwords that should be secret is clearly
+     unwise.
+  
+! 7. Acknowledgements
+! 
+!    This paper builds on the basic WWW design (RFC 1630) and much
+!    discussion of these issues by many people on the network. The
+!    discussion was particularly stimulated by articles by Clifford Lynch,
+!    Brewster Kahle [10] and Wengyik Yeong [18]. Contributions from John
+!    Curran, Clifford Neuman, Ed Vielmetti and later the IETF URL BOF and
+!    URI working group were incorporated.
+! 
+!    Most recently, careful readings and comments by Dan Connolly, Ned
+!    Freed, Roy Fielding, Guido van Rossum, Michael Dolan, Bert Bos, John
+!    Kunze, Olle Jarnefors, Peter Svanberg and many others have helped
+!    refine this RFC.
+  
+  
+  APPENDIX: Recommendations for URLs in Context
+  
+--- 1082,1092 ----
+     The use of URLs containing passwords that should be secret is clearly
+     unwise.
+  
+! 8. Acknowledgements
+  
++    This document was derived from RFC 1738 and RFC 1808, and those
++    acknowledged there should also be here, as this document builds on
++    those.
+  
+  APPENDIX: Recommendations for URLs in Context
+  
+***************
+*** 956,978 ****
+     URIs, including URLs, are intended to be transmitted through
+     protocols which provide a context for their interpretation.
+  
+!    In some cases, it will be necessary to distinguish URLs from other
+!    possible data structures in a syntactic structure. In this case, is
+!    recommended that URLs be preceeded with a prefix consisting of the
+!    characters "URL:". For example, this prefix may be used to
+!    distinguish URLs from other kinds of URIs.
+! 
+!    In addition, there are many occasions when URLs are included in other
+!    kinds of text; examples include electronic mail, USENET news
+!    messages, or printed on paper. In such cases, it is convenient to
+!    have a separate syntactic wrapper that delimits the URL and separates
+!    it from the rest of the text, and in particular from punctuation
+!    marks that might be mistaken for part of the URL. For this purpose,
+!    is recommended that angle brackets ("<" and ">"), along with the
+!    prefix "URL:", be used to delimit the boundaries of the URL.  This
+!    wrapper does not form part of the URL and should not be used in
+!    contexts in which delimiters are already specified.
+! 
+     In the case where a fragment/anchor identifier is associated with a
+     URL (following a "#"), the identifier would be placed within the
+     brackets as well.
+--- 1093,1112 ----
+     URIs, including URLs, are intended to be transmitted through
+     protocols which provide a context for their interpretation.
+  
+!    There are many occasions when URLs are included in other kinds of
+!    text; examples include electronic mail, USENET news messages, or
+!    printed on paper. In such cases, it is convenient to have a
+!    separate syntactic wrapper that delimits the URL and separates it
+!    from the rest of the text, and in particular from punctuation marks
+!    that might be mistaken for part of the URL. It is recommended that
+!    URLs be delimited in such text, either with angle brackets, quote
+!    marks, or even parentheses.
+! 
+!    If it is important to distinguish URLs from other possible data
+!    structures in a syntactic structure. In this case, is recommended
+!    that URLs be preceeded with a prefix consisting of the characters
+!    "URL:".
+!       
+     In the case where a fragment/anchor identifier is associated with a
+     URL (following a "#"), the identifier would be placed within the
+     brackets as well.
+***************
+*** 990,999 ****
+  
+     Examples:
+  
+!       Yes, Jim, I found it under <URL:ftp://info.cern.ch/pub/www/doc;
+!       type=d> but you can probably pick it up from <URL:ftp://ds.in
+!       ternic.net/rfc>.  Note the warning in <URL:http://ds.internic.
+!       net/instructions/overview.html#WARNING>.
+  
+  References
+  
+--- 1124,1134 ----
+  
+     Examples:
+  
+!       Yes, Jim, I found it under [ftp://info.cern.ch/pub/www/
+!       Protocols/HTTP/Issues/http-wg.html] but you can probably pick
+!       it up from <URL:ftp://ds.internic.net/rfc>.  Note the warning
+!       in <URL:http://ds.internic.net/instructions/overview.html#WAR
+!       NING>.
+  
+  References
+  
