@@ -227,30 +227,26 @@ ins
 <h1>Abstract</h1>
 
 <p>
-   A Uniform Resource Identifier (URI) is a compact string of characters
-   for identifying an abstract or physical resource.  This document
-   defines the generic syntax of a URI, including both absolute and
-   relative forms, and guidelines for their use.
+A Uniform Resource Identifier (URI) is a compact string of characters
+for identifying an abstract or physical resource.  This document
+defines the generic syntax of a URI, including both absolute and
+relative forms, and guidelines for their use.
 </p>
 
 <p>
-   This document defines a grammar that is a superset of all valid URI,
-   such that an implementation can parse the common components of a URI
-   reference without knowing the scheme-specific requirements of every
-   possible identifier type.  This document does not define a generative
-   grammar for all URIs; that task will be performed by the individual
-   specifications of each URI scheme.
+This document defines a grammar that is a superset of all valid URI,
+such that an implementation can parse the common components of a URI
+reference without knowing the scheme-specific requirements of every
+possible identifier type.  This document does not define a generative
+grammar for all URIs; that task will be performed by the individual
+specifications of each URI scheme.
 </p>
-<h1>IESG Note</h1>
+<h1>Editorial Note</h1>
 
 <p>
-   This paper describes a "superset" of operations that can be applied
-   to a URI.  It consists of both a grammar and a description of basic
-   functionality for URIs.  To understand what is a valid URI, both the
-   grammar and the associated description have to be studied.  Some of
-   the functionality described is not applicable to all URI schemes, and
-   some operations are only possible when certain media types are
-   retrieved using the URI, regardless of the scheme used.
+Discussion of this draft and comments to the editors should be sent
+to the uri@w3.org mailing list.  An issues list and version history
+is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 </p>
 <hr class="noprint">
 <table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
@@ -301,12 +297,6 @@ ins
 <b>&nbsp;1.3&nbsp;
             <a href="#rfc.section.1.3">Example URIs</a></b>
 <br>
-
-
-
-
-
-
 
 
 
@@ -760,37 +750,37 @@ ins
     Introduction</h1>
 <p>
 <a name="rfc.section.1.p.1"></a>
-   A Uniform Resource Identifier (URI) provides a simple and extensible
-   means for identifying a resource.  This specification of URI syntax
-   and semantics is derived from concepts introduced by the World Wide
-   Web global information initiative, whose use of such objects dates
-   from 1990 and is described in "Universal Resource Identifiers in WWW"
-   <a href="#RFC1630" title="Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web">[RFC1630]</a>, and is designed to meet the
-   recommendations laid out in "Functional Recommendations for Internet
-   Resource Locators" <a href="#RFC1736" title="Functional Recommendations for Internet Resource Locators">[RFC1736]</a> and "Functional Requirements
-   for Uniform Resource Names" <a href="#RFC1737" title="Functional Requirements for Uniform Resource Names">[RFC1737]</a>.
+A Uniform Resource Identifier (URI) provides a simple and extensible
+means for identifying a resource.  This specification of URI syntax
+and semantics is derived from concepts introduced by the World Wide
+Web global information initiative, whose use of such objects dates
+from 1990 and is described in "Universal Resource Identifiers in WWW"
+<a href="#RFC1630" title="Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web">[RFC1630]</a>, and is designed to meet the
+recommendations laid out in "Functional Recommendations for Internet
+Resource Locators" <a href="#RFC1736" title="Functional Recommendations for Internet Resource Locators">[RFC1736]</a> and "Functional Requirements
+for Uniform Resource Names" <a href="#RFC1737" title="Functional Requirements for Uniform Resource Names">[RFC1737]</a>.
 </p>
 <p>
 <a name="rfc.section.1.p.2"></a>
-   This document obsoletes <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>, which merged
-   "Uniform Resource Locators" <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a> and
-   "Relative Uniform Resource Locators" <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a> in order
-   to define a single, generic syntax for all URIs.  It excludes those
-   portions of RFC 1738 that defined the specific syntax of individual
-   URI schemes; those portions will be updated as separate documents.
-   The process for registration of new URI schemes is defined separately
-   by <a href="#RFC2717" title="Registration Procedures for URL Scheme Names">[RFC2717]</a>.
+This document obsoletes <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</a>, which merged
+"Uniform Resource Locators" <a href="#RFC1738" title="Uniform Resource Locators (URL)">[RFC1738]</a> and
+"Relative Uniform Resource Locators" <a href="#RFC1808" title="Relative Uniform Resource Locators">[RFC1808]</a> in order
+to define a single, generic syntax for all URIs.  It excludes those
+portions of RFC 1738 that defined the specific syntax of individual
+URI schemes; those portions will be updated as separate documents.
+The process for registration of new URI schemes is defined separately
+by <a href="#RFC2717" title="Registration Procedures for URL Scheme Names">[RFC2717]</a>.
 </p>
 <p>
 <a name="rfc.section.1.p.3"></a>
-   All significant changes from RFC 2396 are noted in Appendix G.
+All significant changes from RFC 2396 are noted in Appendix G.
 </p>
 <h2>
 <a name="rfc.section.1.1">1.1</a>&nbsp;
     Overview of URIs</h2>
 <p>
 <a name="rfc.section.1.1.p.1"></a>
-   URIs are characterized by the following definitions:
+URIs are characterized by the following definitions:
 </p>
 <p>
 <a name="rfc.section.1.1.p.2"></a>Uniform
@@ -853,9 +843,9 @@ ins
 </p>
 <p>
 <a name="rfc.section.1.1.p.5"></a>
-   Having identified a resource, a system may perform a variety of
-   operations on the resource, as might be characterized by such words
-   as `access', `update', `replace', or `find attributes'.
+Having identified a resource, a system may perform a variety of
+operations on the resource, as might be characterized by such words
+as `access', `update', `replace', or `find attributes'.
 </p>
 <h2>
 <a name="rfc.section.1.2">1.2</a>&nbsp;
@@ -916,46 +906,28 @@ ins
 <h2>
 <a name="rfc.section.1.3">1.3</a>&nbsp;
     Example URIs</h2>
-<p>
-<a name="rfc.section.1.3.p.1"></a>
-   The following examples illustrate URIs that are in common use.
-</p>
 <a name="rfc.figure.u.1"></a>
-<pre>ftp://ftp.is.co.za/rfc/rfc1808.txt
-</pre>
 <p>
+The following examples illustrate URIs that are in common use.
+</p>
+<pre>   ftp://ftp.is.co.za/rfc/rfc1808.txt
       -- ftp scheme for File Transfer Protocol services
-</p>
-<a name="rfc.figure.u.2"></a>
-<pre>gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles
-</pre>
-<p>
+
+   gopher://gopher.tc.umn.edu:70/11/Mailing%20Lists/
       -- gopher scheme for Gopher and Gopher+ Protocol services
-</p>
-<a name="rfc.figure.u.3"></a>
-<pre>http://www.math.uio.no/faq/compression-faq/part1.html
-</pre>
-<p>
+
+   http://www.ietf.org/rfc/rfc2396.txt
       -- http scheme for Hypertext Transfer Protocol services
-</p>
-<a name="rfc.figure.u.4"></a>
-<pre>mailto:mduerst@ifi.unizh.ch
-</pre>
-<p>
+
+   mailto:John.Doe@example.com
       -- mailto scheme for electronic mail addresses
-</p>
-<a name="rfc.figure.u.5"></a>
-<pre>news:comp.infosystems.www.servers.unix
-</pre>
-<p>
+
+   news:comp.infosystems.www.servers.unix
       -- news scheme for USENET news groups and articles
-</p>
-<a name="rfc.figure.u.6"></a>
-<pre>telnet://melvyl.ucop.edu/
+
+   telnet://melvyl.ucop.edu/
+      -- telnet scheme for interactive TELNET services
 </pre>
-<p>
-      -- telnet scheme for interactive services via the TELNET Protocol
-</p>
 <h2>
 <a name="rfc.section.1.4">1.4</a>&nbsp;
     Hierarchical URIs and Relative Forms</h2>
@@ -1049,7 +1021,7 @@ ins
    for URI.  The first, called the layout form, is a general description
    of the order of components and component separators, as in
 </p>
-<a name="rfc.figure.u.7"></a>
+<a name="rfc.figure.u.2"></a>
 <pre>    &lt;first&gt;/&lt;second&gt;;&lt;third&gt;?&lt;fourth&gt;
 </pre>
 <p>
@@ -1086,7 +1058,7 @@ ins
 <h1>
 <a name="rfc.iref.1"></a><a name="rfc.section.2">2</a>&nbsp;
     URI Characters and Escape Sequences</h1>
-<a name="rfc.figure.u.8"></a>
+<a name="rfc.figure.u.3"></a>
 <p>
    A URI consists of a restricted set of characters, primarily chosen to
    aid transcribability and usability both in computer systems and in
@@ -1120,7 +1092,7 @@ ins
    byte). There are two mappings, one from URI characters to octets, and
    a second from octets to original characters:
 </p>
-<a name="rfc.figure.u.9"></a>
+<a name="rfc.figure.u.4"></a>
 <pre>URI character sequence-&gt;octet sequence-&gt;original character sequence
 </pre>
 <p>
@@ -1178,7 +1150,7 @@ ins
 <h2>
 <a name="rfc.section.2.2">2.2</a>&nbsp;
     Reserved Characters</h2>
-<a name="rfc.figure.u.10"></a>
+<a name="rfc.figure.u.5"></a>
 <p>
 
 <a name="rfc.iref.3"></a>
@@ -1212,7 +1184,7 @@ ins
 <h2>
 <a name="rfc.section.2.3">2.3</a>&nbsp;
     Unreserved Characters</h2>
-<a name="rfc.figure.u.11"></a>
+<a name="rfc.figure.u.6"></a>
 <p>
 
 <a name="rfc.iref.5"></a>
@@ -1249,7 +1221,7 @@ ins
 <h3>
 <a name="rfc.section.2.4.1">2.4.1</a>&nbsp;
     Escaped Encoding</h3>
-<a name="rfc.figure.u.12"></a>
+<a name="rfc.figure.u.7"></a>
 <p>
 
 <a name="rfc.iref.9"></a>
@@ -1320,7 +1292,7 @@ ins
    programs.  Whitespace is also used to delimit a URI in many
    contexts.
 </p>
-<a name="rfc.figure.u.13"></a>
+<a name="rfc.figure.u.8"></a>
 <p>
 
 <a name="rfc.iref.11"></a>
@@ -1335,7 +1307,7 @@ ins
 </p>
 <pre>   delims      = "&lt;" / "&gt;" / "#" / "%" / DQUOTE
 </pre>
-<a name="rfc.figure.u.14"></a>
+<a name="rfc.figure.u.9"></a>
 <p>
 
 <a name="rfc.iref.13"></a>
@@ -1368,7 +1340,7 @@ ins
    The URI syntax is dependent upon the scheme.  In general, absolute
    URI are written as follows:
 </p>
-<a name="rfc.figure.u.15"></a>
+<a name="rfc.figure.u.10"></a>
 <pre>   &lt;scheme&gt;:&lt;scheme-specific-part&gt;
 </pre>
 <p>
@@ -1385,7 +1357,7 @@ ins
    representing hierarchical relationships within the namespace.  This
    "generic URI" syntax consists of a sequence of four main components:
 </p>
-<a name="rfc.figure.u.16"></a>
+<a name="rfc.figure.u.11"></a>
 <pre>   &lt;scheme&gt;://&lt;authority&gt;&lt;path&gt;?&lt;query&gt;
 </pre>
 <p>
@@ -1394,10 +1366,10 @@ ins
    For example, some URI schemes do not allow an &lt;authority&gt; component,
    and others do not use a &lt;query&gt; component.
 </p>
-<a name="rfc.figure.u.17"></a>
+<a name="rfc.figure.u.12"></a>
 <pre>   absolute-URI  = scheme ":" ( hier-part / opaque-part )
 </pre>
-<a name="rfc.figure.u.18"></a>
+<a name="rfc.figure.u.13"></a>
 <p>
    URIs that are hierarchical in nature use the slash "/" character for
    separating hierarchical components.  For some file systems, a "/"
@@ -1420,7 +1392,7 @@ ins
 
    abs-path      = "/"  path-segments
 </pre>
-<a name="rfc.figure.u.19"></a>
+<a name="rfc.figure.u.14"></a>
 <p>
    URIs that do not make use of the slash "/" character for separating
    hierarchical components are considered opaque by the generic URI
@@ -1453,7 +1425,7 @@ ins
    characters, with the first component defining the semantics for the
    remainder of the URI string.
 </p>
-<a name="rfc.figure.u.20"></a>
+<a name="rfc.figure.u.15"></a>
 <p>
    Scheme names consist of a sequence of characters beginning with a
    lower case letter and followed by any combination of lower case
@@ -1475,7 +1447,7 @@ ins
 <h2>
 <a name="rfc.section.3.2">3.2</a>&nbsp;
     Authority Component</h2>
-<a name="rfc.figure.u.21"></a>
+<a name="rfc.figure.u.16"></a>
 <p>
 
 <a name="rfc.iref.29"></a>
@@ -1506,7 +1478,7 @@ ins
 <h3>
 <a name="rfc.section.3.2.1">3.2.1</a>&nbsp;
     Registry-based Naming Authority</h3>
-<a name="rfc.figure.u.22"></a>
+<a name="rfc.figure.u.17"></a>
 <p>
 
 <a name="rfc.iref.31"></a>
@@ -1528,7 +1500,7 @@ ins
    specified server on the Internet use a common syntax for the server
    component of the URI's scheme-specific data:
 </p>
-<a name="rfc.figure.u.23"></a>
+<a name="rfc.figure.u.18"></a>
 <pre>   &lt;userinfo&gt;@&lt;host&gt;:&lt;port&gt;
 </pre>
 <p>
@@ -1541,10 +1513,10 @@ ins
    scheme defaults to "localhost", whereas the "http" URI scheme
    does not allow host to be omitted).
 </p>
-<a name="rfc.figure.u.24"></a>
+<a name="rfc.figure.u.19"></a>
 <pre>   server        = [ [ userinfo "@" ] hostport ]
 </pre>
-<a name="rfc.figure.u.25"></a>
+<a name="rfc.figure.u.20"></a>
 <p>
    The user information, if present, is followed by a commercial at-sign
    "@".
@@ -1561,7 +1533,7 @@ ins
    authentication information in clear text has proven to
    be a security risk in almost every case where it has been used.
 </p>
-<a name="rfc.figure.u.26"></a>
+<a name="rfc.figure.u.21"></a>
 <p>
 
 <a name="rfc.iref.37"></a>
@@ -1586,7 +1558,7 @@ ins
    host          = IPv6reference / IPv4address / hostname
    port          = *DIGIT
 </pre>
-<a name="rfc.figure.u.27"></a>
+<a name="rfc.figure.u.22"></a>
 <p>
 
 <a name="rfc.iref.43"></a>
@@ -1615,7 +1587,7 @@ ins
    toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
 </pre>
-<a name="rfc.figure.u.28"></a>
+<a name="rfc.figure.u.23"></a>
 <p>
 
 <a name="rfc.iref.53"></a>
@@ -1635,7 +1607,7 @@ ins
                  ( "2" %x30-34 DIGIT ) /         ; 200-249
                  ( "25" %x30-35 )                ; 250-255
 </pre>
-<a name="rfc.figure.u.29"></a>
+<a name="rfc.figure.u.24"></a>
 <p>
 
 <a name="rfc.iref.58"></a>
@@ -1672,7 +1644,7 @@ ins
 <h2>
 <a name="rfc.section.3.3">3.3</a>&nbsp;
     Path Component</h2>
-<a name="rfc.figure.u.30"></a>
+<a name="rfc.figure.u.25"></a>
 <p>
 
 <a name="rfc.iref.65"></a>
@@ -1708,7 +1680,7 @@ ins
 <h2>
 <a name="rfc.section.3.4">3.4</a>&nbsp;
     Query Component</h2>
-<a name="rfc.figure.u.31"></a>
+<a name="rfc.figure.u.26"></a>
 <p>
 
 <a name="rfc.iref.73"></a>
@@ -1735,7 +1707,7 @@ ins
 <h1>
 <a name="rfc.section.4">4</a>&nbsp;
     URI References</h1>
-<a name="rfc.figure.u.32"></a>
+<a name="rfc.figure.u.27"></a>
 <p>
 
 <a name="rfc.iref.75"></a>
@@ -1755,7 +1727,7 @@ ins
 </p>
 <pre>   URI-reference = [ absolute-URI / relative-URI ] [ "#" fragment ]
 </pre>
-<a name="rfc.figure.u.33"></a>
+<a name="rfc.figure.u.28"></a>
 <p>
 
 <a name="rfc.iref.77"></a>
@@ -1777,7 +1749,7 @@ ins
 <h2>
 <a name="rfc.section.4.1">4.1</a>&nbsp;
     Fragment Identifier</h2>
-<a name="rfc.figure.u.34"></a>
+<a name="rfc.figure.u.29"></a>
 <p>
 
 <a name="rfc.iref.79"></a>
@@ -1885,7 +1857,7 @@ ins
    has demonstrated that the ability to perform relative referencing is
    necessary for the long-term usability of embedded URIs.
 </p>
-<a name="rfc.figure.u.35"></a>
+<a name="rfc.figure.u.30"></a>
 <p>
    The relative URI syntax takes advantage of the &lt;hier-part&gt; syntax
    of &lt;absolute-URI&gt; (Section 3) in order to express a reference that is
@@ -1907,7 +1879,7 @@ ins
    termed an absolute-path reference, as defined by &lt;abs-path&gt; in
    Section 3.
 </p>
-<a name="rfc.figure.u.36"></a>
+<a name="rfc.figure.u.31"></a>
 <p>
 
 <a name="rfc.iref.83"></a>
@@ -1978,7 +1950,7 @@ ins
    thought of in terms of layers, where the innermost defined base URI
    has the highest precedence.  This can be visualized graphically as:
 </p>
-<a name="rfc.figure.u.37"></a>
+<a name="rfc.figure.u.32"></a>
 <pre>   .----------------------------------------------------------.
    |  .----------------------------------------------------.  |
    |  |  .----------------------------------------------.  |  |
@@ -2094,7 +2066,7 @@ ins
    empty.  The base URI's query component is not used by the resolution
    algorithm and may be discarded.
 </p>
-<a name="rfc.figure.u.38"></a>
+<a name="rfc.figure.u.33"></a>
 <p>
    For each URI reference (R), the following pseudocode describes an
    algorithm for transforming R into its target (T), which is either
@@ -2226,7 +2198,7 @@ The remaining buffer string is the target URI's path component.
 </blockquote>
 
 </p>
-<a name="rfc.figure.u.39"></a>
+<a name="rfc.figure.u.34"></a>
 <p>
 The resulting target URI components and fragment can be
 recombined to provide the absolute form of the URI reference.
@@ -2616,7 +2588,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <h1>
 <a name="rfc.section.A">A</a>&nbsp;
     Collected BNF for URI</h1>
-<a name="rfc.figure.u.40"></a>
+<a name="rfc.figure.u.35"></a>
 <pre>absolute-URI-reference = absolute-URI [ "#" fragment ]
 
 URI-reference = [ absolute-URI / relative-URI ] [ "#" fragment ]
@@ -2723,7 +2695,7 @@ escaped       = "%" HEXDIG HEXDIG
    The following line is the regular expression for breaking-down a URI
    reference into its components.
 </p>
-<a name="rfc.figure.u.41"></a>
+<a name="rfc.figure.u.36"></a>
 <pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
     12            3  4          5       6  7        8 9
 </pre>
@@ -2734,14 +2706,14 @@ escaped       = "%" HEXDIG HEXDIG
    paired parenthesis).  We refer to the value matched for subexpression
    &lt;n&gt; as $&lt;n&gt;.  For example, matching the above expression to
 </p>
-<a name="rfc.figure.u.42"></a>
+<a name="rfc.figure.u.37"></a>
 <pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
 </pre>
 <p>
 <a name="rfc.section.B.p.6"></a>
    results in the following subexpression matches:
 </p>
-<a name="rfc.figure.u.43"></a>
+<a name="rfc.figure.u.38"></a>
 <pre>   $1 = http:
    $2 = http
    $3 = //www.ics.uci.edu
@@ -2758,7 +2730,7 @@ escaped       = "%" HEXDIG HEXDIG
    the case for the query component in the above example.  Therefore, we
    can determine the value of the four components and fragment as
 </p>
-<a name="rfc.figure.u.44"></a>
+<a name="rfc.figure.u.39"></a>
 <pre>   scheme    = $2
    authority = $4
    path      = $5
@@ -2783,7 +2755,7 @@ escaped       = "%" HEXDIG HEXDIG
 <a name="rfc.section.C.p.1"></a>
    Within an object with a well-defined base URI of
 </p>
-<a name="rfc.figure.u.45"></a>
+<a name="rfc.figure.u.40"></a>
 <pre>   http://a/b/c/d;p?q
 </pre>
 <p>
@@ -2793,7 +2765,7 @@ escaped       = "%" HEXDIG HEXDIG
 <h2>
 <a name="rfc.section.C.1">C.1</a>&nbsp;
     Normal Examples</h2>
-<a name="rfc.figure.u.46"></a>
+<a name="rfc.figure.u.41"></a>
 <pre>   g:h           =  g:h
    g             =  http://a/b/c/g
    ./g           =  http://a/b/c/g
@@ -2830,7 +2802,7 @@ escaped       = "%" HEXDIG HEXDIG
 <a name="rfc.section.C.2.p.2"></a>
    An empty reference refers to the start of the current document.
 </p>
-<a name="rfc.figure.u.47"></a>
+<a name="rfc.figure.u.42"></a>
 <pre>   &lt;&gt;            =  (current document)
 </pre>
 <p>
@@ -2840,7 +2812,7 @@ escaped       = "%" HEXDIG HEXDIG
    base URI's path.  Note that the ".." syntax cannot be used to change
    the authority component of a URI.
 </p>
-<a name="rfc.figure.u.48"></a>
+<a name="rfc.figure.u.43"></a>
 <pre>   ../../../g    =  http://a/../g
    ../../../../g =  http://a/../../g
 </pre>
@@ -2857,7 +2829,7 @@ escaped       = "%" HEXDIG HEXDIG
    Similarly, parsers must avoid treating "." and ".." as special when
    they are not complete components of a relative path.
 </p>
-<a name="rfc.figure.u.49"></a>
+<a name="rfc.figure.u.44"></a>
 <pre>   /./g          =  http://a/./g
    /../g         =  http://a/../g
    g.            =  http://a/b/c/g.
@@ -2870,7 +2842,7 @@ escaped       = "%" HEXDIG HEXDIG
    Less likely are cases where the relative URI uses unnecessary or
    nonsensical forms of the "." and ".." complete path segments.
 </p>
-<a name="rfc.figure.u.50"></a>
+<a name="rfc.figure.u.45"></a>
 <pre>   ./../g        =  http://a/b/g
    ./g/.         =  http://a/b/c/g/
    g/./h         =  http://a/b/c/g/h
@@ -2886,7 +2858,7 @@ escaped       = "%" HEXDIG HEXDIG
    of a fragment never includes the hierarchy ("/") character, and the
    query component is not normally used within relative references.
 </p>
-<a name="rfc.figure.u.51"></a>
+<a name="rfc.figure.u.46"></a>
 <pre>   g?y/./x       =  http://a/b/c/g?y/./x
    g?y/../x      =  http://a/b/c/g?y/../x
    g#s/./x       =  http://a/b/c/g#s/./x
@@ -2899,7 +2871,7 @@ escaped       = "%" HEXDIG HEXDIG
    loophole in prior specifications of partial URI <a href="#RFC1630" title="Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web">[RFC1630]</a>.
    Its use should be avoided, but is allowed for backwards compatibility.
 </p>
-<a name="rfc.figure.u.52"></a>
+<a name="rfc.figure.u.47"></a>
 <pre>   http:g        =  http:g           ; for validating parsers
                  /  http://a/b/c/g   ; for backwards compatibility
 </pre>
@@ -2930,7 +2902,7 @@ escaped       = "%" HEXDIG HEXDIG
    that, in HTML, element and attribute names are case-insensitive.  For
    example:
 </p>
-<a name="rfc.figure.u.53"></a>
+<a name="rfc.figure.u.48"></a>
 <pre>   &lt;!doctype html public "-//IETF//DTD HTML//EN"&gt;
    &lt;HTML&gt;&lt;HEAD&gt;
    &lt;TITLE&gt;An example HTML document&lt;/TITLE&gt;
@@ -2944,7 +2916,7 @@ escaped       = "%" HEXDIG HEXDIG
    A parser reading the example document should interpret the given
    relative URI "../x" as representing the absolute URI
 </p>
-<a name="rfc.figure.u.54"></a>
+<a name="rfc.figure.u.49"></a>
 <pre>   &lt;http://www.ics.uci.edu/Test/a/x&gt;
 </pre>
 <p>
@@ -2973,11 +2945,11 @@ escaped       = "%" HEXDIG HEXDIG
 <p>
 <a name="rfc.section.E.p.2"></a>
    In practice, URI are delimited in a variety of ways, but usually
-   within double-quotes "http://test.com/", angle brackets
-   &lt;http://test.com/&gt;, or just using whitespace
+   within double-quotes "http://example.com/", angle brackets
+   &lt;http://example.com/&gt;, or just using whitespace
 </p>
-<a name="rfc.figure.u.55"></a>
-<pre>   http://test.com/
+<a name="rfc.figure.u.50"></a>
+<pre>   http://example.com/
 </pre>
 <p>
 <a name="rfc.section.E.p.4"></a>
@@ -3021,24 +2993,20 @@ escaped       = "%" HEXDIG HEXDIG
    For robustness, software that accepts user-typed URI should attempt
    to recognize and strip both delimiters and embedded whitespace.
 </p>
+<a name="rfc.figure.u.51"></a>
 <p>
-<a name="rfc.section.E.p.11"></a>
-   For example, the text:
-  <blockquote>
-<p>
-      Yes, Jim, I found it under "http://www.w3.org/Addressing/",
-      but you can probably pick it up from &lt;ftp://ds.internic.
-      net/rfc/&gt;.  Note the warning in &lt;http://www.ics.uci.edu/pub/
-      ietf/uri/historical.html#WARNING&gt;.
-  </p>
-</blockquote>
-
+For example, the text:
 </p>
+<pre>   Yes, Jim, I found it under "http://www.w3.org/Addressing/",
+   but you can probably pick it up from &lt;ftp://ds.internic.
+   net/rfc/&gt;.  Note the warning in &lt;http://www.ics.uci.edu/pub/
+   ietf/uri/historical.html#WARNING&gt;.
+</pre>
 <p>
 <a name="rfc.section.E.p.12"></a>
-   contains the URI references
+contains the URI references
 </p>
-<a name="rfc.figure.u.56"></a>
+<a name="rfc.figure.u.52"></a>
 <pre>   http://www.w3.org/Addressing/
    ftp://ds.internic.net/rfc/
    http://www.ics.uci.edu/pub/ietf/uri/historical.html#WARNING
@@ -3062,7 +3030,7 @@ escaped       = "%" HEXDIG HEXDIG
    only the authority and path portions of the identified resource, such
    as
 </p>
-<a name="rfc.figure.u.57"></a>
+<a name="rfc.figure.u.53"></a>
 <pre>   www.w3.org/Addressing/
 </pre>
 <p>

@@ -74,59 +74,56 @@
 
   <abstract>
 <t>
-   A Uniform Resource Identifier (URI) is a compact string of characters
-   for identifying an abstract or physical resource.  This document
-   defines the generic syntax of a URI, including both absolute and
-   relative forms, and guidelines for their use.
+A Uniform Resource Identifier (URI) is a compact string of characters
+for identifying an abstract or physical resource.  This document
+defines the generic syntax of a URI, including both absolute and
+relative forms, and guidelines for their use.
 </t>
 <t>
-   This document defines a grammar that is a superset of all valid URI,
-   such that an implementation can parse the common components of a URI
-   reference without knowing the scheme-specific requirements of every
-   possible identifier type.  This document does not define a generative
-   grammar for all URIs; that task will be performed by the individual
-   specifications of each URI scheme.
+This document defines a grammar that is a superset of all valid URI,
+such that an implementation can parse the common components of a URI
+reference without knowing the scheme-specific requirements of every
+possible identifier type.  This document does not define a generative
+grammar for all URIs; that task will be performed by the individual
+specifications of each URI scheme.
 </t></abstract>
-<note title='IESG Note'>
+<note title='Editorial Note'>
 <t>
-   This paper describes a "superset" of operations that can be applied
-   to a URI.  It consists of both a grammar and a description of basic
-   functionality for URIs.  To understand what is a valid URI, both the
-   grammar and the associated description have to be studied.  Some of
-   the functionality described is not applicable to all URI schemes, and
-   some operations are only possible when certain media types are
-   retrieved using the URI, regardless of the scheme used.
-</t></note></front>
+Discussion of this draft and comments to the editors should be sent
+to the uri@w3.org mailing list.  An issues list and version history
+is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
+</t></note>
+</front>
 <middle>
 <section title="Introduction">
 <t>
-   A Uniform Resource Identifier (URI) provides a simple and extensible
-   means for identifying a resource.  This specification of URI syntax
-   and semantics is derived from concepts introduced by the World Wide
-   Web global information initiative, whose use of such objects dates
-   from 1990 and is described in "Universal Resource Identifiers in WWW"
-   <xref target="RFC1630"/>, and is designed to meet the
-   recommendations laid out in "Functional Recommendations for Internet
-   Resource Locators" <xref target="RFC1736"/> and "Functional Requirements
-   for Uniform Resource Names" <xref target="RFC1737"/>.
+A Uniform Resource Identifier (URI) provides a simple and extensible
+means for identifying a resource.  This specification of URI syntax
+and semantics is derived from concepts introduced by the World Wide
+Web global information initiative, whose use of such objects dates
+from 1990 and is described in "Universal Resource Identifiers in WWW"
+<xref target="RFC1630"/>, and is designed to meet the
+recommendations laid out in "Functional Recommendations for Internet
+Resource Locators" <xref target="RFC1736"/> and "Functional Requirements
+for Uniform Resource Names" <xref target="RFC1737"/>.
 </t>
 <t>
-   This document obsoletes <xref target="RFC2396"/>, which merged
-   "Uniform Resource Locators" <xref target="RFC1738"/> and
-   "Relative Uniform Resource Locators" <xref target="RFC1808"/> in order
-   to define a single, generic syntax for all URIs.  It excludes those
-   portions of RFC 1738 that defined the specific syntax of individual
-   URI schemes; those portions will be updated as separate documents.
-   The process for registration of new URI schemes is defined separately
-   by <xref target="RFC2717"/>.
+This document obsoletes <xref target="RFC2396"/>, which merged
+"Uniform Resource Locators" <xref target="RFC1738"/> and
+"Relative Uniform Resource Locators" <xref target="RFC1808"/> in order
+to define a single, generic syntax for all URIs.  It excludes those
+portions of RFC 1738 that defined the specific syntax of individual
+URI schemes; those portions will be updated as separate documents.
+The process for registration of new URI schemes is defined separately
+by <xref target="RFC2717"/>.
 </t>
 <t>
-   All significant changes from RFC 2396 are noted in Appendix G.
+All significant changes from RFC 2396 are noted in Appendix G.
 </t>
 
 <section title="Overview of URIs">
 <t>
-   URIs are characterized by the following definitions:
+URIs are characterized by the following definitions:
 </t>
 <t>Uniform
   <list>
@@ -175,9 +172,9 @@
   </list>
 </t>
 <t>
-   Having identified a resource, a system may perform a variety of
-   operations on the resource, as might be characterized by such words
-   as `access', `update', `replace', or `find attributes'.
+Having identified a resource, a system may perform a variety of
+operations on the resource, as might be characterized by such words
+as `access', `update', `replace', or `find attributes'.
 </t>
 </section>
 
@@ -233,39 +230,27 @@
 </section>
 
 <section title="Example URIs">
-<t>
-   The following examples illustrate URIs that are in common use.
-</t>
-<figure><artwork>
-ftp://ftp.is.co.za/rfc/rfc1808.txt
-</artwork><postamble>
+<figure><preamble>
+The following examples illustrate URIs that are in common use.
+</preamble><artwork>
+   ftp://ftp.is.co.za/rfc/rfc1808.txt
       -- ftp scheme for File Transfer Protocol services
-</postamble></figure>
-<figure><artwork>
-gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles
-</artwork><postamble>
+
+   gopher://gopher.tc.umn.edu:70/11/Mailing%20Lists/
       -- gopher scheme for Gopher and Gopher+ Protocol services
-</postamble></figure>
-<figure><artwork>
-http://www.math.uio.no/faq/compression-faq/part1.html
-</artwork><postamble>
+
+   http://www.ietf.org/rfc/rfc2396.txt
       -- http scheme for Hypertext Transfer Protocol services
-</postamble></figure>
-<figure><artwork>
-mailto:mduerst@ifi.unizh.ch
-</artwork><postamble>
+
+   mailto:John.Doe@example.com
       -- mailto scheme for electronic mail addresses
-</postamble></figure>
-<figure><artwork>
-news:comp.infosystems.www.servers.unix
-</artwork><postamble>
+
+   news:comp.infosystems.www.servers.unix
       -- news scheme for USENET news groups and articles
-</postamble></figure>
-<figure><artwork>
-telnet://melvyl.ucop.edu/
-</artwork><postamble>
-      -- telnet scheme for interactive services via the TELNET Protocol
-</postamble></figure>
+
+   telnet://melvyl.ucop.edu/
+      -- telnet scheme for interactive TELNET services
+</artwork></figure>
 </section>
 
 <section title="Hierarchical URIs and Relative Forms">
@@ -2339,11 +2324,11 @@ escaped       = "%" HEXDIG HEXDIG
 </t>
 <t>
    In practice, URI are delimited in a variety of ways, but usually
-   within double-quotes "http://test.com/", angle brackets
-   &lt;http://test.com/&gt;, or just using whitespace
+   within double-quotes "http://example.com/", angle brackets
+   &lt;http://example.com/&gt;, or just using whitespace
 </t>
 <figure><artwork>
-   http://test.com/
+   http://example.com/
 </artwork></figure>
 <t>
    These wrappers do not form part of the URI.
@@ -2380,17 +2365,16 @@ escaped       = "%" HEXDIG HEXDIG
    For robustness, software that accepts user-typed URI should attempt
    to recognize and strip both delimiters and embedded whitespace.
 </t>
+<figure><preamble>
+For example, the text:
+</preamble><artwork>
+   Yes, Jim, I found it under "http://www.w3.org/Addressing/",
+   but you can probably pick it up from &lt;ftp://ds.internic.
+   net/rfc/&gt;.  Note the warning in &lt;http://www.ics.uci.edu/pub/
+   ietf/uri/historical.html#WARNING&gt;.
+</artwork></figure>
 <t>
-   For example, the text:
-  <list><t>
-      Yes, Jim, I found it under "http://www.w3.org/Addressing/",
-      but you can probably pick it up from &lt;ftp://ds.internic.
-      net/rfc/&gt;.  Note the warning in &lt;http://www.ics.uci.edu/pub/
-      ietf/uri/historical.html#WARNING&gt;.
-  </t></list>
-</t>
-<t>
-   contains the URI references
+contains the URI references
 </t>
 <figure><artwork>
    http://www.w3.org/Addressing/
