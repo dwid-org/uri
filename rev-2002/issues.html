@@ -50,6 +50,9 @@
 <td nowrap="nowrap"><a href="#032-component-examples">032-component-examples</a></td><td>add more examples for generic syntax components</td><td>examples</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#043-same-scheme">043-same-scheme</a></td><td>Should reference resolver ignore scheme if same as base URI</td><td>relative</td><td nowrap="nowrap">pending</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#019-URI-URL-URN">019-URI-URL-URN</a></td><td>URI/URL/URN contemporary view</td><td>terminology</td><td nowrap="nowrap">reopened</td>
 </tr>
 </table>
@@ -4451,6 +4454,118 @@ representation is determined.
   draft 02:
   <pre>
 This has been fixed in the rewrite for draft 02.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="043-same-scheme">043-same-scheme</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Should reference resolver ignore scheme if same as base URI</font></th>
+</tr>
+<tr>
+<th>pending</th><th align="left">relative</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:cameron_AT_cs.sfu.ca">Rob Cameron</a>,
+  30 May 2003,
+  URI-WG mailing list:
+  <pre>
+From [draft 02] section 4.1, I infer that the difference between a validating
+and non-validating parser is that the former confirms that the syntax
+of individual URI components precisely matches the specified
+grammar, while the latter simply breaks the URI into its
+components.   This makes sense.
+
+But in section 5.2, the algorithm for resolving a relative
+reference seems to suggest that different behaviours are 
+required depending on whether "parse" is validating or
+nonvalidating.    An example at the end of 5.4.2 also refers 
+to this, drawing a distinction between "validating parsers" and 
+"backwards compatibility."
+
+   "http:g"        =  "http:g"         ; for validating parsers
+                   /  "http://a/b/c/g" ; for backward compatibility
+
+Read literally, the spec could be interpreted to mean that
+a new implementation of a nonvalidating parser should 
+actually produce "backwards-compatible" behaviour.
+
+I'm wondering whether the intent is really to suggest
+that the behaviour that produces "http://a/b/c/g" is
+deprecated, but that implementors should be aware of this
+behaviour in older implementations.   
+
+I was also trying to track down the genesis of this behaviour
+in RFC 1630, but find only that in "the context of URI
+magic://a/b/c//d/e/f" g:h expands as g:h.  Is there arother
+reference?
+
+Perhaps the algorithm of section 5.2 could be simplified,
+leaving the caveat on deprecated behaviour as a footnote.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  03 Jun 2003,
+  URI-WG mailing list:
+  <pre>
+Yes, that was a poor choice of words.  What I wanted to say was
+that an application testing for invalid links should consider
+those references to be invalid because their interpretation will
+be inconsistent.
+
+   I'm wondering whether the intent is really to suggest
+   that the behaviour that produces "http://a/b/c/g" is
+   deprecated, but that implementors should be aware of this
+   behaviour in older implementations.
+
+A little more than that.  Some browser implementations have
+insisted that this behavior is necessary for backward compatibility,
+even though it has a negative impact on parsing non-hierarchical
+schemes.  However, I've managed to tweak the algorithm for abnormal
+reference parsing to fix that, so maybe we should just restore
+the deprecated behavior.
+
+For now, I have changed it to "strict" instead of "validating".
+
+   I was also trying to track down the genesis of this behaviour
+   in RFC 1630, but find only that in "the context of URI
+   magic://a/b/c//d/e/f" g:h expands as g:h.  Is there arother
+   reference?
+
+Where 1630 says:
+
+   The rules for the use of a partial name relative to the URI of the
+   context are:
+
+      If the scheme parts are different, the whole absolute URI must
+      be given.  Otherwise, the scheme is omitted, and:
+
+many implementations (including CERN/W3C libwww) interpreted that
+as meaning the scheme parts are ignored if they are the same.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  04 Jun 2003,
+  issues list:
+  <pre>
+The changes already made to draft 03 for the remove_dot_segments
+algorithm makes it possible to remove the exception altogether
+and define the "backward compatible" result as the standard.
+
+The reason this could not be done in the past was because a document
+with an opaque base URI, such as "this:top", would have similar
+references within it mangled by the parser:  e.g., an absolute ref
+to "this:that" would be forced into "this:/that".  Since this is
+no longer the case with the new algorithm, we could fix this once
+and for all by specifying the loophole result as the standard.
 </pre>
 </td>
 </tr>
