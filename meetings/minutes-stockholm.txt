@@ -1,0 +1,281 @@
+To: minutes@CNRI.Reston.VA.US
+From: conklin@info.cren.net (Jim Conklin)
+Subject: Minutes of the URI WG meeting of 18 July 1995
+Date: Thu, 3 Aug 1995 17:31:20 +0100
+Message-Id: <199508032128.RAA26992@info.cren.net>
+Sender: owner-uri@bunyip.com
+
+Minutes of the URI Working Group meeting held Tuesday 18 July, 1995
+
+
+I.  SUMMARY OF THE MEETING
+
+A.  The minutes of last meeting were approved without dissent.
+
+B.  The majority of the meeting was devoted to reviews of material
+provided electronically to the Working Group.  Specifics of these
+activities may be found in the e-mail and internet drafts which were the
+basis of the presentations, though some are captured later in these
+notes.
+
+1.  Leslie Daigle presented an overview of the SILK-based URA and
+metadata resolver developed at Bunyip.
+
+2.  Karen Sollins summarized her perspectives on URN resolution
+standards and services.
+
+3.  Keith Moore reviewed the key aspects of the resolution server
+developed at the University of Tennessee, Knoxville.
+
+4.  Dirk van Gulik highlighted the Harvester search and resolver tool
+developed at the Center for Earth Observation.
+
+5.  There was a brief question and answer period as follow up to these
+presentations, which included discussion on the distinction between URLs
+and meta-data in general, and whether meta-data or actual documents
+should be returned by a resolver or search engine.  The issue of
+punctuation and character sets was raised but not pursued.  Pointers to
+electronic sources of information and experimental tools were given.
+
+6.  Ron Daniels provided a brief update on the URC drafts and work
+needed to complete them.
+
+7.  Related IETF sessions were highlighted:  the "Read the Label BOF on
+Wednesday afternoon, the unofficial Tuesday afternoon BOF on meta-data,
+and the Tuesday evening MIME registration session.
+
+
+B.  The remainder of the meeting was devoted to a discussion of the
+Working Group's Charter.
+
+1.  John Klensin started this discussion, as Area Director responsible.
+He noted that the WG had completed its original milestones and had been
+troubled by lack of consensus and a tendency to "solve" problems by
+creating yet another new type of UR identifier to be defined.  He
+suggested that the WG must reorganize itself, use small-group
+interactions to achieve focus, and find appropriate mechanisms for
+separating activities rather than reasons to add new work to the WG.
+Discussion was reasonably lively and included concerns about
+coordination among multiple groups working on the various activities
+that relate to UR*'s, the claim that there's working code and rough
+consensus on URAs by those that need them, and a reminder that the
+original URI charter was deliberately written very broadly.
+
+2.  This was followed by a charter review presented by Leslie Daigle and
+based on the proposals for charter revision which she and Ron Daniel had
+distributed electronically to the WG.  This began with a quick review of
+the text defining the work of the WG, which, by common consent, was not
+addressed in discussions in order to focus on the Goals and Milestones
+section.  There was considerable discussion of many aspects of the
+proposed Goals and Milestones, with the following actions resulting
+therefrom:
+
+a.  WG action on the URN syntax drafts should be moved ahead and
+accomplished by (1) an interim report comparing the various URN
+proposals (based on work already distributed to the WG) and recomending
+action, with either a proposed standard for a unified, general URN
+syntax to be adopted by the WG at the October IETF or agreement to allow
+separate, competing proposals for URNs to proceed independently.
+
+b.  A similar approach should be followed for URCs, though specifics
+were not determined.
+
+c.  Revision of RFC 1738 will be postponed until after the WG action on
+URN syntax.  (A new date was not agreed upon for this.)
+
+d.  Revision of RFC 1736 will not be done by this WG.  Instead, a new WG
+to be formed specifically for the purpose of determining procedures for
+IANA acceptance of new URNs for registration.  This WG will be tasked to
+revise RFC 1736 or create a new document for that purpose, and to revise
+RFC 1737 only if that appears necessary in order to accomplish its task.
+
+e.  The WG needs to reach consensus on the finger and mailserver URLs in
+order for them to move forward.  This should be done quickly.
+
+f.  Leslie Daigle, Chris Weider, and a third person agreed to complete a
+draft informational RFC on Uniform Resource Architecture for discussion
+in December 1995.
+
+g.  Klensin announced that an additional URI session could be scheduled
+for Thursday afternoon and used to continue the revision of the WG
+charter and possibly action on the finger and mailserver URL proposals.
+(It was thereafter announced as "UR - Next generation" BOF, 1300-1500,
+Carl Larsson Room.)
+
+======================================================================
+Note: At the subsequent URNG BOF, the URI WG was closed and proposals
+were made for several new working groups to carry on the work. A
+report of this action will appear in the Area Director's report to the
+IETF.
+======================================================================
+
+
+II.  ADDITIONAL INFORMATION ABOUT THE PRESENTATIONS
+
+
+    Leslie's presentation on the SILK-based URA resolver noted that it
+is designed to be used to create sophisticated user decision-making and
+information presentation through use of the meta-data provided by URAs.
+It is intended to simplify the invocation of URAs, to create new objects
+through individually specified processing of meta-information and to
+access multiple URNs in order to obtain the meta-data needed to satisfy
+the users' needs, thereby going beyond the usual interaction of a client
+with a single server.  It allows HTML display of information to be
+bypassed in preference to a user's specifications.
+
+
+    Karen reviewed the ideas for "URN Resolution Standards" from her
+Internet draft, including extremes & intermediate positions about what
+to standardize regarding name assignment and resolution.  She noted that
+resolution services must be designed to accomodate a wide variation in
+requirements (locality vs ubiquity, wide variations in the speed
+required for resolution, etc.) depending on the nature of the data or
+other object being retrieved, the availability and the volitility of the
+information being located, policy controls, pricing, etc.  Karen
+suggested that client development repesents the major cost for retrieval
+services and that clients need to be able to use a large variety of
+services and servers, which implies the need for stabiltiy in the client
+interface to resolution services, modularity, and independence of
+service implementation.  Karen concludes from these ideas that we
+should:
+    standardize on client-service protocols
+    standardize on the form of URNs (needed quickly!)
+    standardize on how client/application might learn about
+       resolution service suggestions - meta-information
+    not standardize on a single inter-server protocol (but perhaps
+       write several server-server protocols, each of which might
+       become standardized)
+
+
+    Keith discussed the resolution server, "SONAR" server, which point
+to "best" resolver, and Web client which he and his colleagues are
+developing.  They use LIFNs, make relative URLs work correctly, are
+fast, and are available now for experimentation.  See:
+    http://mobile.netlib.org
+
+
+    Dirk reviewed "Harvester", a "search and choice" tool.  He noted
+that, from the perspective of Harvester, it doesn't really matter what
+URNs are, they're just like a handle to point to metadata, unique keys
+into databases.  His services are based on negotiation between client
+and resolution service.  The URN looks  like the X-DNS URN.  Relevant
+URLs for this work include:
+    http://elect6.jrc.it/~dirux/alibrooker.html
+    http://ewse.jrc.it/.
+    http://www.ceo.org/.
+    x-dns-2 on port 4500 @ elect6.jrc.it
+
+
+The scribe for the WG session was Jim Conklin.
+
+
+==========================================================================
+To: uri@bunyip.com
+From: conklin@info.cren.net (Jim Conklin)
+Subject: Minutes of the UR-NG BOF held 20 July, 1995
+Cc: Larry Masinter <masinter@parc.xerox.com>
+Message-Id: <199507210816.EAA23572@info.cren.net>
+Date: Fri, 21 Jul 1995 10:17:14 +0100
+Sender: owner-uri@bunyip.com
+
+  Here are my impressions of what went on at the UR-NG BOF, to
+supplement Larry's messages for those of you who weren't present.  I
+tried sending them out previously but mis-addressed them.  Apologies.
+
+  John Klensin began the meeting by polling the group on its familiarity
+with the finger and mail RFCs and the draft proposals for finger and
+mailserver URL specifications.  Based on the (lack of) response from the
+group assembled, John determined that those present were not adequately
+informed to recommend acceptance of these drafts and stated that he'd
+gather special, temporary groups of knowledgeable people for review of
+these two proposals.
+  Klensin went on to state that the URI chair (Larry Masinter) had
+failed to provide him with requested information, which constituted
+grounds for dismissal, and that the WG was being disbanded.  Larry
+objected to this, explaining that he had not been able to provide the
+requested document at the time it was requested because he was in the
+process of actively revising it and the only copy he had was marked with
+revisions.  He stated that he had promised to provide it to John as soon
+as possible.  He then handed Klensin a copy of the document.
+  John then opened the floor for proposals for future activities related
+to uniform resource identifiers, etc.
+  Chris Weider proposed splitting the WG activities into two parts, one
+going to the IRTF, the other to a new IETF WG.  Discussion ensued.
+  Massinter proposed the following as future Working Group activities
+that should be considered.  They are documented in detail in his mail of
+this afternoon to the WG.
+    A.  Finish URI work on URLs
+    B.  URC syntax and structure
+    C.  Information resolution
+    D.  URI status & relationsips of current proposals (modified in
+           the meeting from Larry's initial version)
+    E.  Bibliographic resource description(s)
+
+  Chris suggested that Larry's areas A and B (and C, I think) were
+parallel to his ideas about what should be done by IETF, and that he had
+some concerns about E.  (I didn't catch his comments about D, and I'm
+not sure I heard him correctly on C.)
+
+  Larry suggested that the URC syntax group should cover the
+registration mechanism in its activities.  Chris agreed.  Larry (I
+think) proposed that, in B, the syntax should be done first, followed by
+defining the mechanism for registration, and that the group not look at
+[extensions?], which is a "rathole".  Masinter agreed.
+
+  Moore questioned whether IETF should be doing E at all.  Someone
+suggested that there's an enormous benefit from an greement on a general
+outline of a solution for resource description.  [Discussion]
+
+  Alvestrand focussed on the sequencing of these groups.  Group A needs
+to follow B.  C can't proceed until after syntax defined.  [Massinter: C
+has to define syntax.]  E should be started after B has concluded
+[Massinter disagrees].  [discussion]  Moore questions the benefit of E,
+others disagree.  Ron [?]: A start on the activities of group E exists
+within the SGML WG.   Craig Sumerhill indicated that there are severar
+people from the library community who feel strongly that E is needed now
+and would be interested in working on it.
+
+  Massinter called for interest in working on A.  [Harald Alvestrand
+noted that an alternative procedure for vetting URLs could be simply
+that "URL standards must be standards-track".  This seemed popular.]
+Weider suggested that A, B, and C are non-controversial and can proceed.
+Need chairs and critical mass of people, however.  There were a couple
+of volunteers, more probably needed.  Moore: issues with human-
+readability presumption of URCs, would like "syntax" changed to [?].
+
+  Group C:  Massinter feels that his proposed charter and milestones are
+too vague to be adequate.  Weider exoects to get generic syntax, interim
+report, and protocol for speaking to a URN as issues that they can
+resolve by Dec'95.  He proposes narrowing the charter of C to these
+issues, and putting the others off to a later group.  And that current
+URN resolution proposals go straight to experimental.  [GET REVISIONS O
+MASSINTER'S REVISED PROPOSAL FROM HIM, AND INCLUDE]  [WHO VOLUNTEERED TO
+BE CO-CHAIR?]  Need to create real charter and milestones.
+
+  Group D:  Short term.  Descriptive document of current situation.  Is
+it really useful?  Lots of interest in seeing the document written
+[Massinter], but does it need a WG?  Perhaps best done by a small group
+of individuals, then proposed to Area Directors as Informational RFC.
+Craig Summerhill noted that CNI is working on a similar document,
+suggested possible joint authorship; Avrum[? a co-author] disagreed; no
+resolution at the meeting.  Strike URAs from the goals for this group;
+they're really a separate issue.
+
+Group E:  Stu Weibel (OCLC) volunteered to chair this group.
+
+Ron raised the concern about the need to address the caching and
+replication issue, and how to handle this.  In the IRTF?  Keith noted
+that he and Roxanne tried to write a charter and discovered that more
+research needs to be done first, thereby lending credance to the idea of
+making this an IRTF project.  Seconded by others, with the suggestion
+that research already in progress can help this move along in a timely
+fashion.  Weider indicated that he won't be satisfied with the IRTF
+groups he's proposing unless they're open and/or include considerable
+cross-fertilization.
+
+  Klensin expressed his appreciation, especially to Larry, for not
+having been crucified (yet) and asked that we send whatever additional
+input we might care to provide to him or to Harald Alvastrand.
+
+Jim
+

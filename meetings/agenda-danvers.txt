@@ -1,0 +1,86 @@
+To: uri@bunyip.com
+Subject: (slightly) revised URI agenda Danvers IETF URI working group
+From: Larry Masinter <masinter@parc.xerox.com>
+Message-Id: <95Mar30.231011pst.2760@golden.parc.xerox.com>
+Date: Thu, 30 Mar 1995 23:10:09 PST
+
+Two modifications to the URI working group agenda:
+
+First, we've been informed that:
+
+> I wanted to let you know that on Monday morning we're going to need to
+> separate the ballroom into three sections to accommodate the multicast
+> breakouts, etc.  URI will be meeting in one of those rooms.  At 0930
+> awhen the plenary sessions ends the hotel will be pulling the airwalls
+> to create the three sections.  There will be a delay in the start time
+> of the sessions.  We're hoping no more than 15 minutes.
+
+Second:
+
+Bill Arms of CNRI will be talking about the CS-TR 'handle' service as
+a possible URN system.
+
+Thus, we have a compressed schedule for talking about URNs on Monday.
+I've left open the possibility that we'll want as a group to continue
+URN discussion on Tuesday at the expense of cutting into some URC work.
+
+I urge all of the presenters to keep their presentation brief, and for
+us to save discussion until we've heard all of the presentations.
+I've arbitrarily allocated 15 minutes to each document for the
+author(s) to review the document's highlights; this is negotiable
+(in advance) of course.
+
+================================================================
+Agenda for USV    uri       Uniform Resource Identifers WG
+
+Monday, April 3, 1995
+0930-1130   Morning Sessions (mbone)
+
+05      Agenda check & approval of last meeting's minutes
+
+15	Daniel La Liberte & Michael Shapiro
+	The PATH URN specification
+	draft-ietf-uri-urn-path-00.txt
+
+15	Leslie Daigle & Peter Deutsch
+	Uniform Resource Agents
+	draft-ietf-uri-ura-00.txt
+
+15	Ron Daniel & Paul Hoffman
+	Scheme/Authority/Element URNs
+	draft-ietf-uri-yaurn-00.txt
+
+15      William Arms
+	(not internet draft, but see
+	http://www.cnri.reston.va.us/home/cstr/handle-intro.html)
+
+05	stretch break
+
+50	Discussion of presentations and URN schemes
+
+
+================================================================
+Tuesday, April 4, 1995
+1300-1500   Afternoon Sessions I (mbone)
+
+30	URC Scenarios and Requirements
+	Ron Daniel & Michael Mealing
+	draft-ietf-uri-urc-req-01.txt
+
+02	Agenda check
+
+28	continued URC discussion
+
+05	stretch break
+
+15	Relative URLs
+	Roy Fielding
+	draft-ietf-uri-relative-url-05.txt
+
+15	Z39.50 URL
+	John Kunze
+	draft-ietf-uri-url-irp-02.txt
+
+15	Finger, Mailserver URLs, and URL-scheme extension mechanism
+	draft-ietf-uri-url-finger-02.txt
+	draft-ietf-uri-url-mailserver-01.txt

@@ -1,0 +1,409 @@
+To: minutes@cnri.reston.va.us
+Cc: uri@bunyip.com
+Subject: URI WG minutes
+From: Larry Masinter <masinter@parc.xerox.com>
+Message-Id: <95Apr20.181834pdt.2761@golden.parc.xerox.com>
+Date: Thu, 20 Apr 1995 18:18:21 PDT
+
+Minutes of Uniform Resources Identifiers Working Group, April 3 & 4,
+1995.  Thanks to Margaret St. Pierre, Stu Weibel for taking notes in
+Session 1 and 2, and Karen Sollins for contributing notes. I have
+edited the minutes to merge the notes from the various contributors,
+and hope that I've not done too much violence to the sense. Please
+send corrections, additions, and flames.
+
+================================================================
+
+Session I  
+
+* Review of agenda, accept minutes from last meeting.
+
+* Leslie Daigle presented URAs (Uniform Resource Agents). 
+URAs are a means of specifying network activities.  For more information on
+URAs, see draft-ietf-uri-ura-00.txt.
+
+Briefly, URAs are a means of expressing complex Internet activities.
+The goal is to capture an object with 5 parts:
+
+	1. identification and URC
+	2. data elements required
+	3. internet resources required
+	4. definition of find: how does one access things.  Scripting
+	5. postprocessing mechanism on results for client of URA.
+
+* A 10-minute presentation was given to summarize each of the URN
+schemes given below.  For more information on each scheme, see the
+associated URL.
+
+* Ron Daniel presented the Schema/Authority/Element URN scheme. 
+  (draft-ietf-uri-yaurn-00.txt).
+Key features
+  - Syntax is same as Mitra's, e.g., <URN: Schemeid: Authorityid:Elementid>
+  - Each name determines the character set restrictions for following field.
+  - It uses 'DNS' for SchemeID, then a FQDN for AuthorityID.
+
+* Michael Shapiro presented the Path URN scheme.
+  (draft-ietf-uri-urn-path-00.txt).
+  Key features:
+  - A uniformly hierarchical namespace, dymanically reconfigurable, etc.
+  - Totally separate from hostnames, but have to emulate what DNS 
+    is doing now.  In prccess of walking down the path learns about where a
+    server is.
+  - The client chooses the lowest level server; everything below that served 
+     by that server
+
+   How is the Path scheme different?
+   + Just one of many naming schemes - each with different semantics
+   + Hierarchical vs flat
+   + Dynamically configurable - servers can move independent of names
+   + Implemented on top of existing DNS and HTTP
+
+   Does the Path scheme meet the URN Requirements?
+   + Global scope - yes
+     Root is known to all clients
+     Each node will have a corresponding resolution service
+   + Global uniqueness - yes
+   + Persistence - as much as any scheme could be
+     Names live forever
+     Naming authorities can disappear
+     Path naming authorities/resolvers are responsible for their children
+   + Scalability - yes
+     Assignment is hierarchically distributed
+     Resolution is hierarchically distributed
+   + Legacy Support - sort of
+   + Extensibility - sort of
+     Use Generic URL syntax for other URN schemes
+   + Independence - yes
+     Name authority only constrained by the syntax and	encoding rules
+   + Resolution - yes
+     Path->URL, or Path->URC, or Path->object, all permitted (by HTTP)
+     Scalable resolution because it is publicly hierarchical
+
+   Frequently Asked Questions
+   + Are we using existing DNS hostnames? - no
+   + How will this impact DNS?
+      Load on local and remote nameservers and caches.
+        nameservers - O(1) hit per node
+        caches - larger (due to TXT and more  activity)- unknown. needs study.
+      Administration
+         a few new rules
+	 initially more work, but not much after that
+   + What happens when a Path naming authority or resolver goes out of business?
+     The parent is responsible to take over or redelegate.
+   
+  In the discussion, some controversies arose about the use of DNS or
+  the recreation of name resolution services. There was also a
+  question about whether the correct algorithm is to walk up the 
+  tree or down; they think that top-down walking will allow them
+  to take advantage of caching.
+
+* Bill Arms presented the Handle service. This is described in
+<URL:http://www.cnri.reston.va.us/home/cstr.html>.  This effort is
+happening independently of the IETF; it comes from the CNRI global
+digital library. It is a pure naming system; no URC or
+meta-information is returned. The syntax very similar to other
+schemes: naming_authority/string (where string can be flat or
+hierarchical).  Any naming authority can name subauthorities.  A
+global authority provides global naming.  For resolution it makes no
+use of any structure in handle; they intend to have global and local
+resolution and caching.  When you send a handle to a handle server,
+you get back everything stored with it.
+
+They are building handle server mechanism with global servers and
+caching, and talking with NCSA about embedding the resolution
+mechanism in web clients. Use hash to map to a global server.
+
+Discussion brought up a question of aging; what happens when the cache
+is out of date? This is more of a problem for local servers.
+
+* Keith Moore gave a quick refresher about LIFNs, used to name a
+particular version of a file. They expect that location and file
+servers not co-located.  Can have a small number of location servers
+and LOTS of file servers.  It omfortably deals with file server or
+communication failures, because all locations have mirrors of files.
+  
+* Mitra and Michael Mealling and Chris Weider spoke about the "General" syntax.
+<URL:ftp://ds.internic.net/internet-drafts/draft-ietf-uri-resource-names-03.txt>
+
+It is fast, implementable & based on current technology. They want to
+be "THE" scheme, because we need a single mechanism, that it is
+trivial to implement in clients, or, by using proxies, client builders
+don't need to do anything.  The important design goal was the need to
+do de-resolution in around 1 sec.
+
+4. The remainder of Session 1 was devoted to discussion of the
+presentations, with a chance to ask any of the presenters questions on
+their proposed URN schemes.  The following issues were raised, and a
+number of (sometimes contradictory) points were raised on each of
+these issues, as described below:
+
+Issue: Should one protocol or multiple protocols be used (e.g.,
+whois++ and http ) ?
+
+- A single protocol approach would make it possible for client
+  software not to have to change to support all protocols.
+
+- A single protocol would permit wider adoption.
+
+- A security model that would support multiple protocols may be
+  difficult to achieve, although may not be a problem with a
+  security scheme such as SSL.
+
+Issue: Will the URN schemes be able to scale up to over one million
+publishers on the net, and how will administration of such a large
+number of URNs be handled?
+
+Each scheme scales in terms of name definition, but persistence of
+name management.  What does one do for resolution of names for naming
+authorities that have gone out of business.  Problem of scale is
+resolution.  Handle scheme - there is a problem of global updates, but
+need to register authorities, not actually objects.
+
+- Scaling: name assignment separated from name resolution - different
+  numbers.
+
+- A global server may have problems updating if the number of URNs
+  doubles each year.
+
+- The solution to this problem depends on how many URNs are 
+  registered globally versus locally.
+
+- URNs have to be globally resolvable.
+
+- Locality of reference cannot be assumed on the Web, e.g., in Norway,
+  most references are to local organizations or to the US.
+
+- The URI group should look into making use of the work the DNS group
+  is doing to handle administration and namespace issues.  DNS won't
+  scale.  If make barrier to users that can't define names without
+  going to DNS administrator, don't do this without talking with DNS
+  folks about revising to do much greater scaling.
+
+- Use DNS name as the registration authority, e.g. the resolver 
+  for gatech would be "uri.gatech.edu".
+
+- Not all URLs will have a corresponding URN. There are not going
+  to be that many "published" documents that need to be cataloged
+  for the long term, and thus the number of URN's assigned will not
+  be a major problem.
+
+- The URN scheme should be built to handle the assumption that
+  everyone will want to author, and that publishers should ensure
+  that URNs stay around for the long term.
+
+- Name assignment is separate from the name resolution scheme, and
+  should be solved separately.
+
+- People would be willing to wait for name resolution.
+
+- People would not be willing to wait for name resolution; name
+  resolution should occur with less than a one-second retrieval
+  time.
+
+Issue: How is payment for these schemes handled?
+
+- A hierarchical URN scheme is attractive because billing can be
+  done locally.
+- Sometimes archivers will pay, while in some cases people will pay
+  for their own. 
+- For the present for DNS, if pay for DNS naming then pay and 
+  otherwise not.
+
+* Question: are LIFNs dependent on using something that will never
+hash to same id?  Keith: no, you can use any form of hash function.
+Security comes from file servers, not names.
+
+*Peter D.: one protocol vs. many protocols? Many folks responded
+saying that we'll need to deal with more than one, but shoot for one
+for now.  The key thing is that clients may only have a single hook.
+Using a proxy scheme may solve the problem.  Mitra urged that need a
+single scheme and protocol or will lose.  We're really just talking
+about interface definition.  Keith claimed we need to define a single
+protocol on the wire.  From floor: should be using proxy servers that
+can speak multiple protocols.  Security questions: will one be willing
+to run resolutions at firewalls?
+
+-------------------------------------------------------------------
+
+Session II, 1300-1500
+
+1. Relative URLs: Roy Fielding
+   draft-ietf-uri-relative-url-06.txt
+
+The draft was declared complete without objections, and will be
+submitted to IESG for 'last call' before becoming standards track RFC.
+
+2. Z39.50 URL Status Report John Kunze
+   draft-ietf-ietf-uri-url-irp-02.txt
+
+The ZIG mailing list has raised enough questions on this that the
+author isn't ready to propose adoption.  The URI list is asked for any
+comments on the draft, however.
+   
+
+3. Relative URL draft
+  Roy Fielding (relative URLs): no more comments.  Done unless anyone 
+  has anything to say will go to last call.
+
+4. Finger, Mailserver URL-scheme extension mechanism
+
+   draft-ietf-uri-url-finger-02.txt 
+   draft-ietf-uri-url-mailserver-01.txt
+
+   No comments on either... both will be submitted for last call
+   and move to standards track.
+
+   ISSUE: How will such extensions be vetted in the future?
+
+   The working group is now reviewing extensions (3 so far)... in
+   future months, someone must edit revision of URL draft, and decide
+   how extensions will be done in future.
+   
+   No one present at the meeting volunteered to adopt these responsibilities,
+   though there was recognition that it is necessary and important.
+
+   Need stronger mechanism than saying that IANA will do it.  Can we 
+   use the MIB mechanism?  Mime type people also do this.  For MIBs 
+   all work goes through WG.  For mime types, work is done by posting 
+   and discussing on a mailing list.  Need to set up process for when WG 
+   no longer exists.  Suggestion of an intelligent assistant editor for 
+   IANA.  Will need someone in next few months to revise URL 
+   document.
+
+5. URC Scenarios and Requirements Ron Daniel and M Mealling
+
+The authors are seeking feedback concerning the minor modifications made
+to the document (Daniels, Mealling). We deferred discussion on this
+issue in order to get back to the URN discussion.
+
+The syntax discussion was shut down last time, in order to
+implementation.  Currently, always want to support multiple query 
+languages.  By next time would like to running code and revisions of
+document.  Hope to have it close to last call next time.
+
+Ron: Want to make sure that people understand that there isn't just
+one URC.  There may be one default one.  No required attributes.  
+There is a question of whether a single data model or more than one.
+
+6. The remainder of the session was given over to continued discussion
+of the 5 URL schemes and associated issues.
+
+The following assertions or comments reflect the sense of the discussion:
+
+* It is time for a new namespace/resolution system - the existing DNS is
+fragile and flawed; extending these flaws into the URN arena will
+propagate these flaws (eg.: flatness of .com space)
+
+* URNs will not, of themselves, solve the problem of persistence of
+OBJECTs... only persistence of names.  Schemes need not *assure*
+persistence of objects, but some thought should be given to assure
+that the problem is not exacerbated by the scheme.
+
+* Most of the URN schemes don't really go into details about what
+happens when something moves.  So far have dealt only with what
+happens when a whole organization moves.  Granularity of mobility must
+be addressed. For example:
+      
+- All web documents from CERN move to INRIA, but high-energy physics
+  documents stay at CERN. What happens to URNs for the web documents?
+
+- A grad-student graduates but someone wants to retain editorial
+  control of one of his pages. How can this happen?
+
+- A university retains all articles by staff members; someone on the
+  staff publishes the exact document in an online journal.  Does it
+  get a new URN, or just keep the old one?
+
+* We have two different requirements: (1) URNs resolvable quickly (2)
+URNs should last a long time. However, we don't have a requirement
+that URNs should be resolvable quickly for the forseeable future.
+That is, over time, as the number of resources grow and items migrate
+from one location to another, we don't have to design for efficient
+access in the future.
+
+* DNS doesn't guarantee uniqueness in time; however, it is possible to
+add some limited time stamp (e.g., DNS name plus year, or DNS name
+plus year and month.) This gives uniqueness over time without adding a
+full 32-bit timestamp. In general, qualification of a name space with
+time stamp (possibly low resolution; year or year-month) will help
+make the inclusion of human readable info in URNs more accessible to
+long term interpretation.
+
+* Claim: we should always go to URC in order to find URL.  It should
+be possible to modify set of URLs in a URC. There is an issue of
+finding all copies of the URC - this is tied to publisher being
+responsible for default URC for all time.
+
+* Proposal: in near term, the agent that handed out the name will do
+resolution, but we quickly will need an alternate solution.  This
+suggests that all moves are handled based on naming authority or sub
+authority.
+
+* We should identify solutions to DNS problems and take advantage of
+the existing investment in technology and administrative
+infrastructure...  do not confuse architecture (sound) with
+implementation (currently weak).  Join the DNS WG if you think you can
+invent a better namespace; anyone who thinks this can be done probably
+doesn't understand the problems.
+
+* One or several URN schemes?  There may be call for several, some
+tailored to specific aspects of the problem set.  eg: LIFNs do not
+solve all the problems of the URN domain, but might be very useful as
+a guarantee of version identity (imagine wanting to assure a JAVA
+applet version or identity).
+
+* Name Resolution: Should it be to a location (URL) or to a URC?
+
+* There is a need for a private part of the name space; (spook.gov,
+snidely.com, privacy.edu, for eg., will need mechanisms for assuring
+security).
+ 
+* Are we trying to solve NIDR with permanent names?  Names should last
+as long as the issuing agency...  go to a permanent naming authority
+if you want your stuff to last.
+ 
+* Names with human-readable components (built in semantics) are
+intrinsically less persistent than those made of opaque strings (OIDs,
+ISBNs, etc.)
+ 
+* Schemes must be maintainable over time frames of hundreds of years
+to achieve acceptance as identifiers of important cultural records by
+research libraries.
+
+* Some assert that semantics should be kept out of the name space
+mechanism.  Others assert that semantics may be included, but only as
+convenience; they should be ignorable (processable as content free
+tokens). Hierarchical resolution cannot be done with acceptable
+resolution times (sub-second responses). Overloading names with
+semantics is necessary to achieve low resolution times
+(sub-one-second).
+
+* Some assert that it's time to decide on a syntax and character set
+so experimental work can go forward. On the other hand, we must agree
+on the semantics before we do a syntax.
+
+* A URN Scheme Bake Off is proposed for the Stockholm (or failing
+that, the Dallas IETF).
+   
+ Set ground rules by 20th of April 
+ Report preliminary results by Stockholm
+ Argue results in Dallas
+      
+Preliminary ground-rules:
+   Use URL requirements and syntax for URNs (e.g., no spaces),
+   scheme:scheme-specific-part.
+
+   Invent new URL-'scheme' to describe your URNs, but don't use 'urn:'.
+
+   Explain how scheme meets URN requirements.
+
+   Describe behavior and performance in the use scenarios, especially
+   when resources have moved.
+
+Chris Weider, Larry Masinter, and Tim Berners-Lee are nominated to
+establish ground rules (having spoken up about them in the meeting),
+though comment and proposals from others are welcome.
+ 
+Theoretical models of performance, though suspect, may also help 
+to shed light or point in the direction of further experimentation.
+    

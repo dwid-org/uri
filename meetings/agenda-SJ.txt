@@ -1,0 +1,44 @@
+From: Larry Masinter <masinter@parc.xerox.com>
+Date:   Fri, 18 Nov 1994 10:28:27 PST
+Subject: *Revised* Agenda for URI working group at Dec. IETF meeting
+Message-Id: <94Nov18.102837pst.2760@golden.parc.xerox.com>
+
+I have revised the agenda to move URL discussions to Wednesday,
+and to allocate some amount of time on Wednesday to deal with
+some followup items on URN issues.
+
+================================================================
+
+MONDAY, December 5, 1994
+
+1600-1800 PST
+
+0:05   Review of agenda (chair)
+       Approval of minutes from Toronto (chair)
+
+0:10   Current status of working group RFCs (chair)
+       URL requirements, URL specification, URN requirements.
+
+0:45   URC requirements (Michael Mealling)
+       library concerns (Stuart Weibel)
+       usage scenarios
+       legacy systems
+
+1:00   URN issues (Mitra, Chris Weider)
+       IESG comments on URN requirements (?)
+       URN specification
+
+WEDNESDAY, December 7, 1994
+
+1330-1530 PST ** MULTICAST **
+
+0:45  URC proposal (Michael Mealling)
+      IAFA templates
+
+0:15  Additional URN discussion (Mitra, Chris Weider)
+
+0:30  Relative URL draft (Roy Fielding)
+
+0:30  Other URL issues (open)
+      new URL schemes: Z39.50, afs, others(?)
+      XFN compatibility

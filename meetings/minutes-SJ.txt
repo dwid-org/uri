@@ -1,0 +1,308 @@
+To: minutes@cnri.reston.va.us
+Cc: uri@bunyip.com
+Subject: Third (and final?) revision, URI minutes December 1994 IETF
+From: Larry Masinter <masinter@parc.xerox.com>
+Message-Id: <95Jan6.135542pst.2760@golden.parc.xerox.com>
+Date: Fri, 6 Jan 1995 13:55:37 PST
+
+Minutes of Uniform Resources Identifiers Working Group, December 5 &
+7, 1994 Revised 12/28/94 and 1/6/95 per comments on URI mailing list.
+
+Many thanks to Karen Sollins for taking minutes.
+
+Session I
+
+1. The minutes of the previous meeting were approved by general agreement.
+
+2. It was reported that the RFC editor will clear the backlog of
+pending RFCs by the end of this calendar year, and thus the 3 RFCs
+coming from this group should be available by then.  Status of RFCs:
+Jon Postel reports that he will get them out by end of Dec.
+
+Erik Huizer, as the group's Area Director, summarized the IESG
+discussion of the proposed RFCs: the IESG agreed that they should go
+forward, but there were some concerns.
+
+With respect to URLs the two most serious concerns expressed were:
+
+* Scaling and replication, because embedding specific location in URLs
+  does not scale well.  Erik noted that a URN/URC scheme might address
+  the IESG concerns.
+
+* Protocol dependence, because embedding access methods in URLs
+  bothered the IESG.  The URL documents may simply talk about
+  "schemes" rather than protocols explicitly, (e.g., "news:" is not
+  protocol specific, but rather an address space name), many URL
+  schemes are tied to a particular protocol.
+
+In response to a comment about how many of these topics had been
+discussed at length in the URI mailing list, it was pointed out that
+ultimately the results of the working group must be reflected in the
+documents put forward; while it may be reasonable to expect
+participants in the working group to be familiar with some of the
+previous discussion, the rationale for designs in the group's RFCs
+should appear in the RFCs.  If the IESG didn't understand for example
+that a URN/URC scheme would address the problems of scaling and
+replication, then we need to figure out how to say it better in the
+documents, specifically the URN/URC documents.
+
+3. Report on URC requirements by Michael Mealling
+
+This report was based on the Internet Draft.
+<URL:ftp://ds.internic.net/internet-drafts/draft-uri-urc-req-00.txt>
+
+The central requirement for URCs is that they be the place for putting
+meta-information.  The specific requirements are broken into broad
+areas, encoding requirements and service requirements. The encoding
+requirements are:
+
+a. Ignorability: the ability to ignore any field that is not
+   understood, while understanding and handling others.  It was
+   pointed out that some fields may be critical to the whole URC or to
+   others, and therefore may not be ignorable, such as copyright
+   information, although this might be handled with precedence.
+
+b. simplicity: there must be simplicity both in the encoding so that
+   tools are easy to build, and in terms of structure, so that
+   populating is easy.
+
+c. structure: nesting is needed for complex information
+
+d. security: the problems here are both spoofing of the information
+   and providing integrity and unforgeability for it.  There is an
+   outstanding issue of providing this on each of the parts of a URC.
+
+Main resolution service requirements are to be
+
+a. secure from spoofing
+b. updateable easily and in an automated manner
+c. fast enough to provide effective resolution
+
+Discussion and questions occurred during the presentation.
+
+4.  Library requirements
+
+Stu Weibel gave a presentation on Library requirements, specifically
+for URCs.
+
+What is most important is that the Virtual and Real libraries
+interoperate to support users most effectively.  To this end, Stu has
+a list recommendations:
+
+* Because different sorts of objects will have different requirements,
+  URCs should support different attribute types and attribute levels.
+
+* All URCs should share a common kernel of elements.
+
+* URCs should be algorithmically mappable into MARC records.
+
+* We must be prepared for URCs to be created from a wide variety of
+  sources with a wide variety of tools.
+
+* Some standard forms of attributes will be important.
+
+* Versioning can be handled in naming in some schemes, such as ISBN
+  and ISSN, which reflect different authorities with different ideas
+  of versioning.
+
+* Two candidate URC kernels to consider are the Text Encoding
+  Initiative Headers (in SGML) and the Core Bibliographic Records (a
+  new library community standard for cataloging).
+
+Stu promised (and has sent to the mailing list) a set of references on
+this subject.
+
+5. Comments on URC Requirements by Karen Sollins
+
+Several architectural issues about URC requirements were discussed.
+They are:
+
+* Might there be different URCs for a resource at different locations?
+
+* We need to address the problems of consistency among either the
+  different URCs for a resource, or multiple copies of a single URC.
+
+* Partial URCs: can there be partial URCs returned in response to a
+  request for either security or policy reasons?
+
+* If there is to be policy control over distribution of URCs, there
+  must be authentication of the requester, having an implication on
+  the communications protocol?
+
+* Communications paradigm: it is possible that we want to allow for a
+  response to request for a URC to be sent elsewhere, in which case,
+  we are using a continuation paradigm.  Whether we allow this or not,
+  we are making a choice about the communications paradigm.
+
+* We must make a distinction between meta-information to be used in
+  resource discovery (e.g. which URN one wants) and location discovery
+  (URN to URL mapping).  There may be mostly an issue here of
+  information management, because it will be accessed and managed
+  differently.  (See comments below in discussion of URC
+  specifications.)
+
+* "Development" URNs: the distinction should not be in URNs, but
+  perhaps in URCs.
+
+6. URN schemes and testbeds
+
+There are currently several efforts underway.  Mitra et al. and
+Michael Mealling are using similar naming schemes, with a disagreement
+about whether a DNS name should be used as part of the naming
+authority name or not.  Otherwise, the two schemes are similar in that
+they both are of the form:
+
+prefix:pubid:opaquestring.
+
+where prefix is "urn:" the pubid is the ID of the naming authority and 
+may be hierarchical in both delegation and assignment, and  opaquestring
+is a string assigned by the naming authority that is  unique within its
+scope and long-lived.  Several implementations of  this and the mapping
+functionality needed to realize it are underway,  at among other places,
+Georgia Tech and Bunyip.  They described the  details of their designs as
+well.  Bunyip is beginning to think about  making choices about URLs,
+using this scheme, on the basis of cost.   This work is represented by an
+internet draft.  The Georgia Tech  proxy server is now accessible on
+www.gatech.edu, port 8080 with  more information available at
+<URL:http://www.gatech.edu/iiir/>.
+
+Keith Moore reported on the work described in the internet draft on
+the BFD (Bulk File Distribution), another alternative.  This maps URNs
+in LIFNs, which in turn are mapped to specific URLs.  The hard part
+here is caching to make it run fast enough.  This work is not being
+promoted as a standard but as a basis for learning more about URNs and
+the BFD model.  Code is now available.  Information is available at
+<URL:http://www.netlib.org/nse/bfd> and from <URL:mailto:bfd-info@cs.
+utk.edu>.
+
+Sesion II
+
+7. URC specification proposal by Michael Mealling: (new internet draft
+available soon as draft-ietf-uri-urc-spec-00.txt).
+
+Rather than presenting all the details of the proposal, Michael made some
+high level comments:
+
+* The requirements document has some contradictory requirements, such
+  as generality vs. printability.  One might use binary encoding of
+  non-printable forms, but some compromise is needed.
+
+* Compatibilities should be a primary concern in order to make URCs
+  useful to other non-computer networking communities such as the
+  library community.
+
+* There are two major functions of URCs:
+
+a. providing high level meta-information such as that maintained and
+   used in library catalogs, where the information is complex, rich,
+   and probably comes from an unlimited data set, encoded in many
+   different schemes.
+
+b. supporting resource location discovery by means of a simple
+   encoding of fairly restricted data, that is easily maintained and
+   easily populated.
+
+The basic element set is fairly limited with an extension mechanism
+using "x-".
+
+There were questions about whether URCs should simply be extremely
+simple templates or structures with semantics built into them, such as
+might be describable in SGML.  Should they be parsable independently,
+in other words are they self describing.  There is also a question of
+whether a nested structure and precedence should be possible.  Michael
+would like to keep things as simple as possible at present and see how
+far we can get with that, and how much we can learn from that, with
+the possibility of extending it later.
+
+There seemed to be general consensus in the room that precedence rules
+were important, and therefore WHOIS++ will not support what is needed.
+
+There was a certain amount of discussion about whether when a
+"resolution" that produces a URC may produce different things on
+different occasions depending on context and perhaps different URCs
+will be needed to support the different information needed in these
+different contexts.
+
+8. Report on Relative URLs by Roy Fielding
+
+(Ed note: this section has been updated from the previous version of
+the Working Group minutes.)
+
+Report based on <URL:ftp://ds.internic.net/internet-drafts/
+draft-ietf-uri-relative-url-02.txt>.  The slides for Roy's talk are
+available as <URL:http://www.ics.uci.edu/pub/ietf/uri/rurl-slides.ps
+.gz>.
+
+There are two main reasons for providing relative URLs.  First they
+save space and second, they allow a tree of closely related resources
+that will be co-located to have their location references be location
+independent.  The idea is that relative URLs will be embedded in the
+resources, and the base that is used to create a fully qualified URL
+is the URL of that resource, as defined by the context in which the
+resource was retrieved or by a base URL embedded in, or passed along
+with, that resource. This allows the whole tree to move together
+without changing the embedded URLs.  It also allows the resource to be
+simultaneously accessible and traversable via multiple access schemes.
+
+There was concern expressed that a resource in such a tree cannot be
+moved without it's parent being moved as well, since the base URL must
+be valid for a child (partial trees cannot be copied or moved) and
+that the URI working group should not encourage more use of URLs as
+location independent, long-lived identifiers of resources by providing
+yet more schemes for embedding them in resources.
+
+However, it was pointed out that it has yet to be determined whether
+or not all sub-entities of a resource should have independent, long-lived
+identifiers, or just the entry-point of a resource.  For example,
+specifications on paper often use relative locators, in the form of
+"see Section 3.2", which are likewise dependent on internal structure.
+Requiring that each subsection be fully-named would be inappropriate.
+
+Roy will update the next draft of the rURL specification to change the
+rURL resolution algorithm so that it is scheme-independent; this may
+require some changes to the URL Draft Specification.
+ 
+9. URLs and Z39.50 by John Kunze
+
+John Kunze circulated to the mailing list and at the meeting a
+proposal for Z39.50 URLs developed by the Z39.50 implementors group.
+The unusual thing about the document is that it proposes 2 new URL
+schemes because Z39.50 does not fit our traditional model, on account
+of being a stateful protocol.  Thus the two URLs are for creating a
+session and performing a retrieval.  If a URL is used for retrieval,
+an existing session may be used instead of creating a new session.
+
+The URL proposed standard says that new URL schemes should be
+registered by IANA, but until the standard is accepted and the procedure
+for registering schemes is worked out, we should review new schemes in
+the URI working group.  It was agreed that we should have enough
+experience first to give IANA strong guidelines and rules for such
+assignment, before giving them this job.
+
+There was a certain amount of discussion about the fact that WAIS URLs
+are only retrieval URLs and that they are viewing the whole database
+as a resource, in our terms.  More than one person wished to know
+whether this were also possible to do in a Z39.50 URL scheme.
+
+The suggestion was made to switch to a more common and modern syntax
+within the opaque string, especially regarding use of '&' and '?'.
+
+The Z39.50 Implementors' Group will meet in January and discuss the
+comments from the IETF.
+
+10.  Some additional minor issues with URNs by Chris Weider
+
+* Case-sensitivity is raising its head again.  The group reached
+  consensus some time ago that we would follow the path of case
+  insensitivity: to allow for maximum generality.  This was resolved
+  with great pain in the URN requirements document and should not be
+  raised again.
+
+* Use of dashes ("-"): Some host names contain them.  We will discuss
+  any creative ideas on this topic on the list.
+
+11. There has been discussion about AFS URLs.  It should continue on
+the list.
+
+12. The meeting was adjourned.
+
