@@ -2075,7 +2075,7 @@ and relative-URI, respectively, for consistency.
  <type>references</type>
  <name>027-ref-HTML</name>
  <title>draft 00 contains an obsolete ref to RFC 1866</title>
- <status>accepted</status>
+ <status>fixed 01</status>
  <report>
   <author email="dan@dankohn.com">Dan Kohn</author>
   <date sort="20021109">09 Nov 2002</date>
@@ -2090,14 +2090,16 @@ RFC 2854.  This reference should be replaced with one to
  </report>
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
-  <date sort="20030225">25 Feb 2003</date>
+  <date sort="20030228">28 Feb 2003</date>
   <where>issues list</where>
 <pre>
-I will replace it with
+I replaced it with
 
-   [HTML]  Raggett, D., et al., "HTML 4.01 Specification",
-           W3C Recommendation, December 1999.
-           Available at &lt;http://www.w3.org/TR/html401&gt;.
+   [HTML]  Raggett, D., Le Hors, A. and Jacobs, I.,
+           "Hypertext Markup Language (HTML 4.01) Specification",
+           December 1999.
+
+in draft 01.
 </pre>
  </action>
 </issue>

@@ -1799,9 +1799,9 @@ The following examples illustrate URIs that are in common use.
    reference should not result in an additional retrieval action.
    However, if the URI reference occurs in a context that is always
    intended to result in a new request, as in the case of HTML's FORM
-   element, then an empty URI reference represents the base URI of the
-   current document and should be replaced by that URI when transformed
-   into a request.
+   element <a href="#HTML" title="Hypertext Markup Language (HTML 4.01) Specification">[HTML]</a>, then an empty URI reference represents
+   the base URI of the current document and should be replaced by that
+   URI when transformed into a request.
 </p>
 <h2>
 <a name="rfc.section.4.3">4.3</a>&nbsp;
@@ -1991,7 +1991,7 @@ The following examples illustrate URIs that are in common use.
    agents manipulating such media types will be able to obtain the
    appropriate syntax from that media type's specification.  An example
    of how the base URI can be embedded in the Hypertext Markup Language
-   (HTML) <a href="#RFC1866" title="Hypertext Markup Language - 2.0">[RFC1866]</a> is provided in Appendix D.
+   (HTML) <a href="#HTML" title="Hypertext Markup Language (HTML 4.01) Specification">[HTML]</a> is provided in Appendix D.
 </p>
 <p>
 <a name="rfc.section.5.1.1.p.3"></a>
@@ -2406,11 +2406,6 @@ next component separator or the end of the reference.
   
 
 <tr>
-<td nowrap="nowrap" valign="top"><b><a name="RFC1866">[RFC1866]</a></b></td><td valign="top"><a href="mailto:timbl@w3.org" title="MIT Laboratory for Computer Science">Berners-Lee, T.</a> and <a href="mailto:connolly@w3.org" title="MIT Laboratory for Computer Science, W3 Consortium">Connolly, D.W.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc1866.txt">Hypertext Markup Language - 2.0</a>", RFC&nbsp;1866, November&nbsp;1995.</td>
-</tr>
-
-
-<tr>
 <td nowrap="nowrap" valign="top"><b><a name="RFC2396">[RFC2396]</a></b></td><td valign="top"><a href="mailto:timbl@w3.org" title="World Wide Web Consortium">Berners-Lee, T.</a>,&nbsp;<a href="mailto:fielding@ics.uci.edu" title="Department of Information and Computer Science">Fielding, R.T.</a> and <a href="mailto:masinter@parc.xerox.com" title="Xerox PARC">Masinter, L.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2396.txt">Uniform Resource Identifiers (URI): Generic Syntax</a>", RFC&nbsp;2396, August&nbsp;1998.</td>
 </tr>
 
@@ -2473,6 +2468,11 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 
 <tr>
 <td nowrap="nowrap" valign="top"><b><a name="RFC2717">[RFC2717]</a></b></td><td valign="top"><a href="mailto:rpetke@wcom.net" title="UUNET Technologies">Petke, R.</a> and <a href="mailto:iking@microsoft.com" title="Microsoft Corporation">King, I.</a>,&nbsp;"<a href="http://www.ietf.org/rfc/rfc2717.txt">Registration Procedures for URL Scheme Names</a>", BCP&nbsp;35, RFC&nbsp;2717, November&nbsp;1999.</td>
+</tr>
+
+
+<tr>
+<td nowrap="nowrap" valign="top"><b><a name="HTML">[HTML]</a></b></td><td valign="top">Raggett, D.,&nbsp;Le Hors, A. and Jacobs, I.,&nbsp;"Hypertext Markup Language (HTML 4.01) Specification", December&nbsp;1999.</td>
 </tr>
 
 
@@ -2812,7 +2812,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    It is useful to consider an example of how the base URI of a document
    can be embedded within the document's content.  In this appendix, we
    describe how documents written in the Hypertext Markup Language
-   (HTML) <a href="#RFC1866" title="Hypertext Markup Language - 2.0">[RFC1866]</a> can include an embedded base URI.  This appendix
+   (HTML) <a href="#HTML" title="Hypertext Markup Language (HTML 4.01) Specification">[HTML]</a> can include an embedded base URI.  This appendix
    does not form a part of the URI specification and should not be
    considered as anything more than a descriptive example.
 </p>
@@ -2826,10 +2826,10 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    example:
 </p>
 <a name="rfc.figure.u.48"></a>
-<pre>   &lt;!doctype html public "-//IETF//DTD HTML//EN"&gt;
+<pre>   &lt;!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
    &lt;HTML&gt;&lt;HEAD&gt;
    &lt;TITLE&gt;An example HTML document&lt;/TITLE&gt;
-   &lt;BASE href="http://www.ics.uci.edu/Test/a/b/c"&gt;
+   &lt;BASE href="http://www.example.com/Test/a/b/c"&gt;
    &lt;/HEAD&gt;&lt;BODY&gt;
    ... &lt;A href="../x"&gt;a hypertext anchor&lt;/A&gt; ...
    &lt;/BODY&gt;&lt;/HTML&gt;
@@ -2840,7 +2840,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    relative URI "../x" as representing the absolute URI
 </p>
 <a name="rfc.figure.u.49"></a>
-<pre>   &lt;http://www.ics.uci.edu/Test/a/x&gt;
+<pre>   &lt;http://www.example.com/Test/a/x&gt;
 </pre>
 <p>
 <a name="rfc.section.D.p.6"></a>

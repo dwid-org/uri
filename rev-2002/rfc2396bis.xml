@@ -994,9 +994,9 @@ URI character sequence->octet sequence->original character sequence
    reference should not result in an additional retrieval action.
    However, if the URI reference occurs in a context that is always
    intended to result in a new request, as in the case of HTML's FORM
-   element, then an empty URI reference represents the base URI of the
-   current document and should be replaced by that URI when transformed
-   into a request.
+   element <xref target="HTML"/>, then an empty URI reference represents
+   the base URI of the current document and should be replaced by that
+   URI when transformed into a request.
 </t>
 </section>
 
@@ -1158,7 +1158,7 @@ URI character sequence->octet sequence->original character sequence
    agents manipulating such media types will be able to obtain the
    appropriate syntax from that media type's specification.  An example
    of how the base URI can be embedded in the Hypertext Markup Language
-   (HTML) <xref target="RFC1866"/> is provided in Appendix D.
+   (HTML) <xref target="HTML"/> is provided in Appendix D.
 </t>
 <t>
    A mechanism for embedding the base URI within MIME container types
@@ -1598,38 +1598,6 @@ next component separator or the end of the reference.
 <seriesInfo name='RFC' value='1738' />
 </reference>
   
-<reference anchor='RFC1866'>
-<front>
-<title>Hypertext Markup Language - 2.0</title>
-<author initials='T.' surname='Berners-Lee' fullname='Tim Berners-Lee'>
-<organization>MIT Laboratory for Computer Science</organization>
-<address>
-<postal>
-<street>545 Technology Square</street>
-<city>Cambridge</city>
-<region>MA</region>
-<code>02139</code>
-<country>US</country></postal>
-<phone>+1 617 253 9670</phone>
-<facsimile>+1 617 258 8682</facsimile>
-<email>timbl@w3.org</email></address></author>
-<author initials='D.W.' surname='Connolly' fullname='Daniel W. Connolly'>
-<organization>MIT Laboratory for Computer Science, W3 Consortium</organization>
-<address>
-<postal>
-<street>545 Technology Square</street>
-<city>Cambridge</city>
-<region>MA</region>
-<code>02139</code>
-<country>US</country></postal>
-<phone>+1 617 258 8682</phone>
-<email>connolly@w3.org</email>
-<uri>http://www.w3.org/hypertext/WWW/People/Connolly/</uri></address></author>
-<date month='November' year='1995'></date>
-</front>
-<seriesInfo name='RFC' value='1866' />
-</reference>
-
 <reference anchor='RFC2396'>
 <front>
 <title abbrev='URI Generic Syntax'>Uniform Resource Identifiers (URI): Generic Syntax</title>
@@ -1991,6 +1959,23 @@ Science, University of California, Irvine</organization>
 <seriesInfo name='RFC' value='2717' />
 </reference>
 
+<reference anchor='HTML'>
+<front>
+<title>Hypertext Markup Language (HTML 4.01) Specification</title>
+<author initials='D.' surname='Raggett' fullname='Dave Raggett'>
+<organization>W3C/MIT</organization>
+</author>
+<author initials='A.' surname='Le Hors' fullname='Arnaud Le Hors'>
+<organization>W3C/Inria</organization>
+</author>
+<author initials='I.' surname='Jacobs' fullname='Ian Jacobs'>
+<organization>W3C/MIT</organization>
+</author>
+<date month='December' year='1999'></date>
+</front>
+<format type='HTML' target='http://www.w3.org/TR/html401/' />
+</reference>
+
 <reference anchor='UTF-8'>
 <front>
 <title abbrev='UTF-8'>UTF-8, a transformation format of ISO 10646</title>
@@ -2201,7 +2186,7 @@ To be filled-in later.
    It is useful to consider an example of how the base URI of a document
    can be embedded within the document's content.  In this appendix, we
    describe how documents written in the Hypertext Markup Language
-   (HTML) <xref target="RFC1866"/> can include an embedded base URI.  This appendix
+   (HTML) <xref target="HTML"/> can include an embedded base URI.  This appendix
    does not form a part of the URI specification and should not be
    considered as anything more than a descriptive example.
 </t>
@@ -2214,10 +2199,10 @@ To be filled-in later.
    example:
 </t>
 <figure><artwork>
-   &lt;!doctype html public "-//IETF//DTD HTML//EN"&gt;
+   &lt;!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
    &lt;HTML&gt;&lt;HEAD&gt;
    &lt;TITLE&gt;An example HTML document&lt;/TITLE&gt;
-   &lt;BASE href="http://www.ics.uci.edu/Test/a/b/c"&gt;
+   &lt;BASE href="http://www.example.com/Test/a/b/c"&gt;
    &lt;/HEAD&gt;&lt;BODY&gt;
    ... &lt;A href="../x"&gt;a hypertext anchor&lt;/A&gt; ...
    &lt;/BODY&gt;&lt;/HTML&gt;
@@ -2227,7 +2212,7 @@ To be filled-in later.
    relative URI "../x" as representing the absolute URI
 </t>
 <figure><artwork>
-   &lt;http://www.ics.uci.edu/Test/a/x&gt;
+   &lt;http://www.example.com/Test/a/x&gt;
 </artwork></figure>
 <t>
    regardless of the context in which the example document was obtained.
