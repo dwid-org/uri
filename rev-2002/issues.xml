@@ -2977,7 +2977,7 @@ of escaping and unreserved to be (hopefully) clearer.
  <type>hostname</type>
  <name>038-qualified</name>
  <title>qualified production in hostname is ambiguous</title>
- <status>fixed 01</status>
+ <status>reopened</status>
  <report>
   <author email="GK_AT_ninebynine.org">Graham Klyne</author>
   <date sort="20030226">02 Feb 2003</date>
@@ -3009,12 +3009,101 @@ I think the production could be written thus:
    qualified     = *( "." domainlabel ) [ "." toplabel "." ]
 </pre>
  </report>
+ <report>
+  <author email="clive_AT_demon.net">Clive D.W. Feather</author>
+  <date sort="20030302">02 Mar 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Is this the only place "qualified" is used? If so, then there's a further
+ambiguity - if a hostname consists only of a single domainlabel, is it
+followed by a zero-length qualified or not. I would suggest that the
+correct resolution is either:
+
+     hostname      = domainlabel [ qualified ]
+     qualified     = *( "." domainlabel ) "." toplabel [ "." ]
+
+if you want to forbid hostnames like "abc.123", or:
+
+     hostname      = domainlabel [ qualified ]
+     qualified     = 1*( "." domainlabel ) [ "." ]
+or
+     hostname      = domainlabel [ qualified ] [ "." ]
+     qualified     = 1*( "." domainlabel )
+
+(these are not equivalent) if you want to allow them.
+</pre>
+ </report>
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
-  <date sort="20030228">28 Feb 2003</date>
+  <date sort="20030303">03 Mar 2003</date>
   <where>issues list</where>
 <pre>
 Fixed in draft 01.
+</pre>
+ </action>
+ <report>
+  <author email="GK_AT_ninebynine.org">Graham Klyne</author>
+  <date sort="20030305">05 Mar 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I have to say that the 'hostname' syntax as specified an RFC2396bis is a pain
+to parse accurately.  I think it's sufficiently difficult to get exactly
+right that it won't be correctly implemented as specified in many
+applications, which leaves me wondering if it really should be so
+fussily correct with respect to domain name usage.
+
+(The reason I'm noticing this is that I've been using the URI parsing task
+to experiment with some programming tools and techniques that offer a more
+direct correspondence between specification and the source code.  If I were
+doing this as part of a real application, I would long ago have ignored the
+detailed syntax and done something very similar but much easier to implement.)
+
+The problem is in the production for 'qualified'.  To determine whether an
+incoming ".abc" is a 'domainlabel' or a 'toplabel' requires a significant
+lookahead, to the following '.' (if present) and the character following
+that.  To determine if an incoming ".123" is valid can require an
+arbitrarily long lookahead (e.g. http://0.123.4.5.6.7.8.9.10.11.12.13.x/).
+
+I think parsing precisely according to the syntax would be greatly
+simplified if the syntax were relaxed so that:
+
+  qualified = *( "." domainlabel ) [ "." ]
+
+i.e. drop the syntactic prohibition of URIs like this:
+
+  http://www.example.123./foo
+
+I appreciate this is not strictly correct, but I see no practical harm
+from defining the syntax in this way and asserting the form of the final
+domain label as an extra-syntactic constraint.  A (limited) few tests
+with my browser  suggest that it does not syntactically prohibit numeric
+top-level domain labels, but simply reports that the domain cannot be found.
+
+...
+
+If you really want to keep the syntactic constraint in place, I suggest
+an alternative approach:
+
+hostname  = qualified
+qualified = numericlabel "." qualified /
+            toplabel [ "." [qualified] ]
+
+numericlabel = DIGIT [ 0*61( alphanum / "-" ) alphanum
+
+...
+
+I think there's a typo in the syntax production for 'toplabel':
+
+s/alpha/ALPHA/ ?
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030318">18 Mar 2003</date>
+  <where>issues list</where>
+<pre>
+Reopened.  It would be best to have a syntax that was both unambiguous
+and easy for LALR parsers to process, but that may require too many changes.
 </pre>
  </action>
 </issue>
