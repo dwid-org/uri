@@ -808,6 +808,7 @@ URI character sequence->octet sequence->original character sequence
 </artwork></figure>
 <figure><preamble>
 <iref item="hostname" primary="true"/>
+<iref item="qualified" primary="true"/>
 <iref item="domainlabel" primary="true"/>
 <iref item="toplabel" primary="true"/>
 <iref item="alphanum" primary="true"/>
@@ -820,13 +821,15 @@ URI character sequence->octet sequence->original character sequence
    addresses, and may be followed by a single "." if it is necessary to
    distinguish between the complete domain name and any local domain.
 <iref item="URI grammar" subitem="hostname" primary="true"/>
+<iref item="URI grammar" subitem="qualified" primary="true"/>
 <iref item="URI grammar" subitem="domainlabel" primary="true"/>
 <iref item="URI grammar" subitem="toplabel" primary="true"/>
 <iref item="URI grammar" subitem="alphanum" primary="true"/>
 </preamble><artwork>
-   hostname      = *( domainlabel "." ) toplabel [ "." ]
-   domainlabel   = alphanum / alphanum *( alphanum / "-" ) alphanum
-   toplabel      = ALPHA / ALPHA *( alphanum / "-" ) alphanum
+   hostname      = domainlabel [ qualified ]
+   qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
+   domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
+   toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
 </artwork></figure>
 <figure><preamble>
@@ -2059,9 +2062,10 @@ hostport      = host [ ":" port ]
 host          = IPv6reference / IPv4address / hostname
 port          = *DIGIT
 
-hostname      = *( domainlabel "." ) toplabel [ "." ]
-domainlabel   = alphanum / alphanum *( alphanum / "-" ) alphanum
-toplabel      = ALPHA / ALPHA *( alphanum / "-" ) alphanum
+hostname      = domainlabel [ qualified ]
+qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
+domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
+toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
 alphanum      = ALPHA / DIGIT
 
 IPv4address   = dec-octet "." dec-octet "." dec-octet "." dec-octet
@@ -2453,7 +2457,9 @@ incorrect ABNF description of IPv6address, we created a new ABNF rule
 for IPv6address that matches the text representations defined by
 Section 2.2 of <xref target="RFC2373"/>.  Likewise, the definition
 of IPv4address has been improved in order to limit each decimal
-octet to the range 0-255.
+octet to the range 0-255, and the definition of hostname has been
+improved to better specify length limitations and partially-qualified
+domain names.
 </t>
 </section>
 

@@ -1593,6 +1593,7 @@ ins
 <a name="rfc.iref.44"></a>
 <a name="rfc.iref.45"></a>
 <a name="rfc.iref.46"></a>
+<a name="rfc.iref.47"></a>
    A hostname takes the form described in Section 3 of <a href="#RFC1034" title="Domain names - concepts and facilities">[RFC1034]</a>
    and Section 2.1 of <a href="#RFC1123" title="Requirements for Internet Hosts - Application and Support">[RFC1123]</a>: a sequence of domain labels
    separated by ".", each domain label starting and ending with an alphanumeric
@@ -1601,28 +1602,30 @@ ins
    digit, thus syntactically distinguishing domain names from IPv4
    addresses, and may be followed by a single "." if it is necessary to
    distinguish between the complete domain name and any local domain.
-<a name="rfc.iref.47"></a>
 <a name="rfc.iref.48"></a>
 <a name="rfc.iref.49"></a>
 <a name="rfc.iref.50"></a>
+<a name="rfc.iref.51"></a>
+<a name="rfc.iref.52"></a>
 
 </p>
-<pre>   hostname      = *( domainlabel "." ) toplabel [ "." ]
-   domainlabel   = alphanum / alphanum *( alphanum / "-" ) alphanum
-   toplabel      = ALPHA / ALPHA *( alphanum / "-" ) alphanum
+<pre>   hostname      = domainlabel [ qualified ]
+   qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
+   domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
+   toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
 </pre>
 <a name="rfc.figure.u.28"></a>
 <p>
 
-<a name="rfc.iref.51"></a>
-<a name="rfc.iref.52"></a>
 <a name="rfc.iref.53"></a>
+<a name="rfc.iref.54"></a>
+<a name="rfc.iref.55"></a>
    A host identified by an IPv4 literal address is represented in
    dotted-decimal notation (a sequence of four decimal numbers in the
    range 0 to 255, separated by ".") <a href="#RFC0952" title="DoD Internet host table specification">[RFC0952]</a>.
-<a name="rfc.iref.54"></a>
-<a name="rfc.iref.55"></a>
+<a name="rfc.iref.56"></a>
+<a name="rfc.iref.57"></a>
 
 </p>
 <pre>   IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
@@ -1635,17 +1638,17 @@ ins
 <a name="rfc.figure.u.29"></a>
 <p>
 
-<a name="rfc.iref.56"></a>
-<a name="rfc.iref.57"></a>
 <a name="rfc.iref.58"></a>
 <a name="rfc.iref.59"></a>
+<a name="rfc.iref.60"></a>
+<a name="rfc.iref.61"></a>
    A host identified by an IPv6 literal address <a href="#RFC2373" title="IP Version 6 Addressing Architecture">[RFC2373]</a>
    is distinguished by enclosing the IPv6 literal within square-brakets
    ("[" and "]").  This is the only place where square-bracket characters
    are allowed in the hierarchical URI syntax.
-<a name="rfc.iref.60"></a>
-<a name="rfc.iref.61"></a>
 <a name="rfc.iref.62"></a>
+<a name="rfc.iref.63"></a>
+<a name="rfc.iref.64"></a>
 
 </p>
 <pre>   IPv6reference = "[" IPv6address "]"
@@ -1672,17 +1675,17 @@ ins
 <a name="rfc.figure.u.30"></a>
 <p>
 
-<a name="rfc.iref.63"></a>
+<a name="rfc.iref.65"></a>
    The path component contains data, specific to the authority (or the
    scheme if there is no authority component), identifying the resource
    within the scope of that scheme and authority.
-<a name="rfc.iref.64"></a>
-<a name="rfc.iref.65"></a>
 <a name="rfc.iref.66"></a>
 <a name="rfc.iref.67"></a>
 <a name="rfc.iref.68"></a>
 <a name="rfc.iref.69"></a>
 <a name="rfc.iref.70"></a>
+<a name="rfc.iref.71"></a>
+<a name="rfc.iref.72"></a>
 
 </p>
 <pre>   path          = [ abs-path / opaque-part ]
@@ -1708,10 +1711,10 @@ ins
 <a name="rfc.figure.u.31"></a>
 <p>
 
-<a name="rfc.iref.71"></a>
+<a name="rfc.iref.73"></a>
    The query component is a string of information to be interpreted by
    the resource.
-<a name="rfc.iref.72"></a>
+<a name="rfc.iref.74"></a>
 
 </p>
 <pre>   query         = *( pchar / "/" / "?" )
@@ -1735,7 +1738,7 @@ ins
 <a name="rfc.figure.u.32"></a>
 <p>
 
-<a name="rfc.iref.73"></a>
+<a name="rfc.iref.75"></a>
    The term "URI-reference" is used here to denote the common usage of a
    resource identifier.  A URI reference may be absolute or relative,
    and may have additional information attached in the form of a
@@ -1747,7 +1750,7 @@ ins
    result, most usage of URI is within general URI references, and it is
    impossible to obtain the URI from such a reference without also
    parsing the fragment and resolving the relative form.
-<a name="rfc.iref.74"></a>
+<a name="rfc.iref.76"></a>
 
 </p>
 <pre>   URI-reference = [ absolute-URI / relative-URI ] [ "#" fragment ]
@@ -1755,10 +1758,10 @@ ins
 <a name="rfc.figure.u.33"></a>
 <p>
 
-<a name="rfc.iref.75"></a>
+<a name="rfc.iref.77"></a>
    Many protocol elements allow only the absolute form of a URI with
    an optional fragment identifier.
-<a name="rfc.iref.76"></a>
+<a name="rfc.iref.78"></a>
 
 </p>
 <pre>   absolute-URI-reference = absolute-URI [ "#" fragment ]
@@ -1777,14 +1780,14 @@ ins
 <a name="rfc.figure.u.34"></a>
 <p>
 
-<a name="rfc.iref.77"></a>
+<a name="rfc.iref.79"></a>
    When a URI reference is used to perform a retrieval action on the
    identified resource, the optional fragment identifier, separated from
    the URI by a crosshatch ("#") character, consists of additional
    reference information to be interpreted by the user agent after the
    retrieval action has been successfully completed.  As such, it is not
    part of a URI, but is often used in conjunction with a URI.
-<a name="rfc.iref.78"></a>
+<a name="rfc.iref.80"></a>
 
 </p>
 <pre>   fragment      = *( pchar / "/" / "?" )
@@ -1859,7 +1862,7 @@ ins
 </tr>
 </table>
 <h1>
-<a name="rfc.iref.79"></a><a name="rfc.section.5">5</a>&nbsp;
+<a name="rfc.iref.81"></a><a name="rfc.section.5">5</a>&nbsp;
     Relative URI References</h1>
 <p>
 <a name="rfc.section.5.p.1"></a>
@@ -1887,7 +1890,7 @@ ins
    The relative URI syntax takes advantage of the &lt;hier-part&gt; syntax
    of &lt;absolute-URI&gt; (Section 3) in order to express a reference that is
    relative to the namespace of another hierarchical URI.
-<a name="rfc.iref.80"></a>
+<a name="rfc.iref.82"></a>
 
 </p>
 <pre>   relative-URI  = [ net-path / abs-path / rel-path ] [ "?" query ]
@@ -1907,12 +1910,12 @@ ins
 <a name="rfc.figure.u.36"></a>
 <p>
 
-<a name="rfc.iref.81"></a>
-<a name="rfc.iref.82"></a>
-   A relative reference that does not begin with a scheme name or a
-   slash character is termed a relative-path reference.
 <a name="rfc.iref.83"></a>
 <a name="rfc.iref.84"></a>
+   A relative reference that does not begin with a scheme name or a
+   slash character is termed a relative-path reference.
+<a name="rfc.iref.85"></a>
+<a name="rfc.iref.86"></a>
 
 </p>
 <pre>   rel-path      = rel-segment [ abs-path ]
@@ -2648,9 +2651,10 @@ hostport      = host [ ":" port ]
 host          = IPv6reference / IPv4address / hostname
 port          = *DIGIT
 
-hostname      = *( domainlabel "." ) toplabel [ "." ]
-domainlabel   = alphanum / alphanum *( alphanum / "-" ) alphanum
-toplabel      = ALPHA / ALPHA *( alphanum / "-" ) alphanum
+hostname      = domainlabel [ qualified ]
+qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
+domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
+toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
 alphanum      = ALPHA / DIGIT
 
 IPv4address   = dec-octet "." dec-octet "." dec-octet "." dec-octet
@@ -3116,7 +3120,9 @@ incorrect ABNF description of IPv6address, we created a new ABNF rule
 for IPv6address that matches the text representations defined by
 Section 2.2 of <a href="#RFC2373" title="IP Version 6 Addressing Architecture">[RFC2373]</a>.  Likewise, the definition
 of IPv4address has been improved in order to limit each decimal
-octet to the range 0-255.
+octet to the range 0-255, and the definition of hostname has been
+improved to better specify length limitations and partially-qualified
+domain names.
 </p>
 <h2>
 <a name="rfc.section.G.2">G.2</a>&nbsp;
@@ -3232,7 +3238,7 @@ and fix the following issues:
               &nbsp;&nbsp;absolute-URI-reference&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.75"><b>4</b></a></td>
+  &nbsp;<a href="#rfc.iref.77"><b>4</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3246,7 +3252,7 @@ and fix the following issues:
               &nbsp;&nbsp;alphanum&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.46"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.47"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3263,7 +3269,7 @@ and fix the following issues:
               &nbsp;&nbsp;dec-octet&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.53"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.55"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3277,7 +3283,7 @@ and fix the following issues:
               &nbsp;&nbsp;domainlabel&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.44"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.45"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td><b>E</b></td>
@@ -3297,7 +3303,7 @@ and fix the following issues:
               &nbsp;&nbsp;fragment&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.77"><b>4.1</b></a></td>
+  &nbsp;<a href="#rfc.iref.79"><b>4.1</b></a></td>
 </tr>
 <tr>
 <td><b>H</b></td>
@@ -3307,7 +3313,7 @@ and fix the following issues:
               &nbsp;&nbsp;h4&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.59"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.61"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3345,35 +3351,35 @@ and fix the following issues:
               &nbsp;&nbsp;IPv4&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.51"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.53"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;IPv4address&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.52"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.54"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;IPv6&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.56"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.58"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;IPv6address&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.58"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.60"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;IPv6reference&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.57"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.59"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td><b>M</b></td>
@@ -3413,21 +3419,21 @@ and fix the following issues:
               &nbsp;&nbsp;path&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.63"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.65"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;path-segments&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.64"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.66"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;pchar&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.66"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.68"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3451,7 +3457,7 @@ and fix the following issues:
               &nbsp;&nbsp;segment&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.65"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.67"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3468,7 +3474,7 @@ and fix the following issues:
               &nbsp;&nbsp;toplabel&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.45"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.46"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td><b>U</b></td>
@@ -3519,7 +3525,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;absolute-URI-reference&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.76"><b>4</b></a></td>
+  &nbsp;<a href="#rfc.iref.78"><b>4</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3533,7 +3539,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;alphanum&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.50"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.52"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3547,7 +3553,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;dec-octet&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.55"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.57"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3561,7 +3567,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;domainlabel&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.48"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.50"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3575,14 +3581,14 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;fragment&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.78"><b>4.1</b></a></td>
+  &nbsp;<a href="#rfc.iref.80"><b>4.1</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;h4&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.62"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.64"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3603,7 +3609,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;hostname&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.47"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.48"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3617,21 +3623,21 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;IPv4address&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.54"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.56"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;IPv6address&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.61"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.63"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;IPv6reference&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.60"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.62"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3659,21 +3665,21 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;path&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.67"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.69"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;path-segments&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.68"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.70"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;pchar&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.70"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.72"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3684,10 +3690,17 @@ and fix the following issues:
 </tr>
 <tr>
 <td>
+                &nbsp;&nbsp;&nbsp;&nbsp;qualified&nbsp;
+                  
+                
+  &nbsp;<a href="#rfc.iref.49"><b>3.2.2</b></a></td>
+</tr>
+<tr>
+<td>
                 &nbsp;&nbsp;&nbsp;&nbsp;query&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.72"><b>3.4</b></a></td>
+  &nbsp;<a href="#rfc.iref.74"><b>3.4</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3701,21 +3714,21 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;relative-URI&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.80"><b>5</b></a></td>
+  &nbsp;<a href="#rfc.iref.82"><b>5</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;rel-path&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.83"><b>5</b></a></td>
+  &nbsp;<a href="#rfc.iref.85"><b>5</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;rel-segment&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.84"><b>5</b></a></td>
+  &nbsp;<a href="#rfc.iref.86"><b>5</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3736,7 +3749,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;segment&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.69"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.71"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3750,7 +3763,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;toplabel&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.49"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.51"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3785,7 +3798,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;URI-reference&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.74"><b>4</b></a></td>
+  &nbsp;<a href="#rfc.iref.76"><b>4</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3799,7 +3812,7 @@ and fix the following issues:
               &nbsp;&nbsp;URI-reference&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.73"><b>4</b></a></td>
+  &nbsp;<a href="#rfc.iref.75"><b>4</b></a></td>
 </tr>
 <tr>
 <td>

@@ -1163,7 +1163,7 @@ Fixed by rewriting the algorithm as pseudocode.
  <type>syntax: hostname</type>
  <name>016-hostname-toplabel</name>
  <title>hostname toplabel syntax could be improved</title>
- <status>accepted</status>
+ <status>fixed 00</status>
  <report>
   <author email="blilly_AT_erols.com">Bruce Lilly</author>
   <date sort="20020116">16 Jan 2002</date>
@@ -1210,6 +1210,20 @@ or equivalently but more compactly as:
       toplabel      = alpha [ *( alphanum | "-" ) alphanum ]
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021028">28 Oct 2002</date>
+  <where>draft 00</where>
+<pre>
+Changed to reflect all of the suggestions:
+
+   hostname      = domainlabel [ qualified ]
+   qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
+   domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
+   toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
+   alphanum      = ALPHA / DIGIT
+</pre>
+ </action>
 </issue>
 
 <issue>

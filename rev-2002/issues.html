@@ -12,9 +12,6 @@
 <th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#016-hostname-toplabel">016-hostname-toplabel</a></td><td>hostname toplabel syntax could be improved</td><td>syntax: hostname</td><td>accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td>accepted</td>
 </tr>
 <tr>
@@ -73,6 +70,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#015-fragment-handling">015-fragment-handling</a></td><td>clarify how URI processor is expected to handle fragment</td><td>syntax: fragment</td><td>fixed 00</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#016-hostname-toplabel">016-hostname-toplabel</a></td><td>hostname toplabel syntax could be improved</td><td>syntax: hostname</td><td>fixed 00</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#018-IPv6-example">018-IPv6-example</a></td><td>RFC 2732 example bug</td><td>syntax: IPv6</td><td>added 00</td>
@@ -1357,7 +1357,7 @@ Fixed by rewriting the algorithm as pseudocode.
       hostname toplabel syntax could be improved</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">syntax: hostname</th><th>accepted</th>
+<th width="40%">syntax: hostname</th><th>fixed 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -1404,6 +1404,22 @@ or equivalently but more compactly as:
 
       domainlabel   = alphanum [ *( alphanum | "-" ) alphanum ]
       toplabel      = alpha [ *( alphanum | "-" ) alphanum ]
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  28 Oct 2002,
+  draft 00:
+  <pre>
+Changed to reflect all of the suggestions:
+
+   hostname      = domainlabel [ qualified ]
+   qualified     = *( "." domainlabel ) [ "." toplabel [ "." ] ]
+   domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
+   toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
+   alphanum      = ALPHA / DIGIT
 </pre>
 </td>
 </tr>
