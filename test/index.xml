@@ -9,8 +9,8 @@
 <links>
  <li><a href="../rev-2002/issues.html">URI Issues</a></li>
  <li>URI draft:
-       <a href="../rev-2002/draft-fielding-uri-rfc2396bis-05.txt">05.txt</a>,
-       <a href="../rev-2002/draft-fielding-uri-rfc2396bis-05.html">05.html</a></li>
+       <a href="../rev-2002/draft-fielding-uri-rfc2396bis-06.txt">06.txt</a>,
+       <a href="../rev-2002/draft-fielding-uri-rfc2396bis-06.html">06.html</a></li>
  <li><a href="../rfc/rfc2396.html">RFC 2396</a></li>
 </links>
 <summary>
@@ -39,9 +39,39 @@
 <pre>
 The examples provided in the specification (section 5.4) use a base
 URI of "http://a/b/c/d;p?q" and should be consistent with almost all
-implementations.  A <a href="rel_examples1.html">rel_examples1</a>
-test page is provided for visual testing.  Note that this is only
+implementations.  A <a href="rel_examples1.html">rel_examples1
+Test Page</a> is provided for visual testing.  Note that this is only
 a test of the URI reference parser and conversion to absolute form.
+</pre>
+ </report>
+ <report>
+  <author email="duerst_AT_w3.org">Martin Duerst</author>
+  <date sort="20040420">20 Apr 2004</date>
+  <where><a href="http://www.w3.org/2004/04/uri-rel-test.html">uri-rel-test.html</a></where>
+<pre>
+I have created a testing page at <a href="http://www.w3.org/2004/04/uri-rel-test.html">http://www.w3.org/2004/04/uri-rel-test.html</a>
+to make (manual) testing of the implementations in various browsers easy.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>percent-encoding</type>
+ <name>percent-encoded-reg-name</name>
+ <title>test if %hh is processed correctly in reg-name</title>
+ <status>unverified</status>
+ <report>
+  <author email="duerst_AT_w3.org">Martin Duerst</author>
+  <date sort="20040427">27 Apr 2004</date>
+  <where><a href="http://www.w3.org/2004/04/uri-rel-test.html#reg-percent">W3C reg-percent</a></where>
+<pre>
+I have added some more tests to my page at
+
+   <a href="http://www.w3.org/2004/04/uri-rel-test.html#reg-percent">http://www.w3.org/2004/04/uri-rel-test.html#reg-percent</a>
+
+What they test is whether %hh in reg-name is dealt with according
+to the spec. There are two parts, one for cases that correspond
+to US-ASCII only, and the other for cases that correspond to IDN.
 </pre>
  </report>
 </issue>
@@ -96,6 +126,10 @@ with a scheme-specific optimization, Safari 1.0.2 is compliant.
   <date sort="20040420">20 Apr 2004</date>
   <where><a href="http://www.w3.org/Amaya/">W3C Amaya</a></where>
 <pre>
+I have used this page to test Amaya (my version, compiled from CVS
+checkout on 2004-01-04). I don't know whether (or to what extent)
+processing is done by Amaya or by libwww. Here are the results:
+
 All tests are passed, except the following:
 
 #       rel             correct                 Amaya
@@ -136,6 +170,113 @@ All tests are passed, except the following:
 51      ./../g          http://a/b/g            http://a/b/c/g (/c not removed)
 
 For test 71, Opera uses backwards-compatible parsing.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>implementation</type>
+ <name>Checklink</name>
+ <title>W3C Checklink</title>
+ <status>non-compliant</status>
+ <report>
+  <author email="duerst_AT_w3.org">Martin Duerst</author>
+  <date sort="20040420">20 Apr 2004</date>
+  <where><a href="http://validator.w3.org/checklink">W3C Checklink</a></where>
+<pre>
+All tests are passed, except the following:
+
+#       relative        absolute                Link checker
+
+6       //g             http://g                http://g/  (added slash)
+7       ?y              http://a/b/c/d;p?y      http://a/b/c/?y  (missing d;p)
+31      ../../../g      http://a/g              http://a/../g    (leftover ../)
+32      ../../../../g   http://a/g              http://a/../../g (leftover ./../)
+41      /./g            http://a/g              http://a/./g     (leftover ./)
+51      ./../g          http://a/b/g            http://a/b/c/g   (leftover c/)
+
+For test 71, the link checker uses strict parsing.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>implementation</type>
+ <name>Firefox</name>
+ <title>Mozilla Firefox 0.8, Win XP</title>
+ <status>non-compliant</status>
+ <report>
+  <author email="distobj_AT_acm.org">Mark Baker</author>
+  <date sort="20040420">20 Apr 2004</date>
+  <where><a href="http://www.mozilla.org/">Mozilla Firefox</a></where>
+<pre>
+#       rel             correct                 Firefox 0.8
+
+6       //g             http://g                http://g/
+15                      http://a/b/c/d;p?q      not testable
+51      ./../g          http://a/b/g            http://a/b/c/g
+71	http:g					http://a/b/c/g
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>implementation</type>
+ <name>HaskellUtils</name>
+ <title>Graham Klyne's Haskell Utils</title>
+ <status>compliant</status>
+ <report>
+  <author email="GK_AT_ninebynine.org">Graham Klyne</author>
+  <date sort="20040420">20 Apr 2004</date>
+  <where><a href="http://www.ninebynine.org/Software/HaskellUtils/Network/URITestDescriptions.html">HaskellUtils</a></where>
+<pre>
+passes all tests.
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>implementation</type>
+ <name>SAP Enterprise Portal</name>
+ <title>SAP Enterprise Portal</title>
+ <status>non-compliant</status>
+ <report>
+  <author email="stefan.eissingAT_greenbytes.de">Graham Klyne</author>
+  <date sort="2004042r30">20 Apr 2004</date>
+<pre>
+rel		correct			SAP EP KM
+
+?y        http://a/b/c/d;p?y      http://a/b/c/?y
+http:g    http:g                  http://a/b/c/g
+http:     http:                   not accepted as vaid URI or URI Reference
+</pre>
+ </report>
+</issue>
+
+<issue>
+ <type>implementation</type>
+ <name>Acrobat</name>
+ <title>Adobe Acrobat 6.01 web capture</title>
+ <status>compliant</status>
+ <report>
+  <author email="lmm_AT_acm.org">Graham Klyne</author>
+  <date sort="20040429">29 Apr 2004</date>
+  <where><a href="http://www.adobe.com/">http://www.adobe.com/</a></where>
+<pre>
+Adobe Acrobat 6.01 'web capture' on 
+
+ <a href="http://gbiv.com/protocols/uri/test/rel_examples1.html">http://gbiv.com/protocols/uri/test/rel_examples1.html</a>
+
+produces a PDF file with URIs that agree with [R] except:
+
+   http:g   http://a/b/c/g          (ok for compat.)
+   http:    http://a/b/c/d;p?q      (ok for compat.)
+
+   /./g     http://a/./g            [X]
+   /../g    http://a/../g           [X]
+
+Note RFC2396bis [R] and RFC2396 [X] agree except in three
+test cases:   ?y,  /./g,  /../g.
 </pre>
  </report>
 </issue>
