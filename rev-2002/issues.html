@@ -42,9 +42,6 @@
 <td nowrap="nowrap"><a href="#033-dot-segments">033-dot-segments</a></td><td>relativising an absolute reference should be invertible</td><td>relative</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#041-encoding">041-encoding</a></td><td>Section 2 on encoding causes too much confusion</td><td>characters</td><td nowrap="nowrap">accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#042-fragment-when">042-fragment-when</a></td><td>fragment identifiers applied before entire content is retrieved</td><td>fragment</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
@@ -142,6 +139,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#040-reg-name">040-reg-name</a></td><td>Remove registry-based name syntax from authority</td><td>authority</td><td nowrap="nowrap">fixed 02</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#041-encoding">041-encoding</a></td><td>Section 2 on encoding causes too much confusion</td><td>characters</td><td nowrap="nowrap">fixed 02</td>
 </tr>
 </table>
 <br>
@@ -3406,6 +3406,16 @@ and thus the suggestion seems to be based on something other than RFC 2396.
 </pre>
 </td>
 </tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  27 Apr 2003,
+  draft 02:
+  <pre>
+The definition has been rewritten in response to issue 024-identity.
+</pre>
+</td>
+</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -3798,7 +3808,7 @@ to simplify parsing of the URI syntax.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="041-encoding">041-encoding</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Section 2 on encoding causes too much confusion</font></th>
 </tr>
 <tr>
-<th>accepted</th><th align="left">characters</th>
+<th bgcolor="lightgreen">fixed 02</th><th align="left">characters</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -4102,10 +4112,15 @@ recommends UTF-8 usage.
 <tr>
 <td colspan="2">action:
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
-  20 Mar 2003,
-  issues list:
+  02 May 2003,
+  draft 02:
   <pre>
-Planning a rewrite.
+Section 2.1 has been rewritten.  I started with the text provided by
+Tim Bray, but soon found that much of it was simply repeating information
+that is explained better in later sections.  So, I replaced it with the
+meat of the explanation (what should happen when characters get encoded),
+added the simplest recommendation for UTF-8, and specified the rest by
+clarifying the appropriate sections below it.
 </pre>
 </td>
 </tr>

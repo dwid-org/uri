@@ -311,7 +311,7 @@ The following examples illustrate URIs that are in common use.
 <t>
    The URI syntax was designed with global transcribability as one of
    its main concerns. A URI is a sequence of characters from a very
-   limited set, i.e. the letters of the basic Latin alphabet, digits,
+   limited set: the letters of the basic Latin alphabet, digits,
    and a few special characters.  A URI may be represented in a variety
    of ways: e.g., ink on paper, pixels on a screen, or a sequence of
    octets in a coded character set.  The interpretation of a URI depends
@@ -361,146 +361,115 @@ The following examples illustrate URIs that are in common use.
 </t>
 </section>
 
-<section title="Syntax Notation and Common Elements">
+<section title="Syntax Notation and Common Elements" anchor="notation">
 <t>
-   This document uses two conventions to describe and define the syntax
-   for URI.  The first, called the layout form, is a general description
-   of the order of components and component separators, as in
+This document uses two conventions to describe and define the syntax
+for URI.  The first, called the layout form, is a general description
+of the order of components and component separators, as in
 </t>
 <figure><artwork>
     &lt;first&gt;/&lt;second&gt;;&lt;third&gt;?&lt;fourth&gt;
 </artwork></figure>
 <t>
-   The component names are enclosed in angle-brackets and any characters
-   outside angle-brackets are literal separators.  Whitespace should be
-   ignored.  These descriptions are used informally and do not define
-   the syntax requirements.
+The component names are enclosed in angle-brackets and any characters
+outside angle-brackets are literal separators.  Whitespace should be
+ignored.  These descriptions are used informally and do not define
+the syntax requirements.
 </t>
 <t>
-   The second convention is a formal grammar defined using the
-   Augmented Backus-Naur Form (ABNF) notation of <xref target="RFC2234"/>.
-   Although the ABNF defines syntax in terms of the ASCII character
-   encoding <xref target="ASCII"/>, the URI syntax should be interpreted
-   in terms of the character that the ASCII-encoded octet represents,
-   rather than the octet encoding itself.  How a URI is represented
-   in terms of bits and bytes on the wire is dependent upon
-   the character encoding of the protocol used to transport it, or the
-   charset of the document that contains it.
+The second convention is a formal grammar defined using the
+Augmented Backus-Naur Form (ABNF) notation of <xref target="RFC2234"/>.
+Although the ABNF defines syntax in terms of the US-ASCII character
+encoding <xref target="ASCII"/>, the URI syntax should be interpreted
+in terms of the character that the ASCII-encoded octet represents,
+rather than the octet encoding itself.  How a URI is represented
+in terms of bits and bytes on the wire is dependent upon
+the character encoding of the protocol used to transport it, or the
+charset of the document that contains it.
 </t>
 <t>
-   The complete URI syntax is collected in Appendix A.
+The complete URI syntax is collected in Appendix A.
 </t>
 </section>
 </section>
 
-<section title="URI Characters and Escape Sequences">
+<section title="URI Characters">
 <iref item="uric" primary="true"/>
 <figure><preamble>
-   A URI consists of a restricted set of characters, primarily chosen to
-   aid transcribability and usability both in computer systems and in
-   non-computer communications. Characters used conventionally as
-   delimiters around a URI are excluded.  The restricted set of
-   characters consists of digits, letters, and a few graphic symbols
-   chosen from those common to most of the character encodings and
-   input facilities available to Internet users.
+A URI consists of a restricted set of characters, primarily chosen to
+aid transcribability and usability both in computer systems and in
+non-computer communications.  Characters used conventionally as
+delimiters around a URI are excluded.  The restricted set of
+characters consists of digits, letters, and a few graphic symbols
+chosen from those common to most of the character encodings and
+input facilities available to Internet users.
 <iref item="URI grammar" subitem="uric" primary="true"/>
 </preamble><artwork>
    uric          = reserved / unreserved / escaped
 </artwork></figure>
 <t>
-   Within a URI, characters are either used as delimiters or to
-   represent strings of data (octets) within the delimited portions.
-   Octets are either represented directly by a character (using the US-ASCII
-   character for that octet <xref target="ASCII"/>) or by an escape encoding.
-   This representation is elaborated below.
+Within a URI, reserved characters are used to delimit syntax components,
+unreserved characters are used to describe registered names, and
+unreserved characters, non-delimiting reserved characters, and
+character escape sequences are used to represent strings of data
+(octets) within the components.
 </t>
 
-<section title="URIs and non-ASCII characters">
+<section title="Encoding of Characters">
 <t>
-   The relationship between URIs and characters has been a source of
-   confusion for characters that are not part of US-ASCII. To describe
-   the relationship, it is useful to distinguish between a "character"
-   (as a distinguishable semantic entity) and an "octet" (an 8-bit
-   byte). There are two mappings, one from URI characters to octets, and
-   a second from octets to original characters:
-</t>
-<figure><artwork>
-URI character sequence->octet sequence->original character sequence
-</artwork></figure>
-<t>
-   A URI is represented as a sequence of characters, not as a sequence
-   of octets. That is because a URI might be "transported" by means that
-   are not through a computer network, e.g., printed on paper, read over
-   the radio, etc.
+As described in <xref target="notation">section 1.7</xref>, the URI syntax
+is defined in terms of characters by reference to the
+<xref target="ASCII">US-ASCII</xref> encoding of characters to octets.
+This specification does not mandate the use of any particular mapping
+between its character set and the octets used to store or transmit
+those characters.
 </t>
 <t>
-   Within a delimited component of a URI, a sequence of characters is
-   used to represent a sequence of octets. For example, the character "a"
-   represents the octet 97 (decimal), while the character sequence "%",
-   "0", "a" represents the octet 10 (decimal).
+URI characters representing strings of data within a component may, if
+allowed by the component production, represent an arbitrary sequence of
+octets.  For example, portions of a given URI might correspond to a filename
+on a non-ASCII filesystem, a query on non-ASCII data, numeric coordinates
+on a map, etc.  Some URI schemes define a specific encoding of raw data
+to US-ASCII characters as part of their scheme-specific requirements.
+Most URI schemes represent data octets by the US-ASCII character
+corresponding to that octet, either directly in the form of the
+character's glyph or by use of an escape sequence (described below).
 </t>
 <t>
-   There is a second translation for some resources: the sequence of
-   octets defined by a component of the URI is subsequently used to
-   represent a sequence of characters. A 'charset' defines this mapping.
-   There are many charsets in use in Internet protocols. For example,
-   UTF-8 <xref target="UTF-8"/> defines a mapping from sequences of octets to sequences
-   of characters in the repertoire of ISO 10646.
-</t>
-<t>
-   In the simplest case, the original character sequence contains only
-   characters that are defined in US-ASCII, and the two levels of
-   mapping are simple and easily invertible: each 'original character'
-   is represented as the octet for the US-ASCII code for it, which is,
-   in turn, represented as either the US-ASCII character, or else the
-   "%" escape sequence for that octet.
-</t>
-<t>
-   For original character sequences that contain non-ASCII characters,
-   however, the situation is more difficult. Internet protocols that
-   transmit octet sequences intended to represent character sequences
-   are expected to provide some way of identifying the charset used, if
-   there might be more than one <xref target="RFC2277"/>.  However, there is currently
-   no provision within the generic URI syntax to accomplish this
-   identification. An individual URI scheme may require a single
-   charset, define a default charset, or provide a way to indicate the
-   charset used.  For example, a new scheme "foo" might be defined such
-   that any escaped octet is keyed to the UTF-8 encoding in order to
-   determine the corresponding Unicode character.
-</t>
-<t>
-   It is expected that a systematic treatment of character encoding
-   within URIs will be developed as a future modification of this
-   specification.
+When a URI scheme defines a component that represents textual data
+consisting only of characters from the Unicode (ISO 10646) character
+set, we recommend that the data be encoded first as octets according
+to the UTF-8 <xref target="UTF-8"/> character encoding, and then
+escaping any octets that are not in the unreserved character set.
 </t>
 </section>
 
 <section title="Reserved Characters">
 <figure><preamble>
 <iref item="reserved" primary="true"/>
-   Many URI include components consisting of or delimited by, certain
-   special characters.  These characters are called "reserved", since
-   their usage within the URI component is limited to their reserved
-   purpose.  If the data for a URI component would conflict with the
-   reserved purpose, then the conflicting data must be escaped before
-   forming the URI.
+Many URIs include components consisting of, or delimited by, certain
+special characters.  These characters are called "reserved", since
+their usage within the URI component is limited to their reserved
+purpose.  If data for a URI component would conflict with the
+reserved purpose, then the conflicting data must be escaped before
+forming the URI.
 <iref item="URI grammar" subitem="reserved" primary="true"/>
 </preamble><artwork>
    reserved    = "[" / "]" / ";" / "/" / "?" / 
                  ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 </artwork></figure>
 <t>
-   The "reserved" syntax class above refers to those characters that are
-   allowed within a URI, but which may not be allowed within a
-   particular component of the generic URI syntax; they are used as
-   delimiters of the components described in Section 3.
+The "reserved" syntax class above refers to those characters that are
+allowed within a URI, but which may not be allowed within a
+particular component of the generic URI syntax; they are used as
+delimiters of the components described in Section 3.
 </t>
 <t>
-   Characters in the "reserved" set are not reserved in all contexts.
-   The set of characters actually reserved within any given URI
-   component is defined by that component. In general, a character is
-   reserved if the semantics of the URI changes if the character is
-   replaced with its escaped US-ASCII encoding.
+Characters in the "reserved" set are not reserved in all contexts.
+The set of characters actually reserved within any given URI
+component is defined by that component. In general, a character is
+reserved if the semantics of the URI would be changed if that character
+is replaced with its escaped encoding.
 </t>
 </section>
 
@@ -508,10 +477,10 @@ URI character sequence->octet sequence->original character sequence
 <figure><preamble>
 <iref item="unreserved" primary="true"/>
 <iref item="mark" primary="true"/>
-   Data characters that are allowed in a URI but do not have a reserved
-   purpose are called unreserved.  These include upper and lower case
-   letters, decimal digits, and a limited set of punctuation marks and
-   symbols.
+Data characters that are allowed in a URI but do not have a reserved
+purpose are called unreserved.  These include upper and lower case
+letters, decimal digits, and a limited set of punctuation marks and
+symbols.
 <iref item="URI grammar" subitem="unreserved" primary="true"/>
 <iref item="URI grammar" subitem="mark" primary="true"/>
 </preamble><artwork>
@@ -520,114 +489,121 @@ URI character sequence->octet sequence->original character sequence
    mark        = "-" / "_" / "." / "!" / "~" / "*" / "'" / "(" / ")"
 </artwork></figure>
 <t>
-   Unreserved characters can be escaped without changing the semantics
-   of the URI, but this should not be done unless the URI is being used
-   in a context that does not allow the unescaped character to appear.
-   URI normalization processes may unescape sequences in the ranges of
-   ALPHA (%41-%5A and %61-%7A), DIGIT (%30-%39), underscore (%5F), or
-   tilde (%7E) without fear of creating a conflict, but unescaping the
-   other mark characters is usually counterproductive.
+Unreserved characters can be escaped without changing the semantics
+of a URI, but this should not be done unless the URI is being used
+in a context that does not allow the unescaped character to appear.
+URI normalization processes may unescape sequences in the
+ranges of ALPHA (%41-%5A and %61-%7A), DIGIT (%30-%39), hyphen (%2D),
+underscore (%5F), or tilde (%7E) without fear of creating a conflict,
+but unescaping the other mark characters is usually counterproductive.
 </t>
 </section>
 
 <section title="Escape Sequences">
 <t>
-   Data must be escaped if it does not have a representation using an
-   unreserved character; this includes data that does not correspond to
-   a printable character of the US-ASCII coded character set, or that
-   corresponds to any US-ASCII character that is disallowed, as
-   explained below.
+Data must be escaped if it does not have a representation using an
+unreserved character; this includes data that does not correspond to
+a printable character of the US-ASCII coded character set or corresponds
+to a US-ASCII character that is reserved in that component or excluded
+from use within a URI (explained below).
 </t>
 
 <section title="Escaped Encoding">
 <figure><preamble>
 <iref item="escaped" primary="true"/>
-   An escaped octet is encoded as a character triplet, consisting of the
-   percent character "%" followed by the two hexadecimal digits
-   representing the octet code in . For example, "%20" is the escaped
-   encoding for the US-ASCII space character.
+An escaped octet is encoded as a character triplet, consisting of the
+percent character "%" followed by the two hexadecimal digits representing
+that octet's numeric value.  For example, "%20" is the escaped encoding
+for the US-ASCII space character.  This is sometimes referred to as
+"percent-encoding" the octet.
 <iref item="URI grammar" subitem="escaped" primary="true"/>
 </preamble><artwork>
    escaped     = "%" HEXDIG HEXDIG
-</artwork></figure>
+</artwork><postamble>
+The uppercase hexadecimal digits 'A' through 'F' are equivalent to the
+lowercase digits 'a' through 'f', respectively.  Two URIs that differ
+only in the case of hexadecimal digits used in escaped octets are
+equivalent.  For consistency, we recommend that uppercase digits be
+used by URI generators and normalizers.
+</postamble></figure>
 </section>
 
 <section title="When to Escape and Unescape">
 <t>
-   A URI is always in an "escaped" form, since escaping or unescaping a
-   completed URI might change its semantics.  Normally, the only time
-   escape encodings can safely be made is when the URI is being created
-   from its component parts; each component may have its own set of
-   characters that are reserved, so only the mechanism responsible for
-   generating or interpreting that component can determine whether or
-   not escaping a character will change its semantics. Likewise, a URI
-   must be separated into its components before the escaped characters
-   within those components can be safely decoded.
+A URI is always in an "escaped" form, since escaping or unescaping a
+completed URI might change its semantics.  Normally, the only time
+escape encodings can safely be made is when the URI is being created
+from its component parts; each component may have its own set of
+characters that are reserved, so only the mechanism responsible for
+generating or interpreting that component can determine whether or
+not escaping a character will change its semantics. Likewise, a URI
+must be separated into its components before the escaped characters
+within those components can be safely decoded.
 </t>
 <t>
-   In some cases, data that could be represented by an unreserved
-   character may appear escaped; for example, some of the unreserved
-   "mark" characters are automatically escaped by some systems.  If the
-   given URI scheme defines a canonicalization algorithm, then
-   unreserved characters may be unescaped according to that algorithm.
-   For example, "%7e" is sometimes used instead of "~" in an http URI
-   path, but the two are equivalent for an http URI.
+In some cases, data that could be represented by an unreserved
+character may appear escaped; for example, some of the unreserved
+"mark" characters are automatically escaped by some systems.  If the
+given URI scheme defines a canonicalization algorithm, then
+unreserved characters may be unescaped according to that algorithm.
+For example, "%7E" is sometimes used instead of "~" in an http URI
+path, but the two are equivalent for an http URI.
 </t>
 <t>
-   Because the percent "%" character always has the reserved purpose of
-   being the escape indicator, it must be escaped as "%25" in order to
-   be used as data within a URI.  Implementers should be careful not to
-   escape or unescape the same string more than once, since unescaping
-   an already unescaped string might lead to misinterpreting a percent
-   data character as another escaped character, or vice versa in the
-   case of escaping an already escaped string.
+Because the percent ("%") character always has the reserved purpose of
+being the escape indicator, it must be escaped as "%25" in order to
+be used as data within a URI.  Implementers should be careful not to
+escape or unescape the same string more than once, since unescaping
+an already unescaped string might lead to misinterpreting a percent
+data character as another escaped character, or vice versa in the
+case of escaping an already escaped string.
 </t>
+</section>
 </section>
 
 <section title="Excluded US-ASCII Characters">
 <t>
-   Although they are disallowed within the URI syntax, we include here a
-   description of those US-ASCII characters that have been excluded and
-   the reasons for their exclusion.
+Although they are disallowed within the URI syntax, we include here a
+description of those US-ASCII characters that have been excluded and
+the reasons for their exclusion.
 </t>
 <t>
-   The control characters (CTL) in the US-ASCII coded character set are not
-   used within a URI, both because they are non-printable and because
-   they are likely to be misinterpreted by some control mechanisms.
+The control characters (CTL) in the US-ASCII coded character set are not
+used within a URI, both because they are non-printable and because
+they are likely to be misinterpreted by some control mechanisms.
 </t>
 <t>
-   The space character (SP) is excluded because significant spaces may
-   disappear and insignificant spaces may be introduced when a URI is
-   transcribed or typeset or subjected to the treatment of word-processing
-   programs.  Whitespace is also used to delimit a URI in many
-   contexts.
+The space character (SP) is excluded because significant spaces may
+disappear and insignificant spaces may be introduced when a URI is
+transcribed or typeset or subjected to the treatment of word-processing
+programs.  Whitespace is also used to delimit a URI in many
+contexts.
 </t>
 <figure><preamble>
 <iref item="delims" primary="true"/>
-   The angle-bracket "&lt;" and "&gt;" and double-quote (") characters are
-   excluded because they are often used as the delimiters around a URI in
-   text documents and protocol fields.  The character "#" is excluded
-   because it is used to delimit a URI from a fragment identifier in a URI
-   reference (Section 4). The percent character "%" is excluded because
-   it is used for the encoding of escaped characters.
+The angle-bracket "&lt;" and "&gt;" and double-quote (") characters are
+excluded because they are often used as the delimiters around a URI in
+text documents and protocol fields.  The character "#" is excluded
+because it is used to delimit a URI from a fragment identifier in a URI
+reference (Section 4). The percent character "%" is excluded because
+it is used for the encoding of escaped characters.
 <iref item="URI grammar" subitem="delims" primary="true"/>
 </preamble><artwork>
    delims      = "&lt;" / "&gt;" / "#" / "%" / DQUOTE
 </artwork></figure>
 <figure><preamble>
 <iref item="unwise" primary="true"/>
-   Other characters are excluded because gateways and other transport
-   agents are known to sometimes modify such characters, or they are
-   used as delimiters.
+Other characters are excluded because gateways and other transport
+agents are known to sometimes modify such characters, or they are
+used as delimiters.
 <iref item="URI grammar" subitem="unwise" primary="true"/>
 </preamble><artwork>
    unwise      = "{" / "}" / "|" / "\" / "^" / "`"
 </artwork></figure>
 <t>
-   Data corresponding to excluded characters must be escaped in order to
-   be properly represented within a URI.
+Data corresponding to excluded characters must be escaped in order to
+be properly represented within a URI.
 </t>
-</section>
 </section>
 </section>
 
@@ -827,7 +803,7 @@ distinguish between the complete domain name and any local domain.
    hostname      = domainlabel qualified
    qualified     = *( "." domainlabel ) [ "." toplabel "." ]
    domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
-   toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
+   toplabel      = ALPHA    [ 0*61( alphanum | "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
 </artwork></figure>
 <figure><preamble>
@@ -2654,7 +2630,8 @@ domain names.
 <t>
 Section 6 on URI normalization and comparison has been completely
 rewritten and extended using input from Tim Bray and discussion within
-the W3C Technical Architecture Group.
+the W3C Technical Architecture Group.  Likewise, section 2.1 on the
+encoding of characters has been replaced.
 </t>
 </section>
 

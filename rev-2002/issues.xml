@@ -2984,6 +2984,14 @@ The definition actually says
 and thus the suggestion seems to be based on something other than RFC 2396.
 </pre>
  </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030427">27 Apr 2003</date>
+  <where>draft 02</where>
+<pre>
+The definition has been rewritten in response to issue 024-identity.
+</pre>
+ </action>
 </issue>
 
 <issue>
@@ -3329,7 +3337,7 @@ to simplify parsing of the URI syntax.
  <type>characters</type>
  <name>041-encoding</name>
  <title>Section 2 on encoding causes too much confusion</title>
- <status>accepted</status>
+ <status>fixed 02</status>
  <report>
   <author email="stefan.eissing_AT_greenbytes.de">Stefan Eissing</author>
   <date sort="20030131">31 Jan 2003</date>
@@ -3619,10 +3627,15 @@ recommends UTF-8 usage.
  </report>
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
-  <date sort="20030320">20 Mar 2003</date>
-  <where>issues list</where>
+  <date sort="20030502">02 May 2003</date>
+  <where>draft 02</where>
 <pre>
-Planning a rewrite.
+Section 2.1 has been rewritten.  I started with the text provided by
+Tim Bray, but soon found that much of it was simply repeating information
+that is explained better in later sections.  So, I replaced it with the
+meat of the explanation (what should happen when characters get encoded),
+added the simplest recommendation for UTF-8, and specified the rest by
+clarifying the appropriate sections below it.
 </pre>
  </action>
 </issue>

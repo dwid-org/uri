@@ -329,7 +329,7 @@ is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 
 
 <b>&nbsp;1.7&nbsp;
-            <a href="#rfc.section.1.7">Syntax Notation and Common Elements</a></b>
+            <a href="#notation">Syntax Notation and Common Elements</a></b>
 <br>
 
 
@@ -341,7 +341,7 @@ is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 
 
 <b>2&nbsp;
-            <a href="#rfc.section.2">URI Characters and Escape Sequences</a></b>
+            <a href="#rfc.section.2">URI Characters</a></b>
 <br>
 
 
@@ -349,13 +349,8 @@ is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 
 
 <b>&nbsp;2.1&nbsp;
-            <a href="#rfc.section.2.1">URIs and non-ASCII characters</a></b>
+            <a href="#rfc.section.2.1">Encoding of Characters</a></b>
 <br>
-
-
-
-
-
 
 
 
@@ -401,10 +396,10 @@ is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 
 
 
-<b>&nbsp;&nbsp;2.4.3&nbsp;
-            <a href="#rfc.section.2.4.3">Excluded US-ASCII Characters</a></b>
-<br>
 
+<b>&nbsp;2.5&nbsp;
+            <a href="#rfc.section.2.5">Excluded US-ASCII Characters</a></b>
+<br>
 
 
 
@@ -1102,7 +1097,7 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.section.1.6.p.1"></a>
    The URI syntax was designed with global transcribability as one of
    its main concerns. A URI is a sequence of characters from a very
-   limited set, i.e. the letters of the basic Latin alphabet, digits,
+   limited set: the letters of the basic Latin alphabet, digits,
    and a few special characters.  A URI may be represented in a variety
    of ways: e.g., ink on paper, pixels on a screen, or a sequence of
    octets in a coded character set.  The interpretation of a URI depends
@@ -1160,38 +1155,39 @@ The following examples illustrate URIs that are in common use.
 </p>
 <h2>
 <a name="rfc.section.1.7">1.7</a>&nbsp;
-    Syntax Notation and Common Elements</h2>
+    <a name="notation">Syntax Notation and Common Elements</a>
+</h2>
 <p>
 <a name="rfc.section.1.7.p.1"></a>
-   This document uses two conventions to describe and define the syntax
-   for URI.  The first, called the layout form, is a general description
-   of the order of components and component separators, as in
+This document uses two conventions to describe and define the syntax
+for URI.  The first, called the layout form, is a general description
+of the order of components and component separators, as in
 </p>
 <a name="rfc.figure.u.2"></a>
 <pre>    &lt;first&gt;/&lt;second&gt;;&lt;third&gt;?&lt;fourth&gt;
 </pre>
 <p>
 <a name="rfc.section.1.7.p.3"></a>
-   The component names are enclosed in angle-brackets and any characters
-   outside angle-brackets are literal separators.  Whitespace should be
-   ignored.  These descriptions are used informally and do not define
-   the syntax requirements.
+The component names are enclosed in angle-brackets and any characters
+outside angle-brackets are literal separators.  Whitespace should be
+ignored.  These descriptions are used informally and do not define
+the syntax requirements.
 </p>
 <p>
 <a name="rfc.section.1.7.p.4"></a>
-   The second convention is a formal grammar defined using the
-   Augmented Backus-Naur Form (ABNF) notation of <a href="#RFC2234" title="Augmented BNF for Syntax Specifications: ABNF">[RFC2234]</a>.
-   Although the ABNF defines syntax in terms of the ASCII character
-   encoding <a href="#ASCII" title="Coded Character Set -- 7-bit American Standard Code for Information Interchange">[ASCII]</a>, the URI syntax should be interpreted
-   in terms of the character that the ASCII-encoded octet represents,
-   rather than the octet encoding itself.  How a URI is represented
-   in terms of bits and bytes on the wire is dependent upon
-   the character encoding of the protocol used to transport it, or the
-   charset of the document that contains it.
+The second convention is a formal grammar defined using the
+Augmented Backus-Naur Form (ABNF) notation of <a href="#RFC2234" title="Augmented BNF for Syntax Specifications: ABNF">[RFC2234]</a>.
+Although the ABNF defines syntax in terms of the US-ASCII character
+encoding <a href="#ASCII" title="Coded Character Set -- 7-bit American Standard Code for Information Interchange">[ASCII]</a>, the URI syntax should be interpreted
+in terms of the character that the ASCII-encoded octet represents,
+rather than the octet encoding itself.  How a URI is represented
+in terms of bits and bytes on the wire is dependent upon
+the character encoding of the protocol used to transport it, or the
+charset of the document that contains it.
 </p>
 <p>
 <a name="rfc.section.1.7.p.5"></a>
-   The complete URI syntax is collected in Appendix A.
+The complete URI syntax is collected in Appendix A.
 </p>
 
 
@@ -1203,16 +1199,16 @@ The following examples illustrate URIs that are in common use.
 </table>
 <h1>
 <a name="rfc.iref.1"></a><a name="rfc.section.2">2</a>&nbsp;
-    URI Characters and Escape Sequences</h1>
+    URI Characters</h1>
 <a name="rfc.figure.u.3"></a>
 <p>
-   A URI consists of a restricted set of characters, primarily chosen to
-   aid transcribability and usability both in computer systems and in
-   non-computer communications. Characters used conventionally as
-   delimiters around a URI are excluded.  The restricted set of
-   characters consists of digits, letters, and a few graphic symbols
-   chosen from those common to most of the character encodings and
-   input facilities available to Internet users.
+A URI consists of a restricted set of characters, primarily chosen to
+aid transcribability and usability both in computer systems and in
+non-computer communications.  Characters used conventionally as
+delimiters around a URI are excluded.  The restricted set of
+characters consists of digits, letters, and a few graphic symbols
+chosen from those common to most of the character encodings and
+input facilities available to Internet users.
 <a name="rfc.iref.2"></a>
 
 </p>
@@ -1220,92 +1216,57 @@ The following examples illustrate URIs that are in common use.
 </pre>
 <p>
 <a name="rfc.section.2.p.2"></a>
-   Within a URI, characters are either used as delimiters or to
-   represent strings of data (octets) within the delimited portions.
-   Octets are either represented directly by a character (using the US-ASCII
-   character for that octet <a href="#ASCII" title="Coded Character Set -- 7-bit American Standard Code for Information Interchange">[ASCII]</a>) or by an escape encoding.
-   This representation is elaborated below.
+Within a URI, reserved characters are used to delimit syntax components,
+unreserved characters are used to describe registered names, and
+unreserved characters, non-delimiting reserved characters, and
+character escape sequences are used to represent strings of data
+(octets) within the components.
 </p>
 <h2>
 <a name="rfc.section.2.1">2.1</a>&nbsp;
-    URIs and non-ASCII characters</h2>
+    Encoding of Characters</h2>
 <p>
 <a name="rfc.section.2.1.p.1"></a>
-   The relationship between URIs and characters has been a source of
-   confusion for characters that are not part of US-ASCII. To describe
-   the relationship, it is useful to distinguish between a "character"
-   (as a distinguishable semantic entity) and an "octet" (an 8-bit
-   byte). There are two mappings, one from URI characters to octets, and
-   a second from octets to original characters:
+As described in <a href="#notation">section 1.7</a>, the URI syntax
+is defined in terms of characters by reference to the
+<a href="#ASCII">US-ASCII</a> [ASCII] encoding of characters to octets.
+This specification does not mandate the use of any particular mapping
+between its character set and the octets used to store or transmit
+those characters.
 </p>
-<a name="rfc.figure.u.4"></a>
-<pre>URI character sequence-&gt;octet sequence-&gt;original character sequence
-</pre>
+<p>
+<a name="rfc.section.2.1.p.2"></a>
+URI characters representing strings of data within a component may, if
+allowed by the component production, represent an arbitrary sequence of
+octets.  For example, portions of a given URI might correspond to a filename
+on a non-ASCII filesystem, a query on non-ASCII data, numeric coordinates
+on a map, etc.  Some URI schemes define a specific encoding of raw data
+to US-ASCII characters as part of their scheme-specific requirements.
+Most URI schemes represent data octets by the US-ASCII character
+corresponding to that octet, either directly in the form of the
+character's glyph or by use of an escape sequence (described below).
+</p>
 <p>
 <a name="rfc.section.2.1.p.3"></a>
-   A URI is represented as a sequence of characters, not as a sequence
-   of octets. That is because a URI might be "transported" by means that
-   are not through a computer network, e.g., printed on paper, read over
-   the radio, etc.
-</p>
-<p>
-<a name="rfc.section.2.1.p.4"></a>
-   Within a delimited component of a URI, a sequence of characters is
-   used to represent a sequence of octets. For example, the character "a"
-   represents the octet 97 (decimal), while the character sequence "%",
-   "0", "a" represents the octet 10 (decimal).
-</p>
-<p>
-<a name="rfc.section.2.1.p.5"></a>
-   There is a second translation for some resources: the sequence of
-   octets defined by a component of the URI is subsequently used to
-   represent a sequence of characters. A 'charset' defines this mapping.
-   There are many charsets in use in Internet protocols. For example,
-   UTF-8 <a href="#UTF-8" title="UTF-8, a transformation format of ISO 10646">[UTF-8]</a> defines a mapping from sequences of octets to sequences
-   of characters in the repertoire of ISO 10646.
-</p>
-<p>
-<a name="rfc.section.2.1.p.6"></a>
-   In the simplest case, the original character sequence contains only
-   characters that are defined in US-ASCII, and the two levels of
-   mapping are simple and easily invertible: each 'original character'
-   is represented as the octet for the US-ASCII code for it, which is,
-   in turn, represented as either the US-ASCII character, or else the
-   "%" escape sequence for that octet.
-</p>
-<p>
-<a name="rfc.section.2.1.p.7"></a>
-   For original character sequences that contain non-ASCII characters,
-   however, the situation is more difficult. Internet protocols that
-   transmit octet sequences intended to represent character sequences
-   are expected to provide some way of identifying the charset used, if
-   there might be more than one <a href="#RFC2277" title="IETF Policy on Character Sets and Languages">[RFC2277]</a>.  However, there is currently
-   no provision within the generic URI syntax to accomplish this
-   identification. An individual URI scheme may require a single
-   charset, define a default charset, or provide a way to indicate the
-   charset used.  For example, a new scheme "foo" might be defined such
-   that any escaped octet is keyed to the UTF-8 encoding in order to
-   determine the corresponding Unicode character.
-</p>
-<p>
-<a name="rfc.section.2.1.p.8"></a>
-   It is expected that a systematic treatment of character encoding
-   within URIs will be developed as a future modification of this
-   specification.
+When a URI scheme defines a component that represents textual data
+consisting only of characters from the Unicode (ISO 10646) character
+set, we recommend that the data be encoded first as octets according
+to the UTF-8 <a href="#UTF-8" title="UTF-8, a transformation format of ISO 10646">[UTF-8]</a> character encoding, and then
+escaping any octets that are not in the unreserved character set.
 </p>
 <h2>
 <a name="rfc.section.2.2">2.2</a>&nbsp;
     Reserved Characters</h2>
-<a name="rfc.figure.u.5"></a>
+<a name="rfc.figure.u.4"></a>
 <p>
 
 <a name="rfc.iref.3"></a>
-   Many URI include components consisting of or delimited by, certain
-   special characters.  These characters are called "reserved", since
-   their usage within the URI component is limited to their reserved
-   purpose.  If the data for a URI component would conflict with the
-   reserved purpose, then the conflicting data must be escaped before
-   forming the URI.
+Many URIs include components consisting of, or delimited by, certain
+special characters.  These characters are called "reserved", since
+their usage within the URI component is limited to their reserved
+purpose.  If data for a URI component would conflict with the
+reserved purpose, then the conflicting data must be escaped before
+forming the URI.
 <a name="rfc.iref.4"></a>
 
 </p>
@@ -1314,31 +1275,31 @@ The following examples illustrate URIs that are in common use.
 </pre>
 <p>
 <a name="rfc.section.2.2.p.2"></a>
-   The "reserved" syntax class above refers to those characters that are
-   allowed within a URI, but which may not be allowed within a
-   particular component of the generic URI syntax; they are used as
-   delimiters of the components described in Section 3.
+The "reserved" syntax class above refers to those characters that are
+allowed within a URI, but which may not be allowed within a
+particular component of the generic URI syntax; they are used as
+delimiters of the components described in Section 3.
 </p>
 <p>
 <a name="rfc.section.2.2.p.3"></a>
-   Characters in the "reserved" set are not reserved in all contexts.
-   The set of characters actually reserved within any given URI
-   component is defined by that component. In general, a character is
-   reserved if the semantics of the URI changes if the character is
-   replaced with its escaped US-ASCII encoding.
+Characters in the "reserved" set are not reserved in all contexts.
+The set of characters actually reserved within any given URI
+component is defined by that component. In general, a character is
+reserved if the semantics of the URI would be changed if that character
+is replaced with its escaped encoding.
 </p>
 <h2>
 <a name="rfc.section.2.3">2.3</a>&nbsp;
     Unreserved Characters</h2>
-<a name="rfc.figure.u.6"></a>
+<a name="rfc.figure.u.5"></a>
 <p>
 
 <a name="rfc.iref.5"></a>
 <a name="rfc.iref.6"></a>
-   Data characters that are allowed in a URI but do not have a reserved
-   purpose are called unreserved.  These include upper and lower case
-   letters, decimal digits, and a limited set of punctuation marks and
-   symbols.
+Data characters that are allowed in a URI but do not have a reserved
+purpose are called unreserved.  These include upper and lower case
+letters, decimal digits, and a limited set of punctuation marks and
+symbols.
 <a name="rfc.iref.7"></a>
 <a name="rfc.iref.8"></a>
 
@@ -1349,130 +1310,138 @@ The following examples illustrate URIs that are in common use.
 </pre>
 <p>
 <a name="rfc.section.2.3.p.2"></a>
-   Unreserved characters can be escaped without changing the semantics
-   of the URI, but this should not be done unless the URI is being used
-   in a context that does not allow the unescaped character to appear.
-   URI normalization processes may unescape sequences in the ranges of
-   ALPHA (%41-%5A and %61-%7A), DIGIT (%30-%39), underscore (%5F), or
-   tilde (%7E) without fear of creating a conflict, but unescaping the
-   other mark characters is usually counterproductive.
+Unreserved characters can be escaped without changing the semantics
+of a URI, but this should not be done unless the URI is being used
+in a context that does not allow the unescaped character to appear.
+URI normalization processes may unescape sequences in the
+ranges of ALPHA (%41-%5A and %61-%7A), DIGIT (%30-%39), hyphen (%2D),
+underscore (%5F), or tilde (%7E) without fear of creating a conflict,
+but unescaping the other mark characters is usually counterproductive.
 </p>
 <h2>
 <a name="rfc.section.2.4">2.4</a>&nbsp;
     Escape Sequences</h2>
 <p>
 <a name="rfc.section.2.4.p.1"></a>
-   Data must be escaped if it does not have a representation using an
-   unreserved character; this includes data that does not correspond to
-   a printable character of the US-ASCII coded character set, or that
-   corresponds to any US-ASCII character that is disallowed, as
-   explained below.
+Data must be escaped if it does not have a representation using an
+unreserved character; this includes data that does not correspond to
+a printable character of the US-ASCII coded character set or corresponds
+to a US-ASCII character that is reserved in that component or excluded
+from use within a URI (explained below).
 </p>
 <h3>
 <a name="rfc.section.2.4.1">2.4.1</a>&nbsp;
     Escaped Encoding</h3>
-<a name="rfc.figure.u.7"></a>
+<a name="rfc.figure.u.6"></a>
 <p>
 
 <a name="rfc.iref.9"></a>
-   An escaped octet is encoded as a character triplet, consisting of the
-   percent character "%" followed by the two hexadecimal digits
-   representing the octet code in . For example, "%20" is the escaped
-   encoding for the US-ASCII space character.
+An escaped octet is encoded as a character triplet, consisting of the
+percent character "%" followed by the two hexadecimal digits representing
+that octet's numeric value.  For example, "%20" is the escaped encoding
+for the US-ASCII space character.  This is sometimes referred to as
+"percent-encoding" the octet.
 <a name="rfc.iref.10"></a>
 
 </p>
 <pre>   escaped     = "%" HEXDIG HEXDIG
 </pre>
+<p>
+The uppercase hexadecimal digits 'A' through 'F' are equivalent to the
+lowercase digits 'a' through 'f', respectively.  Two URIs that differ
+only in the case of hexadecimal digits used in escaped octets are
+equivalent.  For consistency, we recommend that uppercase digits be
+used by URI generators and normalizers.
+</p>
 <h3>
 <a name="rfc.section.2.4.2">2.4.2</a>&nbsp;
     When to Escape and Unescape</h3>
 <p>
 <a name="rfc.section.2.4.2.p.1"></a>
-   A URI is always in an "escaped" form, since escaping or unescaping a
-   completed URI might change its semantics.  Normally, the only time
-   escape encodings can safely be made is when the URI is being created
-   from its component parts; each component may have its own set of
-   characters that are reserved, so only the mechanism responsible for
-   generating or interpreting that component can determine whether or
-   not escaping a character will change its semantics. Likewise, a URI
-   must be separated into its components before the escaped characters
-   within those components can be safely decoded.
+A URI is always in an "escaped" form, since escaping or unescaping a
+completed URI might change its semantics.  Normally, the only time
+escape encodings can safely be made is when the URI is being created
+from its component parts; each component may have its own set of
+characters that are reserved, so only the mechanism responsible for
+generating or interpreting that component can determine whether or
+not escaping a character will change its semantics. Likewise, a URI
+must be separated into its components before the escaped characters
+within those components can be safely decoded.
 </p>
 <p>
 <a name="rfc.section.2.4.2.p.2"></a>
-   In some cases, data that could be represented by an unreserved
-   character may appear escaped; for example, some of the unreserved
-   "mark" characters are automatically escaped by some systems.  If the
-   given URI scheme defines a canonicalization algorithm, then
-   unreserved characters may be unescaped according to that algorithm.
-   For example, "%7e" is sometimes used instead of "~" in an http URI
-   path, but the two are equivalent for an http URI.
+In some cases, data that could be represented by an unreserved
+character may appear escaped; for example, some of the unreserved
+"mark" characters are automatically escaped by some systems.  If the
+given URI scheme defines a canonicalization algorithm, then
+unreserved characters may be unescaped according to that algorithm.
+For example, "%7E" is sometimes used instead of "~" in an http URI
+path, but the two are equivalent for an http URI.
 </p>
 <p>
 <a name="rfc.section.2.4.2.p.3"></a>
-   Because the percent "%" character always has the reserved purpose of
-   being the escape indicator, it must be escaped as "%25" in order to
-   be used as data within a URI.  Implementers should be careful not to
-   escape or unescape the same string more than once, since unescaping
-   an already unescaped string might lead to misinterpreting a percent
-   data character as another escaped character, or vice versa in the
-   case of escaping an already escaped string.
+Because the percent ("%") character always has the reserved purpose of
+being the escape indicator, it must be escaped as "%25" in order to
+be used as data within a URI.  Implementers should be careful not to
+escape or unescape the same string more than once, since unescaping
+an already unescaped string might lead to misinterpreting a percent
+data character as another escaped character, or vice versa in the
+case of escaping an already escaped string.
 </p>
-<h3>
-<a name="rfc.section.2.4.3">2.4.3</a>&nbsp;
-    Excluded US-ASCII Characters</h3>
+<h2>
+<a name="rfc.section.2.5">2.5</a>&nbsp;
+    Excluded US-ASCII Characters</h2>
 <p>
-<a name="rfc.section.2.4.3.p.1"></a>
-   Although they are disallowed within the URI syntax, we include here a
-   description of those US-ASCII characters that have been excluded and
-   the reasons for their exclusion.
-</p>
-<p>
-<a name="rfc.section.2.4.3.p.2"></a>
-   The control characters (CTL) in the US-ASCII coded character set are not
-   used within a URI, both because they are non-printable and because
-   they are likely to be misinterpreted by some control mechanisms.
+<a name="rfc.section.2.5.p.1"></a>
+Although they are disallowed within the URI syntax, we include here a
+description of those US-ASCII characters that have been excluded and
+the reasons for their exclusion.
 </p>
 <p>
-<a name="rfc.section.2.4.3.p.3"></a>
-   The space character (SP) is excluded because significant spaces may
-   disappear and insignificant spaces may be introduced when a URI is
-   transcribed or typeset or subjected to the treatment of word-processing
-   programs.  Whitespace is also used to delimit a URI in many
-   contexts.
+<a name="rfc.section.2.5.p.2"></a>
+The control characters (CTL) in the US-ASCII coded character set are not
+used within a URI, both because they are non-printable and because
+they are likely to be misinterpreted by some control mechanisms.
 </p>
-<a name="rfc.figure.u.8"></a>
+<p>
+<a name="rfc.section.2.5.p.3"></a>
+The space character (SP) is excluded because significant spaces may
+disappear and insignificant spaces may be introduced when a URI is
+transcribed or typeset or subjected to the treatment of word-processing
+programs.  Whitespace is also used to delimit a URI in many
+contexts.
+</p>
+<a name="rfc.figure.u.7"></a>
 <p>
 
 <a name="rfc.iref.11"></a>
-   The angle-bracket "&lt;" and "&gt;" and double-quote (") characters are
-   excluded because they are often used as the delimiters around a URI in
-   text documents and protocol fields.  The character "#" is excluded
-   because it is used to delimit a URI from a fragment identifier in a URI
-   reference (Section 4). The percent character "%" is excluded because
-   it is used for the encoding of escaped characters.
+The angle-bracket "&lt;" and "&gt;" and double-quote (") characters are
+excluded because they are often used as the delimiters around a URI in
+text documents and protocol fields.  The character "#" is excluded
+because it is used to delimit a URI from a fragment identifier in a URI
+reference (Section 4). The percent character "%" is excluded because
+it is used for the encoding of escaped characters.
 <a name="rfc.iref.12"></a>
 
 </p>
 <pre>   delims      = "&lt;" / "&gt;" / "#" / "%" / DQUOTE
 </pre>
-<a name="rfc.figure.u.9"></a>
+<a name="rfc.figure.u.8"></a>
 <p>
 
 <a name="rfc.iref.13"></a>
-   Other characters are excluded because gateways and other transport
-   agents are known to sometimes modify such characters, or they are
-   used as delimiters.
+Other characters are excluded because gateways and other transport
+agents are known to sometimes modify such characters, or they are
+used as delimiters.
 <a name="rfc.iref.14"></a>
 
 </p>
 <pre>   unwise      = "{" / "}" / "|" / "\" / "^" / "`"
 </pre>
 <p>
-<a name="rfc.section.2.4.3.p.6"></a>
-   Data corresponding to excluded characters must be escaped in order to
-   be properly represented within a URI.
+<a name="rfc.section.2.5.p.6"></a>
+Data corresponding to excluded characters must be escaped in order to
+be properly represented within a URI.
 </p>
 
 
@@ -1490,7 +1459,7 @@ The following examples illustrate URIs that are in common use.
    The URI syntax is dependent upon the scheme.  In general, absolute
    URIs are written as follows:
 </p>
-<a name="rfc.figure.u.10"></a>
+<a name="rfc.figure.u.9"></a>
 <pre>   &lt;scheme&gt;:&lt;scheme-specific-part&gt;
 </pre>
 <p>
@@ -1507,7 +1476,7 @@ The following examples illustrate URIs that are in common use.
    representing hierarchical relationships within the namespace.  This
    "generic URI" syntax consists of a sequence of four main components:
 </p>
-<a name="rfc.figure.u.11"></a>
+<a name="rfc.figure.u.10"></a>
 <pre>   &lt;scheme&gt;://&lt;authority&gt;&lt;path&gt;?&lt;query&gt;
 </pre>
 <p>
@@ -1516,10 +1485,10 @@ The following examples illustrate URIs that are in common use.
    For example, some URI schemes do not allow an &lt;authority&gt; component,
    and others do not use a &lt;query&gt; component.
 </p>
-<a name="rfc.figure.u.12"></a>
+<a name="rfc.figure.u.11"></a>
 <pre>   absolute-URI  = scheme ":" ( hier-part / opaque-part )
 </pre>
-<a name="rfc.figure.u.13"></a>
+<a name="rfc.figure.u.12"></a>
 <p>
    URIs that are hierarchical in nature use the slash "/" character for
    separating hierarchical components.  For some file systems, a "/"
@@ -1542,7 +1511,7 @@ The following examples illustrate URIs that are in common use.
 
    abs-path      = "/"  path-segments
 </pre>
-<a name="rfc.figure.u.14"></a>
+<a name="rfc.figure.u.13"></a>
 <p>
    URIs that do not make use of the slash "/" character for separating
    hierarchical components are considered opaque by the generic URI
@@ -1575,7 +1544,7 @@ The following examples illustrate URIs that are in common use.
    characters, with the first component defining the semantics for the
    remainder of the URI string.
 </p>
-<a name="rfc.figure.u.15"></a>
+<a name="rfc.figure.u.14"></a>
 <p>
    Scheme names consist of a sequence of characters beginning with a
    lower case letter and followed by any combination of lower case
@@ -1613,7 +1582,7 @@ of relative references.  A base URI without an authority component
 implies that any relative reference will also be without an authority
 component.
 </p>
-<a name="rfc.figure.u.16"></a>
+<a name="rfc.figure.u.15"></a>
 <p>
 The authority component is preceded by a double slash "//" and is
 terminated by the next slash "/", question-mark "?", or by the end of
@@ -1634,7 +1603,7 @@ does not allow host to be omitted).
 <h3>
 <a name="rfc.iref.31"></a><a name="rfc.section.3.2.1">3.2.1</a>&nbsp;
     User Information</h3>
-<a name="rfc.figure.u.17"></a>
+<a name="rfc.figure.u.16"></a>
 <p>
 &lt;userinfo&gt; may consist of a user name and, optionally, scheme-specific
 information about how to gain authorization to access the server.
@@ -1658,7 +1627,7 @@ Section 7.5.
 <h3>
 <a name="rfc.iref.33"></a><a name="rfc.iref.34"></a><a name="rfc.section.3.2.2">3.2.2</a>&nbsp;
     Host and Port</h3>
-<a name="rfc.figure.u.18"></a>
+<a name="rfc.figure.u.17"></a>
 <p>
 The naming authority is denoted by a network host --- as described by an
 IPv6 literal encapsulated within square brackets, an IPv4 address in
@@ -1676,7 +1645,7 @@ scheme-specific semantics of the URI scheme.
 <pre>   host          = IPv6reference / IPv4address / hostname
    port          = *DIGIT
 </pre>
-<a name="rfc.figure.u.19"></a>
+<a name="rfc.figure.u.18"></a>
 <p>
 
 <a name="rfc.iref.37"></a>
@@ -1702,10 +1671,10 @@ distinguish between the complete domain name and any local domain.
 <pre>   hostname      = domainlabel qualified
    qualified     = *( "." domainlabel ) [ "." toplabel "." ]
    domainlabel   = alphanum [ 0*61( alphanum | "-" ) alphanum ]
-   toplabel      = alpha    [ 0*61( alphanum | "-" ) alphanum ]
+   toplabel      = ALPHA    [ 0*61( alphanum | "-" ) alphanum ]
    alphanum      = ALPHA / DIGIT
 </pre>
-<a name="rfc.figure.u.20"></a>
+<a name="rfc.figure.u.19"></a>
 <p>
 
 <a name="rfc.iref.47"></a>
@@ -1729,7 +1698,7 @@ allowed by this grammar.
                  ( "2" %x30-34 DIGIT ) /         ; 200-249
                  ( "25" %x30-35 )                ; 250-255
 </pre>
-<a name="rfc.figure.u.21"></a>
+<a name="rfc.figure.u.20"></a>
 <p>
 
 <a name="rfc.iref.52"></a>
@@ -1767,7 +1736,7 @@ are allowed in the hierarchical URI syntax.
 <h2>
 <a name="rfc.section.3.3">3.3</a>&nbsp;
     Path Component</h2>
-<a name="rfc.figure.u.22"></a>
+<a name="rfc.figure.u.21"></a>
 <p>
 
 <a name="rfc.iref.61"></a>
@@ -1803,7 +1772,7 @@ are allowed in the hierarchical URI syntax.
 <h2>
 <a name="rfc.section.3.4">3.4</a>&nbsp;
     Query Component</h2>
-<a name="rfc.figure.u.23"></a>
+<a name="rfc.figure.u.22"></a>
 <p>
 
 <a name="rfc.iref.69"></a>
@@ -1830,7 +1799,7 @@ are allowed in the hierarchical URI syntax.
 <h1>
 <a name="rfc.section.4">4</a>&nbsp;
     URI References</h1>
-<a name="rfc.figure.u.24"></a>
+<a name="rfc.figure.u.23"></a>
 <p>
 
 <a name="rfc.iref.71"></a>
@@ -1850,7 +1819,7 @@ are allowed in the hierarchical URI syntax.
 </p>
 <pre>   URI-reference = [ absolute-URI / relative-URI ] [ "#" fragment ]
 </pre>
-<a name="rfc.figure.u.25"></a>
+<a name="rfc.figure.u.24"></a>
 <p>
 
 <a name="rfc.iref.73"></a>
@@ -1872,7 +1841,7 @@ are allowed in the hierarchical URI syntax.
 <h2>
 <a name="rfc.section.4.1">4.1</a>&nbsp;
     Fragment Identifier</h2>
-<a name="rfc.figure.u.26"></a>
+<a name="rfc.figure.u.25"></a>
 <p>
 
 <a name="rfc.iref.75"></a>
@@ -1980,7 +1949,7 @@ are allowed in the hierarchical URI syntax.
    has demonstrated that the ability to perform relative referencing is
    necessary for the long-term usability of embedded URIs.
 </p>
-<a name="rfc.figure.u.27"></a>
+<a name="rfc.figure.u.26"></a>
 <p>
    The relative URI syntax takes advantage of the &lt;hier-part&gt; syntax
    of &lt;absolute-URI&gt; (Section 3) in order to express a reference that is
@@ -2002,7 +1971,7 @@ are allowed in the hierarchical URI syntax.
    termed an absolute-path reference, as defined by &lt;abs-path&gt; in
    Section 3.
 </p>
-<a name="rfc.figure.u.28"></a>
+<a name="rfc.figure.u.27"></a>
 <p>
 
 <a name="rfc.iref.79"></a>
@@ -2073,7 +2042,7 @@ are allowed in the hierarchical URI syntax.
    thought of in terms of layers, where the innermost defined base URI
    has the highest precedence.  This can be visualized graphically as:
 </p>
-<a name="rfc.figure.u.29"></a>
+<a name="rfc.figure.u.28"></a>
 <pre>   .----------------------------------------------------------.
    |  .----------------------------------------------------.  |
    |  |  .----------------------------------------------.  |  |
@@ -2189,7 +2158,7 @@ are allowed in the hierarchical URI syntax.
    empty.  The base URI's query component is not used by the resolution
    algorithm and may be discarded.
 </p>
-<a name="rfc.figure.u.30"></a>
+<a name="rfc.figure.u.29"></a>
 <p>
    For each URI reference (R), the following pseudocode describes an
    algorithm for transforming R into its target (T), which is either
@@ -2321,7 +2290,7 @@ The remaining buffer string is the target URI's path component.
 </blockquote>
 
 </p>
-<a name="rfc.figure.u.31"></a>
+<a name="rfc.figure.u.30"></a>
 <p>
 The resulting target URI components and fragment can be
 recombined to provide the absolute form of the URI reference.
@@ -2490,7 +2459,7 @@ and the types of applications that might use them.
 <h3>
 <a name="rfc.section.6.2.2">6.2.2</a>&nbsp;
     Syntax-based Normalization</h3>
-<a name="rfc.figure.u.32"></a>
+<a name="rfc.figure.u.31"></a>
 <p>
 Software may use logic based on the definitions provided by this
 specification to reduce the probability of false negatives.  Such
@@ -2557,7 +2526,7 @@ relative path segments.
 <h3>
 <a name="rfc.section.6.2.3">6.2.3</a>&nbsp;
     Scheme-based Normalization</h3>
-<a name="rfc.figure.u.33"></a>
+<a name="rfc.figure.u.32"></a>
 <p>
 The syntax and semantics of URIs vary from scheme to scheme, as described
 by the defining specification for each scheme.  Software may use
@@ -2580,7 +2549,7 @@ scheme, is equivalent to one where the port is elided.
 <h3>
 <a name="rfc.section.6.2.4">6.2.4</a>&nbsp;
     Protocol-based Normalization</h3>
-<a name="rfc.figure.u.34"></a>
+<a name="rfc.figure.u.33"></a>
 <p>
 Web spiders, for which substantial effort to reduce the incidence
 of false negatives is often cost-effective, are observed to implement
@@ -2589,7 +2558,7 @@ observe that a URI such as
 </p>
 <pre>   http://example.com/data
 </pre>
-<a name="rfc.figure.u.35"></a>
+<a name="rfc.figure.u.34"></a>
 <p>
 redirects to
 </p>
@@ -2752,7 +2721,7 @@ public.
 <h2>
 <a name="rfc.section.7.5">7.5</a>&nbsp;
     Semantic Attacks</h2>
-<a name="rfc.figure.u.36"></a>
+<a name="rfc.figure.u.35"></a>
 <p>
 Because the userinfo component is rarely used and appears before the
 hostname in the authority component, it can be used to construct a URI
@@ -3047,7 +3016,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <h1>
 <a name="rfc.section.A">A</a>&nbsp;
     Collected BNF for URI</h1>
-<a name="rfc.figure.u.37"></a>
+<a name="rfc.figure.u.36"></a>
 <pre>To be filled-in later.
 </pre>
 <hr class="noprint">
@@ -3073,7 +3042,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    The following line is the regular expression for breaking-down a
    well-formed URI reference into its components.
 </p>
-<a name="rfc.figure.u.38"></a>
+<a name="rfc.figure.u.37"></a>
 <pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
     12            3  4          5       6  7        8 9
 </pre>
@@ -3084,14 +3053,14 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    paired parenthesis).  We refer to the value matched for subexpression
    &lt;n&gt; as $&lt;n&gt;.  For example, matching the above expression to
 </p>
-<a name="rfc.figure.u.39"></a>
+<a name="rfc.figure.u.38"></a>
 <pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
 </pre>
 <p>
 <a name="rfc.section.B.p.6"></a>
    results in the following subexpression matches:
 </p>
-<a name="rfc.figure.u.40"></a>
+<a name="rfc.figure.u.39"></a>
 <pre>   $1 = http:
    $2 = http
    $3 = //www.ics.uci.edu
@@ -3108,7 +3077,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    the case for the query component in the above example.  Therefore, we
    can determine the value of the four components and fragment as
 </p>
-<a name="rfc.figure.u.41"></a>
+<a name="rfc.figure.u.40"></a>
 <pre>   scheme    = $2
    authority = $4
    path      = $5
@@ -3133,7 +3102,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <a name="rfc.section.C.p.1"></a>
    Within an object with a well-defined base URI of
 </p>
-<a name="rfc.figure.u.42"></a>
+<a name="rfc.figure.u.41"></a>
 <pre>   http://a/b/c/d;p?q
 </pre>
 <p>
@@ -3143,7 +3112,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <h2>
 <a name="rfc.section.C.1">C.1</a>&nbsp;
     Normal Examples</h2>
-<a name="rfc.figure.u.43"></a>
+<a name="rfc.figure.u.42"></a>
 <pre>   g:h           =  g:h
    g             =  http://a/b/c/g
    ./g           =  http://a/b/c/g
@@ -3180,7 +3149,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <a name="rfc.section.C.2.p.2"></a>
    An empty reference refers to the start of the current document.
 </p>
-<a name="rfc.figure.u.44"></a>
+<a name="rfc.figure.u.43"></a>
 <pre>   &lt;&gt;            =  (current document)
 </pre>
 <p>
@@ -3190,7 +3159,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    base URI's path.  Note that the ".." syntax cannot be used to change
    the authority component of a URI.
 </p>
-<a name="rfc.figure.u.45"></a>
+<a name="rfc.figure.u.44"></a>
 <pre>   ../../../g    =  http://a/../g
    ../../../../g =  http://a/../../g
 </pre>
@@ -3207,7 +3176,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    Similarly, parsers must avoid treating "." and ".." as special when
    they are not complete components of a relative path.
 </p>
-<a name="rfc.figure.u.46"></a>
+<a name="rfc.figure.u.45"></a>
 <pre>   /./g          =  http://a/./g
    /../g         =  http://a/../g
    g.            =  http://a/b/c/g.
@@ -3220,7 +3189,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    Less likely are cases where the relative URI uses unnecessary or
    nonsensical forms of the "." and ".." complete path segments.
 </p>
-<a name="rfc.figure.u.47"></a>
+<a name="rfc.figure.u.46"></a>
 <pre>   ./../g        =  http://a/b/g
    ./g/.         =  http://a/b/c/g/
    g/./h         =  http://a/b/c/g/h
@@ -3236,7 +3205,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    of a fragment never includes the hierarchy ("/") character, and the
    query component is not normally used within relative references.
 </p>
-<a name="rfc.figure.u.48"></a>
+<a name="rfc.figure.u.47"></a>
 <pre>   g?y/./x       =  http://a/b/c/g?y/./x
    g?y/../x      =  http://a/b/c/g?y/../x
    g#s/./x       =  http://a/b/c/g#s/./x
@@ -3249,7 +3218,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    loophole in prior specifications of partial URI <a href="#RFC1630" title="Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web">[RFC1630]</a>.
    Its use should be avoided, but is allowed for backwards compatibility.
 </p>
-<a name="rfc.figure.u.49"></a>
+<a name="rfc.figure.u.48"></a>
 <pre>   http:g        =  http:g           ; for validating parsers
                  /  http://a/b/c/g   ; for backwards compatibility
 </pre>
@@ -3280,7 +3249,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    that, in HTML, element and attribute names are case-insensitive.  For
    example:
 </p>
-<a name="rfc.figure.u.50"></a>
+<a name="rfc.figure.u.49"></a>
 <pre>   &lt;!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
    &lt;HTML&gt;&lt;HEAD&gt;
    &lt;TITLE&gt;An example HTML document&lt;/TITLE&gt;
@@ -3294,7 +3263,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    A parser reading the example document should interpret the given
    relative URI "../x" as representing the absolute URI
 </p>
-<a name="rfc.figure.u.51"></a>
+<a name="rfc.figure.u.50"></a>
 <pre>   &lt;http://www.example.com/Test/a/x&gt;
 </pre>
 <p>
@@ -3326,7 +3295,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    within double-quotes "http://example.com/", angle brackets
    &lt;http://example.com/&gt;, or just using whitespace
 </p>
-<a name="rfc.figure.u.52"></a>
+<a name="rfc.figure.u.51"></a>
 <pre>   http://example.com/
 </pre>
 <p>
@@ -3371,7 +3340,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    For robustness, software that accepts user-typed URI should attempt
    to recognize and strip both delimiters and embedded whitespace.
 </p>
-<a name="rfc.figure.u.53"></a>
+<a name="rfc.figure.u.52"></a>
 <p>
 For example, the text:
 </p>
@@ -3384,7 +3353,7 @@ For example, the text:
 <a name="rfc.section.E.p.12"></a>
 contains the URI references
 </p>
-<a name="rfc.figure.u.54"></a>
+<a name="rfc.figure.u.53"></a>
 <pre>   http://www.w3.org/Addressing/
    ftp://ds.internic.net/rfc/
    http://www.ics.uci.edu/pub/ietf/uri/historical.html#WARNING
@@ -3408,7 +3377,7 @@ contains the URI references
    only the authority and path portions of the identified resource, such
    as
 </p>
-<a name="rfc.figure.u.55"></a>
+<a name="rfc.figure.u.54"></a>
 <pre>   www.w3.org/Addressing/
 </pre>
 <p>
@@ -3474,7 +3443,8 @@ domain names.
 <a name="rfc.section.G.1.p.3"></a>
 Section 6 on URI normalization and comparison has been completely
 rewritten and extended using input from Tim Bray and discussion within
-the W3C Technical Architecture Group.
+the W3C Technical Architecture Group.  Likewise, section 2.1 on the
+encoding of characters has been replaced.
 </p>
 <h2>
 <a name="rfc.section.G.2">G.2</a>&nbsp;
@@ -3643,7 +3613,7 @@ and fix the following issues:
               &nbsp;&nbsp;delims&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.11"><b>2.4.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.11"><b>2.5</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3854,7 +3824,7 @@ and fix the following issues:
               &nbsp;&nbsp;unwise&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.13"><b>2.4.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.13"><b>2.5</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3923,7 +3893,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;delims&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.12"><b>2.4.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.12"><b>2.5</b></a></td>
 </tr>
 <tr>
 <td>
@@ -4126,7 +4096,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;unwise&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.14"><b>2.4.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.14"><b>2.5</b></a></td>
 </tr>
 <tr>
 <td>
