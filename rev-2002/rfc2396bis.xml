@@ -8,7 +8,7 @@
 <?rfc editing="no"?>
 <?rfc-ext parse-xml-in-artwork="yes" ?>
 <rfc obsoletes="2732, 2396, 1808" updates="1738" category="std"
-     ipr="full2026" docName="draft-fielding-uri-rfc2396bis-00">
+     ipr="full2026" docName="draft-fielding-uri-rfc2396bis-0x">
 
 <front>
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifier (URI): Generic Syntax</title>
@@ -830,7 +830,7 @@ URI character sequence->octet sequence->original character sequence
    IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
    dec-octet   = DIGIT /                         ; 0-9
                  ( %x31-39 DIGIT ) /             ; 10-99
-                 ( "1" 2*DIGIT ) /               ; 100-199
+                 ( "1" 2DIGIT ) /                ; 100-199
                  ( "2" %x30-34 DIGIT ) /         ; 200-249
                  ( "25" %x30-35 )                ; 250-255
 </artwork></figure>
@@ -838,6 +838,7 @@ URI character sequence->octet sequence->original character sequence
 <iref item="IPv6" primary="true"/>
 <iref item="IPv6reference" primary="true"/>
 <iref item="IPv6address" primary="true"/>
+<iref item="ls32" primary="true"/>
 <iref item="h4" primary="true"/>
    A host identified by an IPv6 literal address <xref target="RFC2373"/>
    is distinguished by enclosing the IPv6 literal within square-brakets
@@ -845,25 +846,25 @@ URI character sequence->octet sequence->original character sequence
    are allowed in the hierarchical URI syntax.
 <iref item="URI grammar" subitem="IPv6reference" primary="true"/>
 <iref item="URI grammar" subitem="IPv6address" primary="true"/>
+<iref item="URI grammar" subitem="ls32" primary="true"/>
 <iref item="URI grammar" subitem="h4" primary="true"/>
 </preamble><artwork>
    IPv6reference = "[" IPv6address "]"
 
-   IPv6address = (                       7( h4 ":" )   h4   ) /
-                 (                "::" 0*6( h4 ":" ) [ h4 ] ) /
-                 ( h4             "::" 0*5( h4 ":" ) [ h4 ] ) /
-                 ( h4    ":" h4   "::" 0*4( h4 ":" ) [ h4 ] ) /
-                 ( h4 2( ":" h4 ) "::" 0*3( h4 ":" ) [ h4 ] ) /
-                 ( h4 3( ":" h4 ) "::" 0*2( h4 ":" ) [ h4 ] ) /
-                 ( h4 4( ":" h4 ) "::" 0*1( h4 ":" ) [ h4 ] ) /
-                 (                       6( h4 ":" ) IPv4address ) /
-                 (                "::" 0*5( h4 ":" ) IPv4address ) /
-                 ( h4             "::" 0*4( h4 ":" ) IPv4address ) /
-                 ( h4    ":" h4   "::" 0*3( h4 ":" ) IPv4address ) /
-                 ( h4 2( ":" h4 ) "::" 0*2( h4 ":" ) IPv4address ) /
-                 ( h4 3( ":" h4 ) "::" 0*1( h4 ":" ) IPv4address )
+   IPv6address   = (                          6( h4 ":" ) ls32 )
+                 / (                     "::" 5( h4 ":" ) ls32 )
+                 / ( [              h4 ] "::" 4( h4 ":" ) ls32 )
+                 / ( [ *1( h4 ":" ) h4 ] "::" 3( h4 ":" ) ls32 )
+                 / ( [ *2( h4 ":" ) h4 ] "::" 2( h4 ":" ) ls32 )
+                 / ( [ *3( h4 ":" ) h4 ] "::"    h4 ":"   ls32 )
+                 / ( [ *4( h4 ":" ) h4 ] "::"             ls32 )
+                 / ( [ *5( h4 ":" ) h4 ] "::"             h4   )
+                 / ( [ *6( h4 ":" ) h4 ] "::"                  )
 
-   h4          = 1*4HEXDIG
+   ls32          = ( h4 ":" h4 ) / IPv4address
+                 ; least-significant 32 bits of address
+
+   h4            = 1*4HEXDIG
 </artwork></figure>
 </section>
 </section>
@@ -1459,7 +1460,7 @@ next component separator or the end of the reference.
    In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
    Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman, Bruce Lilly,
    Michael Mealling, Julian Reschke, Miles Sabin, Ronald Tschalaer,
-   Marc Warne, and Henry Zongaro are gratefully acknowledged.
+   Marc Warne, Henry Zongaro, and Zefram are gratefully acknowledged.
 </t>
 </section>
 </middle>

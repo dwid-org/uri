@@ -156,7 +156,7 @@ ins
 </tr>
 <tr>
 <td class="header" bgcolor="#666666" width="33%">
-        &lt;draft-fielding-uri-rfc2396bis-00&gt;
+        &lt;draft-fielding-uri-rfc2396bis-0x&gt;
       &nbsp;</td><td class="header" bgcolor="#666666" width="33%">R.T. Fielding&nbsp;</td>
 </tr>
 <tr>
@@ -183,7 +183,7 @@ ins
 <span class="title">Uniform Resource Identifier (URI): Generic Syntax</span>
 </div>
 <div align="right">
-<span class="filename">draft-fielding-uri-rfc2396bis-00</span>
+<span class="filename">draft-fielding-uri-rfc2396bis-0x</span>
 </div>
 <h1>Status of this Memo</h1>
 <p>
@@ -1603,7 +1603,7 @@ The following examples illustrate URIs that are in common use.
 <pre>   IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
    dec-octet   = DIGIT /                         ; 0-9
                  ( %x31-39 DIGIT ) /             ; 10-99
-                 ( "1" 2*DIGIT ) /               ; 100-199
+                 ( "1" 2DIGIT ) /                ; 100-199
                  ( "2" %x30-34 DIGIT ) /         ; 200-249
                  ( "25" %x30-35 )                ; 250-255
 </pre>
@@ -1614,32 +1614,33 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.iref.59"></a>
 <a name="rfc.iref.60"></a>
 <a name="rfc.iref.61"></a>
+<a name="rfc.iref.62"></a>
    A host identified by an IPv6 literal address <a href="#RFC2373" title="IP Version 6 Addressing Architecture">[RFC2373]</a>
    is distinguished by enclosing the IPv6 literal within square-brakets
    ("[" and "]").  This is the only place where square-bracket characters
    are allowed in the hierarchical URI syntax.
-<a name="rfc.iref.62"></a>
 <a name="rfc.iref.63"></a>
 <a name="rfc.iref.64"></a>
+<a name="rfc.iref.65"></a>
+<a name="rfc.iref.66"></a>
 
 </p>
 <pre>   IPv6reference = "[" IPv6address "]"
 
-   IPv6address = (                       7( h4 ":" )   h4   ) /
-                 (                "::" 0*6( h4 ":" ) [ h4 ] ) /
-                 ( h4             "::" 0*5( h4 ":" ) [ h4 ] ) /
-                 ( h4    ":" h4   "::" 0*4( h4 ":" ) [ h4 ] ) /
-                 ( h4 2( ":" h4 ) "::" 0*3( h4 ":" ) [ h4 ] ) /
-                 ( h4 3( ":" h4 ) "::" 0*2( h4 ":" ) [ h4 ] ) /
-                 ( h4 4( ":" h4 ) "::" 0*1( h4 ":" ) [ h4 ] ) /
-                 (                       6( h4 ":" ) IPv4address ) /
-                 (                "::" 0*5( h4 ":" ) IPv4address ) /
-                 ( h4             "::" 0*4( h4 ":" ) IPv4address ) /
-                 ( h4    ":" h4   "::" 0*3( h4 ":" ) IPv4address ) /
-                 ( h4 2( ":" h4 ) "::" 0*2( h4 ":" ) IPv4address ) /
-                 ( h4 3( ":" h4 ) "::" 0*1( h4 ":" ) IPv4address )
+   IPv6address   = (                          6( h4 ":" ) ls32 )
+                 / (                     "::" 5( h4 ":" ) ls32 )
+                 / ( [              h4 ] "::" 4( h4 ":" ) ls32 )
+                 / ( [ *1( h4 ":" ) h4 ] "::" 3( h4 ":" ) ls32 )
+                 / ( [ *2( h4 ":" ) h4 ] "::" 2( h4 ":" ) ls32 )
+                 / ( [ *3( h4 ":" ) h4 ] "::"    h4 ":"   ls32 )
+                 / ( [ *4( h4 ":" ) h4 ] "::"             ls32 )
+                 / ( [ *5( h4 ":" ) h4 ] "::"             h4   )
+                 / ( [ *6( h4 ":" ) h4 ] "::"                  )
 
-   h4          = 1*4HEXDIG
+   ls32          = ( h4 ":" h4 ) / IPv4address
+                 ; least-significant 32 bits of address
+
+   h4            = 1*4HEXDIG
 </pre>
 <h2>
 <a name="rfc.section.3.3">3.3</a>&nbsp;
@@ -1647,17 +1648,17 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.figure.u.25"></a>
 <p>
 
-<a name="rfc.iref.65"></a>
+<a name="rfc.iref.67"></a>
    The path component contains data, specific to the authority (or the
    scheme if there is no authority component), identifying the resource
    within the scope of that scheme and authority.
-<a name="rfc.iref.66"></a>
-<a name="rfc.iref.67"></a>
 <a name="rfc.iref.68"></a>
 <a name="rfc.iref.69"></a>
 <a name="rfc.iref.70"></a>
 <a name="rfc.iref.71"></a>
 <a name="rfc.iref.72"></a>
+<a name="rfc.iref.73"></a>
+<a name="rfc.iref.74"></a>
 
 </p>
 <pre>   path          = [ abs-path / opaque-part ]
@@ -1683,10 +1684,10 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.figure.u.26"></a>
 <p>
 
-<a name="rfc.iref.73"></a>
+<a name="rfc.iref.75"></a>
    The query component is a string of information to be interpreted by
    the resource.
-<a name="rfc.iref.74"></a>
+<a name="rfc.iref.76"></a>
 
 </p>
 <pre>   query         = *( pchar / "/" / "?" )
@@ -1710,7 +1711,7 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.figure.u.27"></a>
 <p>
 
-<a name="rfc.iref.75"></a>
+<a name="rfc.iref.77"></a>
    The term "URI-reference" is used here to denote the common usage of a
    resource identifier.  A URI reference may be absolute or relative,
    and may have additional information attached in the form of a
@@ -1722,7 +1723,7 @@ The following examples illustrate URIs that are in common use.
    result, most usage of URI is within general URI references, and it is
    impossible to obtain the URI from such a reference without also
    parsing the fragment and resolving the relative form.
-<a name="rfc.iref.76"></a>
+<a name="rfc.iref.78"></a>
 
 </p>
 <pre>   URI-reference = [ absolute-URI / relative-URI ] [ "#" fragment ]
@@ -1730,10 +1731,10 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.figure.u.28"></a>
 <p>
 
-<a name="rfc.iref.77"></a>
+<a name="rfc.iref.79"></a>
    Many protocol elements allow only the absolute form of a URI with
    an optional fragment identifier.
-<a name="rfc.iref.78"></a>
+<a name="rfc.iref.80"></a>
 
 </p>
 <pre>   absolute-URI-reference = absolute-URI [ "#" fragment ]
@@ -1752,14 +1753,14 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.figure.u.29"></a>
 <p>
 
-<a name="rfc.iref.79"></a>
+<a name="rfc.iref.81"></a>
    When a URI reference is used to perform a retrieval action on the
    identified resource, the optional fragment identifier, separated from
    the URI by a crosshatch ("#") character, consists of additional
    reference information to be interpreted by the user agent after the
    retrieval action has been successfully completed.  As such, it is not
    part of a URI, but is often used in conjunction with a URI.
-<a name="rfc.iref.80"></a>
+<a name="rfc.iref.82"></a>
 
 </p>
 <pre>   fragment      = *( pchar / "/" / "?" )
@@ -1834,7 +1835,7 @@ The following examples illustrate URIs that are in common use.
 </tr>
 </table>
 <h1>
-<a name="rfc.iref.81"></a><a name="rfc.section.5">5</a>&nbsp;
+<a name="rfc.iref.83"></a><a name="rfc.section.5">5</a>&nbsp;
     Relative URI References</h1>
 <p>
 <a name="rfc.section.5.p.1"></a>
@@ -1862,7 +1863,7 @@ The following examples illustrate URIs that are in common use.
    The relative URI syntax takes advantage of the &lt;hier-part&gt; syntax
    of &lt;absolute-URI&gt; (Section 3) in order to express a reference that is
    relative to the namespace of another hierarchical URI.
-<a name="rfc.iref.82"></a>
+<a name="rfc.iref.84"></a>
 
 </p>
 <pre>   relative-URI  = [ net-path / abs-path / rel-path ] [ "?" query ]
@@ -1882,12 +1883,12 @@ The following examples illustrate URIs that are in common use.
 <a name="rfc.figure.u.31"></a>
 <p>
 
-<a name="rfc.iref.83"></a>
-<a name="rfc.iref.84"></a>
-   A relative reference that does not begin with a scheme name or a
-   slash character is termed a relative-path reference.
 <a name="rfc.iref.85"></a>
 <a name="rfc.iref.86"></a>
+   A relative reference that does not begin with a scheme name or a
+   slash character is termed a relative-path reference.
+<a name="rfc.iref.87"></a>
+<a name="rfc.iref.88"></a>
 
 </p>
 <pre>   rel-path      = rel-segment [ abs-path ]
@@ -2348,7 +2349,7 @@ next component separator or the end of the reference.
    In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
    Adam M. Costello, Jason Diamond, Martin Duerst, Henry Holtzman, Bruce Lilly,
    Michael Mealling, Julian Reschke, Miles Sabin, Ronald Tschalaer,
-   Marc Warne, and Henry Zongaro are gratefully acknowledged.
+   Marc Warne, Henry Zongaro, and Zefram are gratefully acknowledged.
 </p>
 
 <hr class="noprint">
@@ -3206,7 +3207,7 @@ and fix the following issues:
               &nbsp;&nbsp;absolute-URI-reference&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.77"><b>4</b></a></td>
+  &nbsp;<a href="#rfc.iref.79"><b>4</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3271,7 +3272,7 @@ and fix the following issues:
               &nbsp;&nbsp;fragment&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.79"><b>4.1</b></a></td>
+  &nbsp;<a href="#rfc.iref.81"><b>4.1</b></a></td>
 </tr>
 <tr>
 <td><b>H</b></td>
@@ -3281,7 +3282,7 @@ and fix the following issues:
               &nbsp;&nbsp;h4&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.61"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.62"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3350,6 +3351,16 @@ and fix the following issues:
   &nbsp;<a href="#rfc.iref.59"><b>3.2.2</b></a></td>
 </tr>
 <tr>
+<td><b>L</b></td>
+</tr>
+<tr>
+<td>
+              &nbsp;&nbsp;ls32&nbsp;
+                
+              
+  &nbsp;<a href="#rfc.iref.61"><b>3.2.2</b></a></td>
+</tr>
+<tr>
 <td><b>M</b></td>
 </tr>
 <tr>
@@ -3387,21 +3398,21 @@ and fix the following issues:
               &nbsp;&nbsp;path&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.65"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.67"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;path-segments&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.66"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.68"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
               &nbsp;&nbsp;pchar&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.68"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.70"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3425,7 +3436,7 @@ and fix the following issues:
               &nbsp;&nbsp;segment&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.67"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.69"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3493,7 +3504,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;absolute-URI-reference&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.78"><b>4</b></a></td>
+  &nbsp;<a href="#rfc.iref.80"><b>4</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3549,14 +3560,14 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;fragment&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.80"><b>4.1</b></a></td>
+  &nbsp;<a href="#rfc.iref.82"><b>4.1</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;h4&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.64"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.66"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3598,14 +3609,21 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;IPv6address&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.63"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.64"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;IPv6reference&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.62"><b>3.2.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.63"><b>3.2.2</b></a></td>
+</tr>
+<tr>
+<td>
+                &nbsp;&nbsp;&nbsp;&nbsp;ls32&nbsp;
+                  
+                
+  &nbsp;<a href="#rfc.iref.65"><b>3.2.2</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3633,21 +3651,21 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;path&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.69"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.71"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;path-segments&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.70"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.72"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;pchar&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.72"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.74"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3668,7 +3686,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;query&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.74"><b>3.4</b></a></td>
+  &nbsp;<a href="#rfc.iref.76"><b>3.4</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3682,21 +3700,21 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;relative-URI&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.82"><b>5</b></a></td>
+  &nbsp;<a href="#rfc.iref.84"><b>5</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;rel-path&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.85"><b>5</b></a></td>
+  &nbsp;<a href="#rfc.iref.87"><b>5</b></a></td>
 </tr>
 <tr>
 <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;rel-segment&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.86"><b>5</b></a></td>
+  &nbsp;<a href="#rfc.iref.88"><b>5</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3717,7 +3735,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;segment&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.71"><b>3.3</b></a></td>
+  &nbsp;<a href="#rfc.iref.73"><b>3.3</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3766,7 +3784,7 @@ and fix the following issues:
                 &nbsp;&nbsp;&nbsp;&nbsp;URI-reference&nbsp;
                   
                 
-  &nbsp;<a href="#rfc.iref.76"><b>4</b></a></td>
+  &nbsp;<a href="#rfc.iref.78"><b>4</b></a></td>
 </tr>
 <tr>
 <td>
@@ -3780,7 +3798,7 @@ and fix the following issues:
               &nbsp;&nbsp;URI-reference&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.75"><b>4</b></a></td>
+  &nbsp;<a href="#rfc.iref.77"><b>4</b></a></td>
 </tr>
 <tr>
 <td>
