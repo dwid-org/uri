@@ -342,7 +342,7 @@ the most meaningful of components.
 <t>
 In local or regional contexts and with improving technology, users might
 benefit from being able to use a wider range of characters; such use
-is not defined in this specification.  Percent-encoded octets
+is not defined by this specification.  Percent-encoded octets
 (<xref target="percent-encoding"/>) may be used within a URI to represent
 characters outside the range of the US-ASCII coded character set if such
 representation is defined by the scheme or by the protocol element
@@ -508,8 +508,8 @@ The complete URI syntax is collected in <xref target="collected-abnf"/>.
 <t>
 The URI syntax provides a method of encoding data, presumably for the
 sake of identifying a resource, as a sequence of characters.  The URI
-characters are, in turn, encoded as octets for transport or presentation.
-This specification does not mandate the use of any particular character
+characters are, in turn, frequently encoded as octets for transport or
+presentation.  This specification does not mandate any particular character
 encoding scheme for mapping between URI characters and the octets used
 to store or transmit those characters.  When a URI appears in a protocol
 element, the character encoding is defined by that protocol; absent such
@@ -527,15 +527,14 @@ the syntax rules.
 </t>
 <t>
 A URI is composed from a limited set of characters consisting of
-digits, letters, and a few graphic symbols.
-A <xref target="reserved">reserved</xref> subset of those characters
-may be used to delimit syntax components within a URI, while the remaining
-characters, including both the <xref target="unreserved">unreserved</xref>
-set and those reserved characters not acting as delimiters, define each
-component's data.
+digits, letters, and a few graphic symbols.  A reserved subset of those
+characters may be used to delimit syntax components within a URI, while
+the remaining characters, including both the unreserved set and those
+reserved characters not acting as delimiters, define each component's
+identifying data.
 </t>
 
-<section title="Percent Encoding" anchor="percent-encoding">
+<section title="Percent-Encoding" anchor="percent-encoding">
 <figure><preamble>
 <iref item="percent-encoding" primary="true"/>
 <iref item="pct-encoded" primary="true"/>
@@ -671,24 +670,69 @@ an already decoded string might lead to misinterpreting a percent data
 octet as the beginning of a percent-encoding, or vice versa in the case
 of percent-encoding an already percent-encoded string.
 </t>
+</section>
+
+<section title="Identifying Data" anchor="identifying-data">
 <t>
-URI characters serve as an external interface for identification
-between systems.  A system that internally provides identifiers in the
-form of a different character encoding, such as EBCDIC, will generally
-perform character translation of textual identifiers to UTF-8
-<xref target="RFC3629"/> (or some other superset of the US-ASCII
-character encoding) at an internal interface, since that results in more
-meaningful identifiers than simply percent-encoding the original octets.
-When interpreting an incoming URI on such an interface, percent-encoded
-octets must be decoded before the reverse transcoding can be applied.
+URI characters provide identifying data for each of the URI components,
+serving as an external interface for identification between systems.
+Although the presence and nature of the URI production interface is
+hidden from clients that use its URIs, and thus beyond the scope of the
+interoperability requirements defined by this specification, it is a
+frequent source of confusion and errors in the interpretation of URI
+character issues.  Implementers need to be aware that there are multiple
+character encodings involved in the production and transmission of URIs:
+local name and data encoding, public interface encoding, URI character
+encoding, data format encoding, and protocol encoding.
 </t>
 <t>
-In some cases, the interface between a URI component and the identifying
-data it has been crafted to represent is much less direct than a character
-encoding translation.  For example, portions of a URI might reflect a
-query on non-ASCII data, numeric coordinates on a map, etc.  Likewise,
-a URI scheme may define components with additional encoding requirements
-that are applied prior to forming the component and producing the URI.
+The first encoding of identifying data is the one in which the local
+names or data are stored.  URI producing applications (a.k.a., origin
+servers) will typically use the local encoding as the basis for
+producing meaningful names.  The URI producer will transform the
+local encoding to one that is suitable for a public interface, and
+then transform the public interface encoding into the restricted
+set of URI characters (reserved, unreserved, and percent-encodings).
+Those characters are, in turn, encoded in a charset to be used as a
+reference within a data format, and such data formats are often
+subsequently encoded for transmission over Internet protocols.
+</t>
+<t>
+For most systems, an unreserved character appearing within a URI
+component is interpreted as representing the data octet corresponding
+to that character's encoding in US-ASCII.  Consumers of URIs assume that
+the letter "X" corresponds to the octet "01011000", and there is no harm
+in making that assumption even when it is incorrect.  A system that
+internally provides identifiers in the form of a different character
+encoding, such as EBCDIC, will generally perform character translation
+of textual identifiers to UTF-8 <xref target="RFC3629"/> (or some other
+superset of the US-ASCII character encoding) at an internal interface,
+thereby providing more meaningful identifiers than simply percent-encoding
+the original octets.
+</t>
+<t>
+For example, consider an information service that provides data,
+stored locally using an EBCDIC-based filesystem, to clients on the
+Internet through an HTTP server.  When an author creates a file on that
+filesystem with the name "Laguna Beach", their expectation is that
+the "http" URI corresponding to that resource would also contain the
+meaningful string "Laguna%20Beach".  If, however, that server produces
+URIs using an overly-simplistic raw octet mapping, then the result would
+be a URI containing "%D3%81%87%A4%95%81@%C2%85%81%83%88".  An internal
+transcoding interface fixes that problem by transcoding the local name
+to a superset of US-ASCII prior to producing the URI.  Naturally,
+proper interpretion of an incoming URI on such an interface requires
+that percent-encoded octets be decoded before the reverse transcoding
+is applied to obtain the local name.
+</t>
+<t>
+In some cases, the internal interface between a URI component and the
+identifying data that it has been crafted to represent is much less direct
+than a character encoding translation.  For example, portions of a URI
+might reflect a query on non-ASCII data, numeric coordinates on a map, etc.
+Likewise, a URI scheme may define components with additional encoding
+requirements that are applied prior to forming the component and
+producing the URI.
 </t>
 <t>
 When a new URI scheme defines a component that represents textual data
@@ -1992,7 +2036,7 @@ could reasonably consider the following two URIs equivalent:
 Web user agents, such as browsers, typically apply this type of URI
 normalization when determining whether a cached response is available.
 Syntax-based normalization includes such techniques as case normalization,
-encoding normalization, and removal of dot-segments.
+percent-encoding normalization, and removal of dot-segments.
 </postamble></figure>
 
 <section title="Case Normalization" anchor="normalize-case">
@@ -2012,7 +2056,7 @@ to use uppercase letters for the digits A-F.
 </t>
 </section>
 
-<section title="Encoding Normalization" anchor="normalize-encoding">
+<section title="Percent-Encoding Normalization" anchor="normalize-encoding">
 <t>
 The percent-encoding mechanism (<xref target="percent-encoding"/>)
 is a frequent source of variance among otherwise identical URIs.
