@@ -14,6 +14,8 @@
              <a href="example_uri_refs.out">output</a></li>
  <li><a href="../test/index.html">Test Cases and Implementation Reports</a></li>
  <li>Published drafts:
+       <a href="draft-fielding-uri-rfc2396bis-07.txt">07.txt</a>,
+       <a href="draft-fielding-uri-rfc2396bis-07.html">07.html</a>,
        <a href="draft-fielding-uri-rfc2396bis-06.txt">06.txt</a>,
        <a href="draft-fielding-uri-rfc2396bis-06.html">06.html</a>,
        <a href="draft-fielding-uri-rfc2396bis-05.txt">05.txt</a>,
@@ -57,6 +59,8 @@
   <status>added 05</status>
   <status>fixed 06</status>
   <status>added 06</status>
+  <status>fixed 07</status>
+  <status>added 07</status>
  </section><section>
   <title>Issues that will not be incorporated</title>
   <status>closed</status>
@@ -4540,7 +4544,7 @@ I don't know if handling bad relative URI references is worth the hassle.
  <type>editorial</type>
  <name>046-lc-edit-relative-URI</name>
  <title>Rename relative-URI to relative-ref</title>
- <status>accepted</status>
+ <status>fixed 07</status>
  <report>
   <author email="elharo_AT_metalab.unc.edu">Elliotte Rusty Harold</author>
   <date sort="20040817">17 Aug 2004</date>
@@ -4606,7 +4610,7 @@ has been committed to the author's draft.
  <type>editorial</type>
  <name>047-lc-edit-canonical</name>
  <title>Canonical form seems to be less baked</title>
- <status>accepted</status>
+ <status>fixed 07</status>
  <report>
   <author>various</author>
   <date sort="20040806">06 Aug 2004</date>
@@ -4690,7 +4694,7 @@ the sections that actually describe normalization.
  <type>editorial</type>
  <name>048-lc-edit-iana</name>
  <title>Add a sentence to IANA considerations</title>
- <status>accepted</status>
+ <status>added 07</status>
  <report>
   <author email="cotton_AT_icann.org">Michelle S. Cotton</author>
   <date sort="20040819">19 Aug 2004</date>
