@@ -43,7 +43,7 @@
  &lt;uri@w3.org&gt; mailing list discussions</a>
 </li>
 <li>
-<a href="http://www.ietf.org/ID-nits.html">IETF instructions for
+<a href="http://www.ietf.org/ID-Checklist.html">IETF instructions for
  Internet Drafts</a>
 </li>
 </ul>
@@ -54,6 +54,9 @@
 </tr>
 <tr>
 <th nowrap="nowrap">name</th><th>title</th><th>type</th><th>status</th>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>terminology</td><td nowrap="nowrap">reopened</td>
 </tr>
 </table>
 <br>
@@ -129,9 +132,6 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#021-relative-examples">021-relative-examples</a></td><td>relative URI examples could be improved</td><td>examples</td><td nowrap="nowrap">fixed 02</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>terminology</td><td nowrap="nowrap">fixed 02</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#031-query-def">031-query-def</a></td><td>query definition</td><td>query</td><td nowrap="nowrap">fixed 02</td>
@@ -2471,7 +2471,7 @@ Fixed by rewriting URI to "a URI" or URIs, as appropriate.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="024-identity">024-identity</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Resource should not be defined as anything that has identity</font></th>
 </tr>
 <tr>
-<th bgcolor="lightgreen">fixed 02</th><th align="left">terminology</th>
+<th>reopened</th><th align="left">terminology</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2796,6 +2796,56 @@ further define words that can be found in any dictionary.  Instead, I
 added more examples and chose words that are less likely to prick the
 sensibilities of those who use URIs only for denotation.  Additional
 terminology will be addressed in issue 022-definitions.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_gbiv.com">Roy T. Fielding</a>,
+  02 Apr 2004,
+  draft 05:
+    <pre>
+The definition has been updated to
+
+   Resource
+      Anything that has been named or described can be a resource.
+      Familiar examples include an electronic document, an image, a
+      service (e.g., "today's weather report for Los Angeles"), and a
+      collection of other resources. A resource is not necessarily
+      accessible via the Internet; e.g., human beings, corporations, and
+      bound books in a library can also be resources. Likewise, abstract
+      concepts can be resources, such as the operators and operands of a
+      mathematical equation, the types of a relationship (e.g., "parent"
+      or "employee"), or numeric values (e.g., zero, one, and infinity).
+      These things are called resources because they each can be
+      considered a source of supply or support, or an available means,
+      for some system, where such systems may be as diverse as the World
+      Wide Web, a filesystem, an ontological graph, a theorem prover, or
+      some other form of system for the direct or indirect observation
+      and/or manipulation of resources. Note that "supply" is not
+      necessary for a thing to be considered a resource: the ability to
+      simply refer to that thing is often sufficient to support the
+      operation of a given system.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:connolly_AT_w3.org">Dan Connolly</a>,
+  24 May 2004,
+  URI-WG mailing list:
+    <pre>
+Dan requests that this issue be reopened due to the change from "can be"
+to "has been" in draft 05.  The thread can be viewed at
+
+  <a href="http://lists.w3.org/Archives/Public/uri/2004May/0026.html">http://lists.w3.org/Archives/Public/uri/2004May/0026.html</a>
+
+Suggested change:
+
+     A resource can be anything; familiar examples include an
+     electronic document, an image, a service (e.g., "today's weather
+     report for Los Angeles"), and a collection of other resources,
+     but there is no constraint on what is a resource.
 </pre>
 </td>
 </tr>

@@ -30,7 +30,7 @@
  <li><a href="http://cvs.apache.org/viewcvs.cgi/ietf-uri/rev-2002/">CVS web view of editor revisions</a></li>
  <li><a href="http://lists.w3.org/Archives/Public/uri/">Archive of
  &lt;uri&#64;w3.org&gt; mailing list discussions</a></li>
- <li><a href="http://www.ietf.org/ID-nits.html">IETF instructions for
+ <li><a href="http://www.ietf.org/ID-Checklist.html">IETF instructions for
  Internet Drafts</a></li>
 </links>
 <summary>
@@ -2120,7 +2120,7 @@ Fixed by rewriting URI to "a URI" or URIs, as appropriate.
  <type>terminology</type>
  <name>024-identity</name>
  <title>Resource should not be defined as anything that has identity</title>
- <status>fixed 02</status>
+ <status>reopened</status>
  <report>
   <author email="msabin_AT_milessabin.com">Miles Sabin</author>
   <date sort="20020909">09 Sep 2002</date>
@@ -2429,6 +2429,52 @@ sensibilities of those who use URIs only for denotation.  Additional
 terminology will be addressed in issue 022-definitions.
 </pre>
  </action>
+ <action>
+  <author email="fielding_AT_gbiv.com">Roy T. Fielding</author>
+  <date sort="20040402">02 Apr 2004</date>
+  <where>draft 05</where>
+<pre>
+The definition has been updated to
+
+   Resource
+      Anything that has been named or described can be a resource.
+      Familiar examples include an electronic document, an image, a
+      service (e.g., "today's weather report for Los Angeles"), and a
+      collection of other resources. A resource is not necessarily
+      accessible via the Internet; e.g., human beings, corporations, and
+      bound books in a library can also be resources. Likewise, abstract
+      concepts can be resources, such as the operators and operands of a
+      mathematical equation, the types of a relationship (e.g., "parent"
+      or "employee"), or numeric values (e.g., zero, one, and infinity).
+      These things are called resources because they each can be
+      considered a source of supply or support, or an available means,
+      for some system, where such systems may be as diverse as the World
+      Wide Web, a filesystem, an ontological graph, a theorem prover, or
+      some other form of system for the direct or indirect observation
+      and/or manipulation of resources. Note that "supply" is not
+      necessary for a thing to be considered a resource: the ability to
+      simply refer to that thing is often sufficient to support the
+      operation of a given system.
+</pre>
+ </action>
+ <report>
+  <author email="connolly_AT_w3.org">Dan Connolly</author>
+  <date sort="20040524">24 May 2004</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Dan requests that this issue be reopened due to the change from "can be"
+to "has been" in draft 05.  The thread can be viewed at
+
+  <a href="http://lists.w3.org/Archives/Public/uri/2004May/0026.html">http://lists.w3.org/Archives/Public/uri/2004May/0026.html</a>
+
+Suggested change:
+
+     A resource can be anything; familiar examples include an
+     electronic document, an image, a service (e.g., "today's weather
+     report for Los Angeles"), and a collection of other resources,
+     but there is no constraint on what is a resource.
+</pre>
+ </report>
 </issue>
 
 <issue>
