@@ -1,10 +1,10 @@
 Uniform Resource Identifiers Working Group               R. T. Fielding
 INTERNET-DRAFT                                                UC Irvine
-Expires July 18, 1995                                  January 18, 1995
+Expires July 30, 1995                                  January 30, 1995
 
 
                   Relative Uniform Resource Locators
-                 <draft-ietf-uri-relative-url-04.txt>
+                 <draft-ietf-uri-relative-url-05.txt>
 
 
 Status of this Memo
@@ -101,12 +101,12 @@ Abstract
    Although this document does not seek to define the overall URL
    syntax, some discussion of it is necessary in order to describe the
    parsing of relative URLs.  In particular, base documents can only
-   make use of relative URLs when their base URL fits within the generic
-   syntax described below.  Although some URL schemes do not require
-   this generic syntax, it is assumed that any document which contains
-   a relative reference does have a base URL that obeys the syntax.
-   In other words, relative URLs cannot be used within documents that
-   have unsuitable base URLs.
+   make use of relative URLs when their base URL fits within the
+   generic-RL syntax described below.  Although some URL schemes do not
+   require this generic-RL syntax, it is assumed that any document which
+   contains a relative reference does have a base URL that obeys the
+   syntax.  In other words, relative URLs cannot be used within
+   documents that have unsuitable base URLs.
 
 2.1.  URL Syntactic Components
 
@@ -114,8 +114,8 @@ Abstract
    reserved characters like "?" and ";" to indicate special components,
    while others just consider them to be part of the path.  However,
    there is enough uniformity in the use of URLs to allow a parser
-   to resolve relative URLs based upon a single, generic syntax.
-   This generic syntax consists of six components:
+   to resolve relative URLs based upon a single, generic-RL syntax.
+   This generic-RL syntax consists of six components:
 
       <scheme>://<net_loc>/<path>;<params>?<query>#<fragment>
 
@@ -123,17 +123,18 @@ Abstract
    These components are defined as follows (a complete BNF is provided
    in Section 2.2):
 
-      scheme ":"   ::= scheme name, as per Section 2.1 of [2].
+      scheme ":"   ::= scheme name, as per Section 2.1 of RFC 1738 [2].
 
       "//" net_loc ::= network location and login information, as per
-                       Section 3.1 of [2].
+                       Section 3.1 of RFC 1738 [2].
 
-      "/" path     ::= URL path, as per Section 3.1 of [2].
+      "/" path     ::= URL path, as per Section 3.1 of RFC 1738 [2].
 
       ";" params   ::= object parameters (e.g. ";type=a" as in 
-                       Section 3.2.2 of [2]).
+                       Section 3.2.2 of RFC 1738 [2]).
 
-      "?" query    ::= query information, as per Section 3.3 of [2].
+      "?" query    ::= query information, as per Section 3.3 of
+                       RFC 1738 [2].
 
       "#" fragment ::= fragment identifier.
 
@@ -159,7 +160,9 @@ Abstract
 
    URL         = ( absoluteURL | relativeURL ) [ "#" fragment ]
 
-   absoluteURL = scheme ":" *( uchar | reserved )
+   absoluteURL = generic-RL | ( scheme ":" *( uchar | reserved ) )
+
+   generic-RL  = scheme ":" relativeURL
 
    relativeURL = net_path | abs_path | rel_path
 
@@ -208,46 +211,51 @@ Abstract
 2.3.  Specific Schemes and their Syntactic Categories
 
    Each URL scheme has its own rules regarding the presence or absence
-   of the syntactic components described in Section 2.1 and 2.2.
+   of the syntactic components described in Sections 2.1 and 2.2.
    In addition, some schemes are never appropriate for use with relative
    URLs.  However, since relative URLs will only be used within contexts
    in which they are useful, these scheme-specific differences can be
    ignored by the resolution process.
 
    Within this section, we include as examples only those schemes that
-   have a defined URL syntax in [2].  The following schemes are never
-   used with relative URLs:
+   have a defined URL syntax in RFC 1738 [2].  The following schemes are
+   never used with relative URLs:
 
       mailto     Electronic Mail
+      news       USENET news
       telnet     TELNET Protocol for Interactive Sessions
 
    Some URL schemes allow the use of reserved characters for purposes
-   outside the generic grammar given above.  However, such use is rare.
-   Relative URLs can be used with these schemes whenever the applicable
-   base URL follows the generic syntax.
+   outside the generic-RL syntax given above.  However, such use is
+   rare.  Relative URLs can be used with these schemes whenever the
+   applicable base URL follows the generic-RL syntax.
 
       gopher     Gopher and Gopher+ Protocols
-      news       USENET news
-      nntp       USENET news using NNTP access
       prospero   Prospero Directory Service
       wais       Wide Area Information Servers Protocol
 
-   Finally, the following schemes can always be parsed using the generic
-   syntax.
+   Users of gopher URLs should note that gopher-type information is
+   often included at the beginning of what would be the generic-RL path.
+   If present, this type information prevents relative-path references
+   to documents with differing gopher-types.
+
+   Finally, the following schemes can always be parsed using the
+   generic-RL syntax.
 
       file       Host-specific Files
       ftp        File Transfer Protocol
       http       Hypertext Transfer Protocol
+      nntp       USENET news using NNTP access
 
    It is recommended that new schemes be designed to be parsable via
-   the generic syntax if they are intended to be used with relative
+   the generic-RL syntax if they are intended to be used with relative
    URLs.  A description of the allowed relative forms should be included
-   when a new scheme is registered, as per Section 4 of [2].
+   when a new scheme is registered, as per Section 4 of RFC 1738 [2].
 
 2.4.  Parsing a URL
 
-   An accepted method for parsing URLs is necessary to disambiguate the
-   generic URL syntax of Section 2.2 and to describe the algorithm for
+   An accepted method for parsing URLs is useful to clarify the
+   generic-RL syntax of Section 2.2 and to describe the algorithm for
    resolving relative URLs presented in Section 4.  This section
    describes the parsing rules for breaking down a URL (relative or
    absolute) into the component parts described in Section 2.1.  The
@@ -319,10 +327,32 @@ Abstract
 
 3.  Establishing a Base URL
 
-   In order for relative URLs to be usable within a base document,
-   the absolute "base URL" of that document must be known to the
-   parser.  There are three methods for obtaining the base URL of
-   a document, listed here in order of precedence.
+   The term "relative URL" implies that there exists some absolute
+   "base URL" against which the relative reference is applied.  Indeed,
+   the base URL is necessary to define the semantics of any embedded
+   relative URLs; without it, a relative reference is meaningless.
+   In order for relative URLs to be usable within a document, the base
+   URL of that document must be known to the parser.
+
+   The base URL of a document can be established in one of four ways,
+   listed below in order of precedence.  The order of precedence can be
+   thought of in terms of layers, where the innermost defined base URL
+   has the highest precedence.  This can be visualized graphically as:
+
+      .---------------------------------------------------------.
+      |  .---------------------------------------------------.  |
+      |  |  .---------------------------------------------.  |  |
+      |  |  |  .---------------------------------------.  |  |  |
+      |  |  |  |   (3.1) Base URL embedded in the      |  |  |  |
+      |  |  |  |         document's content            |  |  |  |
+      |  |  |  `---------------------------------------'  |  |  |
+      |  |  |   (3.2) URL defined by a "Base" message     |  |  |
+      |  |  |         header (or equivalent)              |  |  |
+      |  |  `---------------------------------------------'  |  |
+      |  |   (3.3) URL of the document's retrieval context   |  |
+      |  `---------------------------------------------------'  |
+      |   (3.4) Base URL = "" (undefined)                       |
+      `---------------------------------------------------------'
 
 3.1.  Base URL within Document Content
 
@@ -340,14 +370,15 @@ Abstract
 
 3.2.  Base URL within Message Headers
 
-   For protocols that make use of message headers like those described
-   in RFC 822 [5], a second method for identifying the base URL of a
-   document is to include that URL in the message headers.  It is
-   recommended that the format of this header be:
+   A second method for identifying the base URL of a document is to
+   specify it within the message headers (or equivalent tagged
+   metainformation) of the message enclosing the document.  For
+   protocols that make use of message headers like those described in
+   RFC 822 [5], it is recommended that the format of this header be:
 
-      base  = "Base" ":" "<URL:" absoluteURL ">"
+      base-header  = "Base" ":" "<URL:" absoluteURL ">"
 
-   where "Base" is case-insensitive.  For example,
+   where "Base" is case-insensitive.  For example, the header
 
       Base: <URL:http://www.ics.uci.edu/Test/a/b/c>
 
@@ -356,39 +387,55 @@ Abstract
    Any whitespace (including that used for line folding) inside the
    angle brackets should be ignored.
 
+   Protocols which do not use the RFC 822 message header syntax, but
+   which do allow some form of tagged metainformation to be included
+   within messages, may define their own syntax for passing the base URL
+   as part of a message.  Describing the syntax for all possible
+   protocols is beyond the scope of this document.  It is assumed that
+   user agents using such a protocol will be able to obtain the
+   appropriate syntax from that protocol's specification.
+
    In situations where both an embedded base URL (as described in
-   Section 3.1) and a "Base" message header are present, the embedded
-   base URL takes precedence.
+   Section 3.1) and a base-header are present, the embedded base URL
+   takes precedence.
 
 3.3.  Base URL from the Retrieval Context
 
-   If neither an embedded base URL nor a "Base" message header
-   is present, then, if a URL was used to retrieve the base document,
-   that URL shall be considered the base URL.  Note that if the
-   retrieval was the result of a redirected request, the last URL used
-   (i.e., that which resulted in the actual retrieval of the document)
-   is the base URL.
+   If neither an embedded base URL nor a base-header is present, then,
+   if a URL was used to retrieve the base document, that URL shall be
+   considered the base URL.  Note that if the retrieval was the result
+   of a redirected request, the last URL used (i.e., that which resulted
+   in the actual retrieval of the document) is the base URL.
+
+   Composite media types, such as the "multipart/*" and "message/*"
+   media types defined by MIME (RFC 1521, [4]), require special
+   processing in order to determine the retrieval context of an enclosed
+   document.  For these types, the base URL of the composite entity
+   must be determined first; this base is then considered the retrieval
+   context for its component parts, and thus the base URL for any part
+   that does not define its own base via one of the methods described
+   in Sections 3.1 and 3.2.  This logic is applied recursively for
+   component parts that are themselves composite entities.
+
+   In other words, the retrieval context (Section 3.3) of a component
+   part is the base URL of the composite entity of which it is a part.
+   Thus, a composite entity can redefine the retrieval context of its
+   component parts via inclusion of a base-header, and this redefinition
+   applies recursively for a hierarchy of composite parts.  Note that
+   this is not necessarily the same as defining the base URL of the
+   components, since each component may include an embedded base URL
+   or base-header that takes precedence over the retrieval context.
 
 3.4.  Default Base URL
 
    If none of the conditions described in Sections 3.1 -- 3.3 apply,
    then the base URL is considered to be the empty string and all
-   embedded URLs within that document shall be interpreted as absolute.
+   embedded URLs within that document are assumed to be absolute URLs.
    It is the responsibility of the distributor(s) of a document
    containing relative URLs to ensure that the base URL for that
    document can be established.  It must be emphasized that relative
    URLs cannot be used reliably in situations where the object's base
    URL is not well-defined.
-
-3.5.  Base URL for Composite Media Types
-
-   Composite media types, such as the "multipart/*" and "message/*"
-   media types defined by MIME (RFC 1521, [4]), require special
-   processing in order to determine the base URL of a component part.
-   For these types, the base URL of the composite entity should be
-   determined first; this base is then considered the default for any
-   component part that does not define its own base via one of the
-   methods described in Sections 3.1 and 3.2.
 
 4.  Resolving Relative URLs
 
@@ -619,9 +666,9 @@ Abstract
        <URL:ftp://ds.internic.net/rfc/rfc822.txt>
 
    [6] J. Kunze, "Functional Requirements for Internet Resource
-       Locators", Work in Progress, IS&T, UC Berkeley, November 1994.
+       Locators", Work in Progress, IS&T, UC Berkeley, January 1995.
        <URL:ftp://ds.internic.net/internet-drafts/
-       draft-ietf-uri-irl-fun-req-02.txt>
+       draft-ietf-uri-irl-fun-req-03.txt>
 
 9.  Author's Address
 
@@ -635,7 +682,7 @@ Abstract
    Fax: +1 (714) 824-4056
    Email: fielding@ics.uci.edu
 
-   This Internet-Draft expires July 18, 1995.
+   This Internet-Draft expires July 30, 1995.
 
 
 10.  Appendix - Embedding the Base URL in HTML documents.
