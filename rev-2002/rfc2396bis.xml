@@ -1498,9 +1498,7 @@ path is extracted from a reference, whether or not the path
 was relative, in order to remove any invalid or extraneous
 dot-segments prior to forming the target URI.  Although there
 are many ways to accomplish this removal process, we describe a
-simple method using a two string buffers.  Note that the use of
-&lt;segment&gt; below refers to a complete path segment, bounded
-by "/" or the beginning or end of the buffer, that may be empty.
+simple method using a two string buffers.
 <list style="numbers">
 <t>
 The input buffer is initialized with the now-appended path components
