@@ -1281,7 +1281,7 @@ portions of the URI, such as
 </artwork></figure>
 <t>
 or simply a DNS registered name on its own.  Such references are primarily
-intended for human interpretation rather than machine, with the
+intended for human interpretation, rather than for machines, with the
 assumption that context-based heuristics are sufficient to complete
 the URI (e.g., most host names beginning with "www" are likely to have
 a URI prefix of "http://").  Although there is no standard set of
@@ -1292,7 +1292,7 @@ allow them to be entered by the user and heuristically resolved.
 While this practice of using suffix references is common, it should
 be avoided whenever possible and never used in situations where long-term
 references are expected.  The heuristics noted above will change over time,
-particularly when new URI schemes are introduced, and are often
+particularly when a new URI scheme becomes popular, and are often
 incorrect when used out of context.  Furthermore, they can lead to
 security issues along the lines of those described in
 <xref target="RFC1535"/>.
@@ -1327,7 +1327,7 @@ by the parser prior to parsing URI references that might be relative.
 </t>
 <t>
 The base URI of a reference can be established in one of four ways,
-listed below in order of precedence.  The order of precedence can be
+discussed below in order of precedence.  The order of precedence can be
 thought of in terms of layers, where the innermost defined base URI
 has the highest precedence.  This can be visualized graphically as:
 </t>
@@ -1346,7 +1346,7 @@ has the highest precedence.  This can be visualized graphically as:
    |  |  `----------------------------------------------'  |  |
    |  | (5.1.3) URI used to retrieve the entity            |  |
    |  `----------------------------------------------------'  |
-   | (5.1.4) Default Base URI is application-dependent        |
+   | (5.1.4) Default Base URI (application-dependent)         |
    `----------------------------------------------------------'
 </artwork></figure>
 
@@ -1361,17 +1361,8 @@ USENET news).
 </t>
 <t>
 It is beyond the scope of this specification to specify how, for each
-media type, a base URI can be embedded.  It is assumed that user
-agents manipulating such media types will be able to obtain the
-appropriate syntax from that media type's specification.
-</t>
-<t>
-A mechanism for embedding a base URI within MIME container types
-(e.g., the message and multipart types) is defined by MHTML
-<xref target="RFC2110"/>.  Protocols that do not use the MIME message
-header syntax, but do allow some form of tagged metadata to be included
-within messages, may define their own syntax for defining a base
-URI as part of a message.
+media type, a base URI can be embedded.  The appropriate syntax, when
+available, is described by each media type's specification.
 </t>
 </section>
 
@@ -1384,14 +1375,22 @@ such as a message or archive, the retrieval context is that entity; thus,
 the default base URI of a representation is the base URI of the entity in
 which the representation is encapsulated.
 </t>
+<t>
+A mechanism for embedding a base URI within MIME container types
+(e.g., the message and multipart types) is defined by MHTML
+<xref target="RFC2110"/>.  Protocols that do not use the MIME message
+header syntax, but do allow some form of tagged metadata to be included
+within messages, may define their own syntax for defining a base
+URI as part of a message.
+</t>
 </section>
 
 <section title="Base URI from the Retrieval URI" anchor="base-retrieval">
 <t>
 If no base URI is embedded and the representation is not encapsulated
-within some other entity (e.g., the top level of a composite entity),
-then, if a URI was used to retrieve the representation, that URI shall
-be considered the base URI.  Note that if the retrieval was the
+within some other entity, then, if a URI was used to retrieve the
+representation, that URI shall be considered the base URI.
+Note that if the retrieval was the
 result of a redirected request, the last URI used (i.e., the URI that
 resulted in the actual retrieval of the representation) is the base URI.
 </t>
@@ -1399,7 +1398,7 @@ resulted in the actual retrieval of the representation) is the base URI.
 
 <section title="Default Base URI" anchor="base-default">
 <t>
-If none of the conditions described in above apply,
+If none of the conditions described above apply,
 then the base URI is defined by the context of the application.
 Since this definition is necessarily application-dependent, failing
 to define a base URI using one of the other methods may result in
@@ -1415,15 +1414,18 @@ reliably in situations where the base URI is well-defined.
 </section>
 </section>
 
-<section title="Obtaining the Referenced URI" anchor="absolutize">
+<section title="Relative Resolution" anchor="absolutize">
 <t>
-This section describes an algorithm for obtaining the target URI
-of a URI reference that might be relative to a given base URI.  The algorithm
-is intended to provide a definitive result that can be used to test
-the output of other implementations.  Implementation of the algorithm
-itself is not required, but the result given by an implementation must
-be equivalent to the result that would be given by this algorithm.
+This section describes an algorithm for converting a URI reference
+that might be relative to a given base URI into the parsed componets
+of the reference's target.  The components can then be recomposed,
+as described in <xref target="recomposition"/>, to form the target URI.
+This algorithm provides definitive results that can be used to test
+the output of other implementations.  Applications may implement
+relative reference resolution using some other algorithm, provided that
+the results match what would be given by this algorithm.
 </t>
+<section title="Pre-parse the Base URI" anchor="relative-base">
 <t>
 The base URI (Base) is established according to the procedure of
 <xref target="base-uri"/> and parsed into the five main components
@@ -1439,6 +1441,8 @@ Normalization of the base URI, as described in
 is optional.  A URI reference must be transformed to its target URI before
 it can be normalized.
 </t>
+</section>
+<section title="Transform References" anchor="relative-transform">
 <figure><preamble>
 For each URI reference (R), the following pseudocode describes an
 algorithm for transforming R into its target URI (T):
@@ -1489,9 +1493,11 @@ algorithm for transforming R into its target URI (T):
 
    T.fragment = R.fragment;
 </artwork></figure>
+</section>
+<section title="Merge Paths" anchor="relative-merge">
 <iref item="merge" primary="true"/>
 <t>
-The pseudocode above refers to a merge routine for merging a
+The pseudocode above refers to a "merge" routine for merging a
 relative-path reference with the path of the base URI.  This is
 accomplished as follows:
 <list style="symbols">
@@ -1502,15 +1508,17 @@ path; otherwise,
 </t>
 <t>
 Return a string consisting of the reference's path component appended to
-all but the last segment of the base URI's path (i.e., any characters
-after the right-most "/" in the base URI path are excluded or the entire
-base URI path is excluded if it does not contain any "/" characters).
+all but the last segment of the base URI's path (i.e., excluding any characters
+after the right-most "/" in the base URI path, or excluding the entire
+base URI path if it does not contain any "/" characters).
 </t>
 </list>
 </t>
+</section>
+<section title="Remove Dot Segments" anchor="relative-dot-segments">
 <iref item="remove_dot_segments" primary="true"/>
 <t>
-The pseudocode also refers to a remove_dot_segments routine
+The pseudocode also refers to a "remove_dot_segments" routine
 for interpreting and removing the special "." and ".." complete
 path segments from a referenced path.  This is done after the
 path is extracted from a reference, whether or not the path
@@ -1588,8 +1596,9 @@ component contains the strings "/../" or "/./".
 </list>
 </t>
 </section>
+</section>
 
-<section title="Recomposition of a Parsed URI" anchor="recomposition">
+<section title="Component Recomposition" anchor="recomposition">
 <figure><preamble>
 Parsed URI components can be recomposed to obtain the corresponding
 URI reference string.  Using pseudocode, this would be:

@@ -664,10 +664,10 @@ is available at
 
 
 
-
 <b>&nbsp;&nbsp;5.1.2&nbsp;
             <a href="#base-encapsulated">Base URI from the Encapsulating Entity</a></b>
 <br>
+
 
 
 
@@ -689,7 +689,32 @@ is available at
 
 
 <b>&nbsp;5.2&nbsp;
-            <a href="#absolutize">Obtaining the Referenced URI</a></b>
+            <a href="#absolutize">Relative Resolution</a></b>
+<br>
+
+
+<b>&nbsp;&nbsp;5.2.1&nbsp;
+            <a href="#relative-base">Pre-parse the Base URI</a></b>
+<br>
+
+
+
+
+<b>&nbsp;&nbsp;5.2.2&nbsp;
+            <a href="#relative-transform">Transform References</a></b>
+<br>
+
+
+
+<b>&nbsp;&nbsp;5.2.3&nbsp;
+            <a href="#relative-merge">Merge Paths</a></b>
+<br>
+
+
+
+
+<b>&nbsp;&nbsp;5.2.4&nbsp;
+            <a href="#relative-dot-segments">Remove Dot Segments</a></b>
 <br>
 
 
@@ -699,13 +724,8 @@ is available at
 
 
 
-
-
-
-
-
 <b>&nbsp;5.3&nbsp;
-            <a href="#recomposition">Recomposition of a Parsed URI</a></b>
+            <a href="#recomposition">Component Recomposition</a></b>
 <br>
 
 
@@ -2496,7 +2516,7 @@ portions of the URI, such as
 </div>
 <p>
 or simply a DNS registered name on its own.  Such references are primarily
-intended for human interpretation rather than machine, with the
+intended for human interpretation, rather than for machines, with the
 assumption that context-based heuristics are sufficient to complete
 the URI (e.g., most host names beginning with "www" are likely to have
 a URI prefix of "http://").  Although there is no standard set of
@@ -2510,7 +2530,7 @@ allow them to be entered by the user and heuristically resolved.
 While this practice of using suffix references is common, it should
 be avoided whenever possible and never used in situations where long-term
 references are expected.  The heuristics noted above will change over time,
-particularly when new URI schemes are introduced, and are often
+particularly when a new URI scheme becomes popular, and are often
 incorrect when used out of context.  Furthermore, they can lead to
 security issues along the lines of those described in
 <a href="#RFC1535" title="A Security Problem and Proposed Correction With Widely Deployed DNS Software">[RFC1535]</a>.
@@ -2563,7 +2583,7 @@ by the parser prior to parsing URI references that might be relative.
 </div>
 <p>
 The base URI of a reference can be established in one of four ways,
-listed below in order of precedence.  The order of precedence can be
+discussed below in order of precedence.  The order of precedence can be
 thought of in terms of layers, where the innermost defined base URI
 has the highest precedence.  This can be visualized graphically as:
 </p>
@@ -2584,7 +2604,7 @@ has the highest precedence.  This can be visualized graphically as:
    |  |  `----------------------------------------------'  |  |
    |  | (5.1.3) URI used to retrieve the entity            |  |
    |  `----------------------------------------------------'  |
-   | (5.1.4) Default Base URI is application-dependent        |
+   | (5.1.4) Default Base URI (application-dependent)         |
    `----------------------------------------------------------'
 </pre>
 <h3>
@@ -2607,20 +2627,8 @@ USENET news).
 </div>
 <p>
 It is beyond the scope of this specification to specify how, for each
-media type, a base URI can be embedded.  It is assumed that user
-agents manipulating such media types will be able to obtain the
-appropriate syntax from that media type's specification.
-</p>
-<div>
-<a name="rfc.section.5.1.1.p.3"></a>
-</div>
-<p>
-A mechanism for embedding a base URI within MIME container types
-(e.g., the message and multipart types) is defined by MHTML
-<a href="#RFC2110" title="MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)">[RFC2110]</a>.  Protocols that do not use the MIME message
-header syntax, but do allow some form of tagged metadata to be included
-within messages, may define their own syntax for defining a base
-URI as part of a message.
+media type, a base URI can be embedded.  The appropriate syntax, when
+available, is described by each media type's specification.
 </p>
 <h3>
 <a name="rfc.section.5.1.2">5.1.2</a>&nbsp;
@@ -2636,6 +2644,17 @@ such as a message or archive, the retrieval context is that entity; thus,
 the default base URI of a representation is the base URI of the entity in
 which the representation is encapsulated.
 </p>
+<div>
+<a name="rfc.section.5.1.2.p.2"></a>
+</div>
+<p>
+A mechanism for embedding a base URI within MIME container types
+(e.g., the message and multipart types) is defined by MHTML
+<a href="#RFC2110" title="MIME E-mail Encapsulation of Aggregate Documents, such as HTML (MHTML)">[RFC2110]</a>.  Protocols that do not use the MIME message
+header syntax, but do allow some form of tagged metadata to be included
+within messages, may define their own syntax for defining a base
+URI as part of a message.
+</p>
 <h3>
 <a name="rfc.section.5.1.3">5.1.3</a>&nbsp;
     <a name="base-retrieval">Base URI from the Retrieval URI</a>
@@ -2645,9 +2664,9 @@ which the representation is encapsulated.
 </div>
 <p>
 If no base URI is embedded and the representation is not encapsulated
-within some other entity (e.g., the top level of a composite entity),
-then, if a URI was used to retrieve the representation, that URI shall
-be considered the base URI.  Note that if the retrieval was the
+within some other entity, then, if a URI was used to retrieve the
+representation, that URI shall be considered the base URI.
+Note that if the retrieval was the
 result of a redirected request, the last URI used (i.e., the URI that
 resulted in the actual retrieval of the representation) is the base URI.
 </p>
@@ -2659,7 +2678,7 @@ resulted in the actual retrieval of the representation) is the base URI.
 <a name="rfc.section.5.1.4.p.1"></a>
 </div>
 <p>
-If none of the conditions described in above apply,
+If none of the conditions described above apply,
 then the base URI is defined by the context of the application.
 Since this definition is necessarily application-dependent, failing
 to define a base URI using one of the other methods may result in
@@ -2676,22 +2695,28 @@ Aside from fragment-only references, relative references can only be used
 reliably in situations where the base URI is well-defined.
 </p>
 <h2>
-<a name="rfc.iref.117"></a><a name="rfc.iref.118"></a><a name="rfc.section.5.2">5.2</a>&nbsp;
-    <a name="absolutize">Obtaining the Referenced URI</a>
+<a name="rfc.section.5.2">5.2</a>&nbsp;
+    <a name="absolutize">Relative Resolution</a>
 </h2>
 <div>
 <a name="rfc.section.5.2.p.1"></a>
 </div>
 <p>
-This section describes an algorithm for obtaining the target URI
-of a URI reference that might be relative to a given base URI.  The algorithm
-is intended to provide a definitive result that can be used to test
-the output of other implementations.  Implementation of the algorithm
-itself is not required, but the result given by an implementation must
-be equivalent to the result that would be given by this algorithm.
+This section describes an algorithm for converting a URI reference
+that might be relative to a given base URI into the parsed componets
+of the reference's target.  The components can then be recomposed,
+as described in <a href="#recomposition">section&nbsp;5.3</a>, to form the target URI.
+This algorithm provides definitive results that can be used to test
+the output of other implementations.  Applications may implement
+relative reference resolution using some other algorithm, provided that
+the results match what would be given by this algorithm.
 </p>
+<h3>
+<a name="rfc.section.5.2.1">5.2.1</a>&nbsp;
+    <a name="relative-base">Pre-parse the Base URI</a>
+</h3>
 <div>
-<a name="rfc.section.5.2.p.2"></a>
+<a name="rfc.section.5.2.1.p.1"></a>
 </div>
 <p>
 The base URI (Base) is established according to the procedure of
@@ -2703,7 +2728,7 @@ delimiter does not appear in the URI reference; the path component is
 never undefined, though it may be empty.
 </p>
 <div>
-<a name="rfc.section.5.2.p.3"></a>
+<a name="rfc.section.5.2.1.p.2"></a>
 </div>
 <p>
 Normalization of the base URI, as described in
@@ -2711,6 +2736,10 @@ Normalization of the base URI, as described in
 is optional.  A URI reference must be transformed to its target URI before
 it can be normalized.
 </p>
+<h3>
+<a name="rfc.section.5.2.2">5.2.2</a>&nbsp;
+    <a name="relative-transform">Transform References</a>
+</h3>
 <div>
 <a name="rfc.figure.u.24"></a>
 </div>
@@ -2764,11 +2793,15 @@ algorithm for transforming R into its target URI (T):
 
    T.fragment = R.fragment;
 </pre>
+<h3>
+<a name="rfc.iref.117"></a><a name="rfc.section.5.2.3">5.2.3</a>&nbsp;
+    <a name="relative-merge">Merge Paths</a>
+</h3>
 <div>
-<a name="rfc.section.5.2.p.5"></a>
+<a name="rfc.section.5.2.3.p.1"></a>
 </div>
 <p>
-The pseudocode above refers to a merge routine for merging a
+The pseudocode above refers to a "merge" routine for merging a
 relative-path reference with the path of the base URI.  This is
 accomplished as follows:
 </p>
@@ -2782,20 +2815,24 @@ path; otherwise,
 
 <li>
 Return a string consisting of the reference's path component appended to
-all but the last segment of the base URI's path (i.e., any characters
-after the right-most "/" in the base URI path are excluded or the entire
-base URI path is excluded if it does not contain any "/" characters).
+all but the last segment of the base URI's path (i.e., excluding any characters
+after the right-most "/" in the base URI path, or excluding the entire
+base URI path if it does not contain any "/" characters).
 </li>
 
 </ul>
 <p>
 
 </p>
+<h3>
+<a name="rfc.iref.118"></a><a name="rfc.section.5.2.4">5.2.4</a>&nbsp;
+    <a name="relative-dot-segments">Remove Dot Segments</a>
+</h3>
 <div>
-<a name="rfc.section.5.2.p.6"></a>
+<a name="rfc.section.5.2.4.p.1"></a>
 </div>
 <p>
-The pseudocode also refers to a remove_dot_segments routine
+The pseudocode also refers to a "remove_dot_segments" routine
 for interpreting and removing the special "." and ".." complete
 path segments from a referenced path.  This is done after the
 path is extracted from a reference, whether or not the path
@@ -2880,7 +2917,7 @@ Some applications may find it more efficient to implement the
 remove_dot_segments algorithm using two segment stacks rather than strings.
 </p>
 <div>
-<a name="rfc.section.5.2.p.8"></a>
+<a name="rfc.section.5.2.4.p.3"></a>
 </div>
 <p>
 
@@ -2900,7 +2937,7 @@ component contains the strings "/../" or "/./".
 </p>
 <h2>
 <a name="rfc.section.5.3">5.3</a>&nbsp;
-    <a name="recomposition">Recomposition of a Parsed URI</a>
+    <a name="recomposition">Component Recomposition</a>
 </h2>
 <div>
 <a name="rfc.figure.u.26"></a>
@@ -4729,7 +4766,7 @@ the base URI has a non-hierarchical path.
               &nbsp;&nbsp;merge&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.117"><b>5.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.117"><b>5.2.3</b></a></td>
 </tr>
 <tr>
 <td><b>N</b></td>
@@ -4841,7 +4878,7 @@ the base URI has a non-hierarchical path.
               &nbsp;&nbsp;remove_dot_segments&nbsp;
                 
               
-  &nbsp;<a href="#rfc.iref.118"><b>5.2</b></a></td>
+  &nbsp;<a href="#rfc.iref.118"><b>5.2.4</b></a></td>
 </tr>
 <tr>
 <td>
