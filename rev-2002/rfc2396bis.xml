@@ -1060,7 +1060,7 @@ if it is necessary to distinguish between the complete domain name and
 some local domain.
 <iref item="URI grammar" subitem="reg-name" primary="true"/>
 </preamble><artwork type="abnf">
-   reg-name    = 0*255( unreserved / pct-encoded / sub-delims )
+   reg-name    = *( unreserved / pct-encoded / sub-delims )
 </artwork><postamble>
 If the URI scheme defines a default for host, then that default applies
 when the host subcomponent is undefined or when the registered name is
@@ -1081,7 +1081,8 @@ NetInfo, WINS, or any other system for lookup of registered names.
 However, a globally-scoped naming system, such as
 DNS fully-qualified domain names, is necessary for URIs that are intended
 to have global scope. URI producers should use names that conform to
-the DNS syntax, even when use of DNS is not immediately apparent.
+the DNS syntax, even when use of DNS is not immediately apparent, and
+should limit such names to no more than 255 characters in length.
 </t>
 <t>
 The reg-name syntax allows percent-encoded octets in order to represent
@@ -2373,8 +2374,8 @@ Rob Cameron, Jeremy Carroll, Dan Connolly, Adam M. Costello, John Cowan,
 Jason Diamond, Martin Duerst, Stefan Eissing, Clive D.W. Feather, Al Gilman,
 Tony Hammond, Elliotte Harold, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
 Michael Kay, John C. Klensin, Graham Klyne, Dan Kohn, Bruce Lilly,
-Andrew Main, Ira McDonald, Michael Mealling, Ray Merkert, Stephen Pollei,
-Julian Reschke, Tomas Rokicki, Miles Sabin, Kai Schaetzl,
+Andrew Main, Dave McAlpin, Ira McDonald, Michael Mealling, Ray Merkert,
+Stephen Pollei, Julian Reschke, Tomas Rokicki, Miles Sabin, Kai Schaetzl,
 Mark Thomson, Ronald Tschalaer,
 Norm Walsh, Marc Warne, Stuart Williams, and Henry Zongaro
 are gratefully acknowledged.
@@ -3116,7 +3117,7 @@ Science, University of California, Irvine</organization>
                / "2" %x30-34 DIGIT     ; 200-249
                / "25" %x30-35          ; 250-255
 
- reg-name      = 0*255( unreserved / pct-encoded / sub-delims )
+ reg-name      = *( unreserved / pct-encoded / sub-delims )
 
  path          = path-abempty    ; begins with "/" or is empty
                / path-absolute   ; begins with "/" but not "//"
@@ -3359,7 +3360,7 @@ eliminated through the use of five separate path matching rules.
 </t>
 <t>
 Registry-based naming authorities that use the generic syntax are now
-defined within the host rule and limited to 255 path characters.
+defined within the host rule.
 This change allows current implementations, where whatever name provided
 is simply fed to the local name resolution mechanism, to be consistent
 with the specification and removes the need to re-specify DNS name
