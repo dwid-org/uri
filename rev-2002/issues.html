@@ -83,6 +83,9 @@
 <tr>
 <td nowrap="nowrap"><a href="#024-identity">024-identity</a></td><td>Resource should not be defined as anything that has identity</td><td>intro</td><td>pending</td>
 </tr>
+<tr>
+<td nowrap="nowrap"><a href="#025-rel_segment">025-rel_segment</a></td><td>rel_segment is defined without distinguishing param</td><td>syntax</td><td>accepted</td>
+</tr>
 </table>
 <br>
 <h2>
@@ -2012,6 +2015,61 @@ characteristic -- of a resource.
 
 The goal of the sentence is to describe the essence of what it means
 to be a resource.  None of the other suggestions do that.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<h2>
+<a name="025-rel_segment">025-rel_segment</a>: 
+      rel_segment is defined without distinguishing param</h2>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th width="40%">syntax</th><th>accepted</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
+  10 Oct 2002,
+  URI-WG mailing list:
+  <pre>
+Looking through the URI syntax in detail, I became aware
+of the following 'anomaly': parameters are not allowed
+in the first segment of a relative URI (if it doesn't start
+with a slash). The relevant rules are:
+
+ relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
+
+ net_path      = "//" authority [ abs_path ]
+ abs_path      = "/"  path_segments
+ rel_path      = rel_segment [ abs_path ]
+
+ rel_segment   = 1*( unreserved | escaped |
+                     ";" | "@" | "&amp;" | "=" | "+" | "$" | "," )
+
+ path_segments = segment *( "/" segment )
+ segment       = *pchar *( ";" param )
+ param         = *pchar
+ pchar         = unreserved | escaped |
+                 ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+
+So in "abc;def/ghi;jkl", 'jkl' is a parameter, but 'def' isn't.
+On the other hand, in "/abc;def/ghi;jkl", both 'def' and 'jkl'
+are parameters.
+
+Is this an error in the syntax, or can somebody explain this?
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  11 Oct 2002,
+  URI-WG mailing list:
+  <pre>
+No, but I agree that it is confusing.  They are defined differently
+because rel_segment cannot be empty.  Syntactically they are equivalent.
+I'll find a better way to write it.
 </pre>
 </td>
 </tr>

@@ -1783,4 +1783,53 @@ to be a resource.  None of the other suggestions do that.
 </pre>
  </action>
 </issue>
+
+<issue>
+ <type>syntax</type>
+ <name>025-rel_segment</name>
+ <title>rel_segment is defined without distinguishing param</title>
+ <status>accepted</status>
+ <report>
+  <author email="duerst_AT_w3.org">Martin Duerst</author>
+  <date sort="20021010">10 Oct 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+Looking through the URI syntax in detail, I became aware
+of the following 'anomaly': parameters are not allowed
+in the first segment of a relative URI (if it doesn't start
+with a slash). The relevant rules are:
+
+ relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
+
+ net_path      = "//" authority [ abs_path ]
+ abs_path      = "/"  path_segments
+ rel_path      = rel_segment [ abs_path ]
+
+ rel_segment   = 1*( unreserved | escaped |
+                     ";" | "@" | "&amp;" | "=" | "+" | "$" | "," )
+
+ path_segments = segment *( "/" segment )
+ segment       = *pchar *( ";" param )
+ param         = *pchar
+ pchar         = unreserved | escaped |
+                 ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+
+So in "abc;def/ghi;jkl", 'jkl' is a parameter, but 'def' isn't.
+On the other hand, in "/abc;def/ghi;jkl", both 'def' and 'jkl'
+are parameters.
+
+Is this an error in the syntax, or can somebody explain this?
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021011">11 Oct 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+No, but I agree that it is confusing.  They are defined differently
+because rel_segment cannot be empty.  Syntactically they are equivalent.
+I'll find a better way to write it.
+</pre>
+ </action>
+</issue>
 </issuelist>
