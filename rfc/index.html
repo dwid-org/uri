@@ -6,23 +6,6 @@
 <h1>URI-related RFC's and Documents</h1>
 
 <DL>
-<dt><a href="rfc1630.txt">Universal Resource Identifiers in WWW:
-   A Unifying Syntax for the Expression of Names and Addresses of
-   Objects on the Network as used in the World-Wide Web (RFC 1630)</a>,<br>
-    T. Berners-Lee, June 1994.
-<dd>
-   This document defines the syntax used by the World-Wide Web
-   initiative to encode the names and addresses of objects on the
-   Internet.  The web is considered to include objects accessed using an
-   extendable number of protocols, existing, invented for the web
-   itself, or to be invented in the future.  Access instructions for an
-   individual object under a given protocol are encoded into forms of
-   address string.  Other protocols allow the use of object names of
-   various forms.  In order to abstract the idea of a generic object,
-   the web needs the concepts of the universal set of objects, and of
-   the universal set of names or addresses of objects.
-</dd><br>
-
 <dt><a href="lynch93.txt">A Framework for Identifying, Locating, and
     Describing Networked Information Resources</a>,<br>
     Clifford Lynch, March 1993.
@@ -47,6 +30,23 @@ research, and come to represent significant investments by
 institutions, it also becomes essential to apply the
 practices of information management to this new class of
 resources.
+</dd><br>
+
+<dt><a href="rfc1630.txt">Universal Resource Identifiers in WWW:
+   A Unifying Syntax for the Expression of Names and Addresses of
+   Objects on the Network as used in the World-Wide Web (RFC 1630)</a>,<br>
+   T. Berners-Lee, June 1994.
+<dd>
+   This document defines the syntax used by the World-Wide Web
+   initiative to encode the names and addresses of objects on the
+   Internet.  The web is considered to include objects accessed using an
+   extendable number of protocols, existing, invented for the web
+   itself, or to be invented in the future.  Access instructions for an
+   individual object under a given protocol are encoded into forms of
+   address string.  Other protocols allow the use of object names of
+   various forms.  In order to abstract the idea of a generic object,
+   the web needs the concepts of the universal set of objects, and of
+   the universal set of names or addresses of objects.
 </dd><br>
 
 <dt><a href="rfc1727.txt">A Vision of an Integrated
@@ -96,7 +96,7 @@ resources.
 
 <dt><a href="rfc1738.txt">Uniform Resource Locators (URL) (RFC 1738)</a>,<br>
     T. Berners-Lee, L. Masinter, M. McCahill, December 1994.
-    Updated by RFC 2396.
+    Updated by RFC 3986.
 <dd>
    This document specifies a Uniform Resource Locator (URL), the syntax
    and semantics of formalized information for location and access of
@@ -105,8 +105,8 @@ resources.
 
 <dt><a href="rfc1808.txt">Relative Uniform Resource Locators (RFC 1808)</a>,<br>
     R. Fielding, June 1995, 
-    Obsoleted by RFC 2396.
-<DD>
+    Obsoleted by RFC 3986.
+<dd>
    A Uniform Resource Locator (URL) is a compact representation of the
    location and access method for a resource available via the Internet.
    When embedded within a base document, a URL in its absolute form may
@@ -118,6 +118,18 @@ resources.
    context rather than re-specifying it in every instance.  This
    document defines the syntax and semantics for such Relative Uniform
    Resource Locators.
+</dd><br>
+
+<dt><a href="rfc1959.txt">An LDAP URL Format (RFC 1959)</a>,<br>
+    T. Howes and M. Smith, June 1996.
+<dd>
+   LDAP is the Lightweight Directory Access Protocol, defined in [1] and
+   [2].  This document describes a format for an LDAP Uniform Resource
+   Locator which will allow Internet clients to have direct access to
+   the LDAP protocol.  While LDAP currently is used only as a front end
+   to the X.500 directory, the URL format described here is general
+   enough to handle the case of stand-alone LDAP servers (i.e., LDAP
+   servers not back-ended by X.500).
 </dd><br>
 
 <dt><a href="rfc2056.txt">Uniform Resource Locators for Z39.50 (RFC 2056)</a>,<br>
@@ -249,9 +261,10 @@ embedded references to other parts of the same message.
 <dt>
   <a href="rfc2396.txt">Uniform Resource Identifiers (URI): Generic Syntax
                         (RFC 2396)</a>,<br>
-   T. Berners-Lee, R. Fielding, L. Masinter, August 1998.<br>
-   <a href="rfc2396.html">HTML edition of RFC 2396</a>.<br>
-   <a href="../test/">Roy Fielding's URI parsing test cases</a>.
+   T. Berners-Lee, R. Fielding, L. Masinter, August 1998.
+   Obsoleted by RFC 3986.<br>
+   <a href="rfc2396.xml">XML edition of RFC 2396</a>.<br>
+   <a href="rfc2396.html">HTML edition of RFC 2396</a>.
 <dd>
    A Uniform Resource Identifier (URI) is a compact string of characters
    for identifying an abstract or physical resource.  This document
@@ -293,7 +306,9 @@ only as descriptions of resources rather than identifiers.
 <dt>
    <a href="rfc2717.txt">Registration Procedures for URL Scheme Names
    (RFC 2717)</a>,<br>
-   R. Petke, I. King, November 1999.
+   R. Petke, I. King, November 1999.<br>
+   <a href="rfc2717.xml">XML edition of RFC 2717</a>.<br>
+   <a href="rfc2717.html">HTML edition of RFC 2717</a>.<br>
 <dd>
 This document defines the process by which new URL scheme names are
 registered.
@@ -302,7 +317,9 @@ registered.
 <dt>
    <a href="rfc2718.txt">Guidelines for new URL Schemes
    (RFC 2718)</a>,<br>
-   L. Masinter, H. Alvestrand, D. Zigmond, R. Petke, November 1999.
+   L. Masinter, H. Alvestrand, D. Zigmond, R. Petke, November 1999.<br>
+   <a href="rfc2718.xml">XML edition of RFC 2718</a>.<br>
+   <a href="rfc2718.html">HTML edition of RFC 2718</a>.<br>
 <dd>
 A Uniform Resource Locator (URL) is a compact string representation
 of the location for a resource that is available via the Internet.
@@ -314,6 +331,7 @@ schemes.
    <a href="rfc2732.txt">Preferred Format for Literal IPv6
           Addresses in URL's (RFC 2732)</a>,<br>
    R. Hinden, B. Carpenter, L. Masinter, December 1999.
+   Obsoleted by RFC 3986.
 <dd>
 This document defines the format for literal IPv6 Addresses in URL's
 for implementation in World Wide Web browsers.  This format has been
@@ -326,10 +344,52 @@ This document includes an update to the generic syntax for Uniform
 Resource Identifiers defined in RFC 2396 [URL].  It defines a syntax
 for IPv6 addresses and allows the use of "[" and "]" within a URI
 explicitly for this reserved purpose.
+</dd><br>
+
+<dt>
+  <a href="rfc3986.txt">Uniform Resource Identifier (URI): Generic Syntax
+                        (STD 66, RFC 3986)</a>,<br>
+   T. Berners-Lee, R. Fielding, L. Masinter, January 2005.<br>
+   <a href="rfc3986.xml">XML edition of RFC 3986</a>.<br>
+   <a href="rfc3986.html">HTML edition of RFC 3986</a>.<br>
+   <a href="../test/">Roy Fielding's URI parsing test cases</a>.
+<dd>
+   A Uniform Resource Identifier (URI) is a compact sequence of
+   characters that identifies an abstract or physical resource.  This
+   specification defines the generic URI syntax and a process for
+   resolving URI references that might be in relative form, along with
+   guidelines and security considerations for the use of URIs on the
+   Internet.  The URI syntax defines a grammar that is a superset of all
+   valid URIs, allowing an implementation to parse the common components
+   of a URI reference without knowing the scheme-specific requirements
+   of every possible identifier.  This specification does not define a
+   generative grammar for URIs; that task is performed by the individual
+   specifications of each URI scheme.
+</dd><br>
+
+<dt>
+  <a href="rfc3987.txt">Internationalized Resource Identifiers (IRIs)
+                        (RFC 3987)</a>,<br>
+   M. D&uuml;rst and M. Suignard, January 2005.
+<dd>
+   This document defines a new protocol element, the Internationalized
+   Resource Identifier (IRI), as a complement to the Uniform Resource
+   Identifier (URI).  An IRI is a sequence of characters from the
+   Universal Character Set (Unicode/ISO 10646).  A mapping from IRIs to
+   URIs is defined, which means that IRIs can be used instead of URIs,
+   where appropriate, to identify resources.<br>
+<br>
+   The approach of defining a new protocol element was chosen instead of
+   extending or changing the definition of URIs.  This was done in order
+   to allow a clear distinction and to avoid incompatibilities with
+   existing software.  Guidelines are provided for the use and
+   deployment of IRIs in various protocols, formats, and software
+   components that currently deal with URIs.
 </dd>
+
 </dl>
 
 <hr>
 <a href="../">IETF URI Working Group</a><br>
-Last modified: 07 Aug 2002
+Last modified: 08 Feb 2005
 </body></html>
