@@ -1,0 +1,386 @@
+  Base URI: http://a/b/c/d;p?q
+    scheme: http
+ authority: a
+      path: /b/c/d;p
+     query: q
+  fragment: 
+
+Enter a URI reference (^D exits):  Reference: g:h
+    scheme: g
+ authority: 
+      path: h
+     query: 
+  fragment: 
+
+Target URI: g:h
+
+Enter a URI reference (^D exits):  Reference: g
+    scheme: 
+ authority: 
+      path: g
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/g
+
+Enter a URI reference (^D exits):  Reference: ./g
+    scheme: 
+ authority: 
+      path: ./g
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/g
+
+Enter a URI reference (^D exits):  Reference: g/
+    scheme: 
+ authority: 
+      path: g/
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/g/
+
+Enter a URI reference (^D exits):  Reference: /g
+    scheme: 
+ authority: 
+      path: /g
+     query: 
+  fragment: 
+
+Target URI: http://a/g
+
+Enter a URI reference (^D exits):  Reference: //g
+    scheme: 
+ authority: g
+      path: 
+     query: 
+  fragment: 
+
+Target URI: http://g
+
+Enter a URI reference (^D exits):  Reference: ?y
+    scheme: 
+ authority: 
+      path: 
+     query: y
+  fragment: 
+
+Target URI: http://a/b/c/d;p?y
+
+Enter a URI reference (^D exits):  Reference: g?y
+    scheme: 
+ authority: 
+      path: g
+     query: y
+  fragment: 
+
+Target URI: http://a/b/c/g?y
+
+Enter a URI reference (^D exits):  Reference: #s
+    scheme: 
+ authority: 
+      path: 
+     query: 
+  fragment: s
+
+Target URI: http://a/b/c/d;p?q#s
+
+Enter a URI reference (^D exits):  Reference: g#s
+    scheme: 
+ authority: 
+      path: g
+     query: 
+  fragment: s
+
+Target URI: http://a/b/c/g#s
+
+Enter a URI reference (^D exits):  Reference: g?y#s
+    scheme: 
+ authority: 
+      path: g
+     query: y
+  fragment: s
+
+Target URI: http://a/b/c/g?y#s
+
+Enter a URI reference (^D exits):  Reference: ;x
+    scheme: 
+ authority: 
+      path: ;x
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/;x
+
+Enter a URI reference (^D exits):  Reference: g;x
+    scheme: 
+ authority: 
+      path: g;x
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/g;x
+
+Enter a URI reference (^D exits):  Reference: g;x?y#s
+    scheme: 
+ authority: 
+      path: g;x
+     query: y
+  fragment: s
+
+Target URI: http://a/b/c/g;x?y#s
+
+Enter a URI reference (^D exits):  Reference: .
+    scheme: 
+ authority: 
+      path: .
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/
+
+Enter a URI reference (^D exits):  Reference: ./
+    scheme: 
+ authority: 
+      path: ./
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/
+
+Enter a URI reference (^D exits):  Reference: ..
+    scheme: 
+ authority: 
+      path: ..
+     query: 
+  fragment: 
+
+Target URI: http://a/b/
+
+Enter a URI reference (^D exits):  Reference: ../
+    scheme: 
+ authority: 
+      path: ../
+     query: 
+  fragment: 
+
+Target URI: http://a/b/
+
+Enter a URI reference (^D exits):  Reference: ../g
+    scheme: 
+ authority: 
+      path: ../g
+     query: 
+  fragment: 
+
+Target URI: http://a/b/g
+
+Enter a URI reference (^D exits):  Reference: ../..
+    scheme: 
+ authority: 
+      path: ../..
+     query: 
+  fragment: 
+
+Target URI: http://a/
+
+Enter a URI reference (^D exits):  Reference: ../../
+    scheme: 
+ authority: 
+      path: ../../
+     query: 
+  fragment: 
+
+Target URI: http://a/
+
+Enter a URI reference (^D exits):  Reference: ../../g
+    scheme: 
+ authority: 
+      path: ../../g
+     query: 
+  fragment: 
+
+Target URI: http://a/g
+
+Enter a URI reference (^D exits):  Reference: 
+    scheme: 
+ authority: 
+      path: 
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/d;p?q
+
+Enter a URI reference (^D exits):  Reference: ../../../g
+    scheme: 
+ authority: 
+      path: ../../../g
+     query: 
+  fragment: 
+
+Target URI: http://a/g
+
+Enter a URI reference (^D exits):  Reference: ../../../../g
+    scheme: 
+ authority: 
+      path: ../../../../g
+     query: 
+  fragment: 
+
+Target URI: http://a/g
+
+Enter a URI reference (^D exits):  Reference: /./g
+    scheme: 
+ authority: 
+      path: /./g
+     query: 
+  fragment: 
+
+Target URI: http://a/g
+
+Enter a URI reference (^D exits):  Reference: /../g
+    scheme: 
+ authority: 
+      path: /../g
+     query: 
+  fragment: 
+
+Target URI: http://a/g
+
+Enter a URI reference (^D exits):  Reference: g.
+    scheme: 
+ authority: 
+      path: g.
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/g.
+
+Enter a URI reference (^D exits):  Reference: .g
+    scheme: 
+ authority: 
+      path: .g
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/.g
+
+Enter a URI reference (^D exits):  Reference: g..
+    scheme: 
+ authority: 
+      path: g..
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/g..
+
+Enter a URI reference (^D exits):  Reference: ..g
+    scheme: 
+ authority: 
+      path: ..g
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/..g
+
+Enter a URI reference (^D exits):  Reference: ./../g
+    scheme: 
+ authority: 
+      path: ./../g
+     query: 
+  fragment: 
+
+Target URI: http://a/b/g
+
+Enter a URI reference (^D exits):  Reference: ./g/.
+    scheme: 
+ authority: 
+      path: ./g/.
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/g/
+
+Enter a URI reference (^D exits):  Reference: g/./h
+    scheme: 
+ authority: 
+      path: g/./h
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/g/h
+
+Enter a URI reference (^D exits):  Reference: g/../h
+    scheme: 
+ authority: 
+      path: g/../h
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/h
+
+Enter a URI reference (^D exits):  Reference: g;x=1/./y
+    scheme: 
+ authority: 
+      path: g;x=1/./y
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/g;x=1/y
+
+Enter a URI reference (^D exits):  Reference: g;x=1/../y
+    scheme: 
+ authority: 
+      path: g;x=1/../y
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/y
+
+Enter a URI reference (^D exits):  Reference: g?y/./x
+    scheme: 
+ authority: 
+      path: g
+     query: y/./x
+  fragment: 
+
+Target URI: http://a/b/c/g?y/./x
+
+Enter a URI reference (^D exits):  Reference: g?y/../x
+    scheme: 
+ authority: 
+      path: g
+     query: y/../x
+  fragment: 
+
+Target URI: http://a/b/c/g?y/../x
+
+Enter a URI reference (^D exits):  Reference: g#s/./x
+    scheme: 
+ authority: 
+      path: g
+     query: 
+  fragment: s/./x
+
+Target URI: http://a/b/c/g#s/./x
+
+Enter a URI reference (^D exits):  Reference: g#s/../x
+    scheme: 
+ authority: 
+      path: g
+     query: 
+  fragment: s/../x
+
+Target URI: http://a/b/c/g#s/../x
+
+Enter a URI reference (^D exits):  Reference: http:g
+    scheme: http
+ authority: 
+      path: g
+     query: 
+  fragment: 
+
+Target URI: http://a/b/c/g
+
+Enter a URI reference (^D exits): done
