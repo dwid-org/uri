@@ -818,14 +818,17 @@ The syntax rule for host is ambiguous because it does not completely
 distinguish between an IPv4address and a reg-name.  Again, the
 "first-match-wins" algorithm applies: If host matches the rule for
 IPv4address, then it should be considered an IPv4 address literal
-and not a reg-name.
+and not a reg-name.  Although host is case-insensitive, producers
+and normalizers should use lowercase for host names and hexadecimal
+addresses for the sake of uniformity, while only using uppercase letters
+for percent-encodings.
 </postamble></figure>
 <figure><preamble>
 <iref item="IPv6" primary="true"/>
 <iref item="IP-literal" primary="true"/>
 <iref item="IPv6address" primary="true"/>
 <iref item="ls32" primary="true"/>
-<iref item="h4" primary="true"/>
+<iref item="h16" primary="true"/>
 <iref item="IPvFuture" primary="true"/>
 A host identified by an Internet Protocol literal address, version 6
 <xref target="RFC3513"/> or later, is distinguished by enclosing the IP
@@ -855,24 +858,34 @@ A host identified by an IPv6 literal address is represented inside
 the square brackets without a preceding version flag.  The ABNF provided
 here is a translation of the text definition of an IPv6 literal address
 provided in <xref target="RFC3513"/>.
+A 128-bit IPv6 address is divided into eight 16-bit pieces.
+Each piece is represented numerically in case-insensitive hexadecimal,
+using one to four hexadecimal digits (leading zeroes are permitted).
+The eight encoded pieces are given most-significant first, separated
+by colon characters.  Optionally, the least-significant two pieces
+may instead be represented in IPv4 address textual format.
+A sequence of one or more consecutive zero-valued 16-bit pieces within
+the address may be elided, omitting all their digits and leaving exactly
+two consecutive colons in their place to mark the elision.
 <iref item="URI grammar" subitem="IPv6address" primary="true"/>
 <iref item="URI grammar" subitem="ls32" primary="true"/>
-<iref item="URI grammar" subitem="h4" primary="true"/>
+<iref item="URI grammar" subitem="h16" primary="true"/>
 </preamble><artwork type="abnf">
-   IPv6address =                          6( h4 ":" ) ls32
-               /                     "::" 5( h4 ":" ) ls32
-               / [              h4 ] "::" 4( h4 ":" ) ls32
-               / [ *1( h4 ":" ) h4 ] "::" 3( h4 ":" ) ls32
-               / [ *2( h4 ":" ) h4 ] "::" 2( h4 ":" ) ls32
-               / [ *3( h4 ":" ) h4 ] "::"    h4 ":"   ls32
-               / [ *4( h4 ":" ) h4 ] "::"             ls32
-               / [ *5( h4 ":" ) h4 ] "::"             h4
-               / [ *6( h4 ":" ) h4 ] "::"
+   IPv6address =                            6( h16 ":" ) ls32
+               /                       "::" 5( h16 ":" ) ls32
+               / [               h16 ] "::" 4( h16 ":" ) ls32
+               / [ *1( h16 ":" ) h16 ] "::" 3( h16 ":" ) ls32
+               / [ *2( h16 ":" ) h16 ] "::" 2( h16 ":" ) ls32
+               / [ *3( h16 ":" ) h16 ] "::"    h16 ":"   ls32
+               / [ *4( h16 ":" ) h16 ] "::"              ls32
+               / [ *5( h16 ":" ) h16 ] "::"              h16
+               / [ *6( h16 ":" ) h16 ] "::"
 
-   ls32        = ( h4 ":" h4 ) / IPv4address
+   ls32        = ( h16 ":" h16 ) / IPv4address
                ; least-significant 32 bits of address
 
-   h4          = 1*4HEXDIG
+   h16         = 1*4HEXDIG
+               ; 16 bits of address represented in hexadecimal
 </artwork></figure>
 <figure><preamble>
 <iref item="IPv4" primary="true"/>
@@ -2874,18 +2887,18 @@ Science, University of California, Irvine</organization>
 
  IPvFuture     = "v" HEXDIG "." 1*( unreserved / sub-delims / ":" )
 
- IPv6address   =                          6( h4 ":" ) ls32
-               /                     "::" 5( h4 ":" ) ls32
-               / [              h4 ] "::" 4( h4 ":" ) ls32
-               / [ *1( h4 ":" ) h4 ] "::" 3( h4 ":" ) ls32
-               / [ *2( h4 ":" ) h4 ] "::" 2( h4 ":" ) ls32
-               / [ *3( h4 ":" ) h4 ] "::"    h4 ":"   ls32
-               / [ *4( h4 ":" ) h4 ] "::"             ls32
-               / [ *5( h4 ":" ) h4 ] "::"             h4
-               / [ *6( h4 ":" ) h4 ] "::"
+ IPv6address   =                            6( h16 ":" ) ls32
+               /                       "::" 5( h16 ":" ) ls32
+               / [               h16 ] "::" 4( h16 ":" ) ls32
+               / [ *1( h16 ":" ) h16 ] "::" 3( h16 ":" ) ls32
+               / [ *2( h16 ":" ) h16 ] "::" 2( h16 ":" ) ls32
+               / [ *3( h16 ":" ) h16 ] "::"    h16 ":"   ls32
+               / [ *4( h16 ":" ) h16 ] "::"              ls32
+               / [ *5( h16 ":" ) h16 ] "::"              h16
+               / [ *6( h16 ":" ) h16 ] "::"
 
- h4            = 1*4HEXDIG
- ls32          = ( h4 ":" h4 ) / IPv4address
+ h16           = 1*4HEXDIG
+ ls32          = ( h16 ":" h16 ) / IPv4address
 
  IPv4address   = dec-octet "." dec-octet "." dec-octet "." dec-octet
 
