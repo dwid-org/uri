@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc toc="no" ?>
+<?rfc symrefs="no" ?>
+<?rfc sortrefs="no"?>
+<?rfc linkmailto="no"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc editing="no"?>
+<?rfc-ext parse-xml-in-artwork="yes" ?>
+<rfc number="2718" category="info">
+
+<front>
+
+<title>Guidelines for new URL Schemes</title>
+
+<author initials='L.' surname='Masinter' fullname='Larry Masinter'>
+  <organization>Xerox Corporation</organization>
+  <address>
+    <postal>
+      <street>Palo Alto Research Center</street>
+      <street>3333 Coyote Hill Road</street>
+      <city>Palo Alto</city>
+      <region>CA</region>
+      <code>94304</code>
+    </postal>
+    <email>masinter@parc.xerox.com</email>
+    <uri>http://purl.org/NET/masinter</uri>
+  </address>
+</author>
+
+<author initials='H.' surname='Alvestrand' fullname='Harald Tveit Alvestrand'>
+  <organization>Maxware, Pirsenteret</organization>
+  <address>
+    <postal>
+      <street>N-7005 Trondheim</street>
+      <country>NORWAY</country>
+    </postal>
+    <phone>+47 73 54 57 00</phone>
+    <email>harald.alvestrand@maxware.no</email>
+  </address>
+</author>
+
+<author initials='D.' surname='Zigmond' fullname='Dan Zigmond'>
+  <organization>WebTV Networks, Inc.</organization>
+  <address>
+    <postal>
+      <street>305 Lytton Avenue</street>
+      <city>Palo Alto</city>
+      <region>CA</region>
+      <code>94301</code>
+      <country>USA</country>
+    </postal>
+    <phone>+1-650-614-6071</phone>
+    <email>djz@corp.webtv.net</email>
+  </address>
+</author>
+
+<author initials='R.' surname='Petke' fullname='Rich Petke'>
+  <organization>UUNET Technologies</organization>
+  <address>
+    <postal>
+      <street>5000 Britton Road</street>
+      <street>P. O. Box 5000</street>
+      <city>Hilliard</city>
+      <region>OH</region>
+      <code>43026-5000</code>
+    </postal>
+    <phone>+1-614-723-4157</phone>
+    <facsimile>+1-614-723-8407</facsimile>
+    <email>rpetke@wcom.net</email>
+  </address>
+</author>
+
+<date month='November' year='1999' />
+
+  <area>Applications</area>
+  <keyword>URL scheme</keyword>
+  <keyword>uniform resource identifier</keyword>
+  <keyword>uniform resource locator</keyword>
+  <keyword>URI</keyword>
+  <keyword>URL</keyword>
+  <keyword>URN</keyword>
+  <keyword>WWW</keyword>
+
+<abstract>
+<t>
+A Uniform Resource Locator (URL) is a compact string representation
+of the location for a resource that is available via the Internet.
+This document provides guidelines for the definition of new URL schemes.
+</t>
+</abstract>
+
+</front>
+<middle>
+
+<section title="Introduction" anchor="intro">
+<t>
+   A Uniform Resource Locator (URL) is a compact string representation
+   of the location for a resource that is available via the Internet.
+   RFC 2396 <xref target="RFC2396"/> defines the general syntax and semantics of URIs, and,
+   by inclusion, URLs.  URLs are designated by including a "&lt;scheme&gt;:"
+   and then a "&lt;scheme-specific-part&gt;".  Many URL schemes are already
+   defined.
+</t>
+<t>
+   This document provides guidelines for the definition of new URL
+   schemes, for consideration by those who are defining and registering
+   or evaluating those definitions.
+</t>
+<t>
+   The process by which new URL schemes are registered is defined in RFC
+   2717 <xref target="RFC2717"/>.
+</t>
+</section>
+
+<section title="Guidelines for new URL schemes" anchor="guidelines">
+<t>
+   Because new URL schemes potentially complicate client software, new
+   schemes must have demonstrable utility and operability, as well as
+   compatibility with existing URL schemes.  This section elaborates
+   these criteria.
+</t>
+
+<section title="Syntactic compatibility" anchor="compatibility">
+<t>
+   New URL schemes should follow the same syntactic conventions of
+   existing schemes when appropriate.  If a URI scheme that has embedded
+   links in content accessed by that scheme does not share syntax with a
+   different scheme, the same content cannot be served up under
+   different schemes without rewriting the content.  This can already be
+   a problem, and with future digital signature schemes, rewriting may
+   not even be possible.  Deployment of other schemes in the future
+   could therefore become extremely difficult.
+</t>
+
+<section title="Motivations for syntactic compatibility" anchor="syn_motive">
+<t>
+   Why should new URL schemes share as much of the generic URI syntax
+   (that makes sense to share) as possible?  Consider the following:
+<list style="symbols">
+<t>
+      If fragment syntax isn't shared between two schemes, (e.g. "&lt;a
+      href="#foo"&gt;"), you can't move individual completely self
+      referential documents between schemes without rewriting the
+      embedded references within the document.  In the Web, the fragment
+      syntax is a property of the media type, and evaluated by the
+      client.
+</t>
+<t>
+      If fragment syntax is not shared between different media types of
+      the same capability (e.g. HTML, XML, Word, or image types such as
+      GIF, JPEG, PNG) then you can't have a URI reference that can
+      evolve to superior media types as they become available, or even
+      likely work properly today with content negotiation.
+</t>
+<t>
+      If relative syntax (to the extent of understanding the URI is
+      relative, and what part of the URI string is relative) isn't
+      shared between two schemes, (e.g. "&lt;a href="foo"&gt;"), you can't
+      move sets of documents that are internally self referential
+      between schemes without rewriting the embedded URIs.
+</t>
+<t>
+      If the ".." syntax as a path component in relative URI's isn't
+      shared between schemes, you can't easily have sets of document
+      sets and refer to them between schemes without rewriting the
+      embedded references.
+</t>
+<t>
+      If the "/" syntax (to the extent of understanding that the URI
+      refers to a path relative to the current naming authority, see
+      section 2.1.1) isn't shared, you can't have multiple sets of
+      documents easily be moved up or down in a relative hierarchy of
+      names and share a common set of documents between them, without
+      rewriting the content, shared either in that scheme or between
+      schemes.  The best example is a site that has a common set of
+      GIF's, JPEG and PNG images, and you want to reorganize the site
+      changing the depth of a subtree from one depth to another, or from
+      one directory to another where the depth isn't the same.
+</t>
+<t>
+      If naming authority syntax (e.g. what comes after "//" in most URL
+      schemes, see section 2.1.1) and relative path syntax is shared, to
+      the extent of understanding that the URI has a naming authority,
+      and what part of the URI string is the naming authority vs. path),
+      isn't shared between two schemes, you can't share identical name
+      spaces and serve them up via different schemes.  (The naming
+      authority syntax is a property of the scheme).  The fact that
+      HTTP, and FTP have the same syntax, for example, has often been
+      exploited by sites transitioning from ftp archive service to HTTP
+      archive service so that the URL's can be identical between schemes
+      except for the scheme; the same content can be served via two
+      schemes simultaneously.
+</t>
+</list>
+</t>
+</section>
+
+<section title='Improper use of "//" following "&lt;scheme&gt;:"' anchor="double-slash">
+<t>
+   Contrary to some examples set in past years, the use of double
+   slashes as the first component of the &lt;scheme-specific-part&gt; of a URL
+   is not simply an artistic indicator that what follows is a URL:
+   Double slashes are used ONLY when the syntax of the URL's
+   &lt;scheme-specific-part&gt; contains a hierarchical structure as
+   described in RFC 2396.
+   In URLs from such schemes, the use of double slashes indicates
+   that what follows is the top hierarchical element for a naming
+   authority.  (See section 3 of RFC 2396 for more details.)  URL
+   schemes which do not contain a conformant hierarchical structure in
+   their &lt;scheme-specific-part&gt; should not use double slashes following
+   the "&lt;scheme&gt;:" string.
+</t>
+</section>
+<section title="Compatibility with relative URLs" anchor="relative">
+<t>
+   URL schemes should use the generic URL syntax if they are intended to
+   be used with relative URLs.  A description of the allowed relative
+   forms should be included in the scheme's definition.  Many
+   applications use relative URLs extensively.  Specifically,
+<list style="symbols">
+<t>
+      Can the scheme be parsed according to RFC 2396 - for example, if
+      the tokens "//", "/", ";", or "?" are used, do they have the
+      meaning given in RFC 2396?
+</t>
+<t>
+      Does the scheme make sense to use it in relative URLs like those
+      RFC 2396 specifies?
+</t>
+<t>
+      If the scheme syntax is designed to be broken into pieces, does
+      the documentation for the scheme's syntax specify what those
+      pieces are, why it should be broken in this way, and why the
+      breaks aren't where RFC 2396 says that they usually should be?
+</t>
+<t>
+      If the scheme has a hierarchy, does it go left-to-right and with
+      slash separators like RFC 2396?
+</t>
+</list>
+</t>
+</section>
+</section>
+
+<section title="Is the scheme well defined?" anchor="well-defined">
+<t>
+      It is important that the semantics of the "resource" that a URL
+      "locates" be well defined.  This might mean different things
+      depending on the nature of the URL scheme.
+</t>
+
+<section title="Clear mapping from other name spaces" anchor="clear-mapping">
+<t>
+      In many cases, new URL schemes are defined as ways to translate
+      other protocols and name spaces into the general framework of
+      URLs.  The "ftp" URL scheme translates from the FTP protocol,
+      while the "mid" URL scheme translates from the Message-ID field of
+      messages.
+</t>
+<t>
+      In either case, the description of the mapping must be complete,
+      must describe how characters get encoded or not in URLs, must
+      describe exactly how all legal values of the base standard can be
+      represented using the URL scheme, and exactly which modifiers,
+      alternate forms and other artifacts from the base standards are
+      included or not included.  These requirements are elaborated
+      below.
+</t>
+</section>
+
+<section title="URL schemes associated with network protocols" anchor="net-protocols">
+<t>
+      Most new URL schemes are associated with network resources that
+      have one or several network protocols that can access them.  The
+      'ftp', 'news', and 'http' schemes are of this nature.  For such
+      schemes, the specification should completely describe how URLs are
+      translated into protocol actions in sufficient detail to make the
+      access of the network resource unambiguous.  If an implementation
+      of the URL scheme requires some configuration, the configuration
+      elements must be clearly identified.  (For example, the 'news'
+      scheme, if implemented using NTTP, requires configuration of the
+      NTTP server.)
+</t>
+</section>
+
+<section title="Definition of non-protocol URL schemes" anchor="non-protocol">
+<t>
+      In some cases, URL schemes do not have particular network
+      protocols associated with them, because their use is limited to
+      contexts where the access method is understood.  This is the case,
+      for example, with the "cid" and "mid" URL schemes.  For these URL
+      schemes, the specification should describe the notation of the
+      scheme and a complete mapping of the locator from its source.
+</t>
+</section>
+
+<section title="Definition of URL schemes not associated with data resources"
+         anchor="not-data">
+<t>
+      Most URL schemes locate Internet resources that correspond to data
+      objects that can be retrieved or modified.  This is the case with
+      "ftp" and "http", for example.  However, some URL schemes do not;
+      for example, the "mailto" URL scheme corresponds to an Internet
+      mail address.
+</t>
+<t>
+      If a new URL scheme does not locate resources that are data
+      objects, the properties of names in the new space must be clearly
+      defined.
+</t>
+</section>
+
+<section title="Character encoding" anchor="character-encoding">
+<t>
+      When describing URL schemes in which (some of) the elements of the
+      URL are actually representations of sequences of characters, care
+      should be taken not to introduce unnecessary variety in the ways
+      in which characters are encoded into octets and then into URL
+      characters.  Unless there is some compelling reason for a
+      particular scheme to do otherwise, translating character sequences
+      into UTF-8 (RFC 2279) <xref target="RFC2279"/> and then subsequently using the %HH
+      encoding for unsafe octets is recommended.
+</t>
+</section>
+
+<section title="Definition of operations" anchor="operations">
+<t>
+      In some contexts (for example, HTML forms) it is possible to
+      specify any one of a list of operations to be performed on a
+      specific URL.  (Outside forms, it is generally assumed to be
+      something you GET.)
+</t>
+<t>
+      The URL scheme definition should describe all well-defined
+      operations on the URL identifier, and what they are supposed to
+      do.
+</t>
+<t>
+      Some URL schemes (for example, "telnet") provide location
+      information for hooking onto bi-directional data streams, and
+      don't fit the "infoaccess" paradigm of most URLs very well; this
+      should be documented.
+</t>
+<t>
+      NOTE: It is perfectly valid to say that "no operation apart from
+      GET is defined for this URL".  It is also valid to say that
+      "there's only one operation defined for this URL, and it's not
+      very GET-like".  The important point is that what is defined on
+      this type is described.
+</t>
+</section>
+</section>
+
+<section title="Demonstrated utility" anchor="utility">
+<t>
+      URL schemes should have demonstrated utility.  New URL schemes are
+      expensive things to support.  Often they require special code in
+      browsers, proxies, and/or servers.  Having a lot of ways to say
+      the same thing needless complicates these programs without adding
+      value to the Internet.
+</t>
+<t>
+      The kinds of things that are useful include:
+<list style="symbols">
+<t>
+      Things that cannot be referred to in any other way.
+</t>
+<t>
+      Things where it is much easier to get at them using this scheme
+      than (for instance) a proxy gateway.
+</t>
+</list>
+</t>
+
+<section title="Proxy into HTTP/HTML" anchor="proxy-http">
+<t>
+   One way to provide a demonstration of utility is via a gateway which
+   provides objects in the new scheme for clients using an existing
+   protocol.  It is much easier to deploy gateways to a new service than
+   it is to deploy browsers that understand the new URL object.
+</t>
+<t>
+   Things to look for when thinking about a proxy are:
+<list style="symbols">
+<t>
+      Is there a single global resolution mechanism whereby any proxy
+      can find the referenced object?
+</t>
+<t>
+      If not, is there a way in which the user can find any object of
+      this type, and "run his own proxy"?
+</t>
+<t>
+      Are the operations mappable one-to-one (or possibly using
+      modifiers) to HTTP operations?
+</t>
+<t>
+      Is the type of returned objects well defined?
+<list style="symbols">
+<t>
+        as MIME content-types?
+</t>
+<t>
+        as something that can be translated to HTML?
+</t>
+</list>
+</t>
+<t>
+      Is there running code for a proxy?
+</t>
+</list>
+</t>
+</section>
+</section>
+
+<section title="Are there security considerations?" anchor="scheme-security">
+<t>
+   Above and beyond the security considerations of the base mechanism a
+   scheme builds upon, one must think of things that can happen in the
+   normal course of URL usage.
+</t>
+<t>
+   In particular:
+<list style="symbols">
+<t>
+      Does the user need to be warned that such a thing is happening
+      without an explicit request (GET for the source of an IMG tag, for
+      instance)?  This has implications for the design of a proxy
+      gateway, of course.
+</t>
+<t>
+      Is it possible to fake URLs of this type that point to different
+      things in a dangerous way?
+</t>
+<t>
+      Are there mechanisms for identifying the requester that can be
+      used or need to be used with this mechanism (the From: field in a
+      mailto: URL, or the Kerberos login required for AFS access in the
+      AFS: URL, for instance)?
+</t>
+<t>
+      Does the mechanism contain passwords or other security information
+      that are passed inside the referring document in the clear (as in
+      the "ftp" URL, for instance)?
+</t>
+</list>
+</t>
+</section>
+
+<section title="Does it start with UR?" anchor="starting-ur">
+<t>
+   Any scheme starting with the letters "U" and "R", in particular if it
+   attaches any of the meanings "uniform", "universal" or "unifying" to
+   the first letter, is going to cause intense debate, and generate much
+   heat (but maybe little light).
+</t>
+<t>
+   Any such proposal should either make sure that there is a large
+   consensus behind it that it will be the only scheme of its type, or
+   pick another name.
+</t>
+</section>
+
+<section title="Non-considerations" anchor="non-considerations">
+<t>
+   Some issues that are often raised but are not relevant to new URL
+   schemes include the following.
+</t>
+
+<section title="Are all objects accessible?" anchor="accessible">
+<t>
+   Can all objects in the world that are validly identified by a scheme
+   be accessed by any UA implementing it?
+</t>
+<t>
+   Sometimes the answer will be yes and sometimes no; often it will
+   depend on factors (like firewalls or client configuration) not
+   directly related to the scheme itself.
+</t>
+</section>
+</section>
+</section>
+
+<section title="Security Considerations" anchor="security">
+<t>
+   New URL schemes are required to address all security considerations
+   in their definitions.
+</t>
+</section>
+
+</middle>
+<back>
+<references title="References">
+
+<reference anchor='RFC2396'>
+<front>
+<title abbrev='URI Generic Syntax'>Uniform Resource Identifiers (URI): Generic Syntax</title>
+<author initials='T.' surname='Berners-Lee' fullname='Tim Berners-Lee'>
+<organization abbrev='MIT/LCS'>World Wide Web Consortium</organization>
+<address>
+<postal>
+<street>MIT Laboratory for Computer Science, NE43-356</street>
+<street>545 Technology Square</street>
+<city>Cambridge</city>
+<region>MA</region>
+<code>02139</code></postal>
+<facsimile>+1(617)258-8682</facsimile>
+<email>timbl@w3.org</email></address></author>
+<author initials='R.T.' surname='Fielding' fullname='Roy T. Fielding'>
+<organization abbrev='U.C. Irvine'>University of California, Irvine</organization>
+<address>
+<postal>
+<street>Information and Computer Science</street>
+<city>Irvine</city>
+<region>CA</region>
+<code>92697-3425</code></postal>
+<facsimile>+1(949)824-1715</facsimile>
+<email>fielding@ics.uci.edu</email></address></author>
+<author initials='L.' surname='Masinter' fullname='Larry Masinter'>
+<organization abbrev='Xerox Corporation'>Xerox PARC</organization>
+<address>
+<postal>
+<street>3333 Coyote Hill Road</street>
+<city>Palo Alto</city>
+<region>CA</region>
+<code>94034</code></postal>
+<facsimile>+1(415)812-4333</facsimile>
+<email>masinter@parc.xerox.com</email></address></author>
+<date month='August' year='1998' />
+<area>Applications</area>
+<keyword>resource</keyword>
+<keyword>URI</keyword>
+</front>
+<seriesInfo name='RFC' value='2396' />
+</reference>
+
+<reference anchor='RFC2717'>
+<front>
+<title>Registration Procedures for URL Scheme Names</title>
+<author initials='R.' surname='Petke' fullname='Rich Petke'>
+<organization>UUNET Technologies</organization>
+<address>
+<postal>
+<street>5000 Britton Road</street>
+<street>P. O. Box 5000</street>
+<city>Hilliard</city>
+<region>OH</region>
+<code>43026-5000</code>
+<country>US</country></postal>
+<phone>+1 614 723 4157</phone>
+<facsimile>+1 614 723 8407</facsimile>
+<email>rpetke@wcom.net</email></address></author>
+<author initials='I.' surname='King' fullname='Ian King'>
+<organization>Microsoft Corporation</organization>
+<address>
+<postal>
+<street>One Microsoft Way</street>
+<city>Redmond</city>
+<region>WA</region>
+<code>98052-6399</code>
+<country>US</country></postal>
+<phone>+1 425 703 2293</phone>
+<facsimile>+1 425 936 7329</facsimile>
+<email>iking@microsoft.com</email></address></author>
+<date month='November' year='1999' />
+</front>
+<seriesInfo name='BCP' value='35' />
+<seriesInfo name='RFC' value='2717' />
+</reference>
+
+<reference anchor='RFC2279'>
+<front>
+<title abbrev='UTF-8'>UTF-8, a transformation format of ISO 10646</title>
+<author initials='F.' surname='Yergeau' fullname='Francois Yergeau'>
+<organization>Alis Technologies</organization>
+<address>
+<postal>
+<street>100, boul. Alexis-Nihon</street>
+<street>Suite 600</street>
+<city>Montreal</city>
+<region>Quebec</region>
+<code>H4M 2P2</code>
+<country>CA</country></postal>
+<phone>+1 514 747 2547</phone>
+<facsimile>+1 514 747 2561</facsimile>
+<email>fyergeau@alis.com</email></address></author>
+<date month='January' year='1998' />
+</front>
+<seriesInfo name='RFC' value='2279' />
+</reference>
+
+</references>
+</back>
+</rfc>

@@ -1,0 +1,327 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en"><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <title>Guidelines for new URL Schemes</title><style type="text/css" title="Xml2Rfc (sans serif)">
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: underline;
+}
+body {
+  
+  color: #000000;
+  font-family: verdana, helvetica, arial, sans-serif;
+  font-size: 10pt;
+}
+dl {
+  margin-left: 2em;
+}
+h1 {
+  color: #333333;
+  font-size: 14pt;
+  line-height: 21pt;
+  page-break-after: avoid;
+}
+h1.np {
+  page-break-before: always;
+}
+h1 a {
+  color: #333333;
+}
+h2 {
+  color: #000000;
+  font-size: 12pt;
+  line-height: 15pt;
+  page-break-after: avoid;
+}
+h2 a {
+  color: #000000;
+}
+h3 {
+  color: #000000;
+  font-size: 10pt;
+  page-break-after: avoid;
+}
+h3 a {
+  color: #000000;
+}
+h4 {
+  color: #000000;
+  font-size: 10pt;
+  page-break-after: avoid;
+}
+h4 a {
+  color: #000000;
+}
+h5 {
+  color: #000000;
+  font-size: 10pt;
+  page-break-after: avoid;
+}
+h5 a {
+  color: #000000;
+}
+img {
+  margin-left: 3em;
+}
+li {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+ol {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+p {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+pre {
+  margin-left: 3em;
+  background-color: lightyellow;
+}
+table {
+  margin-left: 2em;
+}
+table.header {
+  width: 95%;
+  font-size: 10pt;
+  color: white;
+}
+td.top {
+  vertical-align: top;
+}
+td.topnowrap {
+  vertical-align: top;
+  white-space: nowrap; 
+}
+td.right {
+  text-align: right;
+}
+td.header-l {
+  background-color: gray;
+  width: 50%;
+}
+td.header-r {
+  background-color: gray;
+  width: 50%;
+  text-align: right;
+}
+thead {
+  display:table-header-group;
+}
+ul.toc {
+  list-style: none;
+  margin-left: 2em;
+  margin-right: 0em;
+  padding-left: 0em;
+}
+li.tocline0 {
+  line-height: 150%;
+  font-weight: bold;
+  font-size: 10pt;
+  margin-left: 0em;
+  margin-right: 0em;
+}
+li.tocline1 {
+  line-height: normal;
+  font-weight: normal;
+  font-size: 9pt;
+  margin-left: 0em;
+  margin-right: 0em;
+}
+li.tocline2 {
+  font-size: 0pt;
+}
+ul.ind {
+  list-style: none;
+  margin-left: 1.5em;
+  margin-right: 0em;
+  padding-left: 0em;
+}
+li.indline0 {
+  font-weight: bold;
+  line-height: 200%;
+  margin-left: 0em;
+  margin-right: 0em;
+}
+li.indline1 {
+  font-weight: normal;
+  line-height: 150%;
+  margin-left: 0em;
+  margin-right: 0em;
+}
+.comment {
+  background-color: yellow;
+}
+.editingmark {
+  background-color: khaki;
+}
+.error {
+  font-size: 14pt;
+  background-color: red;
+}
+.toowide {
+  color: red;
+  font-weight: bold;
+}
+.title {
+  color: #990000;
+  font-size: 18pt;
+  line-height: 18pt;
+  font-weight: bold;
+  text-align: center;
+}
+.figure {
+  font-weight: bold;
+  text-align: center;
+  font-size: 9pt;
+}
+.filename {
+  color: #333333;
+  font-weight: bold;
+  font-size: 12pt;
+  line-height: 21pt;
+  text-align: center;
+}
+.warning {
+  font-size: 14pt;
+  background-color: yellow;
+}
+del {
+  color: red;
+  text-decoration: line-through;
+}
+.del {
+  color: red;
+  text-decoration: line-through;
+}
+ins {
+  color: green;
+  text-decoration: underline;
+}
+.ins {
+  color: green;
+  text-decoration: underline;
+}
+.pn {
+  position: absolute;
+  color: white;
+}
+.pn:hover {
+  color: #C8A8FF;
+}
+
+table.openissue {
+  background-color: khaki;
+  border-width: thin;
+  border-style: solid;
+  border-color: black;
+}
+
+table.closedissue {
+  background-color: white;
+  border-width: thin;
+  border-style: solid;
+  border-color: gray;
+  color: gray; 
+}
+
+.closed-issue {
+  border: solid;
+  border-width: thin;
+  background-color: lime;
+  font-size: smaller;
+  font-weight: bold;
+}
+
+.open-issue {
+  border: solid;
+  border-width: thin;
+  background-color: red;
+  font-size: smaller;
+  font-weight: bold;
+}
+
+.editor-issue {
+  border: solid;
+  border-width: thin;
+  background-color: yellow;
+  font-size: smaller;
+  font-weight: bold;
+}
+
+@media print {
+  .noprint {
+    display: none;
+  }
+  
+  table.header {
+    width: 90%;
+  }
+
+  td.header-l {
+    width: 50%;
+    color: black;
+    background-color: white;
+    vertical-align: top;
+    font-size: 10pt;
+  }
+
+  td.header-r {
+    width: 33%;
+    color: black;
+    background-color: white;
+    vertical-align: top;
+    text-align: right;
+    font-size: 10pt;
+  }
+
+  ul.toc a::after {
+    content: leader('.') target-counter(attr(href), page);
+  }
+  
+  a.iref {
+    content: target-counter(attr(href), page);
+  }
+}
+
+@page {
+  @top-left {
+       content: "RFC 2718"; 
+  } 
+  @top-right {
+       content: "November 1999"; 
+  } 
+  @top-center {
+       content: "Guidelines for new URL Schemes"; 
+  } 
+  @bottom-left {
+       content: "Masinter, et al."; 
+  } 
+  @bottom-center {
+       content: "Informational"; 
+  } 
+  @bottom-right {
+       content: "[Page " counter(page) "]"; 
+  } 
+}
+
+@page:first { 
+    @top-left {
+      content: normal;
+    }
+    @top-right {
+      content: normal;
+    }
+    @top-center {
+      content: normal;
+    }
+}
+</style><link rel="Author" href="#rfc.authors"><link rel="Copyright" href="#rfc.copyright"><link rel="Chapter" title="1 Introduction" href="#rfc.section.1"><link rel="Chapter" title="2 Guidelines for new URL schemes" href="#rfc.section.2"><link rel="Chapter" title="3 Security Considerations" href="#rfc.section.3"><link rel="Chapter" href="#rfc.section.4" title="4 References"><link rel="Alternate" title="Authorative ASCII version" href="http://www.ietf.org/rfc/rfc2718"><meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.22, 2005/02/09 02:33:51, XSLT vendor: SAXON 7.8 from Michael Kay http://saxon.sf.net/"><meta name="keywords" content="URL scheme, uniform resource identifier, uniform resource locator, URI, URL, URN, WWW"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.Creator" content="Masinter, L."><meta name="DC.Creator" content="Alvestrand, H."><meta name="DC.Creator" content="Zigmond, D."><meta name="DC.Creator" content="Petke, R."><meta name="DC.Identifier" content="urn:ietf:rfc:2718"><meta name="DC.Date.Issued" scheme="ISO8601" content="1999-11"><meta name="DC.Description.Abstract" content="A Uniform Resource Locator (URL) is a compact string representation of the location for a resource that is available via the Internet. This document provides guidelines for the definition of new URL schemes."></head><body><table summary="header information" class="header" border="0" cellpadding="1" cellspacing="1"><tr><td class="header-l">Network Working Group&nbsp;</td><td class="header-r">L. Masinter&nbsp;</td></tr><tr><td class="header-l">Request for Comments: 2718&nbsp;</td><td class="header-r">Xerox Corporation&nbsp;</td></tr><tr><td class="header-l">Category: Informational&nbsp;</td><td class="header-r">H. Alvestrand&nbsp;</td></tr><tr><td class="header-l">&nbsp;</td><td class="header-r">Maxware, Pirsenteret&nbsp;</td></tr><tr><td class="header-l">&nbsp;</td><td class="header-r">D. Zigmond&nbsp;</td></tr><tr><td class="header-l">&nbsp;</td><td class="header-r">WebTV Networks, Inc.&nbsp;</td></tr><tr><td class="header-l">&nbsp;</td><td class="header-r">R. Petke&nbsp;</td></tr><tr><td class="header-l">&nbsp;</td><td class="header-r">UUNET Technologies&nbsp;</td></tr><tr><td class="header-l">&nbsp;</td><td class="header-r">November 1999&nbsp;</td></tr></table><p class="title"><br>Guidelines for new URL Schemes</p><h1><a name="rfc.status" href="#rfc.status">Status of this Memo</a></h1><p>This memo provides information for the Internet community. It does not specify an Internet standard of any kind. Distribution of this memo is unlimited.</p><h1><a name="rfc.copyrightnotice" href="#rfc.copyrightnotice">Copyright Notice</a></h1><p>Copyright &copy; The Internet Society (1999). All Rights Reserved.</p><h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1> <p>A Uniform Resource Locator (URL) is a compact string representation of the location for a resource that is available via the Internet. This document provides guidelines for the definition of new URL schemes.</p> <h1 id="rfc.section.1" class="np"><a href="#rfc.section.1">1</a>&nbsp;<a name="intro" href="#intro">Introduction</a></h1><p id="rfc.section.1.p.1">A Uniform Resource Locator (URL) is a compact string representation of the location for a resource that is available via the Internet. RFC 2396 <a href="#RFC2396" title="Uniform Resource Identifiers (URI): Generic Syntax">[1]</a> defines the general syntax and semantics of URIs, and, by inclusion, URLs. URLs are designated by including a "&lt;scheme&gt;:" and then a "&lt;scheme-specific-part&gt;". Many URL schemes are already defined.</p><p id="rfc.section.1.p.2">This document provides guidelines for the definition of new URL schemes, for consideration by those who are defining and registering or evaluating those definitions.</p><p id="rfc.section.1.p.3">The process by which new URL schemes are registered is defined in RFC 2717 <a href="#RFC2717" title="Registration Procedures for URL Scheme Names">[2]</a>.</p><h1 id="rfc.section.2"><a href="#rfc.section.2">2</a>&nbsp;<a name="guidelines" href="#guidelines">Guidelines for new URL schemes</a></h1><p id="rfc.section.2.p.1">Because new URL schemes potentially complicate client software, new schemes must have demonstrable utility and operability, as well as compatibility with existing URL schemes. This section elaborates these criteria.</p><h2 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1</a>&nbsp;<a name="compatibility" href="#compatibility">Syntactic compatibility</a></h2><p id="rfc.section.2.1.p.1">New URL schemes should follow the same syntactic conventions of existing schemes when appropriate. If a URI scheme that has embedded links in content accessed by that scheme does not share syntax with a different scheme, the same content cannot be served up under different schemes without rewriting the content. This can already be a problem, and with future digital signature schemes, rewriting may not even be possible. Deployment of other schemes in the future could therefore become extremely difficult.</p><h3 id="rfc.section.2.1.1"><a href="#rfc.section.2.1.1">2.1.1</a>&nbsp;<a name="syn_motive" href="#syn_motive">Motivations for syntactic compatibility</a></h3><p id="rfc.section.2.1.1.p.1">Why should new URL schemes share as much of the generic URI syntax (that makes sense to share) as possible? Consider the following: </p><ul><li>If fragment syntax isn't shared between two schemes, (e.g. "&lt;a href="#foo"&gt;"), you can't move individual completely self referential documents between schemes without rewriting the embedded references within the document. In the Web, the fragment syntax is a property of the media type, and evaluated by the client.</li><li>If fragment syntax is not shared between different media types of the same capability (e.g. HTML, XML, Word, or image types such as GIF, JPEG, PNG) then you can't have a URI reference that can evolve to superior media types as they become available, or even likely work properly today with content negotiation.</li><li>If relative syntax (to the extent of understanding the URI is relative, and what part of the URI string is relative) isn't shared between two schemes, (e.g. "&lt;a href="foo"&gt;"), you can't move sets of documents that are internally self referential between schemes without rewriting the embedded URIs.</li><li>If the ".." syntax as a path component in relative URI's isn't shared between schemes, you can't easily have sets of document sets and refer to them between schemes without rewriting the embedded references.</li><li>If the "/" syntax (to the extent of understanding that the URI refers to a path relative to the current naming authority, see section 2.1.1) isn't shared, you can't have multiple sets of documents easily be moved up or down in a relative hierarchy of names and share a common set of documents between them, without rewriting the content, shared either in that scheme or between schemes. The best example is a site that has a common set of GIF's, JPEG and PNG images, and you want to reorganize the site changing the depth of a subtree from one depth to another, or from one directory to another where the depth isn't the same.</li><li>If naming authority syntax (e.g. what comes after "//" in most URL schemes, see section 2.1.1) and relative path syntax is shared, to the extent of understanding that the URI has a naming authority, and what part of the URI string is the naming authority vs. path), isn't shared between two schemes, you can't share identical name spaces and serve them up via different schemes. (The naming authority syntax is a property of the scheme). The fact that HTTP, and FTP have the same syntax, for example, has often been exploited by sites transitioning from ftp archive service to HTTP archive service so that the URL's can be identical between schemes except for the scheme; the same content can be served via two schemes simultaneously.</li></ul><h3 id="rfc.section.2.1.2"><a href="#rfc.section.2.1.2">2.1.2</a>&nbsp;<a name="double-slash" href="#double-slash">Improper use of "//" following "&lt;scheme&gt;:"</a></h3><p id="rfc.section.2.1.2.p.1">Contrary to some examples set in past years, the use of double slashes as the first component of the &lt;scheme-specific-part&gt; of a URL is not simply an artistic indicator that what follows is a URL: Double slashes are used ONLY when the syntax of the URL's &lt;scheme-specific-part&gt; contains a hierarchical structure as described in RFC 2396. In URLs from such schemes, the use of double slashes indicates that what follows is the top hierarchical element for a naming authority. (See section 3 of RFC 2396 for more details.) URL schemes which do not contain a conformant hierarchical structure in their &lt;scheme-specific-part&gt; should not use double slashes following the "&lt;scheme&gt;:" string.</p><h3 id="rfc.section.2.1.3"><a href="#rfc.section.2.1.3">2.1.3</a>&nbsp;<a name="relative" href="#relative">Compatibility with relative URLs</a></h3><p id="rfc.section.2.1.3.p.1">URL schemes should use the generic URL syntax if they are intended to be used with relative URLs. A description of the allowed relative forms should be included in the scheme's definition. Many applications use relative URLs extensively. Specifically, </p><ul><li>Can the scheme be parsed according to RFC 2396 - for example, if the tokens "//", "/", ";", or "?" are used, do they have the meaning given in RFC 2396?</li><li>Does the scheme make sense to use it in relative URLs like those RFC 2396 specifies?</li><li>If the scheme syntax is designed to be broken into pieces, does the documentation for the scheme's syntax specify what those pieces are, why it should be broken in this way, and why the breaks aren't where RFC 2396 says that they usually should be?</li><li>If the scheme has a hierarchy, does it go left-to-right and with slash separators like RFC 2396?</li></ul><h2 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2</a>&nbsp;<a name="well-defined" href="#well-defined">Is the scheme well defined?</a></h2><p id="rfc.section.2.2.p.1">It is important that the semantics of the "resource" that a URL "locates" be well defined. This might mean different things depending on the nature of the URL scheme.</p><h3 id="rfc.section.2.2.1"><a href="#rfc.section.2.2.1">2.2.1</a>&nbsp;<a name="clear-mapping" href="#clear-mapping">Clear mapping from other name spaces</a></h3><p id="rfc.section.2.2.1.p.1">In many cases, new URL schemes are defined as ways to translate other protocols and name spaces into the general framework of URLs. The "ftp" URL scheme translates from the FTP protocol, while the "mid" URL scheme translates from the Message-ID field of messages.</p><p id="rfc.section.2.2.1.p.2">In either case, the description of the mapping must be complete, must describe how characters get encoded or not in URLs, must describe exactly how all legal values of the base standard can be represented using the URL scheme, and exactly which modifiers, alternate forms and other artifacts from the base standards are included or not included. These requirements are elaborated below.</p><h3 id="rfc.section.2.2.2"><a href="#rfc.section.2.2.2">2.2.2</a>&nbsp;<a name="net-protocols" href="#net-protocols">URL schemes associated with network protocols</a></h3><p id="rfc.section.2.2.2.p.1">Most new URL schemes are associated with network resources that have one or several network protocols that can access them. The 'ftp', 'news', and 'http' schemes are of this nature. For such schemes, the specification should completely describe how URLs are translated into protocol actions in sufficient detail to make the access of the network resource unambiguous. If an implementation of the URL scheme requires some configuration, the configuration elements must be clearly identified. (For example, the 'news' scheme, if implemented using NTTP, requires configuration of the NTTP server.)</p><h3 id="rfc.section.2.2.3"><a href="#rfc.section.2.2.3">2.2.3</a>&nbsp;<a name="non-protocol" href="#non-protocol">Definition of non-protocol URL schemes</a></h3><p id="rfc.section.2.2.3.p.1">In some cases, URL schemes do not have particular network protocols associated with them, because their use is limited to contexts where the access method is understood. This is the case, for example, with the "cid" and "mid" URL schemes. For these URL schemes, the specification should describe the notation of the scheme and a complete mapping of the locator from its source.</p><h3 id="rfc.section.2.2.4"><a href="#rfc.section.2.2.4">2.2.4</a>&nbsp;<a name="not-data" href="#not-data">Definition of URL schemes not associated with data resources</a></h3><p id="rfc.section.2.2.4.p.1">Most URL schemes locate Internet resources that correspond to data objects that can be retrieved or modified. This is the case with "ftp" and "http", for example. However, some URL schemes do not; for example, the "mailto" URL scheme corresponds to an Internet mail address.</p><p id="rfc.section.2.2.4.p.2">If a new URL scheme does not locate resources that are data objects, the properties of names in the new space must be clearly defined.</p><h3 id="rfc.section.2.2.5"><a href="#rfc.section.2.2.5">2.2.5</a>&nbsp;<a name="character-encoding" href="#character-encoding">Character encoding</a></h3><p id="rfc.section.2.2.5.p.1">When describing URL schemes in which (some of) the elements of the URL are actually representations of sequences of characters, care should be taken not to introduce unnecessary variety in the ways in which characters are encoded into octets and then into URL characters. Unless there is some compelling reason for a particular scheme to do otherwise, translating character sequences into UTF-8 (RFC 2279) <a href="#RFC2279" title="UTF-8, a transformation format of ISO 10646">[3]</a> and then subsequently using the %HH encoding for unsafe octets is recommended.</p><h3 id="rfc.section.2.2.6"><a href="#rfc.section.2.2.6">2.2.6</a>&nbsp;<a name="operations" href="#operations">Definition of operations</a></h3><p id="rfc.section.2.2.6.p.1">In some contexts (for example, HTML forms) it is possible to specify any one of a list of operations to be performed on a specific URL. (Outside forms, it is generally assumed to be something you GET.)</p><p id="rfc.section.2.2.6.p.2">The URL scheme definition should describe all well-defined operations on the URL identifier, and what they are supposed to do.</p><p id="rfc.section.2.2.6.p.3">Some URL schemes (for example, "telnet") provide location information for hooking onto bi-directional data streams, and don't fit the "infoaccess" paradigm of most URLs very well; this should be documented.</p><p id="rfc.section.2.2.6.p.4">NOTE: It is perfectly valid to say that "no operation apart from GET is defined for this URL". It is also valid to say that "there's only one operation defined for this URL, and it's not very GET-like". The important point is that what is defined on this type is described.</p><h2 id="rfc.section.2.3"><a href="#rfc.section.2.3">2.3</a>&nbsp;<a name="utility" href="#utility">Demonstrated utility</a></h2><p id="rfc.section.2.3.p.1">URL schemes should have demonstrated utility. New URL schemes are expensive things to support. Often they require special code in browsers, proxies, and/or servers. Having a lot of ways to say the same thing needless complicates these programs without adding value to the Internet.</p><p id="rfc.section.2.3.p.2">The kinds of things that are useful include: </p><ul><li>Things that cannot be referred to in any other way.</li><li>Things where it is much easier to get at them using this scheme than (for instance) a proxy gateway.</li></ul><h3 id="rfc.section.2.3.1"><a href="#rfc.section.2.3.1">2.3.1</a>&nbsp;<a name="proxy-http" href="#proxy-http">Proxy into HTTP/HTML</a></h3><p id="rfc.section.2.3.1.p.1">One way to provide a demonstration of utility is via a gateway which provides objects in the new scheme for clients using an existing protocol. It is much easier to deploy gateways to a new service than it is to deploy browsers that understand the new URL object.</p><p id="rfc.section.2.3.1.p.2">Things to look for when thinking about a proxy are: </p><ul><li>Is there a single global resolution mechanism whereby any proxy can find the referenced object?</li><li>If not, is there a way in which the user can find any object of this type, and "run his own proxy"?</li><li>Are the operations mappable one-to-one (or possibly using modifiers) to HTTP operations?</li><li>Is the type of returned objects well defined? <ul><li>as MIME content-types?</li><li>as something that can be translated to HTML?</li></ul> </li><li>Is there running code for a proxy?</li></ul><h2 id="rfc.section.2.4"><a href="#rfc.section.2.4">2.4</a>&nbsp;<a name="scheme-security" href="#scheme-security">Are there security considerations?</a></h2><p id="rfc.section.2.4.p.1">Above and beyond the security considerations of the base mechanism a scheme builds upon, one must think of things that can happen in the normal course of URL usage.</p><p id="rfc.section.2.4.p.2">In particular: </p><ul><li>Does the user need to be warned that such a thing is happening without an explicit request (GET for the source of an IMG tag, for instance)? This has implications for the design of a proxy gateway, of course.</li><li>Is it possible to fake URLs of this type that point to different things in a dangerous way?</li><li>Are there mechanisms for identifying the requester that can be used or need to be used with this mechanism (the From: field in a mailto: URL, or the Kerberos login required for AFS access in the AFS: URL, for instance)?</li><li>Does the mechanism contain passwords or other security information that are passed inside the referring document in the clear (as in the "ftp" URL, for instance)?</li></ul><h2 id="rfc.section.2.5"><a href="#rfc.section.2.5">2.5</a>&nbsp;<a name="starting-ur" href="#starting-ur">Does it start with UR?</a></h2><p id="rfc.section.2.5.p.1">Any scheme starting with the letters "U" and "R", in particular if it attaches any of the meanings "uniform", "universal" or "unifying" to the first letter, is going to cause intense debate, and generate much heat (but maybe little light).</p><p id="rfc.section.2.5.p.2">Any such proposal should either make sure that there is a large consensus behind it that it will be the only scheme of its type, or pick another name.</p><h2 id="rfc.section.2.6"><a href="#rfc.section.2.6">2.6</a>&nbsp;<a name="non-considerations" href="#non-considerations">Non-considerations</a></h2><p id="rfc.section.2.6.p.1">Some issues that are often raised but are not relevant to new URL schemes include the following.</p><h3 id="rfc.section.2.6.1"><a href="#rfc.section.2.6.1">2.6.1</a>&nbsp;<a name="accessible" href="#accessible">Are all objects accessible?</a></h3><p id="rfc.section.2.6.1.p.1">Can all objects in the world that are validly identified by a scheme be accessed by any UA implementing it?</p><p id="rfc.section.2.6.1.p.2">Sometimes the answer will be yes and sometimes no; often it will depend on factors (like firewalls or client configuration) not directly related to the scheme itself.</p><h1 id="rfc.section.3"><a href="#rfc.section.3">3</a>&nbsp;<a name="security" href="#security">Security Considerations</a></h1><p id="rfc.section.3.p.1">New URL schemes are required to address all security considerations in their definitions.</p><h1 id="rfc.references"><a name="rfc.references"></a><a href="#rfc.section.4">4</a> References</h1><table summary="References" border="0" cellpadding="2"> <tr><td class="topnowrap"><b><a name="RFC2396">[1]</a></b></td><td class="top"><a title="World Wide Web Consortium">Berners-Lee, T.</a>, <a title="University of California, Irvine">Fielding, R.T.</a>, and <a title="Xerox PARC">L. Masinter</a>, &#8220;<a href="http://www.ietf.org/rfc/rfc2396.txt">Uniform Resource Identifiers (URI): Generic Syntax</a>&#8221;, RFC&nbsp;2396, August&nbsp;1998.</td></tr>  <tr><td class="topnowrap"><b><a name="RFC2717">[2]</a></b></td><td class="top"><a title="UUNET Technologies">Petke, R.</a> and <a title="Microsoft Corporation">I. King</a>, &#8220;<a href="http://www.ietf.org/rfc/rfc2717.txt">Registration Procedures for URL Scheme Names</a>&#8221;, BCP&nbsp;35, RFC&nbsp;2717, November&nbsp;1999.</td></tr>  <tr><td class="topnowrap"><b><a name="RFC2279">[3]</a></b></td><td class="top"><a title="Alis Technologies">Yergeau, F.</a>, &#8220;<a href="http://www.ietf.org/rfc/rfc2279.txt">UTF-8, a transformation format of ISO 10646</a>&#8221;, RFC&nbsp;2279, January&nbsp;1998.</td></tr> </table><h1 id="rfc.authors">Authors' Addresses</h1><table summary="Authors" width="99%" border="0" cellpadding="0" cellspacing="0"><tr><td>&nbsp;</td><td>Larry Masinter</td></tr><tr><td>&nbsp;</td><td>Xerox Corporation</td></tr><tr><td>&nbsp;</td><td>Palo Alto Research Center<br>3333 Coyote Hill Road<br></td></tr><tr><td>&nbsp;</td><td>Palo Alto, CA&nbsp;94304</td></tr><tr><td class="right"><b>EMail:&nbsp;</b></td><td><a>masinter@parc.xerox.com</a></td></tr><tr><td class="right"><b>URI:&nbsp;</b></td><td><a href="http://purl.org/NET/masinter">http://purl.org/NET/masinter</a></td></tr><tr><td>&nbsp;</td><td></td></tr><tr><td>&nbsp;</td><td>Harald Tveit Alvestrand</td></tr><tr><td>&nbsp;</td><td>Maxware, Pirsenteret</td></tr><tr><td>&nbsp;</td><td>N-7005 Trondheim<br></td></tr><tr><td>&nbsp;</td><td>NORWAY</td></tr><tr><td class="right"><b>Phone:&nbsp;</b></td><td><a href="tel:+4773545700">+47 73 54 57 00</a></td></tr><tr><td class="right"><b>EMail:&nbsp;</b></td><td><a>harald.alvestrand@maxware.no</a></td></tr><tr><td>&nbsp;</td><td></td></tr><tr><td>&nbsp;</td><td>Dan Zigmond</td></tr><tr><td>&nbsp;</td><td>WebTV Networks, Inc.</td></tr><tr><td>&nbsp;</td><td>305 Lytton Avenue<br></td></tr><tr><td>&nbsp;</td><td>Palo Alto, CA&nbsp;94301</td></tr><tr><td>&nbsp;</td><td>USA</td></tr><tr><td class="right"><b>Phone:&nbsp;</b></td><td><a href="tel:+1-650-614-6071">+1-650-614-6071</a></td></tr><tr><td class="right"><b>EMail:&nbsp;</b></td><td><a>djz@corp.webtv.net</a></td></tr><tr><td>&nbsp;</td><td></td></tr><tr><td>&nbsp;</td><td>Rich Petke</td></tr><tr><td>&nbsp;</td><td>UUNET Technologies</td></tr><tr><td>&nbsp;</td><td>5000 Britton Road<br>P. O. Box 5000<br></td></tr><tr><td>&nbsp;</td><td>Hilliard, OH&nbsp;43026-5000</td></tr><tr><td class="right"><b>Phone:&nbsp;</b></td><td><a href="tel:+1-614-723-4157">+1-614-723-4157</a></td></tr><tr><td class="right"><b>Fax:&nbsp;</b></td><td><a href="fax:+1-614-723-8407">+1-614-723-8407</a></td></tr><tr><td class="right"><b>EMail:&nbsp;</b></td><td><a>rpetke@wcom.net</a></td></tr><tr><td>&nbsp;</td><td></td></tr></table><h1><a name="rfc.ipr" href="#rfc.ipr">Intellectual Property Statement</a></h1><p>The IETF takes no position regarding the validity or scope of any Intellectual Property Rights or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; nor does it represent that it has made any independent effort to identify any such rights. Information on the procedures with respect to rights in RFC documents can be found in BCP 78 and BCP 79.</p><p>Copies of IPR disclosures made to the IETF Secretariat and any assurances of licenses to be made available, or the result of an attempt made to obtain a general license or permission for the use of such proprietary rights by implementers or users of this specification can be obtained from the IETF on-line IPR repository at &lt;<a href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>&gt;.</p><p>The IETF invites any interested party to bring to its attention any copyrights, patents or patent applications, or other proprietary rights that may cover technology that may be required to implement this standard. Please address the information to the IETF at <a href="mailto:ietf-ipr@ietf.org">ietf-ipr@ietf.org</a>.</p><h1><a name="rfc.disclaimer" href="#rfc.disclaimer">Disclaimer of Validity</a></h1><p>This document and the information contained herein are provided on an &#8220;AS IS&#8221; basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</p><h1><a name="rfc.copyright" href="#rfc.copyright">Copyright Statement</a></h1><p>Copyright &copy; The Internet Society (1999). This document is subject to the rights, licenses and restrictions contained in BCP 78, and except as set forth therein, the authors retain all their rights.</p><h1>Acknowledgement</h1><p>Funding for the RFC Editor function is currently provided by the Internet Society.</p></body></html>
