@@ -3839,7 +3839,86 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a title="Net
 <div>
 <a name="rfc.figure.u.43"></a>
 </div>
-<pre>To be filled-in later.
+<pre> abs-path      = "/" path-segments
+
+ absolute-URI  = scheme ":" hier-part [ "?" query ]
+
+ alphanum      = ALPHA / DIGIT
+
+ authority     = [ userinfo "@" ] host [ ":" port ]
+
+ dec-octet     = DIGIT                 ; 0-9
+               / %x31-39 DIGIT         ; 10-99
+               / "1" 2DIGIT            ; 100-199
+               / "2" %x30-34 DIGIT     ; 200-249
+               / "25" %x30-35          ; 250-255
+
+ domainlabel   = alphanum [ 0*61( alphanum / "-" ) alphanum ]
+
+ escaped       = "%" HEXDIG HEXDIG
+
+ fragment      = *( pchar / "/" / "?" )
+
+ h4            = 1*4HEXDIG
+
+ hier-part     = net-path / abs-path / rel-path
+
+ host          = [ IPv6reference / IPv4address / hostname ]
+
+ hostname      = domainlabel qualified
+
+ IPv4address   = dec-octet "." dec-octet "." dec-octet "." dec-octet
+
+ IPv6address   =                          6( h4 ":" ) ls32
+               /                     "::" 5( h4 ":" ) ls32
+               / [              h4 ] "::" 4( h4 ":" ) ls32
+               / [ *1( h4 ":" ) h4 ] "::" 3( h4 ":" ) ls32
+               / [ *2( h4 ":" ) h4 ] "::" 2( h4 ":" ) ls32
+               / [ *3( h4 ":" ) h4 ] "::"    h4 ":"   ls32
+               / [ *4( h4 ":" ) h4 ] "::"             ls32
+               / [ *5( h4 ":" ) h4 ] "::"             h4
+               / [ *6( h4 ":" ) h4 ] "::"
+
+ IPv6reference = "[" IPv6address "]"
+
+ ls32          = ( h4 ":" h4 ) / IPv4address
+
+ mark          = "-" / "_" / "." / "!" / "~" / "*" / "'" / "(" / ")"
+
+ net-path      = "//" authority [ abs-path ]
+
+ path-segments = segment *( "/" segment )
+
+ pchar         = unreserved / escaped / ";" /
+                 ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
+
+ port          = *DIGIT
+
+ qualified     = *( "." domainlabel ) [ "." ]
+
+ query         = *( pchar / "/" / "?" )
+
+ rel-path      = path-segments
+
+ relative-URI  = hier-part [ "?" query ] [ "#" fragment ]
+
+ reserved      = "/" / "?" / "#" / "[" / "]" / ";" /
+                 ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
+
+ scheme        = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
+
+ segment       = *pchar
+
+ unreserved    = ALPHA / DIGIT / mark
+
+ URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+
+ URI-reference = URI / relative-URI
+
+ uric          = reserved / unreserved / escaped
+
+ userinfo      = *( unreserved / escaped / ";" /
+                    ":" / "&amp;" / "=" / "+" / "$" / "," )
 </pre>
 <hr class="noprint">
 <table style="margin-left: auto; margin-right: 0; float: right; width: 2.5em;" class="noprint" summary="link to TOC">
