@@ -823,12 +823,12 @@
     <xsl:call-template name="insertComments" />
   </xsl:if>
   
-  <!-- next, add information about the document's authors -->
-  <xsl:call-template name="insertAuthors" />
-    
   <!-- add all other top-level sections under <back> -->
   <xsl:apply-templates select="*[not(self::references)]" />
 
+  <!-- next, add information about the document's authors -->
+  <xsl:call-template name="insertAuthors" />
+    
   <xsl:if test="not($xml2rfc-private)">
     <!-- copyright statements -->
     <xsl:variable name="copyright"><xsl:call-template name="insertCopyright" /></xsl:variable>
@@ -1187,9 +1187,15 @@
                 <xsl:value-of select="$displayname" />
               </xsl:otherwise>
             </xsl:choose>
-            
-            <xsl:if test="position()!=last() - 1">,&#0160;</xsl:if>
-            <xsl:if test="position()=last() - 1"> and </xsl:if>
+            <xsl:choose>
+              <xsl:when test="position()=last() - 1">
+                <xsl:if test="last() &gt; 2">,</xsl:if>
+                <xsl:text> and </xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:text>,&#0160;</xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:when>
           <xsl:when test="organization/text()">
             <xsl:choose>
@@ -1200,8 +1206,15 @@
                 <xsl:value-of select="organization" />
               </xsl:otherwise>
             </xsl:choose>
-            <xsl:if test="position()!=last() - 1">,&#0160;</xsl:if>
-            <xsl:if test="position()=last() - 1"> and </xsl:if>
+            <xsl:choose>
+              <xsl:when test="position()=last() - 1">
+                <xsl:if test="last() &gt; 2">,</xsl:if>
+                <xsl:text> and </xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:text>,&#0160;</xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:when>
           <xsl:otherwise />
         </xsl:choose>
@@ -1516,7 +1529,7 @@
         
     <xsl:if test="$sectionNumber!=''">
       <a href="#{$anchor-prefix}.section.{$sectionNumber}"><xsl:value-of select="$sectionNumber" /></a>
-      <xsl:text>&#0160;</xsl:text>
+      <xsl:text>.&#0160;</xsl:text>
     </xsl:if>
     <xsl:choose>
       <xsl:when test="@anchor">
@@ -1842,7 +1855,10 @@
     
   <h1 id="{$anchor-prefix}.authors">
     <xsl:call-template name="insert-conditional-pagebreak"/>
-    Author's Address<xsl:if test="count(/rfc/front/author) &gt; 1">es</xsl:if>
+    <xsl:choose>
+      <xsl:when test="count(/rfc/front/author)=1">Author's Address</xsl:when>
+      <xsl:otherwise>Authors' Addresses</xsl:otherwise>
+   </xsl:choose>
   </h1>
 
   <table summary="Authors" width="99%" border="0" cellpadding="0" cellspacing="0">
@@ -2009,18 +2025,20 @@ body {
   background: url(<xsl:value-of select="$xml2rfc-background" />) #ffffff left top;
   </xsl:if>
   color: #000000;
-  font-family: helvetica, arial, sans-serif;
+  font-family: verdana, helvetica, arial, sans-serif;
   font-size: 10pt;
 }
 dl {
   margin-left: 2em;
 }
+h1, h2, h3, h4, h5 {
+  font-family: verdana, helvetica, arial, sans-serif;
+  page-break-after: avoid;
+}
 h1 {
   color: #333333;
   font-size: 14pt;
   line-height: 21pt;
-  font-family: helvetica, arial, sans-serif;
-  page-break-after: avoid;
 }
 h1.np {
   page-break-before: always;
@@ -2032,8 +2050,6 @@ h2 {
   color: #000000;
   font-size: 12pt;
   line-height: 15pt;
-  font-family: helvetica, arial, sans-serif;
-  page-break-after: avoid;
 }
 h2 a {
   color: #000000;
@@ -2041,8 +2057,6 @@ h2 a {
 h3 {
   color: #000000;
   font-size: 10pt;
-  font-family: helvetica, arial, sans-serif;
-  page-break-after: avoid;
 }
 h3 a {
   color: #000000;
@@ -2050,8 +2064,6 @@ h3 a {
 h4 {
   color: #000000;
   font-size: 10pt;
-  font-family: helvetica, arial, sans-serif;
-  page-break-after: avoid;
 }
 h4 a {
   color: #000000;
@@ -2059,8 +2071,6 @@ h4 a {
 h5 {
   color: #000000;
   font-size: 10pt;
-  font-family: helvetica, arial, sans-serif;
-  page-break-after: avoid;
 }
 h5 a {
   color: #000000;
@@ -2116,7 +2126,7 @@ thead {
 }
 ul.toc {
   list-style: none;
-  margin-left: 1.5em;
+  margin-left: 2em;
   margin-right: 0em;
   padding-left: 0em;
 }
@@ -2268,7 +2278,7 @@ table.closedissue {
     width: 50%;
     color: black;
     background-color: white;
-    font-family: arial, helvetica, sans-serif;
+    font-family: verdana, arial, helvetica, sans-serif;
     vertical-align: top;
     font-size: 10pt;
   }
@@ -2277,7 +2287,7 @@ table.closedissue {
     width: 33%;
     color: black;
     background-color: white;
-    font-family: arial, helvetica, sans-serif;
+    font-family: verdana, arial, helvetica, sans-serif;
     vertical-align: top;
     text-align: right;
     font-size: 10pt;
@@ -2294,27 +2304,27 @@ table.closedissue {
 
 @page {
   @top-left {
-       font-family: helvetica, arial, sans-serif; 
+       font-family: verdana, helvetica, arial, sans-serif; 
        content: "<xsl:call-template name="get-header-left"/>"; 
   } 
   @top-right {
-       font-family: helvetica, arial, sans-serif; 
+       font-family: verdana, helvetica, arial, sans-serif; 
        content: "<xsl:call-template name="get-header-right"/>"; 
   } 
   @top-center {
-       font-family: helvetica, arial, sans-serif; 
+       font-family: verdana, helvetica, arial, sans-serif; 
        content: "<xsl:call-template name="get-header-center"/>"; 
   } 
   @bottom-left {
-       font-family: helvetica, arial, sans-serif; 
+       font-family: verdana, helvetica, arial, sans-serif; 
        content: "<xsl:call-template name="get-author-summary"/>"; 
   } 
   @bottom-center {
-       font-family: helvetica, arial, sans-serif; 
+       font-family: verdana, helvetica, arial, sans-serif; 
        content: "<xsl:call-template name="get-category-long"/>"; 
   } 
   @bottom-right {
-       font-family: helvetica, arial, sans-serif; 
+       font-family: verdana, helvetica, arial, sans-serif; 
        content: "[Page " counter(page) "]"; 
   } 
 }
@@ -2680,7 +2690,7 @@ table.closedissue {
             </xsl:otherwise>
           </xsl:choose>
           <xsl:value-of select="$number" />
-          <xsl:text>&#160;&#160;&#160;&#160;</xsl:text>
+          <xsl:text>.&#160;&#160;&#160;</xsl:text>
           <a href="#{$target}"><xsl:value-of select="$title"/></a>
         </xsl:otherwise>
       </xsl:choose>
@@ -2702,8 +2712,8 @@ table.closedissue {
     </li>
   </xsl:if>
 
-  <xsl:apply-templates select="/rfc/front" mode="toc" />
   <xsl:apply-templates select="*[not(self::references)]" mode="toc" />
+  <xsl:apply-templates select="/rfc/front" mode="toc" />
 
   <!-- copyright statements -->
   <xsl:if test="not($xml2rfc-private)">
@@ -2733,7 +2743,7 @@ table.closedissue {
 
   <xsl:variable name="title">
     <xsl:if test="count(author)=1">Author's Address</xsl:if>
-    <xsl:if test="count(author)!=1">Author's Addresses</xsl:if>
+    <xsl:if test="count(author)!=1">Authors' Addresses</xsl:if>
   </xsl:variable>
   
   <li>
@@ -3521,11 +3531,11 @@ table.closedissue {
   <xsl:variable name="gen">
     <xsl:text>http://greenbytes.de/tech/webdav/rfc2629.xslt, </xsl:text>
     <!-- when RCS keyword substitution in place, add version info -->
-    <xsl:if test="contains('$Revision: 1.19 $',':')">
-      <xsl:value-of select="concat('Revision ',normalize-space(translate(substring-after('$Revision: 1.19 $', 'Revision: '),'$','')),', ')" />
+    <xsl:if test="contains('$Revision: 1.20 $',':')">
+      <xsl:value-of select="concat('Revision ',normalize-space(translate(substring-after('$Revision: 1.20 $', 'Revision: '),'$','')),', ')" />
     </xsl:if>
-    <xsl:if test="contains('$Date: 2005/02/05 14:03:31 $',':')">
-      <xsl:value-of select="concat(normalize-space(translate(substring-after('$Date: 2005/02/05 14:03:31 $', 'Date: '),'$','')),', ')" />
+    <xsl:if test="contains('$Date: 2005/02/05 15:55:45 $',':')">
+      <xsl:value-of select="concat(normalize-space(translate(substring-after('$Date: 2005/02/05 15:55:45 $', 'Date: '),'$','')),', ')" />
     </xsl:if>
     <xsl:value-of select="concat('XSLT vendor: ',system-property('xsl:vendor'),' ',system-property('xsl:vendor-url'))" />
   </xsl:variable>
