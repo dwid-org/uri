@@ -1703,7 +1703,7 @@ limit each decimal octet to the range 0-255.
  <type>terminology</type>
  <name>019-URI-URL-URN</name>
  <title>URI/URL/URN contemporary view</title>
- <status>fixed 00</status>
+ <status>reopened</status>
  <report>
   <author email="michael_AT_neonym.net">Michael Mealling</author>
   <date sort="20020501">01 May 2002</date>
@@ -2139,7 +2139,7 @@ and relative-URI, respectively, for consistency.
  <title>draft 00 contains an obsolete ref to RFC 1866</title>
  <status>fixed 01</status>
  <report>
-  <author email="dan@dankohn.com">Dan Kohn</author>
+  <author email="dan_AT_dankohn.com">Dan Kohn</author>
   <date sort="20021109">09 Nov 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -2172,7 +2172,7 @@ in draft 01.
  <title>draft 00 normative reference to RFC 952</title>
  <status>fixed 01</status>
  <report>
-  <author email="dan@dankohn.com">Dan Kohn</author>
+  <author email="dan_AT_dankohn.com">Dan Kohn</author>
   <date sort="20021109">09 Nov 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -2202,7 +2202,7 @@ I have fixed this in draft 01.
  <title>add security considerations for misleading use of decimal IP</title>
  <status>added 01</status>
  <report>
-  <author email="dan@dankohn.com">Dan Kohn</author>
+  <author email="dan_AT_dankohn.com">Dan Kohn</author>
   <date sort="20021109">09 Nov 2002</date>
   <where>URI-WG mailing list</where>
 <pre>
@@ -2662,7 +2662,7 @@ going to have ".." or "." as a DN.
  <type>terminology</type>
  <name>034-identifier</name>
  <title>identifier is not just a sequence of characters</title>
- <status>pending</status>
+ <status>closed</status>
  <report>
   <author email="jak_AT_ckm.ucsf.edu">John A. Kunze</author>
   <date sort="20030123">23 Jan 2003</date>
@@ -2696,10 +2696,16 @@ permanence a favor if it included this one definitional change.
  </report>
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
-  <date sort="20030226">26 Feb 2003</date>
-  <where>issues list</where>
+  <date sort="20030320">20 Mar 2003</date>
+  <where>URI BOF</where>
 <pre>
-I'm not sure what to do with this yet.
+The definition actually says
+
+    An identifier is an object that can act as a reference to
+    something that has identity.  In the case of a URI, the object is
+    a sequence of characters with a restricted syntax.
+
+and thus the suggestion seems to be based on something other than RFC 2396.
 </pre>
  </action>
 </issue>
@@ -2752,7 +2758,7 @@ example of a scheme defined as requiring UTF-8.
  <type>characters</type>
  <name>036-host-escaping</name>
  <title>%HH escaping should be allowed on hostname</title>
- <status>pending</status>
+ <status>closed</status>
  <report>
   <author email="duerst_AT_w3.org">Martin Duerst</author>
   <date sort="20020722">22 Jul 2002</date>
@@ -2782,6 +2788,18 @@ give hostnames in forms that are unacceptable to DNS.  This is better
 solved by using IDNA encoding without changing the URI syntax.
 </pre>
  </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030320">20 Mar 2003</date>
+  <where>URI BOF</where>
+<pre>
+Further discussion with Martin revealed that the reason IRI processors
+could not convert to IDNA forms automatically was because of the potential
+for a reg-name syntax.  It was decided at the URI BOF that the best solution
+would be to remove reg-name, since nobody has used it anyway, thus clearing
+the way for IRI conversion to take place prior to URI handling.
+</pre>
+ </action>
 </issue>
 
 <issue>
@@ -2800,165 +2818,6 @@ go about the very common task of comparing URIs.  The latest draft of
 this, which I think represents TAG consensus, is at
 
 http://www.textuality.com/tag/uri-comp-4.html
-</pre>
- </report>
- <report>
-  <author email="stefan.eissing_AT_greenbytes.de">Stefan Eissing</author>
-  <date sort="20030131">31 Jan 2003</date>
-  <where>URI-WG mailing list</where>
-<pre>
-it is context dependant if '%61' can be considered equivalent
-to the charcter 'a' or not. The argument basically is that RFC 2396 allows
-other character encodings  than US-ASCII and that '%61' could denote
-basically any character unless the character encoding becomes known.
-
-I argue that any 7 bit octet, escape-encoded in an URI, it MUST
-be equivalent (apart from reserved characters like %2f) to its
-US-ASCII character. In my opinion, RFC 2396 already defines this:
-
-In RFC 2396, Ch. 2.1
-"In the simplest case, the original character sequence contains only
-  characters that are defined in US-ASCII, and the two levels of
-  mapping are simple and easily invertible: each 'original character'
-  is represented as the octet for the US-ASCII code for it, which is,
-  in turn, represented as either the US-ASCII character, or else the
-  "%" escape sequence for that octet."
-
-In RFC 2396, Ch. 2.4.2:
-"For example, "%7e" is sometimes used instead of "~" in an http URL
-path, but the two are equivalent for an http URL."
-Accordings to this, my argument should be valid at least for HTTP URIs.
-</pre>
- </report>
- <report>
-  <author email="duerst_AT_w3.org">Martin Duerst</author>
-  <date sort="20030222">22 Feb 2003</date>
-  <where>URI-WG mailing list</where>
-<pre>
-The characters in an URI (the ones that are compared character-by-
-character in namespaces) are just that, characters. URIs are
-defined independent of any particular representation. The URI
-spec says that /dir/a and /dir/%61 are equivalent, independent
-of the representation. They are equivalent if they appear in
-ASCII. They are equivalent if they appear on paper, on the
-side of a bus, and so on. They are equivalent when spoken
-over the radio. And they are equivalent when encoded as UTF-16
-(as your Java example shows) or in EBCDIC.
-
-RFC 2396 gives three levels, condensed in the following line:
-
-URI character sequence-&gt;octet sequence-&gt;original character sequence
-
-In practice, there are two more layers, one on each side.
-We then get:
-
-a) substrate: paper, metal, audio waves, ascii, UTF-16, EBCDIC,...
-   We don't want to limit that to a particular encoding.
-   ^
-   |   conversion depending on substrate representation
-   V
-b) URI character sequence (just characters)
-   ^
-   |   conversion defined by RFC 2396 (always US-ASCII!)
-   V
-c) octet sequence (just octets)
-   ^
-   |   conversion currently scheme/server dependent, moving towards UTF-8
-   V
-d) original character sequence (file names on server, query strings,...)
-   ^
-   |   conversion server-dependent
-   V
-e) original octet sequence (e.g. UTF-16 for a filename on WinNT, EBCDIC
-                            on an EBCDIC server, and so on)
-
-Maybe this diagram should go into the new version of RFC 2396.
-</pre>
- </report>
- <report>
-  <author email="Misha.Wolf_AT_reuters.com">Misha Wolf</author>
-  <date sort="20030222">22 Feb 2003</date>
-  <where>URI-WG mailing list</where>
-<pre>
-The one piece of terminology I have some trouble with, and which 
-is already in RFC 2396, is the phrase "original character sequence".
-Presumably, the sequence is "original" in the sense that the entity 
-managing the resource has used this character sequence (eg a file 
-pathname) to identify it.  If that is the case, then the problem I 
-have is simply due to the, possibly selfish, perception that the 
-characters I enter into the browser's address box are the "original" 
-characters and that these are transformed in various ways before 
-arriving at the entity managing the resource.  The direction of the 
-arrows in the RFC 2396 diagram strengthens this way of perceiving 
-the flow.  I wonder whether some word other than "original" would 
-be clearer?
-</pre>
- </report>
- <report>
-  <author email="duerst_AT_w3.org">Martin Duerst</author>
-  <date sort="20030224">24 Feb 2003</date>
-  <where>URI-WG mailing list</where>
-<pre>
-    I repeat: if I'm on an EBCDIC computer, and the URI reads out as
-    /dir/a, that is *different* from /dir/%61.  Yes, this is egregiously
-    broken and stupid, but it's within the bounds set by RFC2396.
-
-I agree that it may not be extremely clear. But I disagree that your
-interpretation is within the bounds of RFC 2396. For example, in
-"2. URI Characters and Escape Sequences", we have:
-
-   Within a URI, characters are either used as delimiters, or to
-   represent strings of data (octets) within the delimited portions.
-   Octets are either represented directly by a character (using the US-
-   ASCII character for that octet [ASCII]) or by an escape encoding.
-   This representation is elaborated below.
-
-Now let's take your example, "/dir/a". Let's assume that's a directory
-name 'dir' and a file name 'a' on a computer that uses EBCDIC.
-We don't have to care about the '/' here, because this is a separator
-that is part of the URI syntax, independent of local usage (see e.g.
-MSWin).
-
-So now let's look at how the ebcdic server exposes 'dir' and 'a'.
-It can either decide to expose them as EBCDIC (which makes server
-implementation easier) or to expose them as ASCII (which makes the
-URI more readable).
-
-
-If the server on the EBCDIC system decides to expose as EBCDIC,
-then this will give us the following octets:
-
-    /&lt;84&gt;&lt;89&gt;&lt;99&gt;/&lt;81&gt;
-
-This then results in an URI of /%84%89%99/%81. There is no other
-choice, as we have in "2.4.1. Escaped Encoding"
-
-   An escaped octet is encoded as a character triplet, consisting of the
-   percent character "%" followed by the two hexadecimal digits
-   representing the octet code.
-
-(Well, you could claim that instead of %84, it may also be %48, because
-the RFC doesn't say which order the digits go, but I hope you don't
-want to go there.) For an example that is a bit different, let's
-say '/d+r/a', we would get /&lt;84&gt;&lt;78&gt;&lt;99&gt;/&lt;81&gt; in terms of octets,
-and then /%84N%99/%81 in the actual URI (because the RFC clearly
-says that the octet &lt;78&gt; is encoded with US-ASCII, which results in
-an 'N'. We could also use /%84%78%99/%81.
-
-The other alternative is to expose the resource as US-ASCII,
-i.e. have the conversion work being done on the server. In that
-case, we have /&lt;64&gt;&lt;69&gt;&lt;72&gt;/&lt;61&gt;, which trivially results in
-/dir/a. It could of course also result in /dir/%61, because
-%61 is the escape for octet &lt;61&gt;. Please remember that it says:
-
-   Octets are either represented directly by a character (using the US-
-   ASCII character for that octet [ASCII]) or by an escape encoding.
-   This representation is elaborated below.
-
-So overall, the server can make the choice of how to expose a
-resource name as a series of octets. But it doesn't have a choice
-to expose the resource name as one octet if the octet is escaped,
-an as another octet if the octet is not escaped.
 </pre>
  </report>
  <action>
@@ -3108,11 +2967,381 @@ and easy for LALR parsers to process, but that may require too many changes.
  </action>
 </issue>
 
+<issue>
+ <type>bnf</type>
+ <name>039-LALR-BNF</name>
+ <title>BNF should be more LALR-parser friendly</title>
+ <status>pending</status>
+ <report>
+  <author email="GK_AT_ninebynine.org">Graham Klyne</author>
+  <date sort="20030227">27 Feb 2002</date>
+  <where>URI-WG mailing list</where>
+<pre>
+I'm finding there are a number of other areas in which the grammar is
+ambiguous.  Unfortunately, using a "greedy" parse approach doesn't always
+work, since some parts of the grammar fail if the previous sections are
+greedy-matched;  e.g. domainlabel; qualified.
+
+(These are pretty picky points, which I'm noticing because I've tried to
+build a functional-language parser directly from the grammar as given. 
+I've got all test cases parsing OK now, but I've had to add in a few
+messy patches to get the kind of behaviour I'd expect from a "normal" parser.)
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030410">10 Apr 2003</date>
+  <where>issues list</where>
+<pre>
+It would be best to have a syntax that was both unambiguous
+and easy for LALR parsers to process, but that may require too many changes.
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>authority</type>
+ <name>040-reg-name</name>
+ <title>Remove registry-based name syntax from authority</title>
+ <status>accepted</status>
+ <report>
+  <author email="duerst_AT_w3.org">Martin Duerst</author>
+  <date sort="20030320">20 Mar 2003</date>
+  <where>URI BOF</where>
+<pre>
+In order for internationalized characters in the authority component
+to be handled directly by an IRI processor, it must either
+
+  a) be able to encode the authority characters as %hh and rely on
+     gethostbyname to do the conversion, or
+
+  b) know that the scheme uses hostport and not registry-based names
+     and thus be able to convert the hostname to IDNA form.
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030320">20 Mar 2003</date>
+  <where>URI BOF</where>
+<pre>
+Note that IDNA was created specifically to avoid (a), so that doesn't
+seem to be a viable alternative for the IETF.
+
+The reg-name production will be removed, since we do not have enough
+independent implementations of that syntax to justify its existence.
+That will allow IRI processors to be scheme-independent and simply
+convert to IDNA based on the presence of a hostname.
+</pre>
+ </action>
+</issue>
+
+<issue>
+ <type>characters</type>
+ <name>041-encoding</name>
+ <title>Section 2 on encoding causes too much confusion</title>
+ <status>accepted</status>
+ <report>
+  <author email="stefan.eissing_AT_greenbytes.de">Stefan Eissing</author>
+  <date sort="20030131">31 Jan 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+It is context dependant if '%61' can be considered equivalent
+to the charcter 'a' or not. The argument basically is that RFC 2396 allows
+other character encodings  than US-ASCII and that '%61' could denote
+basically any character unless the character encoding becomes known.
+
+I argue that any 7 bit octet, escape-encoded in an URI, it MUST
+be equivalent (apart from reserved characters like %2f) to its
+US-ASCII character. In my opinion, RFC 2396 already defines this:
+
+In RFC 2396, Ch. 2.1
+"In the simplest case, the original character sequence contains only
+  characters that are defined in US-ASCII, and the two levels of
+  mapping are simple and easily invertible: each 'original character'
+  is represented as the octet for the US-ASCII code for it, which is,
+  in turn, represented as either the US-ASCII character, or else the
+  "%" escape sequence for that octet."
+
+In RFC 2396, Ch. 2.4.2:
+"For example, "%7e" is sometimes used instead of "~" in an http URL
+path, but the two are equivalent for an http URL."
+Accordings to this, my argument should be valid at least for HTTP URIs.
+</pre>
+ </report>
+ <report>
+  <author email="duerst_AT_w3.org">Martin Duerst</author>
+  <date sort="20030222">22 Feb 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+The characters in a URI (the ones that are compared character-by-
+character in namespaces) are just that, characters. URIs are
+defined independent of any particular representation. The URI
+spec says that /dir/a and /dir/%61 are equivalent, independent
+of the representation. They are equivalent if they appear in
+ASCII. They are equivalent if they appear on paper, on the
+side of a bus, and so on. They are equivalent when spoken
+over the radio. And they are equivalent when encoded as UTF-16
+(as your Java example shows) or in EBCDIC.
+
+RFC 2396 gives three levels, condensed in the following line:
+
+URI character sequence-&gt;octet sequence-&gt;original character sequence
+
+In practice, there are two more layers, one on each side.
+We then get:
+
+a) substrate: paper, metal, audio waves, ascii, UTF-16, EBCDIC,...
+   We don't want to limit that to a particular encoding.
+   ^
+   |   conversion depending on substrate representation
+   V
+b) URI character sequence (just characters)
+   ^
+   |   conversion defined by RFC 2396 (always US-ASCII!)
+   V
+c) octet sequence (just octets)
+   ^
+   |   conversion currently scheme/server dependent, moving towards UTF-8
+   V
+d) original character sequence (file names on server, query strings,...)
+   ^
+   |   conversion server-dependent
+   V
+e) original octet sequence (e.g. UTF-16 for a filename on WinNT, EBCDIC
+                            on an EBCDIC server, and so on)
+
+Maybe this diagram should go into the new version of RFC 2396.
+</pre>
+ </report>
+ <report>
+  <author email="Misha.Wolf_AT_reuters.com">Misha Wolf</author>
+  <date sort="20030222">22 Feb 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+The one piece of terminology I have some trouble with, and which 
+is already in RFC 2396, is the phrase "original character sequence".
+Presumably, the sequence is "original" in the sense that the entity 
+managing the resource has used this character sequence (eg a file 
+pathname) to identify it.  If that is the case, then the problem I 
+have is simply due to the, possibly selfish, perception that the 
+characters I enter into the browser's address box are the "original" 
+characters and that these are transformed in various ways before 
+arriving at the entity managing the resource.  The direction of the 
+arrows in the RFC 2396 diagram strengthens this way of perceiving 
+the flow.  I wonder whether some word other than "original" would 
+be clearer?
+</pre>
+ </report>
+ <report>
+  <author email="duerst_AT_w3.org">Martin Duerst</author>
+  <date sort="20030224">24 Feb 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+    I repeat: if I'm on an EBCDIC computer, and the URI reads out as
+    /dir/a, that is *different* from /dir/%61.  Yes, this is egregiously
+    broken and stupid, but it's within the bounds set by RFC2396.
+
+I agree that it may not be extremely clear. But I disagree that your
+interpretation is within the bounds of RFC 2396. For example, in
+"2. URI Characters and Escape Sequences", we have:
+
+   Within a URI, characters are either used as delimiters, or to
+   represent strings of data (octets) within the delimited portions.
+   Octets are either represented directly by a character (using the US-
+   ASCII character for that octet [ASCII]) or by an escape encoding.
+   This representation is elaborated below.
+
+Now let's take your example, "/dir/a". Let's assume that's a directory
+name 'dir' and a file name 'a' on a computer that uses EBCDIC.
+We don't have to care about the '/' here, because this is a separator
+that is part of the URI syntax, independent of local usage (see e.g.
+MSWin).
+
+So now let's look at how the ebcdic server exposes 'dir' and 'a'.
+It can either decide to expose them as EBCDIC (which makes server
+implementation easier) or to expose them as ASCII (which makes the
+URI more readable).
+
+
+If the server on the EBCDIC system decides to expose as EBCDIC,
+then this will give us the following octets:
+
+    /&lt;84&gt;&lt;89&gt;&lt;99&gt;/&lt;81&gt;
+
+This then results in an URI of /%84%89%99/%81. There is no other
+choice, as we have in "2.4.1. Escaped Encoding"
+
+   An escaped octet is encoded as a character triplet, consisting of the
+   percent character "%" followed by the two hexadecimal digits
+   representing the octet code.
+
+(Well, you could claim that instead of %84, it may also be %48, because
+the RFC doesn't say which order the digits go, but I hope you don't
+want to go there.) For an example that is a bit different, let's
+say '/d+r/a', we would get /&lt;84&gt;&lt;78&gt;&lt;99&gt;/&lt;81&gt; in terms of octets,
+and then /%84N%99/%81 in the actual URI (because the RFC clearly
+says that the octet &lt;78&gt; is encoded with US-ASCII, which results in
+an 'N'. We could also use /%84%78%99/%81.
+
+The other alternative is to expose the resource as US-ASCII,
+i.e. have the conversion work being done on the server. In that
+case, we have /&lt;64&gt;&lt;69&gt;&lt;72&gt;/&lt;61&gt;, which trivially results in
+/dir/a. It could of course also result in /dir/%61, because
+%61 is the escape for octet &lt;61&gt;. Please remember that it says:
+
+   Octets are either represented directly by a character (using the US-
+   ASCII character for that octet [ASCII]) or by an escape encoding.
+   This representation is elaborated below.
+
+So overall, the server can make the choice of how to expose a
+resource name as a series of octets. But it doesn't have a choice
+to expose the resource name as one octet if the octet is escaped,
+an as another octet if the octet is not escaped.
+</pre>
+ </report>
+ <report>
+  <author email="tbray_AT_textuality.com">Tim Bray</author>
+  <date sort="20030307">07 Mar 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+In explaining matters of character encoding, section 2.1 envisions
+something sort of standing behind the URI, the phrase original character
+is used (occasionally in quotes), as well as "original character sequences"
+(not in quotes).  So maybe there's a notion of an "original URI" hiding
+behind the URI?
+
+This is confusing because the "original URI" might differ from the actual
+URI because
+
+(a) it contains ASCII characters which are reserved, e.g. '/' or '%'
+(b) it contains non-ASCII characters
+(c) it contains non-character octets
+
+A question: what gets painted on the side of a bus?  The URI or the
+"original" behind it?  The answer is probably "The URI", except for
+case (b), when it might become an IRI with the native non-ASCII characters
+appearing on the side of the bus.
+
+(c) is kind of confusing and counter-intuitive, but is the only way
+I can explain the baffling language about mapping from characters to
+octets, and the phrase in 2.2 "The data for a URI component".
+
+If section 2 were redrafted as follows, all the ambiguity and hand-waving
+would be squashed like a bug.
+
+===============================================
+
+2. Characters and URIs [New title]
+
+A URI consists of a restricted set of characters, primarily chosen to 
+aid transcribability and usability both in computer systems and in
+non-computer communications. Characters used conventionally as delimiters
+around a URI are excluded.  The restricted set of characters consists
+of digits, letters, and a few graphic symbols chosen from those common
+to most of the character encodings and input facilities available to
+Internet users.
+
+   uric          = reserved / unreserved / escaped
+
+Within a URI, characters are either used as delimiters or to represent
+strings of data (octets) within the delimited portions.
+[Same as now except lose last 2 sentences.]
+
+2.1 Encoding of Characters
+
+In the general case, there are many mappings between characters as
+abstractions comprising the smallest atomic units of text and the octets
+used to store them in a computer.  The US-ASCII standard specifies not
+only a set of characters but a particular mode of storage where each
+character's numeric value (in the range 0-127) is stored directly in a
+single octet.  Note that many widely deployed systems for storing
+characters which include non-ASCII characters nonetheless store ASCII
+characters as specified by US-ASCII directly one per octet.  This
+includes Shift-JIS, EUC, UTF-8, and ISO-8859 (all parts).
+
+This RFC does not mandate the use of any particular mapping between
+its character set and octets of computer storage.
+
+2.2 The Characters in the URI Scheme
+
+The "scheme" part of a URI consists of a sequence of ASCII characters
+which represent nothing except themselves.
+
+2.3 The Characters in Non-Scheme Parts of the URI
+
+The ASCII characters making up a component of a URI other than the scheme
+may represent an arbitrary sequence of octets.  The definitions of URI
+schemes MUST specify the interpretation of the characters in the
+components of URIs of that scheme.  There are some constraints on these
+interpretations:
+
+- The interpretation MUST conform to the productions in this RFC, i.e.
+  cannot rely on using a character which is forbidden to appear in
+  the component.
+
+- The interpretation must be consistent: two instances of a URI
+  component which are equal in length and made of pairwise-identical
+  ASCII characters MUST represent the same octets.
+
+- The character "%" MUST always be followed by two hexadecimal values
+  encoding the numeric value of a single octet.  The hexadecimal
+  digits 'A' through 'F' are used identically to the digits 'a' through
+  'f', so that two URI components which differ only in the case of
+  hexadecimal digits used in %-encoded octets may safely be considered
+  identical.
+
+2.4 Textual URIs
+
+Many schemes may wish to constrain the components of URIs to encode
+textual data, consisting only of characters from Unicode (ISO10646).
+This section describes a procedure for encoding textual data for use
+in URIs.  Schemes which describe textual URIs SHOULD use the procedure
+described in this section to generate URI components from textual data.
+
+- ASCII characters which may legally appear in the component MUST
+  appear directly as themselves, i.e. 'a' may not be encoded as %61.
+
+- ASCII characters which may not legally appear in the component MUST
+  be %-encoded using the numeric value specified by the US-ASCII
+  standard, using the upper-case hexadecimal digits 'A' - 'F'.  i.e.
+  '&lt;' must always be encoded as %3C.
+
+- Non-ASCII characters MUST be converted to a sequence of octets as
+  specified by UTF-8, with each octet then %-encoded.  I.e. Ç
+  (U+00C7 LATIN CAPITAL LETTER C WITH CEDILLA) must always be encoded
+  as %C7%65.
+
+===============================
+I think most of the rest of section 2 is pretty well OK.
+</pre>
+ </report>
+ <report>
+  <author email="stefan.eissing_AT_greenbytes.de">Stefan Eissing</author>
+  <date sort="20030310">10 Mar 2003</date>
+  <where>URI-WG mailing list</where>
+<pre>
+There is also chapter 1.5 (Transcribability) which uses the term URI both for
+the thing on the side of a bus and a string conforming to the EBNF rules of the RFC.
+
+Also, the last sentence of 1.5 should probably also be removed since now 6.3
+recommends UTF-8 usage.
+</pre>
+ </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030320">20 Mar 2003</date>
+  <where>issues list</where>
+<pre>
+Planning a rewrite.
+</pre>
+ </action>
+</issue>
+
 <!--
 
 <issue>
  <type>query</type>
- <name>039-def</name>
+ <name>042-def</name>
  <title></title>
  <status>accepted</status>
  <report>
