@@ -1,9 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
 <?xml-stylesheet type='text/xsl' href='../rfc2629.xslt' ?>
 <!DOCTYPE rfc SYSTEM "../rfc2629.dtd">
 <?rfc toc="yes" ?>
 <?rfc symrefs="yes" ?>
-
-<rfc number="2396" obsoletes="1808, 1738" category="std">
+<?rfc sortrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc editing="yes"?>
+<?rfc-ext parse-xml-in-artwork="yes" ?>
+<rfc obsoletes="2396, 1808" updates="1738" category="std"
+     ipr="full2026" docName="draft-fielding-uri-rfc2396bis-00">
 
 <front>
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifiers (URI): Generic Syntax</title>
@@ -12,56 +17,66 @@
     <organization abbrev="MIT/LCS">World Wide Web Consortium</organization>
     <address>
       <postal>
-        <street>MIT Laboratory for Computer Science, NE43-356</street>
-        <street>545 Technology Square</street>
+        <street>200 Technology Square</street>
+        <street>MIT Room NE43-356</street>
         <city>Cambridge</city>
         <region>MA</region>
         <code>02139</code>
+        <country>USA</country>
       </postal>
-      <facsimile>+1(617)258-8682</facsimile>
+      <phone>+1-617-253-5702</phone>
+      <facsimile>+1-617-258-5999</facsimile>
       <email>timbl@w3.org</email>
+      <uri>http://www.w3.org/People/Berners-Lee/</uri>
     </address>
   </author>
   <author initials='R.T.' surname='Fielding' fullname='Roy T. Fielding'>
-    <organization abbrev="U.C. Irvine">Department of Information and Computer Science</organization>
+    <organization abbrev="Day Software">Day Software</organization>
     <address>
       <postal>
-        <street>University of California, Irvine</street>
-        <city>Irvine</city>
+        <street>2 Corporate Plaza, Suite 150</street>
+        <city>Newport Beach</city>
         <region>CA</region>
-        <code>92697-3425</code>
+        <code>92660</code>
+        <country>USA</country>
       </postal>
-      <facsimile>+1(949)824-1715</facsimile>
-      <email>fielding@ics.uci.edu</email>
+      <phone>+1-949-644-2557</phone>
+      <facsimile>+1-949-644-5064</facsimile>
+      <email>roy.fielding@day.com</email>
+      <uri>http://www.apache.org/~fielding/</uri>
     </address>
   </author>
   <author initials='L.' surname='Masinter' fullname='Larry Masinter'>
-    <organization abbrev="Xerox Corporation">Xerox PARC</organization>
+    <organization abbrev="Adobe">Adobe Systems Incorporated</organization>
     <address>
       <postal>
-        <street>3333 Coyote Hill Road</street>
-        <city>Palo Alto</city>
+        <street>345 Park Ave</street>
+        <city>San Jose</city>
         <region>CA</region>
-        <code>94034</code>
+        <code>95110</code>
+        <country>USA</country>
       </postal>
-      <facsimile>+1(415)812-4333</facsimile>
-      <email>masinter@parc.xerox.com</email>
+      <phone>+1-408-536-3024</phone>
+      <email>LMM@acm.org</email>
+      <uri>http://larry.masinter.net/</uri>
     </address>
   </author>
 
-  <date month='August' year='1998'></date>
+  <date month='July' year='2002'></date>
 
   <area>Applications</area>
-  <keyword>uniform resource</keyword>
+  <keyword>uniform resource identifier</keyword>
   <keyword>URI</keyword>
+  <keyword>URL</keyword>
+  <keyword>URN</keyword>
+  <keyword>WWW</keyword>
 
   <abstract>
 <t>
    A Uniform Resource Identifier (URI) is a compact string of characters
    for identifying an abstract or physical resource.  This document
    defines the generic syntax of URI, including both absolute and
-   relative forms, and guidelines for their use; it revises and replaces
-   the generic definitions in RFC 1738 and RFC 1808.
+   relative forms, and guidelines for their use.
 </t>
 <t>
    This document defines a grammar that is a superset of all valid URI,
