@@ -35,7 +35,7 @@ Status of this Memo
    Issues:
       1. We need to define a mechanism for using IPv6 addresses in the
          URL hostname which will not break existing systems too badly.
-      2. Section 7 (New URL Schemes) needs input from the Applications
+      2. Section 6 (New URL Schemes) needs input from the Applications
          Area A.D.'s.
 
 
@@ -143,7 +143,7 @@ Abstract
    telnet://melvyl.ucop.edu/
       -- telnet scheme for interactive services via the TELNET Protocol
 
-   Many other URL schemes have been defined.  Section 7 describes how
+   Many other URL schemes have been defined.  Section 6 describes how
    new schemes are defined and registered.
    
    The scheme defines the namespace of the URL.  Although many URL
@@ -937,7 +937,7 @@ Abstract
    Resolution examples are provided in Appendix C.
 
 
-7. Adding New Schemes
+6. Adding New Schemes
 
    The Internet Assigned Numbers Authority (IANA) maintains a registry
    of URL schemes.
@@ -967,7 +967,7 @@ Abstract
    scheme.
 
 
-8. Security Considerations
+7. Security Considerations
 
    A URL does not in itself pose a security threat.  Users should beware
    that there is no general guarantee that a URL, which at one time
@@ -1005,14 +1005,14 @@ Abstract
    intended to be secret.
 
 
-9. Acknowledgements
+8. Acknowledgements
 
    Most of this document was derived from RFC 1738 [2] and RFC 1808 [7];
    the acknowledgements in those specifications still apply.  In
    addition, this draft has benefited from comments by Lauren Wood.
 
 
-10. References
+9. References
 
    [1] Berners-Lee, T., "Universal Resource Identifiers in WWW: A
        Unifying Syntax for the Expression of Names and Addresses of
@@ -1055,7 +1055,7 @@ Abstract
        for Information Interchange", ANSI X3.4-1986.
 
 
-11. Authors' Addresses
+10. Authors' Addresses
 
    Tim Berners-Lee
    World Wide Web Consortium
