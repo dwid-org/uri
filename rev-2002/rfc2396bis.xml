@@ -579,9 +579,12 @@ symbols.
    mark        = "-" / "_" / "." / "!" / "~" / "*" / "'" / "(" / ")"
 </artwork></figure>
 <t>
-Unreserved characters can be escaped without changing the semantics
-of a URI, but this should not be done unless the URI is being used
-in a context that does not allow the unescaped character to appear.
+Escaping unreserved characters in a URI does not change what resource is
+identified by that URI.  However, it may change the result of a
+URI comparison (<xref target="comparison"/>), potentially leading to
+less efficient actions by an application.  Therefore, unreserved
+characters should not be escaped unless the URI is being used in a
+context that does not allow the unescaped character to appear.
 URI normalization processes may unescape sequences in the
 ranges of ALPHA (%41-%5A and %61-%7A), DIGIT (%30-%39), hyphen (%2D),
 underscore (%5F), or tilde (%7E) without fear of creating a conflict,
