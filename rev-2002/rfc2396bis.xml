@@ -3376,16 +3376,17 @@ reference contains an empty path and a defined query component,
 then the target URI inherits the base URI's path component.
 </t>
 <t>
-Removed the special-case treatment of same-document references
-within the URI parser in favor of a section that explains when a
-reference should be interpreted by a dereferencing engine as a
-same-document reference: when the target URI and base URI,
-excluding fragments, match.  This change does not modify the behavior
-of existing same-document references as defined by RFC 2396
-(fragment-only references); it merely adds the same-document distinction
-to other references that refer to the base URI and simplifies the
-interface between applications and their URI parsers, as is consistent with
+The determination of whether a URI reference is a same-document
+reference has been decoupled from the URI parser, simplifying the
+URI processing interface within applications in a way consistent with
 the internal architecture of deployed URI processing implementations.
+The determination is now based on comparison to the base URI after
+transforming a reference to absolute form, rather than on the format
+of the reference itself.  This change may result in additional references
+being considered "same-document" under this specification than would
+have been the case under the rules given in RFC 2396, especially when
+normalization is used to reduce aliases.  However, it does not change
+the status of existing same-document references.
 </t>
 <t>
 Separated the path merge routine into two routines: merge, for
