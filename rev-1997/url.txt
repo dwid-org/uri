@@ -7,7 +7,7 @@ Expires six months after publication date.                   U.C. Irvine
                                                              L. Masinter
                                                        Xerox Corporation
 
-                                                        10 November 1996
+                                                        11 November 1996
 
 
                     Uniform Resource Locators (URL)
