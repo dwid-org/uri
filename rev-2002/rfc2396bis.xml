@@ -1697,7 +1697,7 @@ part of a segment.
    "..g"           =  "http://a/b/c/..g"
 </artwork></figure>
 <t>
-Less likely are cases where the relative URI uses unnecessary or
+Less likely are cases where the relative URI reference uses unnecessary or
 nonsensical forms of the "." and ".." complete path segments.
 </t>
 <figure><artwork>
@@ -1723,7 +1723,7 @@ relative references.
    "g#s/../x"      =  "http://a/b/c/g#s/../x"
 </artwork></figure>
 <t>
-Some parsers allow the scheme name to be present in a relative URI if
+Some parsers allow the scheme name to be present in a relative URI reference if
 it is the same as the base URI scheme.  This is considered to be a
 loophole in prior specifications of partial URI <xref target="RFC1630"/>.
 Its use should be avoided, but is allowed for backward compatibility.
@@ -3125,7 +3125,7 @@ The number sign ("#") character has been moved back to the reserved set
 as a result of reintegrating the fragment syntax.
 </t>
 <t>
-The ABNF has been corrected to allow a relative URI path to be empty.
+The ABNF has been corrected to allow a relative path to be empty.
 This also allows an absolute-URI to consist of nothing after the "scheme:",
 as is present in practice with the "dav:" namespace <xref target="RFC2518"/>
 and the "about:" scheme used internally by many WWW browser implementations.
