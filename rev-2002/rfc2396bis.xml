@@ -9,7 +9,7 @@
 <?rfc editing="no"?>
 <?rfc-ext parse-xml-in-artwork="yes" ?>
 <rfc obsoletes="2732, 2396, 1808" updates="1738" category="std"
-     ipr="full3667" docName="draft-fielding-uri-rfc2396bis-05">
+     ipr="full3667" docName="draft-fielding-uri-rfc2396bis-0x">
 
 <front>
   <title abbrev='URI Generic Syntax'>Uniform Resource Identifier (URI): Generic Syntax</title>
@@ -63,7 +63,7 @@
     </address>
   </author>
 
-  <date month='April' year='2004'></date>
+  <date month='May' year='2004'></date>
 
   <area>Applications</area>
   <keyword>uniform resource identifier</keyword>
