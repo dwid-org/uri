@@ -44,7 +44,13 @@
 <td nowrap="nowrap"><a href="#uri_test.pl">uri_test.pl</a></td><td>Roy's example URI reference parser</td><td>implementation</td><td nowrap="nowrap">compliant</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#Apple Safari">Apple Safari</a></td><td>Apple Safari 1.0.2</td><td>implementation</td><td nowrap="nowrap">compliant</td>
+<td nowrap="nowrap"><a href="#Safari">Safari</a></td><td>Apple Safari 1.0.2</td><td>implementation</td><td nowrap="nowrap">compliant</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#Amaya">Amaya</a></td><td>W3C Amaya (current CVS)</td><td>implementation</td><td nowrap="nowrap">non-compliant</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#Opera">Opera</a></td><td>Opera (V7.23, build 3227, Win2000)</td><td>implementation</td><td nowrap="nowrap">non-compliant</td>
 </tr>
 </table>
 <br>
@@ -65,7 +71,9 @@
     <pre>
 The examples provided in the specification (section 5.4) use a base
 URI of "http://a/b/c/d;p?q" and should be consistent with almost all
-implementations.
+implementations.  A <a href="rel_examples1.html">rel_examples1</a>
+test page is provided for visual testing.  Note that this is only
+a test of the URI reference parser and conversion to absolute form.
 </pre>
 </td>
 </tr>
@@ -98,7 +106,7 @@ base URI of "http://a/b/c/d;p?q".
 <br>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th bgcolor="#FFFFCC"><font size="+2"><a name="Apple Safari">Apple Safari</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Apple Safari 1.0.2</font></th>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="Safari">Safari</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Apple Safari 1.0.2</font></th>
 </tr>
 <tr>
 <th>compliant</th><th align="left">implementation</th>
@@ -114,6 +122,68 @@ observation of the test cases.  The results were consistent with
 those of rfc2396bis except in that Safari will add a default path
 of "/" to http URIs that have an empty path.  Since that is consistent
 with a scheme-specific optimization, Safari 1.0.2 is compliant.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="Amaya">Amaya</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">W3C Amaya (current CVS)</font></th>
+</tr>
+<tr>
+<th>non-compliant</th><th align="left">implementation</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
+  20 Apr 2004,
+  <a href="http://www.w3.org/Amaya/">W3C Amaya</a>:
+    <pre>
+All tests are passed, except the following:
+
+#       rel             correct                 Amaya
+
+6       //g             http://g                http://g/ (additional slash)
+7       ?y              http://a/b/c/d;p?y      http://a/b/c/?y (d;p removed)
+9       #s              http://a/b/c/d;p?q#s    {testpage URI}#s
+15                      http://a/b/c/d;p?q      not tested
+43      g.              http://a/b/c/g.         http://a/b/c/g (dot removed)
+51      ./../g          http://a/b/g            http://a/b/c/g (/c not removed)
+55      g;x=1/./y       http://a/b/c/g;x=1/y    http://a/b/c/g;x=1/./y
+                                                        (precedence of ; over /)
+56      g;x=1/../y      http://a/b/c/y          http://a/b/c/g;x=1/../y
+                                                        (precedence of ; over /)
+
+For test 71, Amaya uses strict parsing.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="Opera">Opera</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Opera (V7.23, build 3227, Win2000)</font></th>
+</tr>
+<tr>
+<th>non-compliant</th><th align="left">implementation</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
+  20 Apr 2004,
+  <a href="http://www.w3.org/Amaya/">W3C Amaya</a>:
+    <pre>
+All tests are passed, except the following:
+
+#       rel             correct                 Amaya
+
+6       //g             http://g                http://g/ (additional slash)
+9       #s              http://a/b/c/d;p?q#s    {testpage URI}#s
+15                      http://a/b/c/d;p?q      not tested
+51      ./../g          http://a/b/g            http://a/b/c/g (/c not removed)
+
+For test 71, Opera uses backwards-compatible parsing.
 </pre>
 </td>
 </tr>
