@@ -535,7 +535,7 @@ use uppercase hexadecimal digits for all percent-encodings.
 <section title="Reserved Characters" anchor="reserved">
 <figure><preamble>
 <iref item="reserved" primary="true"/>
-URIs include components and sub-components that are delimited by
+URIs include components and subcomponents that are delimited by
 characters in the "reserved" set.  These characters are called "reserved"
 because they may (or may not) be defined as delimiters by the generic
 syntax, by each scheme-specific syntax, or by the implementation-specific
@@ -563,11 +563,11 @@ names directly; instead, each syntax rule lists those reserved characters
 that are allowed within that component (i.e., not delimiting it).  The allowed
 reserved characters, including those in the sub-delims set and any of
 the gen-delims that are not a delimiter of that component, are reserved
-for use as sub-component delimiters within the component.  Only the most
-common sub-components are defined by this specification; other
-sub-components may be defined by a URI scheme's specification, or by the
+for use as subcomponent delimiters within the component.  Only the most
+common subcomponents are defined by this specification; other
+subcomponents may be defined by a URI scheme's specification, or by the
 implementation-specific syntax of a URI's dereferencing algorithm,
-provided that such sub-components are delimited by characters in that
+provided that such subcomponents are delimited by characters in that
 component's reserved set.  If no such delimiting role has been assigned,
 then a reserved character appearing in a component represents the
 data octet corresponding to its encoding in US-ASCII.
@@ -612,11 +612,11 @@ Under normal circumstances, the only time that octets within a
 URI are percent-encoded is during the process of producing
 the URI from its component parts.  It is during that process that an
 implementation determines which of the reserved characters are to be
-used as sub-component delimiters and which can be safely used as data.
+used as subcomponent delimiters and which can be safely used as data.
 Once produced, a URI is always in its percent-encoded form.
 </t>
 <t>
-When a URI is dereferenced, the components and sub-components significant
+When a URI is dereferenced, the components and subcomponents significant
 to the scheme-specific dereferencing process (if any) must be parsed and
 separated before the percent-encoded octets within those components
 can be safely decoded, since otherwise the data may be mistaken for
@@ -672,25 +672,43 @@ would be represented as "%E3%82%A2".
 
 <section title="Syntax Components" anchor="components">
 <iref item="URI" primary="true"/>
+<iref item="hier-part" primary="true"/>
+<iref item="path-abempty" primary="false"/>
+<iref item="path-abs" primary="false"/>
+<iref item="path-rootless" primary="false"/>
+<iref item="path-empty" primary="false"/>
+<iref item="scheme" primary="false"/>
 <iref item="authority" primary="false"/>
 <iref item="path" primary="false"/>
+<iref item="query" primary="false"/>
+<iref item="fragment" primary="false"/>
 <figure><preamble>
 The generic URI syntax consists of a hierarchical sequence of components
 referred to as the scheme, authority, path, query, and fragment.
 <iref item="URI grammar" subitem="URI" primary="true"/>
 <iref item="URI grammar" subitem="scheme" primary="false"/>
 <iref item="URI grammar" subitem="authority" primary="false"/>
-<iref item="URI grammar" subitem="path" primary="false"/>
+<iref item="URI grammar" subitem="hier-part" primary="true"/>
 <iref item="URI grammar" subitem="query" primary="false"/>
 <iref item="URI grammar" subitem="fragment" primary="false"/>
+<iref item="URI grammar" subitem="path-abempty" primary="false"/>
+<iref item="URI grammar" subitem="path-abs" primary="false"/>
+<iref item="URI grammar" subitem="path-rootless" primary="false"/>
+<iref item="URI grammar" subitem="path-empty" primary="false"/>
 </preamble><artwork type="abnf">
-   URI = scheme ":" ["//" authority] path ["?" query] ["#" fragment]
+   URI         = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+
+   hier-part   = "//" authority path-abempty
+               / path-abs
+               / path-rootless
+               / path-empty
 </artwork><postamble>
 The scheme and path components are required, though path may be empty
-(no characters).  An ABNF-driven parser will find that the border between
-authority and path is ambiguous; they are disambiguated by the
-"first-match-wins" (a.k.a. "greedy") algorithm.  In other words, if
-authority is present then the first segment of the path must be empty.
+(no characters).  When authority is present, the path must either be
+empty or begin with a slash ("/") character. When authority is not present,
+the path cannot begin with two slash characters ("//"). These restrictions
+result in five different ABNF rules for a path (<xref target="path"/>),
+only one of which will match any given URI reference.
 </postamble></figure>
 <figure><preamble>
 The following are two example URIs and their component parts:
@@ -768,13 +786,21 @@ URI producers and normalizers should omit the "@" delimiter that
 separates userinfo from host if the userinfo component is empty
 (zero length) and should omit the ":" delimiter that separates host
 from port if the port component is empty.
-Some schemes do not allow the userinfo and/or port sub-components.
+Some schemes do not allow the userinfo and/or port subcomponents.
 </postamble></figure>
+<t>
+If a URI contains an authority component, then the path component must
+either be empty or begin with a slash ("/") character.  Non-validating
+parsers (those that merely separate a URI reference into its major
+components) will often ignore the subcomponent structure of authority,
+treating it as an opaque string from the double-slash to the first
+terminating delimiter, until such time as the URI is dereferenced.
+</t>
 
 <section title="User Information" anchor="userinfo">
 <iref item="userinfo" primary="true"/>
 <figure><preamble>
-The userinfo sub-component may consist of a user name and, optionally,
+The userinfo subcomponent may consist of a user name and, optionally,
 scheme-specific information about how to gain authorization to access
 the resource.  The user information, if present, is followed by a
 commercial at-sign ("@") that delimits it from the host.
@@ -786,7 +812,7 @@ commercial at-sign ("@") that delimits it from the host.
 <t>
 Use of the format "user:password" in the userinfo field is deprecated.
 Applications should not render as clear text any data after the first
-colon (":") character found within a userinfo sub-component unless
+colon (":") character found within a userinfo subcomponent unless
 such data is the empty string (indicating no password) or "anonymous".
 Applications may choose to ignore or reject such data when received
 as part of a reference, and should reject the storage of such data
@@ -807,7 +833,7 @@ misleadingly crafted to look like a trusted domain name
 <section title="Host" anchor="host">
 <iref item="host" primary="true"/>
 <figure><preamble>
-The host sub-component of authority is identified by an IP literal
+The host subcomponent of authority is identified by an IP literal
 encapsulated within square brackets, an IPv4 address in dotted-decimal form,
 or a host name.
 <iref item="URI grammar" subitem="host" primary="true"/>
@@ -815,9 +841,9 @@ or a host name.
    host        = IP-literal / IPv4address / reg-name
 </artwork><postamble>
 The syntax rule for host is ambiguous because it does not completely
-distinguish between an IPv4address and a reg-name.  Again, the
-"first-match-wins" algorithm applies: If host matches the rule for
-IPv4address, then it should be considered an IPv4 address literal
+distinguish between an IPv4address and a reg-name.  In order to disambiguate,
+the syntax, we apply the "first-match-wins" algorithm: If host matches
+the rule for IPv4address, then it should be considered an IPv4 address literal
 and not a reg-name.  Although host is case-insensitive, producers
 and normalizers should use lowercase for host names and hexadecimal
 addresses for the sake of uniformity, while only using uppercase letters
@@ -975,7 +1001,7 @@ may change over time for reasons not anticipated by the URI producer.
 <section title="Port" anchor="port">
 <iref item="port" primary="true"/>
 <figure><preamble>
-The port sub-component of authority is designated by an optional
+The port subcomponent of authority is designated by an optional
 port number in decimal following the host and delimited from it by
 a single colon (":") character.
 <iref item="URI grammar" subitem="port" primary="true"/>
@@ -995,24 +1021,61 @@ would be the same as the scheme's default.
 
 <section title="Path" anchor="path">
 <iref item="path" primary="true"/>
+<iref item="path" subitem="path-abempty" primary="true"/>
+<iref item="path" subitem="path-abs" primary="true"/>
+<iref item="path" subitem="path-noscheme" primary="true"/>
+<iref item="path" subitem="path-rootless" primary="true"/>
+<iref item="path" subitem="path-empty" primary="true"/>
 <iref item="segment" primary="true"/>
+<iref item="segment" subitem="segment-nz" primary="true"/>
+<iref item="segment" subitem="segment-nzc" primary="true"/>
 <iref item="pchar" primary="true"/>
-<figure><preamble>
+<t>
 The path component contains data, usually organized in hierarchical form,
 that, along with data in the non-hierarchical
 <xref target="query">query component</xref>,
 serves to identify a resource within the scope of the URI's
-scheme and naming authority (if any).  If a URI contains an authority
-component, then the initial path segment must be empty (i.e., the path must
-begin with a slash ("/") character or be entirely empty).  The path is
-terminated by the first question mark ("?") or number sign ("#") character,
-or by the end of the URI.
-<iref item="URI grammar" subitem="path-segments" primary="true"/>
+scheme and naming authority (if any).
+The path is terminated by the first question mark ("?") or
+number sign ("#") character, or by the end of the URI.
+</t>
+<figure><preamble>
+If a URI contains an authority component, then the path component must
+either be empty or begin with a slash ("/") character.
+If a URI does not contain an authority component, then
+the path cannot begin with two slash characters ("//").
+In addition, a URI reference (<xref target="uri-reference"/>) may begin
+with a relative path, in which case the first path segment cannot
+contain a colon (":") character.  The ABNF requires five separate rules
+to disambiguate these cases, only one of which will match a given
+URI reference.  We use the generic term "path component" to describe
+the URI substring that is matched by the parser to one of these rules.
+<iref item="URI grammar" subitem="path" primary="true"/>
+<iref item="URI grammar" subitem="path-abempty" primary="true"/>
+<iref item="URI grammar" subitem="path-abs" primary="true"/>
+<iref item="URI grammar" subitem="path-noscheme" primary="true"/>
+<iref item="URI grammar" subitem="path-rootless" primary="true"/>
+<iref item="URI grammar" subitem="path-empty" primary="true"/>
 <iref item="URI grammar" subitem="segment" primary="true"/>
+<iref item="URI grammar" subitem="segment-nz" primary="true"/>
+<iref item="URI grammar" subitem="segment-nzc" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="true"/>
 </preamble><artwork type="abnf">
-   path          = segment *( "/" segment )
+   path          = path-abempty    ; begins with "/" or is empty
+                 / path-abs        ; begins with "/" but not "//"
+                 / path-noscheme   ; begins with a non-colon segment
+                 / path-rootless   ; begins with a segment
+                 / path-empty      ; zero characters
+
+   path-abempty  = *( "/" segment )
+   path-abs      = "/" [ segment-nz *( "/" segment ) ]
+   path-noscheme = segment-nzc *( "/" segment )
+   path-rootless = segment-nz *( "/" segment )
+   path-empty    = 0*0&lt;pchar&gt;
+
    segment       = *pchar
+   segment-nz    = 1*pchar
+   segment-nzc   = 1*( unreserved / pct-encoded / sub-delims / "@" )
 
    pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 </artwork></figure>
@@ -1041,7 +1104,7 @@ resolution process (<xref target="absolutize"/>).
 Aside from dot-segments in hierarchical paths, a path segment is
 considered opaque by the generic syntax.  URI-producing applications
 often use the reserved characters allowed in a segment for the purpose
-of delimiting scheme-specific or dereference-handler-specific sub-components.
+of delimiting scheme-specific or dereference-handler-specific subcomponents.
 For example, the semicolon (";") and equals ("=") reserved characters
 are often used for delimiting parameters and parameter values
 applicable to that segment.  The comma (",") reserved character is often
@@ -1177,7 +1240,7 @@ its colon separator, then the reference is a URI rather than a relative-URI.
 <t>
 A URI-reference is typically parsed first into the five URI components,
 in order to determine what components are present and whether or not the
-reference is relative, and then each component is parsed for
+reference is relative, after which each component is parsed for
 its subparts and their validation.  The ABNF of URI-reference, along with
 the "first-match-wins" disambiguation rule, is sufficient to define a
 validating parser for the generic syntax.  Readers familiar with
@@ -1200,7 +1263,12 @@ relative to the name space of another hierarchical URI.
 <iref item="URI grammar" subitem="query" primary="false"/>
 <iref item="URI grammar" subitem="fragment" primary="false"/>
 </preamble><artwork type="abnf">
-   relative-URI  = ["//" authority] path ["?" query] ["#" fragment]
+   relative-URI  = relative-part [ "?" query ] [ "#" fragment ]
+
+   relative-part = "//" authority path-abempty
+                 / path-abs
+                 / path-noscheme
+                 / path-empty
 </artwork><postamble>
 The URI referred to by a relative reference, also known as the target URI,
 is obtained by applying
@@ -1234,7 +1302,7 @@ does not allow a fragment.
 <iref item="URI grammar" subitem="scheme" primary="false"/>
 <iref item="URI grammar" subitem="query" primary="false"/>
 </preamble><artwork type="abnf">
-   absolute-URI  = scheme ":" ["//" authority] path ["?" query]
+   absolute-URI  = scheme ":" hier-part [ "?" query ]
 </artwork></figure>
 </section>
 
@@ -1897,7 +1965,7 @@ that corresponds to an unreserved character, as described in
 <figure><preamble>
 Components of the generic URI syntax are delimited from other components
 by optional separators.  For example, a query component is separated
-from the path by a question mark ("?") and a port sub-component is
+from the path by a question mark ("?") and a port subcomponent is
 separated from host by a colon (":").  A URI in which a delimiter is
 present and the (sub-)component it delimits is empty is equivalent to
 the same URI without that delimiter.  For example, the following are
@@ -2084,7 +2152,7 @@ and percent-encodings within that URI.
 <t>
 Percent-encoded octets must be decoded at some point during the
 dereference process.  Applications must split the URI into its
-components and sub-components prior to decoding the octets, since
+components and subcomponents prior to decoding the octets, since
 otherwise the decoded octets might be mistaken for delimiters.  Security
 checks of the data within a URI should be applied after decoding the
 octets.  Note, however, that the "%00" percent-encoding (NUL) may require
@@ -2153,7 +2221,7 @@ rare cases where the 'password' parameter is intended to be public.
 </section>
 <section title="Semantic Attacks" anchor="security-semantic">
 <figure><preamble>
-Because the userinfo sub-component is rarely used and appears before the
+Because the userinfo subcomponent is rarely used and appears before the
 host in the authority component, it can be used to construct a URI
 that is intended to mislead a human user by appearing to identify one
 (trusted) naming authority while actually identifying a different
@@ -2163,7 +2231,7 @@ authority hidden behind the noise.  For example
 </artwork><postamble>
 might lead a human user to assume that the host is 'trusted.example.com',
 whereas it is actually '10.0.0.1'.  Note that a misleading userinfo
-sub-component could be much longer than the example above.
+subcomponent could be much longer than the example above.
 </postamble></figure>
 <t>
 A misleading URI, such as the one above, is an attack on the user's
@@ -3116,15 +3184,15 @@ respectively, to reduce confusion with other forms of escape mechanisms.
 </t>
 <t>
 The ABNF for URI and URI-reference has been redesigned to make them
-more friendly to LALR parsers and significantly reduce complexity.
+more friendly to LALR parsers and reduce complexity.
 As a result, the layout form of syntax description has been removed,
-along with the uric, uric_no_slash, hier_part, opaque_part, net_path,
+along with the uric, uric_no_slash, opaque_part, net_path,
 abs_path, rel_path, path_segments, rel_segment, and mark rules.
 All references to "opaque" URIs have been replaced with a better
 description of how the path component may be opaque to hierarchy.
 The ambiguity regarding the parsing of URI-reference as a URI or a
 relative-URI with a colon in the first segment is now explained
-and disambiguated in the section defining relative-URI.
+and disambiguated through the use of five separate path matching rules.
 </t>
 <t>
 The fragment identifier has been moved back into the section on
@@ -3139,7 +3207,8 @@ This also allows an absolute-URI to consist of nothing after the "scheme:",
 as is present in practice with the "dav:" namespace <xref target="RFC2518"/>
 and the "about:" scheme used internally by many WWW browser implementations.
 The ambiguity regarding the boundary between authority and path
-is now explained and disambiguated in the same section.
+is now explained and disambiguated through the use of five separate
+path matching rules.
 </t>
 <t>
 Registry-based naming authorities that use the generic syntax are now
