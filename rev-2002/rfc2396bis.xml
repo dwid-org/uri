@@ -169,12 +169,12 @@ being identified from all other things within its scope of identification.
 <t>
 A URI is an identifier that consists of a sequence of characters
 matching the restricted syntax defined by this specification.  A URI
-can be used to denote a resource; this specification does not place any
-limits on the nature of a resource or on what types of resources a
-conformant implementation might denote.  URIs have a global scope
+can be used to refer to a resource.  This specification does not place any
+limits on the nature of a resource or the reasons why an application
+might wish to refer to a resource.  URIs have a global scope
 and should be interpreted consistently regardless of context, but
 that interpretation may be defined in relation to the user's context
-(e.g., "http://localhost/" denotes a resource that is relative to
+(e.g., "http://localhost/" refers to a resource that is relative to
 the user's network interface and yet not specific to any one user).
 </t>
 </section>
@@ -182,17 +182,16 @@ the user's network interface and yet not specific to any one user).
 <section title="Separating Identification from Interaction">
 <t>
 A common misunderstanding of URIs is that they are only used to
-denote accessible resources.  In fact, the URI alone only provides
+refer to accessible resources.  In fact, the URI alone only provides
 identification: access to the resource is neither guaranteed nor
 implied by the presence of a URI.  Instead, an action (if any)
-associated with a URI reference is defined by the protocol or
-data format elements within which the URI appears, with the only
-exception being URIs that appear in plain text.
+associated with a URI reference is defined by the protocol, data format
+element, or natural language text within which the URI appears.
 </t>
 <t>
 Given a URI, a system may attempt to perform a variety of operations
-on the resource it denotes, as might be characterized by such words
-as `access', `update', `replace', or `find attributes'.  Such operations
+on the resource, as might be characterized by such words as "denote",
+"access", "update", "replace", or "find attributes".  Such operations
 are defined by the protocols that make use of URIs, not by this
 specification.
 </t>
@@ -207,9 +206,10 @@ to such a resource, they usually do so with the intention that the
 reference be used in the future.  What is being identified is not
 some specific result that was obtained in the past, but rather some
 characteristic of that result which is expected to be true for all
-future results.  Therefore, the resource denoted by a URI is actually
-a sameness of character as observed over time, perhaps elucidated
-by additional comments or assertions made by the resource provider.
+future results.  In such cases, the resource referred to by the URI
+is actually a sameness of characteristics as observed over time,
+perhaps elucidated by additional comments or assertions made by the
+resource provider.
 </t>
 </section>
 
@@ -229,7 +229,7 @@ An individual scheme does not need to be classified as being just one of
 the characteristics of names or locators or both, often depending on the
 persistence and care in the assignment of identifiers by the naming
 authority, rather than any quality of the scheme.  This specification
-deprecates use of the term URN for anything but URIs in the "urn" scheme
+deprecates use of the term "URN" for anything but URIs in the "urn" scheme
 <xref target="RFC2141"/>.  This specification also deprecates the term "URL".
 </t>
 <t>
@@ -246,13 +246,13 @@ be postponed until the scheme-dependent semantics are needed.
 Although many URI schemes are named after protocols, this does not
 imply that use of such a URI will result in access to the resource
 via the named protocol.  URIs are often used in contexts that are
-simply for denotation.  Even when
+simply for identification.  Even when
 a URI is used to obtain a representation of a resource, that access
 might be through gateways, proxies, caches, and name resolution
 services that are independent of the protocol of the resource origin,
 and the resolution of some URIs may require the use of more than one
 protocol (e.g., both DNS and HTTP are typically used to access an
-"http" URI's resource when it can't be found in a local cache).
+"http" URI's origin server when it can't be found in a local cache).
 </t>
 <t>
 A parser of the generic URI syntax is capable of parsing any URI
@@ -299,8 +299,8 @@ The following examples illustrate URIs that are in common use.
    Some URI schemes support a hierarchical naming system, where the
    hierarchy of the name is denoted by a "/" delimiter separating the
    components in the scheme. This document defines a scheme-independent
-   `relative' form of URI reference that can be used in conjunction with
-   a `base' URI of a hierarchical scheme to produce the `absolute' URI
+   "relative" form of URI reference that can be used in conjunction with
+   a "base" URI of a hierarchical scheme to produce the "absolute" URI
    form of the reference. The syntax of a hierarchical URI is described
    in Section 3; the relative URI calculation is described in Section 5.
 </t>
@@ -764,7 +764,7 @@ Section 7.5.
 <iref item="host" primary="true"/>
 <iref item="port" primary="true"/>
 <figure><preamble>
-The naming authority is denoted by a network host --- as described by an
+The naming authority is identified by a network host --- as described by an
 IPv6 literal encapsulated within square brackets, an IPv4 address in
 dotted-decimal form, or a domain name --- and an optional port number.
 The port, if defined by the URI scheme, is designated by a port number
@@ -1727,8 +1727,8 @@ in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
 and Larry Masinter in <xref target="RFC2732"/>.
 In addition, contributions by Reese Anschultz, Tim Bray, Rob Cameron,
 Dan Connolly, Adam M. Costello, Jason Diamond, Martin Duerst, Stefan Eissing,
-Clive D.W. Feather, Henry Holtzman, Graham Klyne, Dan Kohn, Bruce Lilly,
-Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
+Clive D.W. Feather, Pat Hayes, Henry Holtzman, Graham Klyne, Dan Kohn,
+Bruce Lilly, Andrew Main, Michael Mealling, Julian Reschke, Tomas Rokicki,
 Miles Sabin, Ronald Tschalaer, Marc Warne, and Henry Zongaro are
 gratefully acknowledged.
 </t>
