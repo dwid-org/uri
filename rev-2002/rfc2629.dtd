@@ -176,7 +176,7 @@
 <!ATTLIST vspace
           blankLines  %NUMBER;           "0">
 
-<!ELEMENT figure      (preamble?,artwork,postamble?)>
+<!ELEMENT figure      (preamble?,iref*,artwork,postamble?)>
 <!ATTLIST figure
           anchor      ID                 #IMPLIED
           title       %ATEXT;            "">
