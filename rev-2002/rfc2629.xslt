@@ -1113,7 +1113,7 @@ p
 pre
 {
 	margin-left: 3em;
-  background-color: lightgrey;
+  background-color: lightyellow;
 }
 table
 {
