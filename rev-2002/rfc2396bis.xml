@@ -1497,6 +1497,10 @@ which the relative reference is applied.  Aside from fragment-only
 references (<xref target="same-document"/>), relative references are
 only usable when a base URI is known.  A base URI must be established
 by the parser prior to parsing URI references that might be relative.
+A base URI must conform to the &lt;absolute-URI&gt; syntax rule
+(<xref target="absolute-uri"/>): if the base URI is obtained from a
+URI reference, then that reference must be converted to absolute form
+and stripped of any fragment component prior to use as a base URI.
 </t>
 <t>
 The base URI of a reference can be established in one of four ways,
@@ -2357,7 +2361,7 @@ In addition, contributions by Gisle Aas, Reese Anschultz,
 Daniel Barclay, Tim Bray, Mike Brown,
 Rob Cameron, Jeremy Carroll, Dan Connolly, Adam M. Costello, John Cowan,
 Jason Diamond, Martin Duerst, Stefan Eissing, Clive D.W. Feather,
-Tony Hammond, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
+Tony Hammond, Elliotte Harold, Pat Hayes, Henry Holtzman, Ian B. Jacobs,
 Michael Kay, John C. Klensin, Graham Klyne, Dan Kohn, Bruce Lilly,
 Andrew Main, Ira McDonald, Michael Mealling, Ray Merkert, Stephen Pollei,
 Julian Reschke, Tomas Rokicki, Miles Sabin, Kai Schaetzl,
