@@ -1393,19 +1393,198 @@ next component separator or the end of the reference.
 </section>
 </section>
 
-<section title="URI Normalization and Equivalence">
+<section title="URI Normalization and Comparison">
 <t>
-   In many cases, different URI strings may actually identify the
-   identical resource. For example, the host names used in URI are
-   actually case insensitive, and the URI &lt;http://www.XEROX.com&gt; is
-   equivalent to &lt;http://www.xerox.com&gt;. In general, the rules for
-   equivalence and definition of a normal form, if any, are scheme
-   dependent. When a scheme uses elements of the common syntax, it will
-   also use the common syntax equivalence rules, namely that the scheme
-   and hostname are case insensitive and a URI with an explicit ":port",
-   where the port is the default for the scheme, is equivalent to one
-   where the port is elided.
+One of the most common operations on URIs is simple comparison:
+determining if two URIs are equivalent without using the URIs to
+access their respective resource(s).  A comparison is performed
+every time a response cache is accessed, a browser checks its
+history to color a link, or an XML parser processes tags within a namespace.
+Extensive normalization prior to comparison of URIs is often used
+by spiders and indexing engines to prune a search space or
+reduce duplication of request actions and response storage.
 </t>
+<t>
+URI comparison is performed in respect to some particular purpose,
+and software with differing purposes will often be subject to differing
+design trade-offs in regards to how much effort should be spent in
+reducing duplicate identifiers.  This section describes a variety of
+methods that may be used to compare URIs, the trade-offs between them,
+and the types of applications that might use them.
+</t>
+  <section title="URI Equivalence">
+  <t>
+  Since URIs exist to identify resources, presumably they should be
+  considered equivalent when they identify the same resource.  However,
+  such a definition of equivalence is not of much practical use, since
+  there is no way for software to compare two resources without access
+  to their origin.  For this reason, determination of equivalence or
+  difference of URIs is based on string comparison, perhaps augmented by
+  reference to additional rules provided by URI scheme definitions.
+  We use the terms "different" and "equivalent" to describe
+  the possible outcomes of such comparisons, but there
+  are many application-dependent versions of equivalence.
+  </t>
+  <t>
+  Even though it is possible to determine that two URIs are equivalent,
+  it is never possible to be sure that two URIs identify different
+  resources. Therefore, comparison methods are designed to minimize
+  false negatives while strictly avoiding false positives.
+  </t>
+  <t>
+  In testing for equivalence, it is generally unwise to directly compare
+  relative URI references; they should be converted to their absolute forms
+  before comparison.  Furthermore, when URI references are being compared
+  for the purpose of selecting (or avoiding) a network action, such as
+  retrieval of a representation, it is often necessary to separate fragment
+  identifiers from the URIs prior to comparison.
+  </t>
+  </section>
+  <section title="Comparison Ladder">
+  <t>
+  A variety of methods are used in practice to test URI equivalence.
+  These methods fall into a range, distinguished by the amount of
+  processing required and the degree to which the probability of false
+  negatives is reduced.  As noted above, false negatives cannot in
+  principle be eliminated.  In practice, their probability can be reduced,
+  but this reduction requires more processing and is
+  not cost-effective for all applications.
+  </t>
+  <t>
+  If this range of comparison practices is considered as a ladder, the
+  following discussion will climb the ladder, starting with those that
+  are cheap but have a relatively higher chance of producing false negatives,
+  and proceeding to those that have higher computational cost and lower risk
+  of false negatives.
+  </t>
+    <section title="Simple String Comparison">
+    <t>
+    If two URIs, considered as character strings, are identical, then it is
+    safe to conclude that they are equivalent.  This type of equivalence test
+    has very low computational cost and is in wide use in a variety of
+    applications, particularly in the domain of parsing.
+    </t>
+    <t>
+    Testing strings for equivalence requires some basic precautions.
+    This procedure is often referred to as "bit-for-bit" or "byte-for-byte"
+    comparison, which is potentially misleading.  Testing of strings for
+    equality is normally based on pairwise comparison of the characters
+    that make up the strings, starting from the first and proceeding until
+    both strings are exhausted and all characters found to be equal, or a
+    pair of characters compares unequal or one of the strings is exhausted
+    before the other.
+    </t>
+    <t>
+    Such character comparisons require that each pair of characters be put
+    in comparable form.  For example, should one URI be stored in a byte
+    array in EBCDIC encoding, and the second be in a Java String object,
+    bit-for-bit comparisons applied naively will produce both false-positive
+    and false-negative errors.  Thus, in principle, it is better to speak of
+    equality on a character-for-character rather than byte-for-byte or
+    bit-for-bit basis.
+    </t>
+    <t>
+    Unicode defines a character as being identified by number
+    ("codepoint") with an associated bundle of visual and other semantics.
+    At the software level, it is not practical to compare semantic bundles,
+    so in practical terms, character-by-character comparisons are done
+    codepoint-by-codepoint.
+    </t>
+    </section>
+    <section title="Syntax-based Normalization">
+<figure><preamble>
+Software may use logic based on the definitions provided by this
+specification to reduce the probability of false negatives.  Such
+processing is (moderately) higher in cost than character-for-character
+string comparison.  For example, an application using this approach
+could reasonably consider the following two URIs equivalent:
+</preamble><artwork>
+   example://a/b/c/%7A
+   eXAMPLE://a/./b/../b/c/%7a
+</artwork><postamble>
+Web user agents, such as browsers, typically apply this type of URI
+normalization when determining whether a cached response is available.
+Syntax-based normalization includes such techniques
+as case normalization, escape normalization, and removal of leftover
+relative path segments.
+</postamble></figure>
+      <section title="Case Normalization">
+      <t>
+      When a URI scheme uses elements of the common syntax, it will
+      also use the common syntax equivalence rules, namely that the scheme
+      and hostname are case insensitive and therefore can be normailized
+      to lowercase.  For example, the URI &lt;HTTP://www.EXAMPLE.com/&gt; is
+      equivalent to &lt;http://www.example.com/&gt;.
+      </t>
+      </section>
+      <section title="Escape Normalization">
+      </section>
+      <section title="Path Segment Normalization">
+      </section>
+    </section>
+    <section title="Scheme-based Normalization">
+<figure><preamble>
+The syntax and semantics of URIs vary from scheme to scheme, as described
+by the defining specification for each scheme.  Software may use
+scheme-specific rules, at further processing cost, to reduce the
+probability of false negatives.  For example, Web spiders that populate
+most large search engines would consider the following two URIs to be
+equivalent:
+</preamble><artwork>
+   http://example.com/
+   http://example.com:80/
+</artwork><postamble>
+This behavior is based on the rules provided by the syntax and semantics
+of the "http" URI scheme, which defines an empty port component as being
+equivalent to the default TCP port for HTTP (port 80).  In general, a
+URI scheme that uses the generic syntax of hostport is defined such that
+a URI with an explicit ":port", where the port is the default for the
+scheme, is equivalent to one where the port is elided.
+</postamble></figure>
+    </section>
+    <section title="Protocol-based Normalization">
+<figure><preamble>
+Web spiders, for which substantial effort to reduce the incidence
+of false negatives is often cost-effective, are observed to implement
+even more aggressive techniques in URI comparison.  For example, if they
+observe that a URI such as
+</preamble><artwork>
+   http://example.com/data
+</artwork></figure>
+<figure><preamble>
+redirects to
+</preamble><artwork>
+   http://example.com/data/
+</artwork><postamble>
+    they will likely regard the two as equivalent in the future.
+    Obviously, this kind of technique is only appropriate in special
+    situations.
+</postamble></figure>
+    </section>
+  </section>
+  <section title="Good Practice When Using URIs">
+  <t>
+  It is in the best interests of everyone to avoid false-negatives in
+  comparing URIs, and to only require the minimum amount of
+  software processing for such comparisons.  Those who generate and
+  make reference to URIs can reduce the cost of processing and the risk
+  of false negatives by consistently providing them in a form that is
+  reasonably canonical with respect to their scheme.  Specifically:
+  <list>
+    <t>Always provide the URI scheme in lower-case characters.</t>
+    <t>Always provide the hostname, if any, in lower-case characters.</t>
+    <t>Only perform %-escaping where it is essential.</t>
+    <t>Always use upper-case A-through-F characters when %-escaping.</t>
+    <t>Use the UTF-8 character-to-octet mapping, whenever possible.</t>
+    <t>Prevent /./ and /../ from appearing in absolute URI paths.</t>
+  </list>
+  </t>
+  <t>
+  The choices listed above are motivated by observations that a high
+  proportion of deployed software already use these techniques in
+  practice for the purposes of normalization.
+  </t>
+  </section>
 </section>
 
 <section title="Security Considerations">
@@ -1526,6 +1705,7 @@ More information on URI-based semantic attacks can be found in
 </t>
 </section>
 </section>
+
 <section title="Acknowledgements">
 <t>
    This document is derived from RFC 2396 <xref target="RFC2396"/>,
@@ -2438,6 +2618,11 @@ of IPv4address has been improved in order to limit each decimal
 octet to the range 0-255, and the definition of hostname has been
 improved to better specify length limitations and partially-qualified
 domain names.
+</t>
+<t>
+Section 6 on URI comparison and normalization has been completely
+rewritten and extended using input from Tim Bray and discussion within
+the W3C Technical Architecture Group.
 </t>
 </section>
 

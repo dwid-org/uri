@@ -590,9 +590,76 @@ is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 
 
 <b>6&nbsp;
-            <a href="#rfc.section.6">URI Normalization and Equivalence</a></b>
+            <a href="#rfc.section.6">URI Normalization and Comparison</a></b>
 <br>
 
+
+  
+<b>&nbsp;6.1&nbsp;
+            <a href="#rfc.section.6.1">URI Equivalence</a></b>
+<br>
+  
+  
+  
+  
+  
+<b>&nbsp;6.2&nbsp;
+            <a href="#rfc.section.6.2">Comparison Ladder</a></b>
+<br>
+  
+  
+    
+<b>&nbsp;&nbsp;6.2.1&nbsp;
+            <a href="#rfc.section.6.2.1">Simple String Comparison</a></b>
+<br>
+    
+    
+    
+    
+    
+    
+<b>&nbsp;&nbsp;6.2.2&nbsp;
+            <a href="#rfc.section.6.2.2">Syntax-based Normalization</a></b>
+<br>
+
+      
+<b>&nbsp;&nbsp;&nbsp;6.2.2.1&nbsp;
+            <a href="#rfc.section.6.2.2.1">Case Normalization</a></b>
+<br>
+      
+      
+      
+<b>&nbsp;&nbsp;&nbsp;6.2.2.2&nbsp;
+            <a href="#rfc.section.6.2.2.2">Escape Normalization</a></b>
+<br>
+      
+      
+<b>&nbsp;&nbsp;&nbsp;6.2.2.3&nbsp;
+            <a href="#rfc.section.6.2.2.3">Path Segment Normalization</a></b>
+<br>
+      
+    
+    
+<b>&nbsp;&nbsp;6.2.3&nbsp;
+            <a href="#rfc.section.6.2.3">Scheme-based Normalization</a></b>
+<br>
+
+    
+    
+<b>&nbsp;&nbsp;6.2.4&nbsp;
+            <a href="#rfc.section.6.2.4">Protocol-based Normalization</a></b>
+<br>
+
+
+    
+  
+  
+<b>&nbsp;6.3&nbsp;
+            <a href="#rfc.section.6.3">Good Practice When Using URIs</a></b>
+<br>
+  
+  
+  
 
 
 
@@ -632,6 +699,7 @@ is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 <b>&nbsp;7.5&nbsp;
             <a href="#rfc.section.7.5">Semantic Attacks</a></b>
 <br>
+
 
 
 
@@ -749,6 +817,7 @@ is available at &lt;http://www.apache.org/~fielding/uri/rev-2002/&gt;.
 <b>&nbsp;G.1&nbsp;
             <a href="#rfc.section.G.1">Additions</a></b>
 <br>
+
 
 
 
@@ -2291,20 +2360,237 @@ next component separator or the end of the reference.
 </table>
 <h1>
 <a name="rfc.section.6">6</a>&nbsp;
-    URI Normalization and Equivalence</h1>
+    URI Normalization and Comparison</h1>
 <p>
 <a name="rfc.section.6.p.1"></a>
-   In many cases, different URI strings may actually identify the
-   identical resource. For example, the host names used in URI are
-   actually case insensitive, and the URI &lt;http://www.XEROX.com&gt; is
-   equivalent to &lt;http://www.xerox.com&gt;. In general, the rules for
-   equivalence and definition of a normal form, if any, are scheme
-   dependent. When a scheme uses elements of the common syntax, it will
-   also use the common syntax equivalence rules, namely that the scheme
-   and hostname are case insensitive and a URI with an explicit ":port",
-   where the port is the default for the scheme, is equivalent to one
-   where the port is elided.
+One of the most common operations on URIs is simple comparison:
+determining if two URIs are equivalent without using the URIs to
+access their respective resource(s).  A comparison is performed
+every time a response cache is accessed, a browser checks its
+history to color a link, or an XML parser processes tags within a namespace.
+Extensive normalization prior to comparison of URIs is often used
+by spiders and indexing engines to prune a search space or
+reduce duplication of request actions and response storage.
 </p>
+<p>
+<a name="rfc.section.6.p.2"></a>
+URI comparison is performed in respect to some particular purpose,
+and software with differing purposes will often be subject to differing
+design trade-offs in regards to how much effort should be spent in
+reducing duplicate identifiers.  This section describes a variety of
+methods that may be used to compare URIs, the trade-offs between them,
+and the types of applications that might use them.
+</p>
+<h2>
+<a name="rfc.section.6.1">6.1</a>&nbsp;
+    URI Equivalence</h2>
+<p>
+<a name="rfc.section.6.1.p.1"></a>
+  Since URIs exist to identify resources, presumably they should be
+  considered equivalent when they identify the same resource.  However,
+  such a definition of equivalence is not of much practical use, since
+  there is no way for software to compare two resources without access
+  to their origin.  For this reason, determination of equivalence or
+  difference of URIs is based on string comparison, perhaps augmented by
+  reference to additional rules provided by URI scheme definitions.
+  We use the terms "different" and "equivalent" to describe
+  the possible outcomes of such comparisons, but there
+  are many application-dependent versions of equivalence.
+  </p>
+<p>
+<a name="rfc.section.6.1.p.2"></a>
+  Even though it is possible to determine that two URIs are equivalent,
+  it is never possible to be sure that two URIs identify different
+  resources. Therefore, comparison methods are designed to minimize
+  false negatives while strictly avoiding false positives.
+  </p>
+<p>
+<a name="rfc.section.6.1.p.3"></a>
+  In testing for equivalence, it is generally unwise to directly compare
+  relative URI references; they should be converted to their absolute forms
+  before comparison.  Furthermore, when URI references are being compared
+  for the purpose of selecting (or avoiding) a network action, such as
+  retrieval of a representation, it is often necessary to separate fragment
+  identifiers from the URIs prior to comparison.
+  </p>
+<h2>
+<a name="rfc.section.6.2">6.2</a>&nbsp;
+    Comparison Ladder</h2>
+<p>
+<a name="rfc.section.6.2.p.1"></a>
+  A variety of methods are used in practice to test URI equivalence.
+  These methods fall into a range, distinguished by the amount of
+  processing required and the degree to which the probability of false
+  negatives is reduced.  As noted above, false negatives cannot in
+  principle be eliminated.  In practice, their probability can be reduced,
+  but this reduction requires more processing and is
+  not cost-effective for all applications.
+  </p>
+<p>
+<a name="rfc.section.6.2.p.2"></a>
+  If this range of comparison practices is considered as a ladder, the
+  following discussion will climb the ladder, starting with those that
+  are cheap but have a relatively higher chance of producing false negatives,
+  and proceeding to those that have higher computational cost and lower risk
+  of false negatives.
+  </p>
+<h3>
+<a name="rfc.section.6.2.1">6.2.1</a>&nbsp;
+    Simple String Comparison</h3>
+<p>
+<a name="rfc.section.6.2.1.p.1"></a>
+    If two URIs, considered as character strings, are identical, then it is
+    safe to conclude that they are equivalent.  This type of equivalence test
+    has very low computational cost and is in wide use in a variety of
+    applications, particularly in the domain of parsing.
+    </p>
+<p>
+<a name="rfc.section.6.2.1.p.2"></a>
+    Testing strings for equivalence requires some basic precautions.
+    This procedure is often referred to as "bit-for-bit" or "byte-for-byte"
+    comparison, which is potentially misleading.  Testing of strings for
+    equality is normally based on pairwise comparison of the characters
+    that make up the strings, starting from the first and proceeding until
+    both strings are exhausted and all characters found to be equal, or a
+    pair of characters compares unequal or one of the strings is exhausted
+    before the other.
+    </p>
+<p>
+<a name="rfc.section.6.2.1.p.3"></a>
+    Such character comparisons require that each pair of characters be put
+    in comparable form.  For example, should one URI be stored in a byte
+    array in EBCDIC encoding, and the second be in a Java String object,
+    bit-for-bit comparisons applied naively will produce both false-positive
+    and false-negative errors.  Thus, in principle, it is better to speak of
+    equality on a character-for-character rather than byte-for-byte or
+    bit-for-bit basis.
+    </p>
+<p>
+<a name="rfc.section.6.2.1.p.4"></a>
+    Unicode defines a character as being identified by number
+    ("codepoint") with an associated bundle of visual and other semantics.
+    At the software level, it is not practical to compare semantic bundles,
+    so in practical terms, character-by-character comparisons are done
+    codepoint-by-codepoint.
+    </p>
+<h3>
+<a name="rfc.section.6.2.2">6.2.2</a>&nbsp;
+    Syntax-based Normalization</h3>
+<a name="rfc.figure.u.35"></a>
+<p>
+Software may use logic based on the definitions provided by this
+specification to reduce the probability of false negatives.  Such
+processing is (moderately) higher in cost than character-for-character
+string comparison.  For example, an application using this approach
+could reasonably consider the following two URIs equivalent:
+</p>
+<pre>   example://a/b/c/%7A
+   eXAMPLE://a/./b/../b/c/%7a
+</pre>
+<p>
+Web user agents, such as browsers, typically apply this type of URI
+normalization when determining whether a cached response is available.
+Syntax-based normalization includes such techniques
+as case normalization, escape normalization, and removal of leftover
+relative path segments.
+</p>
+<h3>
+<a name="rfc.section.6.2.2.1">6.2.2.1</a>&nbsp;
+    Case Normalization</h3>
+<p>
+<a name="rfc.section.6.2.2.1.p.1"></a>
+      When a URI scheme uses elements of the common syntax, it will
+      also use the common syntax equivalence rules, namely that the scheme
+      and hostname are case insensitive and therefore can be normailized
+      to lowercase.  For example, the URI &lt;HTTP://www.EXAMPLE.com/&gt; is
+      equivalent to &lt;http://www.example.com/&gt;.
+      </p>
+<h3>
+<a name="rfc.section.6.2.2.2">6.2.2.2</a>&nbsp;
+    Escape Normalization</h3>
+<h3>
+<a name="rfc.section.6.2.2.3">6.2.2.3</a>&nbsp;
+    Path Segment Normalization</h3>
+<h3>
+<a name="rfc.section.6.2.3">6.2.3</a>&nbsp;
+    Scheme-based Normalization</h3>
+<a name="rfc.figure.u.36"></a>
+<p>
+The syntax and semantics of URIs vary from scheme to scheme, as described
+by the defining specification for each scheme.  Software may use
+scheme-specific rules, at further processing cost, to reduce the
+probability of false negatives.  For example, Web spiders that populate
+most large search engines would consider the following two URIs to be
+equivalent:
+</p>
+<pre>   http://example.com/
+   http://example.com:80/
+</pre>
+<p>
+This behavior is based on the rules provided by the syntax and semantics
+of the "http" URI scheme, which defines an empty port component as being
+equivalent to the default TCP port for HTTP (port 80).  In general, a
+URI scheme that uses the generic syntax of hostport is defined such that
+a URI with an explicit ":port", where the port is the default for the
+scheme, is equivalent to one where the port is elided.
+</p>
+<h3>
+<a name="rfc.section.6.2.4">6.2.4</a>&nbsp;
+    Protocol-based Normalization</h3>
+<a name="rfc.figure.u.37"></a>
+<p>
+Web spiders, for which substantial effort to reduce the incidence
+of false negatives is often cost-effective, are observed to implement
+even more aggressive techniques in URI comparison.  For example, if they
+observe that a URI such as
+</p>
+<pre>   http://example.com/data
+</pre>
+<a name="rfc.figure.u.38"></a>
+<p>
+redirects to
+</p>
+<pre>   http://example.com/data/
+</pre>
+<p>
+    they will likely regard the two as equivalent in the future.
+    Obviously, this kind of technique is only appropriate in special
+    situations.
+</p>
+<h2>
+<a name="rfc.section.6.3">6.3</a>&nbsp;
+    Good Practice When Using URIs</h2>
+<p>
+<a name="rfc.section.6.3.p.1"></a>
+  It is in the best interests of everyone to avoid false-negatives in
+  comparing URIs, and to only require the minimum amount of
+  software processing for such comparisons.  Those who generate and
+  make reference to URIs can reduce the cost of processing and the risk
+  of false negatives by consistently providing them in a form that is
+  reasonably canonical with respect to their scheme.  Specifically:
+  <blockquote>
+    
+<p>Always provide the URI scheme in lower-case characters.</p>
+    
+<p>Always provide the hostname, if any, in lower-case characters.</p>
+    
+<p>Only perform %-escaping where it is essential.</p>
+    
+<p>Always use upper-case A-through-F characters when %-escaping.</p>
+    
+<p>Use the UTF-8 character-to-octet mapping, whenever possible.</p>
+    
+<p>Prevent /./ and /../ from appearing in absolute URI paths.</p>
+  
+</blockquote>
+  
+</p>
+<p>
+<a name="rfc.section.6.3.p.2"></a>
+  The choices listed above are motivated by observations that a high
+  proportion of deployed software already use these techniques in
+  practice for the purposes of normalization.
+  </p>
 
 
 <hr class="noprint">
@@ -2423,7 +2709,7 @@ public.
 <h2>
 <a name="rfc.section.7.5">7.5</a>&nbsp;
     Semantic Attacks</h2>
-<a name="rfc.figure.u.35"></a>
+<a name="rfc.figure.u.39"></a>
 <p>
 Because the userinfo component is rarely used and appears before the
 hostname in the authority component, it can be used to construct a URI
@@ -2449,6 +2735,7 @@ render userinfo if any is present, though there is no general panacea.
 More information on URI-based semantic attacks can be found in 
 <a href="#Siedzik" title="Semantic Attacks: What's in a URL?">[Siedzik]</a>.
 </p>
+
 
 <hr class="noprint">
 <table align="right" height="15" width="30" cellspacing="2" cellpadding="0" border="0" class="noprint">
@@ -2716,7 +3003,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <h1>
 <a name="rfc.section.A">A</a>&nbsp;
     Collected BNF for URI</h1>
-<a name="rfc.figure.u.36"></a>
+<a name="rfc.figure.u.40"></a>
 <pre>To be filled-in later.
 </pre>
 <hr class="noprint">
@@ -2742,7 +3029,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    The following line is the regular expression for breaking-down a URI
    reference into its components.
 </p>
-<a name="rfc.figure.u.37"></a>
+<a name="rfc.figure.u.41"></a>
 <pre>   ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
     12            3  4          5       6  7        8 9
 </pre>
@@ -2753,14 +3040,14 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    paired parenthesis).  We refer to the value matched for subexpression
    &lt;n&gt; as $&lt;n&gt;.  For example, matching the above expression to
 </p>
-<a name="rfc.figure.u.38"></a>
+<a name="rfc.figure.u.42"></a>
 <pre>   http://www.ics.uci.edu/pub/ietf/uri/#Related
 </pre>
 <p>
 <a name="rfc.section.B.p.6"></a>
    results in the following subexpression matches:
 </p>
-<a name="rfc.figure.u.39"></a>
+<a name="rfc.figure.u.43"></a>
 <pre>   $1 = http:
    $2 = http
    $3 = //www.ics.uci.edu
@@ -2777,7 +3064,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    the case for the query component in the above example.  Therefore, we
    can determine the value of the four components and fragment as
 </p>
-<a name="rfc.figure.u.40"></a>
+<a name="rfc.figure.u.44"></a>
 <pre>   scheme    = $2
    authority = $4
    path      = $5
@@ -2802,7 +3089,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <a name="rfc.section.C.p.1"></a>
    Within an object with a well-defined base URI of
 </p>
-<a name="rfc.figure.u.41"></a>
+<a name="rfc.figure.u.45"></a>
 <pre>   http://a/b/c/d;p?q
 </pre>
 <p>
@@ -2812,7 +3099,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <h2>
 <a name="rfc.section.C.1">C.1</a>&nbsp;
     Normal Examples</h2>
-<a name="rfc.figure.u.42"></a>
+<a name="rfc.figure.u.46"></a>
 <pre>   g:h           =  g:h
    g             =  http://a/b/c/g
    ./g           =  http://a/b/c/g
@@ -2849,7 +3136,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
 <a name="rfc.section.C.2.p.2"></a>
    An empty reference refers to the start of the current document.
 </p>
-<a name="rfc.figure.u.43"></a>
+<a name="rfc.figure.u.47"></a>
 <pre>   &lt;&gt;            =  (current document)
 </pre>
 <p>
@@ -2859,7 +3146,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    base URI's path.  Note that the ".." syntax cannot be used to change
    the authority component of a URI.
 </p>
-<a name="rfc.figure.u.44"></a>
+<a name="rfc.figure.u.48"></a>
 <pre>   ../../../g    =  http://a/../g
    ../../../../g =  http://a/../../g
 </pre>
@@ -2876,7 +3163,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    Similarly, parsers must avoid treating "." and ".." as special when
    they are not complete components of a relative path.
 </p>
-<a name="rfc.figure.u.45"></a>
+<a name="rfc.figure.u.49"></a>
 <pre>   /./g          =  http://a/./g
    /../g         =  http://a/../g
    g.            =  http://a/b/c/g.
@@ -2889,7 +3176,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    Less likely are cases where the relative URI uses unnecessary or
    nonsensical forms of the "." and ".." complete path segments.
 </p>
-<a name="rfc.figure.u.46"></a>
+<a name="rfc.figure.u.50"></a>
 <pre>   ./../g        =  http://a/b/g
    ./g/.         =  http://a/b/c/g/
    g/./h         =  http://a/b/c/g/h
@@ -2905,7 +3192,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    of a fragment never includes the hierarchy ("/") character, and the
    query component is not normally used within relative references.
 </p>
-<a name="rfc.figure.u.47"></a>
+<a name="rfc.figure.u.51"></a>
 <pre>   g?y/./x       =  http://a/b/c/g?y/./x
    g?y/../x      =  http://a/b/c/g?y/../x
    g#s/./x       =  http://a/b/c/g#s/./x
@@ -2918,7 +3205,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    loophole in prior specifications of partial URI <a href="#RFC1630" title="Universal Resource Identifiers in WWW: A Unifying Syntax for the Expression of Names and Addresses of Objects on the Network as used in the World-Wide Web">[RFC1630]</a>.
    Its use should be avoided, but is allowed for backwards compatibility.
 </p>
-<a name="rfc.figure.u.48"></a>
+<a name="rfc.figure.u.52"></a>
 <pre>   http:g        =  http:g           ; for validating parsers
                  /  http://a/b/c/g   ; for backwards compatibility
 </pre>
@@ -2949,7 +3236,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    that, in HTML, element and attribute names are case-insensitive.  For
    example:
 </p>
-<a name="rfc.figure.u.49"></a>
+<a name="rfc.figure.u.53"></a>
 <pre>   &lt;!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
    &lt;HTML&gt;&lt;HEAD&gt;
    &lt;TITLE&gt;An example HTML document&lt;/TITLE&gt;
@@ -2963,7 +3250,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    A parser reading the example document should interpret the given
    relative URI "../x" as representing the absolute URI
 </p>
-<a name="rfc.figure.u.50"></a>
+<a name="rfc.figure.u.54"></a>
 <pre>   &lt;http://www.example.com/Test/a/x&gt;
 </pre>
 <p>
@@ -2995,7 +3282,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    within double-quotes "http://example.com/", angle brackets
    &lt;http://example.com/&gt;, or just using whitespace
 </p>
-<a name="rfc.figure.u.51"></a>
+<a name="rfc.figure.u.55"></a>
 <pre>   http://example.com/
 </pre>
 <p>
@@ -3040,7 +3327,7 @@ Science, University of California, Irvine">Whitehead, E.</a>,&nbsp;<a href="mail
    For robustness, software that accepts user-typed URI should attempt
    to recognize and strip both delimiters and embedded whitespace.
 </p>
-<a name="rfc.figure.u.52"></a>
+<a name="rfc.figure.u.56"></a>
 <p>
 For example, the text:
 </p>
@@ -3053,7 +3340,7 @@ For example, the text:
 <a name="rfc.section.E.p.12"></a>
 contains the URI references
 </p>
-<a name="rfc.figure.u.53"></a>
+<a name="rfc.figure.u.57"></a>
 <pre>   http://www.w3.org/Addressing/
    ftp://ds.internic.net/rfc/
    http://www.ics.uci.edu/pub/ietf/uri/historical.html#WARNING
@@ -3077,7 +3364,7 @@ contains the URI references
    only the authority and path portions of the identified resource, such
    as
 </p>
-<a name="rfc.figure.u.54"></a>
+<a name="rfc.figure.u.58"></a>
 <pre>   www.w3.org/Addressing/
 </pre>
 <p>
@@ -3138,6 +3425,12 @@ of IPv4address has been improved in order to limit each decimal
 octet to the range 0-255, and the definition of hostname has been
 improved to better specify length limitations and partially-qualified
 domain names.
+</p>
+<p>
+<a name="rfc.section.G.1.p.3"></a>
+Section 6 on URI comparison and normalization has been completely
+rewritten and extended using input from Tim Bray and discussion within
+the W3C Technical Architecture Group.
 </p>
 <h2>
 <a name="rfc.section.G.2">G.2</a>&nbsp;

@@ -36,9 +36,6 @@
 <td nowrap="nowrap"><a href="#033-dot-segments">033-dot-segments</a></td><td>relative path segments should be removed from absolute URIs</td><td>relative</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#037-uri-comparison">037-uri-comparison</a></td><td>define how to compare URIs</td><td>characters</td><td nowrap="nowrap">accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>terminology</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
@@ -136,6 +133,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#029-decimal-IP">029-decimal-IP</a></td><td>add security considerations for misleading use of decimal IP</td><td>security</td><td nowrap="nowrap">added 01</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#037-uri-comparison">037-uri-comparison</a></td><td>define how to compare URIs</td><td>characters</td><td nowrap="nowrap">added 01</td>
 </tr>
 </table>
 <br>
@@ -3138,7 +3138,7 @@ solved by using IDNA encoding without changing the URI syntax.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="037-uri-comparison">037-uri-comparison</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">define how to compare URIs</font></th>
 </tr>
 <tr>
-<th>accepted</th><th align="left">characters</th>
+<th bgcolor="lightgreen">added 01</th><th align="left">characters</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -3325,10 +3325,12 @@ an as another octet if the octet is not escaped.
 <tr>
 <td colspan="2">action:
   <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
-  26 Feb 2003,
+  02 Mar 2003,
   issues list:
   <pre>
-I will try to include this discussion in draft 01.
+I have added most of the URI comparison document to section 6, with
+appropriate rewrites where necessary.  More work will be needed to
+improve the escaping rules and rewrite section 2 accordingly.
 </pre>
 </td>
 </tr>

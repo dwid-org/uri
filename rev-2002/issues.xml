@@ -2734,7 +2734,7 @@ solved by using IDNA encoding without changing the URI syntax.
  <type>characters</type>
  <name>037-uri-comparison</name>
  <title>define how to compare URIs</title>
- <status>accepted</status>
+ <status>added 01</status>
  <report>
   <author email="tbray_AT_textuality.com">Tim Bray</author>
   <date sort="20030221">21 Feb 2003</date>
@@ -2909,10 +2909,12 @@ an as another octet if the octet is not escaped.
  </report>
  <action>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
-  <date sort="20030226">26 Feb 2003</date>
+  <date sort="20030302">02 Mar 2003</date>
   <where>issues list</where>
 <pre>
-I will try to include this discussion in draft 01.
+I have added most of the URI comparison document to section 6, with
+appropriate rewrites where necessary.  More work will be needed to
+improve the escaping rules and rewrite section 2 accordingly.
 </pre>
  </action>
 </issue>
