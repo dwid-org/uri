@@ -3267,7 +3267,7 @@ and easy for LALR parsers to process, but that may require too many changes.
  <type>authority</type>
  <name>040-reg-name</name>
  <title>Remove registry-based name syntax from authority</title>
- <status>accepted</status>
+ <status>fixed 02</status>
  <report>
   <author email="duerst_AT_w3.org">Martin Duerst</author>
   <date sort="20030320">20 Mar 2003</date>
@@ -3295,6 +3295,20 @@ The reg-name production will be removed, since we do not have enough
 independent implementations of that syntax to justify its existence.
 That will allow IRI processors to be scheme-independent and simply
 convert to IDNA based on the presence of a hostname.
+</pre>
+ </action>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20030427">27 Apr 2003</date>
+  <where>draft 02</where>
+<pre>
+Registry-based naming authorities that use the hierarchical authority
+syntax component are now limited to DNS hostnames, since those have
+been the only such URIs in deployment.  This change was necessary to
+enable internationalized domain names to be processed in their native
+character encodings at the application layers above URI processing.
+The reg_name, server, and hostport productions have been removed
+to simplify parsing of the URI syntax.
 </pre>
  </action>
 </issue>

@@ -42,9 +42,6 @@
 <td nowrap="nowrap"><a href="#033-dot-segments">033-dot-segments</a></td><td>relativising an absolute reference should be invertible</td><td>relative</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#040-reg-name">040-reg-name</a></td><td>Remove registry-based name syntax from authority</td><td>authority</td><td nowrap="nowrap">accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#041-encoding">041-encoding</a></td><td>Section 2 on encoding causes too much confusion</td><td>characters</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
@@ -142,6 +139,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#037-uri-comparison">037-uri-comparison</a></td><td>define how to compare URIs</td><td>characters</td><td nowrap="nowrap">added 01</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#040-reg-name">040-reg-name</a></td><td>Remove registry-based name syntax from authority</td><td>authority</td><td nowrap="nowrap">fixed 02</td>
 </tr>
 </table>
 <br>
@@ -3726,7 +3726,7 @@ and easy for LALR parsers to process, but that may require too many changes.
 <th bgcolor="#FFFFCC"><font size="+2"><a name="040-reg-name">040-reg-name</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">Remove registry-based name syntax from authority</font></th>
 </tr>
 <tr>
-<th>accepted</th><th align="left">authority</th>
+<th bgcolor="lightgreen">fixed 02</th><th align="left">authority</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -3758,6 +3758,22 @@ The reg-name production will be removed, since we do not have enough
 independent implementations of that syntax to justify its existence.
 That will allow IRI processors to be scheme-independent and simply
 convert to IDNA based on the presence of a hostname.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  27 Apr 2003,
+  draft 02:
+  <pre>
+Registry-based naming authorities that use the hierarchical authority
+syntax component are now limited to DNS hostnames, since those have
+been the only such URIs in deployment.  This change was necessary to
+enable internationalized domain names to be processed in their native
+character encodings at the application layers above URI processing.
+The reg_name, server, and hostport productions have been removed
+to simplify parsing of the URI syntax.
 </pre>
 </td>
 </tr>
