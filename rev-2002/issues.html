@@ -42,6 +42,9 @@
 <td nowrap="nowrap"><a href="#033-dot-segments">033-dot-segments</a></td><td>relative path segments should be removed from absolute URIs</td><td>relative</td><td nowrap="nowrap">accepted</td>
 </tr>
 <tr>
+<td nowrap="nowrap"><a href="#037-uri-comparison">037-uri-comparison</a></td><td>define how to compare URIs</td><td>characters</td><td nowrap="nowrap">accepted</td>
+</tr>
+<tr>
 <td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td>URI versus URI Reference</td><td>terminology</td><td nowrap="nowrap">pending</td>
 </tr>
 <tr>
@@ -67,6 +70,15 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#032-component-examples">032-component-examples</a></td><td>add more examples for generic syntax components</td><td>examples</td><td nowrap="nowrap">pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#034-identifier">034-identifier</a></td><td>identifier is not just a sequence of characters</td><td>terminology</td><td nowrap="nowrap">pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#035-scheme-escaping">035-scheme-escaping</a></td><td>%HH escaping should not be scheme-dependent</td><td>characters</td><td nowrap="nowrap">pending</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#036-host-escaping">036-host-escaping</a></td><td>%HH escaping should be allowed on hostname</td><td>characters</td><td nowrap="nowrap">pending</td>
 </tr>
 </table>
 <br>
@@ -1792,6 +1804,31 @@ future?
 </pre>
 </td>
 </tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:bwm_AT_hplb.hpl.hp.com">Brian McBride</a>,
+  30 Jan 2003,
+  URI-WG mailing list:
+  <pre>
+Please review the RDFCore last call working drafts which are linked from
+
+  http://www.w3.org/2001/sw/RDFCore/#documents
+
+Whilst we would welcome your comments on any and all aspects of these
+documents, the WG particularly requests feedback on:
+
+  o the proposed used of xml:base, and especially its handling of
+    same document references
+     http://www.w3.org/TR/rdf-syntax-grammar/#section-Syntax-ID-xml-base
+     http://www.w3.org/TR/rdf-syntax-grammar/#section-baseURIs
+
+  o the rdf interpretation of fragment identifiers
+      http://www.w3.org/TR/rdf-concepts/#section-fragID
+
+The last call period for these documents ends on 21 Feb 2003.
+</pre>
+</td>
+</tr>
 </table>
 <br>
 <table cellpadding="4" width="100%" border="1">
@@ -2014,35 +2051,6 @@ rather than just the current
 
 "For example, UTF-8 [UTF-8] defines a mapping from sequences
 of octets to sequences of characters in the repertoire of ISO 10646."
-
-While we are at it, what about changes due to Internationalized
-Domain Names?
-http://search.ietf.org/internet-drafts/draft-ietf-idn-uri-01.txt
-proposes to lift the restriction that %hh cannot be used in the
-host name part. [Currently, only %80 and higher are allowed,
-but I plan to change that because it would really be silly to
-keep it that way.]
-</pre>
-</td>
-</tr>
-<tr>
-<td colspan="2">report:
-  <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
-  22 Jul 2002,
-  URI-WG mailing list:
-  <pre>
-Update the syntax of host names: Currently, this is one of the
-only places where %hh-escaping isn't allowed. Implementations
-are mixed, some browsers e.g. accept http://www.w%33.org while
-others don't. So this may go under "(b) document variations in
-current practice, as warnings to implementors." below.
-With Internationalized Domain Names, allowing %hh in host names
-is necessary for consistency.
-
-The actual text is currently in
-http://www.ietf.org/internet-drafts/draft-ietf-idn-uri-02.txt,
-and there is some chance that the IDN WG moves this forward.
-But in either way, it should be folded into the URI spec.
 </pre>
 </td>
 </tr>
@@ -2949,6 +2957,214 @@ is safe to remove them based on the theory that "/" is reserved for
 the hierarchical syntax.  I can't think of a real mailto example that
 would break, since even distinguished-name-based addresses are not
 going to have ".." or "." as a DN.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="034-identifier">034-identifier</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">identifier is not just a sequence of characters</font></th>
+</tr>
+<tr>
+<th>pending</th><th align="left">terminology</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:jak_AT_ckm.ucsf.edu">John A. Kunze</a>,
+  23 Jan 2003,
+  URI-WG mailing list:
+  <pre>
+If changes to basic terminology are up, consider how damaging it is that
+this seminal web spec defines an identifier as "a sequence of characters".
+It's then impossible to talk sensibly about a broken identifier (hmmm,
+are we talking about missing or damaged characters?).
+
+It's the reference role that breaks.  Much better to be explicit:
+
+	An identifier is an association between a string
+	(a sequence of characters) and an information resource.
+
+In full generality, that association is made manifest by a "record" (eg,
+a cataloging or other metadata record) that binds the identifier string
+to a set of identifying resource characteristics.  For the average URL,
+that record's existence is implied if the URL string, when submitted to
+a web server, returns some document that is a webmaster's attempt to
+realize the correct binding.
+
+An especially nice result of this definition is that it permits people
+to more quickly conclude that there's no reason why a URL can't be just
+as persistent as any other identifier (if not more so).  It's all about
+the service behind it.
+
+But that's a case to be made elsewhere.  The URI spec would do electronic
+permanence a favor if it included this one definitional change.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  26 Feb 2003,
+  issues list:
+  <pre>
+I'm not sure what to do with this yet.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="035-scheme-escaping">035-scheme-escaping</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">%HH escaping should not be scheme-dependent</font></th>
+</tr>
+<tr>
+<th>pending</th><th align="left">characters</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
+  30 Jan 2003,
+  URI-WG mailing list:
+  <pre>
+Doing careful readings of RFC 2396 for various purposes, I found
+the following paragraph in "2.1 URI and non-ASCII characters":
+
+   A URI scheme may define a mapping from URI characters to octets;
+   whether this is done depends on the scheme. Commonly, within a
+   delimited component of a URI, a sequence of characters may be used to
+   represent a sequence of octets. For example, the character "a"
+   represents the octet 97 (decimal), while the character sequence "%",
+   "0", "a" represents the octet 10 (decimal).
+
+This seems to indicate that a scheme is free to define whether it
+wants to use %0a for the octet 10 (decimal) or not, and whether
+it indeed wants to define a mapping from URI characters to octets.
+
+As far as I understand, %hh is always usable, and I don't know
+about any schemes that define explicitly that this can be used.
+It may have been that this paragraph was written to take into
+account schemes such as data:, where an additional mechanism
+for encoding octets (base64) is used. My understanding is that
+even in a data: URI, I should still be able to replace "A" by
+"%41", and it should still resolve to the same data.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  26 Feb 2003,
+  issues list:
+  <pre>
+Actually, what it is saying is that a URI scheme can, for example,
+define that %hh escaping must be utf-8 for URIs in that scheme.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="036-host-escaping">036-host-escaping</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">%HH escaping should be allowed on hostname</font></th>
+</tr>
+<tr>
+<th>pending</th><th align="left">characters</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:duerst_AT_w3.org">Martin Duerst</a>,
+  22 Jul 2002,
+  URI-WG mailing list:
+  <pre>
+Update the syntax of host names: Currently, this is one of the
+only places where %hh-escaping isn't allowed. Implementations
+are mixed, some browsers e.g. accept http://www.w%33.org while
+others don't. So this may go under "(b) document variations in
+current practice, as warnings to implementors." below.
+With Internationalized Domain Names, allowing %hh in host names
+is necessary for consistency.
+
+The actual text is currently in
+http://www.ietf.org/internet-drafts/draft-ietf-idn-uri-02.txt,
+and there is some chance that the IDN WG moves this forward.
+But in either way, it should be folded into the URI spec.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  26 Feb 2003,
+  issues list:
+  <pre>
+I do not think it is appropriate for the URI spec to suggest that users
+give hostnames in forms that are unacceptable to DNS.  This is better
+solved by using IDNA encoding without changing the URI syntax.
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<table cellpadding="4" width="100%" border="1">
+<tr>
+<th bgcolor="#FFFFCC"><font size="+2"><a name="037-uri-comparison">037-uri-comparison</a></font></th><th align="left" bgcolor="#FFFFCC"><font size="+1">define how to compare URIs</font></th>
+</tr>
+<tr>
+<th>accepted</th><th align="left">characters</th>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:tbray_AT_textuality.com">Tim Bray</a>,
+  21 Feb 2003,
+  URI-WG mailing list:
+  <pre>
+In connection with the work of the W3C TAG, I undertook the task of
+documenting in-the-field practices as to how software can and should
+go about the very common task of comparing URIs.  The latest draft of
+this, which I think represents TAG consensus, is at
+
+http://www.textuality.com/tag/uri-comp-4.html
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">report:
+  <a href="mailto:stefan.eissing_AT_greenbytes.de">Stefan Eissing</a>,
+  31 Jan 2003,
+  URI-WG mailing list:
+  <pre>
+it is context dependant if '%61' can be considered equivalent
+to the charcter 'a' or not. The argument basically is that RFC 2396 allows
+other character encodings  than US-ASCII and that '%61' could denote
+basically any character unless the character encoding becomes known.
+
+I argue that any 7 bit octet, escape-encoded in an URI, it MUST
+be equivalent (apart from reserved characters like %2f) to its
+US-ASCII character. In my opinion, RFC 2396 already defines this:
+
+In RFC 2396, Ch. 2.1
+"In the simplest case, the original character sequence contains only
+  characters that are defined in US-ASCII, and the two levels of
+  mapping are simple and easily invertible: each 'original character'
+  is represented as the octet for the US-ASCII code for it, which is,
+  in turn, represented as either the US-ASCII character, or else the
+  "%" escape sequence for that octet."
+
+In RFC 2396, Ch. 2.4.2:
+"For example, "%7e" is sometimes used instead of "~" in an http URL
+path, but the two are equivalent for an http URL."
+Accordings to this, my argument should be valid at least for HTTP URIs.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  26 Feb 2003,
+  issues list:
+  <pre>
+
 </pre>
 </td>
 </tr>
