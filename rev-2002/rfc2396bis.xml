@@ -1871,7 +1871,7 @@ observe that a URI such as
    http://example.com/data
 </artwork></figure>
 <figure><preamble>
-redirects to
+redirects to a URI differing only in the trailing slash
 </preamble><artwork>
    http://example.com/data/
 </artwork><postamble>
