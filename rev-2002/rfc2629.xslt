@@ -122,6 +122,14 @@
     2002-06-21  julian.reschke@greenbytes.de
     
     When producing private documents, do not include document status, copyright etc.
+
+    2002-07-19  fielding
+
+    Make artwork lightyellow for easier reading.
+
+    2002-10-09  fielding
+
+    Translate references title to anchor name to avoid non-uri characters.
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -678,9 +686,7 @@
     <xsl:with-param name="rule" select="true()" />
   </xsl:call-template>
 	
-  <a name="{$anchor-prefix}.references">
-    <h1>References</h1>
-  </a>
+  <h1><a name="{$anchor-prefix}.references">References</a></h1>
 	
   <table border="0">
     <xsl:choose>
@@ -702,11 +708,12 @@
   <xsl:call-template name="insertTocLink">
     <xsl:with-param name="rule" select="true()" />
   </xsl:call-template>
-	
-  <a name="{$anchor-prefix}.references.{@title}">
-    <h1><xsl:value-of select="@title" /></h1>
-  </a>
-	
+
+  <xsl:variable name="safeanchor" select="translate(@title,' #/ABCDEFGHIJKLMNOPQRSTUVWXYZ','___abcdefghijklmnopqrstuvwxyz')" />
+  <h1><a name="{$anchor-prefix}.{$safeanchor}">
+    <xsl:value-of select="@title" />
+  </a></h1>
+
   <table border="0">
     <xsl:choose>
       <xsl:when test="$sortRefs='yes'">
@@ -1487,15 +1494,15 @@ ins
 
   <xsl:variable name="target">
     <xsl:choose>
-      <xsl:when test="@title"><xsl:value-of select="$anchor-prefix"/>.references.<xsl:value-of select="@title" /></xsl:when>
- 	    <xsl:otherwise><xsl:value-of select="$anchor-prefix"/>.references</xsl:otherwise>
+      <xsl:when test="@title"><xsl:value-of select="$anchor-prefix"/>.<xsl:value-of select="translate(@title,' #/ABCDEFGHIJKLMNOPQRSTUVWXYZ','___abcdefghijklmnopqrstuvwxyz')"/></xsl:when>
+      <xsl:otherwise><xsl:value-of select="$anchor-prefix"/>.references</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
 
   <xsl:variable name="title">
     <xsl:choose>
       <xsl:when test="@title"><xsl:value-of select="@title" /></xsl:when>
- 	    <xsl:otherwise>References</xsl:otherwise>
+      <xsl:otherwise>References</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
 
