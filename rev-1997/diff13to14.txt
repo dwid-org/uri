@@ -1,0 +1,39 @@
+*** draft-fielding-uri-syntax-03.txt	Thu Jun  4 18:25:38 1998
+--- draft-fielding-uri-syntax-04.txt	Thu Jul 16 01:20:19 1998
+***************
+*** 1,7 ****
+  Network Working Group                            T. Berners-Lee, MIT/LCS
+  INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
+! draft-fielding-uri-syntax-03              L. Masinter, Xerox Corporation
+! Expires six months after publication date                   June 4, 1998
+  
+  
+            Uniform Resource Identifiers (URI): Generic Syntax
+--- 1,7 ----
+  Network Working Group                            T. Berners-Lee, MIT/LCS
+  INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
+! draft-fielding-uri-syntax-04              L. Masinter, Xerox Corporation
+! Expires six months after publication date                  June 16, 1998
+  
+  
+            Uniform Resource Identifiers (URI): Generic Syntax
+***************
+*** 701,708 ****
+  
+     The syntax for relative URI is a shortened form of that for absolute
+     URI, where some prefix of the URI is missing and certain path
+!    components ("." and "..") have a special meaning when interpreting a
+!    relative path.  The relative URI syntax is defined in Section 5.
+  
+  4.1. Fragment Identifier
+  
+--- 701,709 ----
+  
+     The syntax for relative URI is a shortened form of that for absolute
+     URI, where some prefix of the URI is missing and certain path
+!    components ("." and "..") have a special meaning when, and only when,
+!    interpreting a relative path.  The relative URI syntax is defined
+!    in Section 5.
+  
+  4.1. Fragment Identifier
+  

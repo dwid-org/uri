@@ -1,0 +1,554 @@
+*** draft-fielding-url-syntax-07.txt	Mon Sep 22 15:34:29 1997
+--- draft-fielding-url-syntax-08.txt	Tue Oct 14 23:02:52 1997
+***************
+*** 1,10 ****
+  Network Working Group                            T. Berners-Lee, MIT/LCS
+  INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
+! draft-fielding-url-syntax-07              L. Masinter, Xerox Corporation
+! Expires six months after publication date             September 22, 1997
+  
+      Uniform Resource Locators (URL): Generic Syntax and Semantics
+  
+  Status of this Memo
+  
+     This document is an Internet-Draft.  Internet-Drafts are working
+--- 1,12 ----
+  Network Working Group                            T. Berners-Lee, MIT/LCS
+  INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
+! draft-fielding-url-syntax-08              L. Masinter, Xerox Corporation
+! Expires six months after publication date               October 14, 1997
+! 
+  
+      Uniform Resource Locators (URL): Generic Syntax and Semantics
+  
++ 
+  Status of this Memo
+  
+     This document is an Internet-Draft.  Internet-Drafts are working
+***************
+*** 55,61 ****
+     dealing with characters outside of the US-ASCII character set;
+     those recommendations are discussed in a separate document.
+  
+!    All significant changes from the prior RFCs are noted in Appendix F.
+  
+  1.1 Overview of URLs
+  
+--- 57,63 ----
+     dealing with characters outside of the US-ASCII character set;
+     those recommendations are discussed in a separate document.
+  
+!    All significant changes from the prior RFCs are noted in Appendix G.
+  
+  1.1 Overview of URLs
+  
+***************
+*** 150,157 ****
+     components in the scheme. There is a `relative' form of URL reference
+     which is used in conjunction with a `base' URL (of a hierarchical
+     scheme) to produce another URL. The syntax of hierarchical URLs is
+!    described in section 4, and the relative URL calculation is described
+!    in section 5.
+  
+  1.5. URL Transcribability
+  
+--- 152,159 ----
+     components in the scheme. There is a `relative' form of URL reference
+     which is used in conjunction with a `base' URL (of a hierarchical
+     scheme) to produce another URL. The syntax of hierarchical URLs is
+!    described in Section 4, and the relative URL calculation is described
+!    in Section 5.
+  
+  1.5. URL Transcribability
+  
+***************
+*** 459,465 ****
+     and a reference containing only a fragment identifier is a reference
+     to the identified fragment of that document.  Traversal of such a
+     reference should not result in an additional retrieval action.
+- 
+     However, if the URL reference occurs in a context that is always
+     intended to result in a new request, as in the case of HTML's FORM
+     element, then an empty URL reference represents the base URL of the
+--- 461,466 ----
+***************
+*** 584,609 ****
+     be a security risk in almost every case where it has been used.
+     
+     The host is a domain name of a network host, or its IPv4 address as
+!    a set of four decimal digit groups separated by ".".  A suitable
+!    representation for IPv6 addresses has not yet been determined.
+  
+        hostport      = host [ ":" port ]
+!       host          = hostname | hostnumber
+        hostname      = *( domainlabel "." ) toplabel
+        domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+        toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+!       hostnumber    = 1*digit "." 1*digit "." 1*digit "." 1*digit
+        port          = *digit
+  
+     Hostnames take the form described in Section 3.5 of [RFC1034] and
+     Section 2.1 of [RFC1123]: a sequence of domain labels separated by
+     ".", each domain label starting and ending with an alphanumeric
+     character and possibly also containing "-" characters.  The rightmost
+!    domain label will never start with a digit, though, which
+!    syntactically distinguishes all domain names from hostnumbers. To
+!    actually be "Uniform" as a resource locator, a URL hostname should
+!    be a fully qualified domain name. In practice, however, the host
+!    component may be a local domain literal.
+  
+     The port is the network port number for the server.  Most schemes
+     designate protocols that have a default port number.  Another port
+--- 585,614 ----
+     be a security risk in almost every case where it has been used.
+     
+     The host is a domain name of a network host, or its IPv4 address as
+!    a set of four decimal digit groups separated by ".".  Literal IPv6
+!    addresses are not supported.
+  
+        hostport      = host [ ":" port ]
+!       host          = hostname | IPv4address
+        hostname      = *( domainlabel "." ) toplabel
+        domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+        toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+!       IPv4address   = 1*digit "." 1*digit "." 1*digit "." 1*digit
+        port          = *digit
+  
+     Hostnames take the form described in Section 3.5 of [RFC1034] and
+     Section 2.1 of [RFC1123]: a sequence of domain labels separated by
+     ".", each domain label starting and ending with an alphanumeric
+     character and possibly also containing "-" characters.  The rightmost
+!    domain label of a fully qualified domain name will never start with a
+!    digit, thus syntactically distinguishing domain names from IPv4
+!    addresses.  To actually be "Uniform" as a resource locator, a URL
+!    hostname should be a fully qualified domain name. In practice,
+!    however, the host component may be a local domain literal.
+! 
+!       Note: A suitable representation for including a literal IPv6
+!       address as the host part of a URL is desired, but has not yet
+!       been determined or implemented in practice.
+  
+     The port is the network port number for the server.  Most schemes
+     designate protocols that have a default port number.  Another port
+***************
+*** 756,762 ****
+        |  |  `----------------------------------------------'  |  |
+        |  | (5.1.3) URL used to retrieve the entity            |  |
+        |  `----------------------------------------------------'  |
+!       | (5.1.4) Base URL = "this_message:/"                      |
+        `----------------------------------------------------------'
+  
+  5.1.1. Base URL within Document Content
+--- 761,767 ----
+        |  |  `----------------------------------------------'  |  |
+        |  | (5.1.3) URL used to retrieve the entity            |  |
+        |  `----------------------------------------------------'  |
+!       | (5.1.4) Default Base URL is application-dependent        |
+        `----------------------------------------------------------'
+  
+  5.1.1. Base URL within Document Content
+***************
+*** 775,812 ****
+     of how the base URL can be embedded in the Hypertext Markup Language
+     (HTML) [RFC1866] is provided in Appendix D.
+  
+!    MIME messages [RFC2045] are considered to be composite documents.
+!    The base URL of a message can be specified within the message
+!    headers (or equivalent tagged metainformation) of the message.  For
+!    protocols that make use of message headers like those described in
+!    MIME [RFC2045], the base URL can be specified by the Content-Base
+!    or Content-Location [RFC2068] header fields.
+! 
+!       Content-Base      = "Content-Base" ":" absoluteURL
+! 
+!       Content-Location  = "Content-Location" ":"
+!                           ( absoluteURL | relativeURL )
+! 
+!    The field names are case-insensitive and any whitespace inside
+!    the field value (including that used for line folding) is ignored.
+!    Content-Base takes precedence over Content-Location when both are
+!    present within the same header field set.  If a Content-Location
+!    value is relative, it must be resolved to its absolute form (like
+!    any relative URL) before it can be used as the base URL for other
+!    references.
+! 
+!    For example, the header field
+! 
+!       Content-Base: http://www.ics.uci.edu/Test/a/b/c
+! 
+!    would indicate that the base URL for that message is the string
+!    "http://www.ics.uci.edu/Test/a/b/c".  The base URL for a message
+!    serves as both the base for any relative URLs within the message
+!    headers and the default base URL for documents enclosed within the
+!    message, as described in the next section.
+! 
+!    Protocols which do not use the RFC 822 message header syntax, but
+!    which do allow some form of tagged metainformation to be included
+     within messages, may define their own syntax for defining the base
+     URL as part of a message.
+  
+--- 780,789 ----
+     of how the base URL can be embedded in the Hypertext Markup Language
+     (HTML) [RFC1866] is provided in Appendix D.
+  
+!    A mechanism for embedding the base URL within MIME container types
+!    (e.g., the message and multipart types) is defined by MHTML
+!    [RFC2110].  Protocols that do not use the MIME message header syntax,
+!    but which do allow some form of tagged metainformation to be included
+     within messages, may define their own syntax for defining the base
+     URL as part of a message.
+  
+***************
+*** 819,837 ****
+     document is the base URL of the entity in which the document is
+     encapsulated.
+  
+-    Composite media types, such as the "multipart/*" and "message/*"
+-    media types defined by MIME [RFC2046], define a hierarchy of
+-    retrieval context for their enclosed documents.  In other words,
+-    the retrieval context of a component part is the base URL of the
+-    composite entity of which it is a part.  Thus, a composite entity
+-    can redefine the retrieval context of its component parts via the
+-    inclusion of a Content-Base or Content-Location header, and this
+-    redefinition applies recursively for a hierarchy of composite
+-    parts.  Note that this might not change the base URL of the
+-    components, since each component may include an embedded base URL
+-    or a Content-Base or Content-Location header field that
+-    would take precedence over the retrieval context.
+- 
+  5.1.3. Base URL from the Retrieval URL
+  
+     If no base URL is embedded and the document is not encapsulated
+--- 796,801 ----
+***************
+*** 844,855 ****
+  5.1.4. Default Base URL
+  
+     If none of the conditions described in Sections 5.1.1--5.1.3 apply,
+!    then the base URL can be considered to be the imaginary URL
+!    
+!          this_message:/
+! 
+!    which exists for the sole purpose of resolving relative references
+!    within a multipart entity.
+     
+     It is the responsibility of the distributor(s) of a document
+     containing relative URLs to ensure that the base URL for that
+--- 808,818 ----
+  5.1.4. Default Base URL
+  
+     If none of the conditions described in Sections 5.1.1--5.1.3 apply,
+!    then the base URL is defined by the context of the application.
+!    Since this definition is necessarily application-dependent, failing
+!    to define the base URL using one of the other methods may result in
+!    the same content being interpreted differently by different types of
+!    application.
+     
+     It is the responsibility of the distributor(s) of a document
+     containing relative URLs to ensure that the base URL for that
+***************
+*** 942,948 ****
+           result = ""
+  
+           if scheme is defined then
+- 
+               append scheme to result
+               append ":" to result
+  
+--- 905,910 ----
+***************
+*** 982,988 ****
+  
+     Resolution examples are provided in Appendix C.
+  
+- 
+  6. URL Normalization and Equivalence
+  
+     In many cases, different URL strings may actually identify the
+--- 944,949 ----
+***************
+*** 1094,1101 ****
+  [ASCII] US-ASCII. "Coded Character Set -- 7-bit American Standard Code
+     for Information Interchange", ANSI X3.4-1986.
+  
+  
+! 10. Authors' Addresses
+  
+     Tim Berners-Lee
+     World Wide Web Consortium
+--- 1055,1109 ----
+  [ASCII] US-ASCII. "Coded Character Set -- 7-bit American Standard Code
+     for Information Interchange", ANSI X3.4-1986.
+  
++ 10. Notices
+  
+!    Copyright (C) The Internet Society 1997. All Rights Reserved.
+! 
+!    This document and translations of it may be copied and furnished to
+!    others, and derivative works that comment on or otherwise explain it
+!    or assist in its implementation may be prepared, copied, published
+!    and distributed, in whole or in part, without restriction of any
+!    kind, provided that the above copyright notice and this paragraph are
+!    included on all such copies and derivative works.  However, this
+!    document itself may not be modified in any way, such as by removing
+!    the copyright notice or references to the Internet Society or other
+!    Internet organizations, except as needed for the purpose of
+!    developing Internet standards in which case the procedures for
+!    copyrights defined in the Internet Standards process must be
+!    followed, or as required to translate it into languages other than
+!    English.
+! 
+!    The limited permissions granted above are perpetual and will not be
+!    revoked by the Internet Society or its successors or assigns.
+! 
+!    This document and the information contained herein is provided on an
+!    "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+!    TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+!    BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+!    HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+!    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+! 
+!    The IETF takes no position regarding the validity or scope of any
+!    intellectual property or other rights that might be claimed to
+!    pertain to the implementation or use of the technology described in
+!    this document or the extent to which any license under such rights
+!    might or might not be available; neither does it represent that it
+!    has made any effort to identify any such rights.  Information on the
+!    IETF's procedures with respect to rights in standards-track and
+!    standards-related documentation can be found in BCP-11.  Copies of
+!    claims of rights made available for publication and any assurances of
+!    licenses to be made available, or the result of an attempt made to
+!    obtain a general license or permission for the use of such
+!    proprietary rights by implementors or users of this specification can
+!    be obtained from the IETF Secretariat.
+! 
+!    The IETF invites any interested party to bring to its attention any
+!    copyrights, patents or patent applications, or other proprietary
+!    rights which may cover technology that may be required to practice
+!    this standard.  Please address the information to the IETF Executive
+!    Director.
+! 
+! 11. Authors' Addresses
+  
+     Tim Berners-Lee
+     World Wide Web Consortium
+***************
+*** 1150,1160 ****
+        userinfo      = *( unreserved | escaped | ":" | ";" | "&" |
+                           "=" | "+" )
+        hostport      = host [ ":" port ]
+!       host          = hostname | hostnumber
+        hostname      = *( domainlabel "." ) toplabel
+        domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+        toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+!       hostnumber    = 1*digit "." 1*digit "." 1*digit "." 1*digit
+        port          = *digit
+  
+        path          = [ "/" ] path_segments
+--- 1158,1168 ----
+        userinfo      = *( unreserved | escaped | ":" | ";" | "&" |
+                           "=" | "+" )
+        hostport      = host [ ":" port ]
+!       host          = hostname | IPv4address
+        hostname      = *( domainlabel "." ) toplabel
+        domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+        toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+!       IPv4address   = 1*digit "." 1*digit "." 1*digit "." 1*digit
+        port          = *digit
+  
+        path          = [ "/" ] path_segments
+***************
+*** 1242,1248 ****
+  
+     Within an object with a well-defined base URL of
+  
+!       Content-Base: http://a/b/c/d;p?q
+  
+     the relative URLs would be resolved as follows:
+  
+--- 1250,1256 ----
+  
+     Within an object with a well-defined base URL of
+  
+!       http://a/b/c/d;p?q
+  
+     the relative URLs would be resolved as follows:
+  
+***************
+*** 1336,1350 ****
+        http:g        =  http:g
+        http:         =  http:
+  
+  D. Embedding the Base URL in HTML documents
+  
+     It is useful to consider an example of how the base URL of a
+     document can be embedded within the document's content.  In this
+     appendix, we describe how documents written in the Hypertext Markup
+     Language (HTML) [RFC1866] can include an embedded base URL.  This
+!    appendix does not form a part of the relative URL specification and
+!    should not be considered as anything more than a descriptive
+!    example.
+  
+     HTML defines a special element "BASE" which, when present in the
+     "HEAD" portion of a document, signals that the parser should use
+--- 1344,1358 ----
+        http:g        =  http:g
+        http:         =  http:
+  
++ 
+  D. Embedding the Base URL in HTML documents
+  
+     It is useful to consider an example of how the base URL of a
+     document can be embedded within the document's content.  In this
+     appendix, we describe how documents written in the Hypertext Markup
+     Language (HTML) [RFC1866] can include an embedded base URL.  This
+!    appendix does not form a part of the URL specification and should not
+!    be considered as anything more than a descriptive example.
+  
+     HTML defines a special element "BASE" which, when present in the
+     "HEAD" portion of a document, signals that the parser should use
+***************
+*** 1415,1431 ****
+     attempt to recognize and strip both delimiters and embedded
+     whitespace.
+  
+!    Examples:
+  
+!       Yes, Jim, I found it under "http://www.w3.org/pub/WWW/",
+        but you can probably pick it up from <ftp://ds.internic.
+!       net/rfc/>.  Note the warning in <http://ds.internic.net/
+!       instructions/overview.html#WARNING>.
+  
+  
+! F. Summary of Non-editorial Changes
+  
+! F.1. Additions
+  
+     Section 3 (URL References) was added to stem the confusion
+     regarding "what is a URL" and how to describe fragment identifiers
+--- 1423,1473 ----
+     attempt to recognize and strip both delimiters and embedded
+     whitespace.
+  
+!    For example, the text:
+  
+!       Yes, Jim, I found it under "http://www.w3.org/Addressing/",
+        but you can probably pick it up from <ftp://ds.internic.
+!       net/rfc/>.  Note the warning in <http://www.ics.uci.edu/pub/
+!       ietf/uri/historical.html#WARNING>.
+! 
+!    contains the URL references
+! 
+!       http://www.w3.org/Addressing/
+!       ftp://ds.internic.net/rfc/
+!       http://www.ics.uci.edu/pub/ietf/uri/historical.html#WARNING
+! 
+  
++ F. Abbreviated URLs
+  
+!    The URL syntax was designed for unambiguous reference to network
+!    resources and extensibility via the URL scheme.  However, as URL
+!    identification and usage have become commonplace, traditional media
+!    (television, radio, newspapers, billboards, etc.) have increasingly
+!    used abbreviated URL references.  That is, a reference consisting of
+!    only the site and path portions of the identified resource, such as
+  
+!       www.w3.org/Addressing/
+! 
+!    or simply the DNS hostname on its own.  Such references are primarily
+!    intended for human interpretation rather than machine, with the
+!    assumption that context-based heuristics are sufficient to complete
+!    the URL (e.g., most hostnames beginning with "www" are likely to have
+!    a URL prefix of "http://").  Although there is no standard set of
+!    heuristics for disambiguating abbreviated URL references, many
+!    client implementations allow them to be entered by the user and
+!    heuristically resolved.  It should be noted that such heuristics may
+!    change over time, particularly when new URL schemes are introduced.
+! 
+!    Since an abbreviated URL has the same syntax as a relative URL path,
+!    abbreviated URL references cannot be used in contexts where relative
+!    URLs are expected.  This limits the use of abbreviated URLs to places
+!    where there is no defined base URL, such as dialog boxes and off-line
+!    advertisements.
+! 
+! 
+! G. Summary of Non-editorial Changes
+! 
+! G.1. Additions
+  
+     Section 3 (URL References) was added to stem the confusion
+     regarding "what is a URL" and how to describe fragment identifiers
+***************
+*** 1439,1445 ****
+     Section 2.4 was rewritten to clarify a number of misinterpretations
+     and to leave room for fully internationalized URLs.
+  
+! F.2. Modifications from both RFC 1738 and RFC 1808
+  
+     Confusion regarding the terms "character encoding", the URL
+     "character set", and the escaping of characters with %<hex><hex>
+--- 1481,1491 ----
+     Section 2.4 was rewritten to clarify a number of misinterpretations
+     and to leave room for fully internationalized URLs.
+  
+!    Appendix F on abbreviated URLs was added to describe the shortened
+!    references often seen on television and magazine advertisements and
+!    explain why they are not used in other contexts.
+! 
+! G.2. Modifications from both RFC 1738 and RFC 1808
+  
+     Confusion regarding the terms "character encoding", the URL
+     "character set", and the escaping of characters with %<hex><hex>
+***************
+*** 1489,1495 ****
+     corresponds to actual practice) or creating a separate component just
+     to hold that slash.  We chose the former.
+  
+! F.3. Modifications from RFC 1738
+  
+     The definition of specific URL schemes and their scheme-specific
+     syntax and semantics has been moved to separate documents.
+--- 1535,1541 ----
+     corresponds to actual practice) or creating a separate component just
+     to hold that slash.  We chose the former.
+  
+! G.3. Modifications from RFC 1738
+  
+     The definition of specific URL schemes and their scheme-specific
+     syntax and semantics has been moved to separate documents.
+***************
+*** 1506,1512 ****
+     The recommendations for delimiting URLs in context (Appendix E) have
+     been adjusted to reflect current practice.
+  
+! F.4. Modifications from RFC 1808
+  
+     RFC 1808 (Section 4) defined an empty URL reference (a reference
+     containing nothing aside from the fragment identifier) as being a
+--- 1552,1558 ----
+     The recommendations for delimiting URLs in context (Appendix E) have
+     been adjusted to reflect current practice.
+  
+! G.4. Modifications from RFC 1808
+  
+     RFC 1808 (Section 4) defined an empty URL reference (a reference
+     containing nothing aside from the fragment identifier) as being a
+***************
+*** 1519,1526 ****
+     correctly interpret an empty reference has been added in Section 3.
+  
+     The description of the mythical Base header field has been replaced
+!    with the Content-Base and Content-Location header fields defined by
+!    HTTP/1.1 and MHTML [RFC2110].
+  
+     RFC 1808 described various schemes as either having or not having the
+     properties of the generic-URL syntax.  However, the only requirement
+--- 1565,1572 ----
+     correctly interpret an empty reference has been added in Section 3.
+  
+     The description of the mythical Base header field has been replaced
+!    with a reference to the Content-Base and Content-Location header
+!    fields defined by MHTML [RFC2110].
+  
+     RFC 1808 described various schemes as either having or not having the
+     properties of the generic-URL syntax.  However, the only requirement

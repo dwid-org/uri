@@ -1,0 +1,1243 @@
+*** base2.txt	Sat Dec  7 04:08:21 1996
+--- draft-fielding-url-syntax-02.txt	Sat Dec  7 03:59:22 1996
+***************
+*** 2,13 ****
+  
+  Network Working Group                                     T. Berners-Lee
+  INTERNET-DRAFT                                                   MIT/LCS
+! <draft-fielding-url-syntax-01>                               R. Fielding
+  Expires six months after publication date.                   U.C. Irvine
+                                                               L. Masinter
+                                                         Xerox Corporation
+  
+!                                                         26 November 1996
+  
+  
+                      Uniform Resource Locators (URL)
+--- 2,13 ----
+  
+  Network Working Group                                     T. Berners-Lee
+  INTERNET-DRAFT                                                   MIT/LCS
+! <draft-fielding-url-syntax-02>                               R. Fielding
+  Expires six months after publication date.                   U.C. Irvine
+                                                               L. Masinter
+                                                         Xerox Corporation
+  
+!                                                         07 December 1996
+  
+  
+                      Uniform Resource Locators (URL)
+***************
+*** 37,45 ****
+           URL hostname which will not break existing systems too badly.
+        2. Section 6 (New URL Schemes) needs input from the Applications
+           Area A.D.'s.
+-       3. Removal of the parameters component allows for a simplification
+-          of the URL parsing description, since they can now be parsed
+-          by scanning from left-to-right.  This is not yet in the text.
+  
+  
+  Abstract
+--- 37,42 ----
+***************
+*** 68,73 ****
+--- 65,71 ----
+     define a single, general syntax for all URLs.  It excludes those
+     portions of RFC 1738 that defined the specific syntax of individual
+     URL schemes; those portions will be updated as separate documents.
++    All significant changes from the prior RFCs are noted in Appendix F.
+  
+     URLs are characterized by the following definitions:
+  
+***************
+*** 84,91 ****
+           examples include an electronic document, an image, a service
+           (e.g., "today's weather report for Los Angeles"), and a
+           collection of other resources.  Not all resources are network
+!          "retrievable", such as human beings, corporations, and actual
+!          books in a library.
+  
+           The resource is the conceptual mapping to an entity or set of
+           entities, not necessarily the entity which corresponds to that
+--- 82,89 ----
+           examples include an electronic document, an image, a service
+           (e.g., "today's weather report for Los Angeles"), and a
+           collection of other resources.  Not all resources are network
+!          "retrievable"; e.g., human beings, corporations, and bound
+!          books in a library can also be considered resources.
+  
+           The resource is the conceptual mapping to an entity or set of
+           entities, not necessarily the entity which corresponds to that
+***************
+*** 109,114 ****
+--- 107,126 ----
+     `replace', or `find attributes'.  This specification is only
+     concerned with the issue of identifying a resource by its location.
+  
++ 1.1. URL, URN, and URI
++ 
++    URLs are a subset of Uniform Resource Identifiers (URI), which also
++    includes the notion of Uniform Resource Names (URN).  A URN differs
++    from a URL in that it identifies a resource in a location-independent
++    fashion (see RFC 1737, [10]).  URNs are defined by a separate set of
++    specifications.
++ 
++    Although this specification restricts its discussion to URLs, the
++    syntax defined is that of URI in general.  Any requirements placed on
++    the URL syntax also apply to the URI syntax.  This uniform syntax for
++    all resource identifiers allows a URN to be used in any data field
++    that might otherwise hold a URL.
++ 
+  1.2. Example URLs
+  
+     The following examples illustrate URLs which are in common use.
+***************
+*** 132,146 ****
+        -- telnet scheme for interactive services via the TELNET Protocol
+  
+     Many other URL schemes have been defined.  Section 6 describes how
+!    new schemes are defined and registered.  The scheme defines the
+!    namespace of the URL.  Although many URL schemes are named after
+!    protocols, this does not imply that the only way to access the URL's
+!    resource is via the named protocol.  Gateways, proxies, caches, and
+!    name resolution services might be used to access some resources,
+!    independent of the protocol of their origin, and the resolution of
+!    some URLs may require the use of more than one protocol (e.g., both
+!    DNS and HTTP are typically used to access an "http" URL's resource
+!    when it can't be found in a local cache).
+  
+  1.3. URL Transcribability
+  
+--- 144,160 ----
+        -- telnet scheme for interactive services via the TELNET Protocol
+  
+     Many other URL schemes have been defined.  Section 6 describes how
+!    new schemes are defined and registered.
+!    
+!    The scheme defines the namespace of the URL.  Although many URL
+!    schemes are named after protocols, this does not imply that the only
+!    way to access the URL's resource is via the named protocol.
+!    Gateways, proxies, caches, and name resolution services might be used
+!    to access some resources, independent of the protocol of their
+!    origin, and the resolution of some URLs may require the use of more
+!    than one protocol (e.g., both DNS and HTTP are typically used to
+!    access an "http" URL's resource when it can't be found in a local
+!    cache).
+  
+  1.3. URL Transcribability
+  
+***************
+*** 241,247 ****
+     maximize their transcribability and usability across varying computer
+     systems, natural languages, and nationalities.  This restricted set
+     corresponds to a subset of the graphic printable characters of the
+!    US-ASCII coded character set [10].
+  
+     The set of characters allowed for use within URLs can be described in
+     three categories: reserved, unreserved, and escaped.
+--- 255,261 ----
+     maximize their transcribability and usability across varying computer
+     systems, natural languages, and nationalities.  This restricted set
+     corresponds to a subset of the graphic printable characters of the
+!    US-ASCII coded character set [11].
+  
+     The set of characters allowed for use within URLs can be described in
+     three categories: reserved, unreserved, and escaped.
+***************
+*** 262,268 ****
+     This specification uses the "reserved" set to refer to those
+     characters which are allowed within a URL, but which may not be
+     allowed within a particular component of the generic URL syntax; they
+!    are used as delimiters of the components described in Section 4.
+  
+     Characters in the "reserved" set are not always reserved.  The set of
+     characters actually reserved within any given URL component is
+--- 276,282 ----
+     This specification uses the "reserved" set to refer to those
+     characters which are allowed within a URL, but which may not be
+     allowed within a particular component of the generic URL syntax; they
+!    are used as delimiters of the components described in Section 4.3.
+  
+     Characters in the "reserved" set are not always reserved.  The set of
+     characters actually reserved within any given URL component is
+***************
+*** 287,297 ****
+  
+  2.3. Escaped Characters
+  
+!    A character needs to be escaped if it is non-printable, if it is
+!    often used to delimit a URL from its context, if it is not found in
+     the US-ASCII coded character set, if it is known to cause problems
+     when passed through some e-mail gateways, or if it is being used as
+!    normal data within a component in which it is reserved.
+     
+  2.3.1. Escaped Encoding
+  
+--- 301,313 ----
+  
+  2.3. Escaped Characters
+  
+!    A character must be escaped if it is non-printable, if it is often
+!    used to delimit a URL from its context, if it is not found in
+     the US-ASCII coded character set, if it is known to cause problems
+     when passed through some e-mail gateways, or if it is being used as
+!    normal data within a component in which it is reserved.  Other
+!    characters should not be escaped unless the context of their use
+!    requires it.
+     
+  2.3.1. Escaped Encoding
+  
+***************
+*** 341,346 ****
+--- 357,371 ----
+     data character as another escaped character, or vice versa in the
+     case of escaping an already escaped string.
+  
++    An exception to the unescaping rules is allowed when it is known that
++    some older systems are escaping a character that does not need to be
++    escaped, and when it is possible to reliably discriminate between
++    such an escaped data character and any reserved use for that
++    character.  For example, it is generally safe to unescape "%7e" when
++    it occurs near the beginning of an http URL path, since many older
++    systems automatically escape the "~" character even though it is
++    unreserved.
++ 
+  2.3.3. Excluded Characters
+  
+     Although they are not used within the URL syntax, we include here a
+***************
+*** 432,445 ****
+     to the identified fragment of that document.  Traversal of such a
+     reference should not result in an additional retrieval action.
+  
+-    When parsing a URL reference, the fragment identifier (if any) is
+-    extracted first.  If the reference contains a crosshatch "#"
+-    character, then the substring after the first (left-most) crosshatch
+-    and up to the end of the reference is the fragment identifier.  If
+-    the crosshatch is the last character, or no crosshatch is present,
+-    then the fragment identifier is empty.  The crosshatch separator is
+-    discarded.
+- 
+  
+  4. Generic URL Syntax
+  
+--- 457,462 ----
+***************
+*** 467,478 ****
+  
+        scheme  =  1*( alpha | digit | "+" | "-" | "." )
+  
+-    When parsing a URL reference, the scheme (if any) is extracted after
+-    the fragment.  If the reference contains a colon ":" after the first
+-    character and before any characters not allowed as part of a scheme
+-    name, the scheme of the URL is the substring of characters up to, but
+-    not including, the first colon.  The colon separator is discarded.
+- 
+     Relative URL references are distinguished from absolute URLs in that
+     they do not begin with a scheme name.  Instead, the scheme is
+     inherited from the base URL, as described in Section 5.2.
+--- 484,489 ----
+***************
+*** 506,521 ****
+     most URL schemes use a common sequence of four main components to
+     define the location of a resource
+  
+!       <scheme>://<server>/<path>?<query>
+  
+     each of which, except <scheme>, may be absent from a particular URL.
+     For example, some URL schemes do not allow a server component, and
+     others do not use a query component.
+  
+-    The order of the components is important.  A URL reference is parsed
+-    into its components from the outside-in: fragment, scheme, server,
+-    query, and then path.
+- 
+  4.3.1. Server Component
+  
+     URL schemes that involve the direct use of an IP-based protocol to a
+--- 517,528 ----
+     most URL schemes use a common sequence of four main components to
+     define the location of a resource
+  
+!       <scheme>://<server><path>?<query>
+  
+     each of which, except <scheme>, may be absent from a particular URL.
+     For example, some URL schemes do not allow a server component, and
+     others do not use a query component.
+  
+  4.3.1. Server Component
+  
+     URL schemes that involve the direct use of an IP-based protocol to a
+***************
+*** 527,545 ****
+     Some or all of the parts "<user>:<password>@", ":<password>", and
+     ":<port>" may be excluded.  The server component is preceded by a
+     double slash "//" and is terminated by the next slash "/" or by the
+!    end of the URL.
+  
+        server         = [ [ user [ ":" password ] "@" ] hostport ]
+  
+     The user name and password, if present, are followed by a commercial
+!    at-sign "@".  Within the user and password fields, the characters
+!    ":", "@", and "/" are reserved.
+  
+!       user           = *[ unreserved | escaped |
+!                           ";" | "?" | "&" | "=" | "+" ]
+  
+!       password       = *[ unreserved | escaped |
+!                           ";" | "?" | "&" | "=" | "+" ]
+  
+     Note that an empty user name or password is different than no user
+     name or password; there is no way to specify a password without
+--- 534,550 ----
+     Some or all of the parts "<user>:<password>@", ":<password>", and
+     ":<port>" may be excluded.  The server component is preceded by a
+     double slash "//" and is terminated by the next slash "/" or by the
+!    end of the URL.  Within the server component, the characters ":",
+!    "@", "?", and "/" are reserved.
+  
+        server        = [ [ user [ ":" password ] "@" ] hostport ]
+  
+     The user name and password, if present, are followed by a commercial
+!    at-sign "@".
+  
+!       user          = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+  
+!       password      = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+  
+     Note that an empty user name or password is different than no user
+     name or password; there is no way to specify a password without
+***************
+*** 574,587 ****
+     host by a colon.  If the port is omitted, the default port number is
+     assumed.
+  
+-    When parsing a URL reference, the server component (if any) is
+-    extracted after the scheme.  If the remaining reference begins with a
+-    double-slash "//", then the substring of characters after the
+-    double-slash and up to, but not including, the next slash "/"
+-    character is the server component of the URL.  If no trailing slash
+-    is present, the entire remaining reference is the server component.
+-    The double-slash separator is discarded.
+- 
+     A server component is not required for a URL scheme to make use of
+     relative references.  A base URL without a server component implies
+     that any relative reference will also be without a server component.
+--- 579,584 ----
+***************
+*** 589,599 ****
+  4.3.2. Path Component
+  
+     The path component contains data, specific to the scheme or server,
+!    regarding the details of how the resource can be accessed.  Note that
+!    the "/" separator between the server component and the path component
+!    is NOT part of the path.
+  
+!       path        = segment *( "/" segment )
+        segment     = *pchar *( ";" param )
+        param       = *pchar
+  
+--- 586,596 ----
+  4.3.2. Path Component
+  
+     The path component contains data, specific to the scheme or server,
+!    regarding the details of how the resource can be accessed.
+! 
+!       path          = [ "/" ] path_segments
+  
+!       path_segments = segment *( "/" segment )
+        segment       = *pchar *( ";" param )
+        param         = *pchar
+  
+***************
+*** 601,637 ****
+  
+     The path may consist of a sequence of path segments separated by a
+     single slash "/" character.  Within a path segment, the characters
+!    "/", ";", and "?" are reserved.  Each path segment may include a
+     sequence of parameters, indicated by the semicolon ";" character.
+     The parameters are not significant to the parsing of relative
+     references.
+  
+-    When parsing a URL reference, the path is extracted after all other
+-    components.  The remaining reference is the URL path and the slash
+-    "/" that might precede it.  Although the initial slash is not part of
+-    the URL path, the parser must remember whether or not it was present
+-    so that later processes can differentiate between relative and
+-    absolute paths, as described in Section 5.2.
+- 
+-    A relative reference beginning with a single slash character is
+-    termed an absolute-path reference.
+- 
+-    A relative reference which does not begin with a scheme name or a
+-    slash character is termed a relative-path reference.  Within a
+-    relative-path reference, the complete path segments "." and ".." have
+-    special meanings: "the current hierarchy level" and "the level above
+-    this hierarchy level", respectively.  Although this is very similar
+-    to their use within Unix-based filesystems to indicate directory
+-    levels, these path components are only active when resolving
+-    relative-path references to their absolute form (Section 6).
+- 
+-    Authors should be aware that path segments which contain a colon ":"
+-    character cannot be used as the first component of a relative URL
+-    path (e.g., "this:that") because they will likely be mistaken for a
+-    scheme name.  It is therefore necessary to precede such cases with
+-    other components (e.g., "./this:that") in order for them to be
+-    referenced as a relative path.
+- 
+  4.3.3. Query Component
+  
+     The query component is a string of information to be interpreted by
+--- 598,608 ----
+  
+     The path may consist of a sequence of path segments separated by a
+     single slash "/" character.  Within a path segment, the characters
+!    "/", ";", "=", and "?" are reserved.  Each path segment may include a
+     sequence of parameters, indicated by the semicolon ";" character.
+     The parameters are not significant to the parsing of relative
+     references.
+  
+  4.3.3. Query Component
+  
+     The query component is a string of information to be interpreted by
+***************
+*** 642,657 ****
+     Within a query component, the characters "/", "&", "=", and "+" are
+     reserved.
+  
+-    When parsing a URL reference, the query component (if any) is
+-    extracted after the server component.  If the remaining reference
+-    contains a question mark "?" character, then the substring after the
+-    first (left-most) question mark and up to the end of the reference is
+-    the query component.  If the question mark is the last character, or
+-    no question mark is present, then the query component is empty.  The
+-    question mark separator is discarded.
+  
+  
+! 5. (moved)
+  
+     It is often the case that a group or "tree" of documents has been
+     constructed to serve a common purpose; the vast majority of URLs in
+--- 613,639 ----
+     Within a query component, the characters "/", "&", "=", and "+" are
+     reserved.
+  
++ 4.4. Parsing a URL Reference
++ 
++    A URL reference is typically parsed according to the four main
++    components in order to determine what components are present and
++    whether or not the reference is relative or absolute.  The individual
++    components are then parsed for their subparts and to verify their
++    validity.  A reference is parsed as if it is a generic-URL, even
++    though it might be considered opaque by later processes.
++ 
++    Although the BNF defines what is allowed in each component, it is
++    ambiguous in terms of differentiating between a server component and
++    a path component that begins with two slash characters.  The greedy
++    algorithm is used for disambiguation: the left-most matching rule
++    soaks up as much of the URL reference string as it is capable of
++    matching.  In other words, the server component wins.
++    
++    Readers familiar with regular expressions should see Appendix B for a
++    concrete parsing example and test oracle.
+  
+  
+! 5. Relative URL References
+  
+     It is often the case that a group or "tree" of documents has been
+     constructed to serve a common purpose; the vast majority of URLs in
+***************
+*** 672,680 ****
+  
+        relativeURL = net_path | abs_path | rel_path
+  
+        net_path    = "//" server [ abs_path ]
+        abs_path    = "/"  rel_path
+!       rel_path    = [ path ] [ "?" query ]
+  
+     It is not necessary for all URLs within a given scheme to be
+     restricted to the generic-URL syntax, since the hierarchical
+--- 654,688 ----
+  
+        relativeURL   = net_path | abs_path | rel_path
+  
++    A relative reference beginning with two slash characters is termed a
++    network-path reference.  Such references are rarely used.
++ 
+        net_path      = "//" server [ abs_path ]
++ 
++    A relative reference beginning with a single slash character is
++    termed an absolute-path reference.
++ 
+        abs_path      = "/"  rel_path
+! 
+!    A relative reference which does not begin with a scheme name or a
+!    slash character is termed a relative-path reference.
+! 
+!       rel_path      = [ path_segments ] [ "?" query ]
+! 
+!    Within a relative-path reference, the complete path segments "." and
+!    ".." have special meanings: "the current hierarchy level" and "the
+!    level above this hierarchy level", respectively.  Although this is
+!    very similar to their use within Unix-based filesystems to indicate
+!    directory levels, these path components are only considered special
+!    when resolving a relative-path reference to its absolute form
+!    (Section 5.2).
+! 
+!    Authors should be aware that a path segment which contains a colon
+!    character cannot be used as the first segment of a relative URL path
+!    (e.g., "this:that"), because it would be mistaken for a scheme name.
+!    It is therefore necessary to precede such segments with other
+!    segments (e.g., "./this:that") in order for them to be referenced as
+!    a relative path.
+  
+     It is not necessary for all URLs within a given scheme to be
+     restricted to the generic-URL syntax, since the hierarchical
+***************
+*** 683,690 ****
+     relative URLs when their base URL fits within the generic-URL syntax.
+     It is assumed that any document which contains a relative reference
+     will also have a base URL that obeys the syntax.  In other words,
+!    relative URLs cannot be used within documents that have unsuitable
+!    base URLs.
+  
+  5.1. Establishing a Base URL
+  
+--- 691,698 ----
+     relative URLs when their base URL fits within the generic-URL syntax.
+     It is assumed that any document which contains a relative reference
+     will also have a base URL that obeys the syntax.  In other words,
+!    relative URLs cannot be used within a document that has an unsuitable
+!    base URL.
+  
+  5.1. Establishing a Base URL
+  
+***************
+*** 704,718 ****
+        |  .----------------------------------------------------.  |
+        |  |  .----------------------------------------------.  |  |
+        |  |  |  .----------------------------------------.  |  |  |
+!       |  |  |  |   (5.1) Base URL embedded in the       |  |  |  |
+        |  |  |  |         document's content             |  |  |  |
+        |  |  |  `----------------------------------------'  |  |  |
+!       |  |  |   (5.2) Base URL of the encapsulating entity |  |  |
+        |  |  |         (message, document, or none).        |  |  |
+        |  |  `----------------------------------------------'  |  |
+!       |  |   (5.3) URL used to retrieve the entity            |  |
+        |  `----------------------------------------------------'  |
+!       |   (5.4) Base URL = "" (undefined)                        |
+        `----------------------------------------------------------'
+  
+  5.1.1. Base URL within Document Content
+--- 712,729 ----
+        |  .----------------------------------------------------.  |
+        |  |  .----------------------------------------------.  |  |
+        |  |  |  .----------------------------------------.  |  |  |
+!       |  |  |  |  .----------------------------------.  |  |  |  |
+!       |  |  |  |  |       <relative_reference>       |  |  |  |  |
+!       |  |  |  |  `----------------------------------'  |  |  |  |
+!       |  |  |  | (5.1.1) Base URL embedded in the       |  |  |  |
+        |  |  |  |         document's content             |  |  |  |
+        |  |  |  `----------------------------------------'  |  |  |
+!       |  |  | (5.1.2) Base URL of the encapsulating entity |  |  |
+        |  |  |         (message, document, or none).        |  |  |
+        |  |  `----------------------------------------------'  |  |
+!       |  | (5.1.3) URL used to retrieve the entity            |  |
+        |  `----------------------------------------------------'  |
+!       | (5.1.4) Base URL = "" (undefined)                        |
+        `----------------------------------------------------------'
+  
+  5.1.1. Base URL within Document Content
+***************
+*** 729,735 ****
+     agents manipulating such media types will be able to obtain the
+     appropriate syntax from that media type's specification.  An example
+     of how the base URL can be embedded in the Hypertext Markup Language
+!    (HTML) [3] is provided in Appendix B.
+  
+     Messages are considered to be composite documents.  The base URL of a
+     message can be specified within the message headers (or equivalent
+--- 740,746 ----
+     agents manipulating such media types will be able to obtain the
+     appropriate syntax from that media type's specification.  An example
+     of how the base URL can be embedded in the Hypertext Markup Language
+!    (HTML) [3] is provided in Appendix D.
+  
+     Messages are considered to be composite documents.  The base URL of a
+     message can be specified within the message headers (or equivalent
+***************
+*** 797,803 ****
+  
+  5.1.4. Default Base URL
+  
+!    If none of the conditions described in Sections 5.1 -- 5.3 apply,
+     then the base URL is considered to be the empty string and all
+     URL references within that document are assumed to be absolute URLs.
+  
+--- 808,814 ----
+  
+  5.1.4. Default Base URL
+  
+!    If none of the conditions described in Sections 5.1.1--5.1.3 apply,
+     then the base URL is considered to be the empty string and all
+     URL references within that document are assumed to be absolute URLs.
+  
+***************
+*** 807,888 ****
+     URLs cannot be used reliably in situations where the document's base
+     URL is not well-defined.
+  
+! 5.2. Resolving Relative URLs
+  
+     This section describes an example algorithm for resolving URL
+!    references within a context in which the URLs may be relative, such
+!    that the result is always a URL in absolute form.  Although this
+!    algorithm cannot guarantee that the resulting URL will equal that
+!    intended by the original author, it does guarantee that any valid URL
+!    (relative or absolute) can be consistently transformed to an absolute
+!    form given a valid base URL.
+! 
+!    The following steps are performed in order:
+! 
+!    Step 1: The base URL is established according to the rules of
+!            Section 5.  If the base URL is the empty string (unknown),
+!            the URL reference is interpreted as an absolute URL and
+!            we are done.
+! 
+!    Step 2: Both the base and URL reference are parsed into their
+!            component parts as described in Section 4.
+! 
+!            a) If the URL reference is entirely empty, or consists only
+!               of a fragment identifier, it is interpreted as a reference
+!               to the current document and we are done.
+! 
+!            b) If the URL reference starts with a scheme name, it is
+!               interpreted as an absolute URL and we are done.
+! 
+!            c) Otherwise, the URL reference inherits the scheme of
+!               the base URL.
+! 
+!    Step 3: If the URL reference's <server> is non-empty, we skip to
+!            Step 7.  Otherwise, the URL reference inherits the <server>
+!            (if any) of the base URL.  If the base URL's has no <server>
+!            component, then neither does the relative reference.
+! 
+!    Step 4: If the URL reference path is preceded by a slash "/", the
+!            path is not relative and we skip to Step 7.
+! 
+!    Step 5: If the URL reference path is empty (and not preceded by a
+!            slash), then the URL reference inherits the base URL path.
+!            If the URL reference's <query> is non-empty, we skip to
+!            step 7; otherwise, it inherits the <query> of the base
+!            URL (if any) and we skip to step 7.
+! 
+!    Step 6: The last segment of the base URL's path (anything
+!            following the rightmost slash "/", or the entire path if no
+!            slash is present) is removed and the URL reference's path is
+!            appended in its place.  The following operations are
+!            then applied, in order, to the new path:
+  
+!            a) All occurrences of "./", where "." is a complete path
+!               segment, are removed.
+  
+!            b) If the path ends with "." as a complete path segment,
+                that "." is removed.
+  
+!            c) All occurrences of "<segment>/../", where <segment> is a
+!               complete path segment not equal to "..", are removed.
+!               Removal of these path segments is performed iteratively,
+!               removing the leftmost matching pattern on each iteration,
+!               until no matching pattern remains.
+  
+!            d) If the path ends with "<segment>/..", where <segment> is a
+!               complete path segment not equal to "..", that
+                "<segment>/.." is removed.
+  
+!    Step 7: The resulting URL components, including any inherited from
+!            the base URL, are recombined to give the absolute form of
+!            the URL reference.
+  
+     The above algorithm is intended to provide an example by which the
+     output of implementations can be tested -- implementation of the
+     algorithm itself is not required.  For example, some systems may find
+!    it more efficient to implement Step 6 as a pair of segment stacks
+!    being merged, rather than as a series of string pattern matches.
+!    Further examples are provided in Appendix C.
+  
+  
+  6. Adding New Schemes
+--- 818,940 ----
+     URLs cannot be used reliably in situations where the document's base
+     URL is not well-defined.
+  
+! 5.2. Resolving Relative References to Absolute Form
+  
+     This section describes an example algorithm for resolving URL
+!    references which might be relative to a given base URL.
+! 
+!    The base URL is established according to the rules of Section 5.1 and
+!    parsed into the four main components as described in Section 4.4.
+!    Note that only the scheme component is required to be present in the
+!    base URL; the other components may be empty or undefined.  A
+!    component is undefined if its preceding separator does not appear in
+!    the URL reference; the path component is never undefined, though it
+!    may be empty.  The base URL's query component is not used by the
+!    resolution algorithm and may be discarded.
+!    
+!    For each URL reference, the following steps are performed in order:
+! 
+!    1) The URL reference is parsed into the potential four components and
+!       fragment identifier, as described in Section 4.4.
+! 
+!    2) If the path component is empty and the scheme, server, and query
+!       components are undefined, then it is a reference to the current
+!       document and we are done.
+! 
+!    3) If the scheme component is defined, indicating that the reference
+!       starts with a scheme name, then the reference is interpreted as an
+!       absolute URL and we are done.  Otherwise, the reference URL's
+!       scheme is inherited from the base URL's scheme component.
+! 
+!    4) If the server component is defined, then the reference is a
+!       network-path and we skip to step 7.  Otherwise, the reference
+!       URL's server is inherited from the base URL's server component,
+!       which will also be undefined if the URL scheme does not use a
+!       server component.
+! 
+!    5) If the path component begins with a slash character ("/"), then
+!       the reference is an absolute-path and we skip to step 7.
+! 
+!    6) If this step is reached, then we are resolving a relative-path
+!       reference.  The relative path needs to be merged with the base
+!       URL's path.  Although there are many ways to do this, we will
+!       describe a simple method using a separate string buffer.
+! 
+!       a) All but the last segment of the base URL's path component is
+!          copied to the buffer.  In other words, any characters after the
+!          last (right-most) slash character, if any, are excluded.
+! 
+!       b) The reference's path component is appended to the buffer
+!          string.
+! 
+!       c) If the reference's query component is defined, then a "?"
+!          character is appended to the buffer string, followed by the
+!          query component.
+  
+!       d) All occurrences of "./", where "." is a complete path segment,
+!          are removed from the buffer string.
+  
+!       e) If the buffer string ends with "." as a complete path segment,
+           that "." is removed.
+  
+!       f) All occurrences of "<segment>/../", where <segment> is a
+!          complete path segment not equal to "..", are removed from the
+!          buffer string.  Removal of these path segments is performed
+!          iteratively, removing the leftmost matching pattern on each
+!          iteration, until no matching pattern remains.
+  
+!       g) If the buffer string ends with "<segment>/..", where <segment>
+!          is a complete path segment not equal to "..", that
+           "<segment>/.." is removed.
+  
+!       h) If the buffer string contains a question-mark "?" character,
+!          then the reference URL's query component is the substring after
+!          the first (left-most) question-mark.  Otherwise, the reference
+!          URL's query component is set undefined.
+! 
+!       i) The reference URL's new path component is the buffer string up
+!          to, but not including, the first question-mark character or the
+!          end of the buffer string.
+! 
+!    7) The resulting URL components, including any inherited from the
+!       base URL, are recombined to give the absolute form of the URL
+!       reference.  Using pseudocode, this would be
+! 
+!          result = ""
+! 
+!          if scheme is defined then
+!              append scheme to result
+!              append ":" to result
+! 
+!          if server is defined then
+!              append "//" to result
+!              append server to result
+! 
+!          append path to result
+! 
+!          if query is defined then
+!              append "?" to result
+!              append query to result
+! 
+!          if fragment is defined then
+!              append "#" to result
+!              append fragment to result
+! 
+!          return result
+! 
+!       Note that we must be careful to preserve the distinction between a
+!       component that is undefined, meaning that its separator was not
+!       present in the reference, and a component that is empty, meaning
+!       that the separator was present and was immediately followed by the
+!       next component separator or the end of the reference.
+  
+     The above algorithm is intended to provide an example by which the
+     output of implementations can be tested -- implementation of the
+     algorithm itself is not required.  For example, some systems may find
+!    it more efficient to implement step 6 as a pair of segment stacks
+!    being merged, rather than as a series of string pattern replacements.
+! 
+!    Resolution examples are provided in Appendix C.
+  
+  
+  6. Adding New Schemes
+***************
+*** 907,926 ****
+     description of the allowed relative forms should be included in the
+     scheme's definition.
+  
+  
+  7. Security Considerations
+  
+!    The URL scheme does not in itself pose a security threat.  Users
+!    should beware that there is no general guarantee that a URL which at
+!    one time points to a given object continues to do so, and does not
+!    even at some later time point to a different object due to the
+!    movement of objects on servers.
+! 
+!    A URL-related security threat is that it is sometimes possible to
+!    construct a URL such that an attempt to perform a harmless idempotent
+!    operation such as the retrieval of the object will in fact cause a
+!    possibly damaging remote operation to occur.  The unsafe URL is
+!    typically constructed by specifying a port number other than that
+     reserved for the network protocol in question.  The client
+     unwittingly contacts a server which is in fact running a different
+     protocol.  The content of the URL contains instructions which, when
+--- 959,988 ----
+     description of the allowed relative forms should be included in the
+     scheme's definition.
+  
++    URL schemes cannot redefine the algorithm for resolving relative
++    references.  The resolution algorithm must remain independent of the
++    scheme name in order to preserve the mobility of relative references
++    between naming schemes and the ability to parse and resolve a
++    relative reference without knowing the properties of any particular
++    scheme.
++ 
+  
+  7. Security Considerations
+  
+!    A URL does not in itself pose a security threat.  Users should beware
+!    that there is no general guarantee that a URL, which at one time
+!    located a given resource, will continue to do so.  Nor is there any
+!    guarantee that a URL will not locate a different resource at some
+!    later point in time, due to the lack of any constraint on how a given
+!    server apportions its namespace.  Such a guarantee can only be
+!    obtained from the person(s) controlling that namespace and the
+!    resource in question.
+! 
+!    It is sometimes possible to construct a URL such that an attempt to
+!    perform a seemingly harmless, idempotent operation, such as the
+!    retrieval of an entity associated with the resource, will in fact
+!    cause a possibly damaging remote operation to occur.  The unsafe URL
+!    is typically constructed by specifying a port number other than that
+     reserved for the network protocol in question.  The client
+     unwittingly contacts a server which is in fact running a different
+     protocol.  The content of the URL contains instructions which, when
+***************
+*** 933,952 ****
+  
+     Care should be taken when URLs contain escaped delimiters for a given
+     protocol (for example, CR and LF characters for telnet protocols)
+!    that these are not unescaped before transmission.  This would violate
+!    the protocol but could be used to simulate an extra operation or
+!    parameter, again causing an unexpected and possible harmful remote
+!    operation to be performed.
+  
+!    The use of URLs containing passwords that should be secret is clearly
+!    unwise.
+  
+  
+  8. Acknowledgements
+  
+!    Most of this document was derived from RFC 1738 [2] and RFC 1808 [7];
+!    the acknowledgements in those specifications still apply.  In
+!    addition, this draft has benefitted from comments by Lauren Wood.
+  
+  
+  9. References
+--- 995,1015 ----
+  
+     Care should be taken when URLs contain escaped delimiters for a given
+     protocol (for example, CR and LF characters for telnet protocols)
+!    that these are not unescaped before transmission.  This might violate
+!    the protocol, but avoids the potential for such characters to be used
+!    to simulate an extra operation or parameter in that protocol, which
+!    might lead to an unexpected and possibly harmful remote operation to
+!    be performed.
+  
+!    It is clearly unwise to use a URL that contains a password which is
+!    intended to be secret.
+  
+  
+  8. Acknowledgements
+  
+!    This document was derived from RFC 1738 [2] and RFC 1808 [7]; the
+!    acknowledgements in those specifications still apply.  In addition,
+!    this draft has benefited from comments by Lauren Wood.
+  
+  
+  9. References
+***************
+*** 984,990 ****
+         STD 13, RFC 1034, USC/Information Sciences Institute,
+         November 1987.
+  
+!   [10] US-ASCII. "Coded Character Set -- 7-bit American Standard Code
+         for Information Interchange", ANSI X3.4-1986.
+  
+  
+--- 1047,1057 ----
+         STD 13, RFC 1034, USC/Information Sciences Institute,
+         November 1987.
+  
+!   [10] Sollins, K., and L. Masinter, "Functional Requirements for
+!        Uniform Resource Names", RFC 1737, MIT/LCS, Xerox Corporation,
+!        December 1994.
+! 
+!   [11] US-ASCII. "Coded Character Set -- 7-bit American Standard Code
+         for Information Interchange", ANSI X3.4-1986.
+  
+  
+***************
+*** 1002,1010 ****
+  
+     Roy T. Fielding
+     Department of Information and Computer Science
+!    University of California
+!    Irvine, CA  92717-3425
+!    U.S.A.
+  
+     Fax: +1(714)824-4056
+     EMail: fielding@ics.uci.edu
+--- 1069,1076 ----
+  
+     Roy T. Fielding
+     Department of Information and Computer Science
+!    University of California, Irvine
+!    Irvine, CA  92697-3425
+  
+     Fax: +1(714)824-4056
+     EMail: fielding@ics.uci.edu
+***************
+*** 1023,1032 ****
+  
+  A. Collected BNF for URLs
+  
+!    # To be inserted when it is completed.
+  
+  
+! C. Examples of Resolving Relative URLs
+  
+     Within an object with a well-defined base URL of
+  
+--- 1089,1199 ----
+  
+  A. Collected BNF for URLs
+  
+!       URL-reference = [ absoluteURL | relativeURL ] [ "#" fragment ]
+!       absoluteURL   = generic-URL | opaque-URL
+!       opaque-URL    = scheme ":" *urlchar
+!       generic-URL   = scheme ":" relativeURL
+! 
+!       relativeURL   = net_path | abs_path | rel_path
+!       net_path      = "//" server [ abs_path ]
+!       abs_path      = "/"  rel_path
+!       rel_path      = [ path_segments ] [ "?" query ]
+! 
+!       scheme        = 1*( alpha | digit | "+" | "-" | "." )
+! 
+!       server        = [ [ user [ ":" password ] "@" ] hostport ]
+!       user          = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+!       password      = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+!       hostport      = host [ ":" port ]
+!       host          = hostname | hostnumber
+!       hostname      = *( domainlabel "." ) toplabel
+!       domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+!       toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+!       hostnumber    = 1*digit "." 1*digit "." 1*digit "." 1*digit
+!       port          = *digit
+! 
+!       path          = [ "/" ] path_segments
+!       path_segments = segment *( "/" segment )
+!       segment       = *pchar *( ";" param )
+!       param         = *pchar
+!       pchar         = unreserved | escaped | ":" | "@" | "&" | "=" | "+"
+! 
+!       query         = *urlchar
+! 
+!       fragment      = *urlchar
+! 
+!       urlchar       = reserved | unreserved | escaped
+!       reserved      = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+"
+!       unreserved    = alpha | digit | mark
+!       mark          = "$" | "-" | "_" | "." | "!" | "~" |
+!                       "*" | "'" | "(" | ")" | ","
+! 
+!       escaped       = "%" hex hex
+!       hex           = digit | "A" | "B" | "C" | "D" | "E" | "F" |
+!                               "a" | "b" | "c" | "d" | "e" | "f"
+! 
+!       alphanum      = alpha | digit
+!       alpha         = lowalpha | hialpha
+! 
+!       lowalpha = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" |
+!                  "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" |
+!                  "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
+!       hialpha  = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" |
+!                  "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" |
+!                  "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+!       digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
+!                  "8" | "9"
+! 
+! 
+! B. Parsing a URL Reference with a Regular Expression
+! 
+!    As described in Section 4.4, the generic-URL syntax is not sufficient
+!    to disambiguate the components of some forms of URL.  Since the
+!    "greedy algorithm" described in that section is identical to the
+!    disambiguation method used by POSIX regular expressions, it is
+!    natural and commonplace to use a regular expression for parsing the
+!    potential four components and fragment identifier of a URL reference.
+! 
+!    The following line is the regular expression for breaking-down a URL
+!    reference into its components.
+! 
+!       ^(([^/?#]+):)?(//([^/?#]*))?([^?#]*)?(\?([^#]*))?(#(.*))?
+!        12           3  4          5        6  7        8 9
+! 
+!    The numbers in the second line above are only to assist readability;
+!    they indicate the reference points for each subexpression (i.e., each
+!    paired parenthesis).  We refer to the value matched for subexpression
+!    <n> as $<n>.  For example, matching the above expression to
+! 
+!       http://www.ics.uci.edu/pub/ietf/uri/#Related
+! 
+!    results in the following subexpression matches:
+! 
+!       $1 = http:
+!       $2 = http
+!       $3 = //www.ics.uci.edu
+!       $4 = www.ics.uci.edu
+!       $5 = /pub/ietf/uri/
+!       $6 = <undefined>
+!       $7 = <undefined>
+!       $8 = #Related
+!       $9 = Related
+! 
+!    where <undefined> indicates that the component is not present, as is
+!    the case for the query component in the above example.  Therefore, we
+!    can determine the value of the four components and fragment as
+! 
+!       scheme   = $2
+!       server   = $4
+!       path     = $5
+!       query    = $7
+!       fragment = $9
+! 
+!    and, going in the opposite direction, we can recreate a URL reference
+!    from its components using the algorithm in step 7 of Section 5.2.
+  
+  
+! C. Examples of Resolving Relative URL References
+  
+     Within an object with a well-defined base URL of
+  
+***************
+*** 1067,1078 ****
+  
+     An empty reference refers to the start of the current document.
+  
+!       <>            =  http://a/b/c/d;p?q
+  
+     Parsers must be careful in handling the case where there are more
+     relative path ".." segments than there are hierarchical levels in the
+     base URL's path.  Note that the ".." syntax cannot be used to change
+!    the <server> of a URL.
+  
+        ../../../g    =  http://a/../g
+        ../../../../g =  http://a/../../g
+--- 1234,1245 ----
+  
+     An empty reference refers to the start of the current document.
+  
+!       <>            =  (current document)
+  
+     Parsers must be careful in handling the case where there are more
+     relative path ".." segments than there are hierarchical levels in the
+     base URL's path.  Note that the ".." syntax cannot be used to change
+!    the server component of a URL.
+  
+        ../../../g    =  http://a/../g
+        ../../../../g =  http://a/../../g
+***************
+*** 1144,1172 ****
+  
+  E. Recommendations for Delimiting URLs in Context
+  
+!    URIs, including URLs, are intended to be transmitted through
+!    protocols which provide a context for their interpretation.
+! 
+!    In some cases, it will be necessary to distinguish URLs from other
+!    possible data structures in a syntactic structure.  In this case, it
+!    is recommended that URLs be preceded with a prefix consisting of the
+!    characters "URL:".  For example, this prefix may be used to
+!    distinguish URLs from other kinds of URIs.
+! 
+!    In addition, there are many occasions when URLs are included in other
+!    kinds of text; examples include simple plain text sent in electronic
+!    mail, USENET news messages, or, most importantly, printed on paper.
+!    In such cases, it is important to be able to delimit the URL from the
+!    rest of the text, and in particular from punctuation marks that might
+!    be mistaken for part of the URL.
+! 
+!    In practice, URLs are delimited in a variety of ways, using brackets
+!    [http://test.com/] or angle brackets <http://www.w3.org> or even
+!    paired braces {http://test.com}, with or (usually) without the "URL:"
+!    prefix.  This wrapper does not form part of the URL.  In the case
+!    where a fragment/anchor identifier is associated with a URL
+!    (following a "#"), the identifier would be placed within the brackets
+!    as well.
+  
+     In some cases, extra whitespace (spaces, linebreaks, tabs, etc.) may
+     need to be added to break long URLs across lines.  The whitespace
+--- 1311,1335 ----
+  
+  E. Recommendations for Delimiting URLs in Context
+  
+!    URLs are often transmitted through formats which do not provide a
+!    clear context for their interpretation.  For example, there are many
+!    occasions when URLs are included in plain text; examples include text
+!    sent in electronic mail, USENET news messages, and, most importantly,
+!    printed on paper.  In such cases, it is important to be able to
+!    delimit the URL from the rest of the text, and in particular from
+!    punctuation marks that might be mistaken for part of the URL.
+! 
+!    In practice, URLs are delimited in a variety of ways, but usually
+!    within double-quotes "http://test.com/", angle brackets
+!    <http://test.com/>, or just using whitespace
+! 
+!                   http://test.com/
+! 
+!    The prefix "URL:", with or without a trailing space, is sometimes
+!    used to help distinguish a URL from normal text.  These wrappers do
+!    not form part of the URL.  In the case where a fragment identifier is
+!    associated with a URL reference, the fragment would be placed within
+!    the brackets as well (separated from the URL with a "#" character).
+  
+     In some cases, extra whitespace (spaces, linebreaks, tabs, etc.) may
+     need to be added to break long URLs across lines.  The whitespace
+***************
+*** 1181,1190 ****
+  
+     Examples:
+  
+!       Yes, Jim, I found it under <ftp://info.cern.ch/pub/www/doc;
+!       type=d> but you can probably pick it up from <ftp://ds.in
+!       ternic.net/rfc>.  Note the warning in <http://ds.internic.
+!       net/instructions/overview.html#WARNING>.
+  
+  
+  F. Summary of Non-editorial Changes
+--- 1344,1353 ----
+  
+     Examples:
+  
+!       Yes, Jim, I found it under "http://www.w3.org/pub/WWW/",
+!       but you can probably pick it up from <ftp://ds.internic.
+!       net/rfc/>.  Note the warning in <http://ds.internic.net/
+!       instructions/overview.html#WARNING>.
+  
+  
+  F. Summary of Non-editorial Changes
+***************
+*** 1195,1201 ****
+     scope of URLs and the chosen URL character set has been added in
+     order to address common misconceptions about what would and would not
+     be appropriate for additional URL schemes, and why the allowed
+!    character set is limited to US-ASCII characters.
+  
+     Section 3 (URL References) was added to stem the confusion regarding
+     "what is a URL" and how to describe fragment identifiers given that
+--- 1358,1367 ----
+     scope of URLs and the chosen URL character set has been added in
+     order to address common misconceptions about what would and would not
+     be appropriate for additional URL schemes, and why the allowed
+!    character set is limited to US-ASCII characters.  A definition of URI
+!    is also given, and how the URI syntax equates to the URL syntax, so
+!    that other IETF specifications (e.g., HTTP, HTML, etc.) can refer to
+!    a single definition of URI.
+  
+     Section 3 (URL References) was added to stem the confusion regarding
+     "what is a URL" and how to describe fragment identifiers given that
+***************
+*** 1236,1241 ****
+--- 1402,1424 ----
+     since it is extensively used on the Internet in spite of the
+     difficulty to transcribe it with some keyboards.
+  
++    The question-mark "?" character was removed from the set of allowed
++    characters for the user and password in the server component, since
++    testing showed that many applications treat it as reserved for
++    separating the query component from the rest of the URL.
++ 
++    RFC 1738 specified that the path was separated from the server
++    portion of a URL by a slash.  RFC 1808 followed suit, but with a
++    fudge of carrying around the separator as a "prefix" in order to
++    describe the parsing algorithm.  RFC 1630 never had this problem,
++    since it considered the slash to be part of the path.  In writing
++    this specification, it was found to be impossible to accurately
++    describe and retain the difference between the two URLs
++       <foo:/bar>   and   <foo:bar>
++    without either considering the slash to be part of the path (as
++    corresponds to actual practice) or creating a separate component just
++    to hold that slash.  We chose the former.
++ 
+  F.3. Modifications from RFC 1738
+  
+     The definition of specific URL schemes and their scheme-specific
+***************
+*** 1250,1255 ****
+--- 1433,1441 ----
+     expected to handle the case where the ":" separator between host and
+     port is supplied without a port.
+  
++    The recommendations for delimiting URLs in context (Appendix E) have
++    been adjusted to reflect current practice.
++ 
+  F.4. Modifications from RFC 1808
+  
+     RFC 1808 (Section 4) defined an empty URL reference (a reference
+***************
+*** 1281,1287 ****
+     indicate trailing parameter information, and that the presence of a
+     semicolon in a path segment does not affect the relative parsing of
+     that segment.  Therefore, parameters have been removed as a separate
+!    component and are now allowed in any path segment.  Their influence
+     has been removed from the algorithm for resolving a relative URL
+     reference.  The resolution examples in Appendix C have been modified
+     to reflect this change.
+--- 1467,1480 ----
+     indicate trailing parameter information, and that the presence of a
+     semicolon in a path segment does not affect the relative parsing of
+     that segment.  Therefore, parameters have been removed as a separate
+!    component and may now appear in any path segment.  Their influence
+     has been removed from the algorithm for resolving a relative URL
+     reference.  The resolution examples in Appendix C have been modified
+     to reflect this change.
++ 
++    Testing has also revealed that most client applications remove the
++    query component from the base URL before resolving relative URLs, and
++    append the reference's query component to a relative path before
++    merging it with the base path.  The resolution algorithm has been
++    changed accordingly.
++ 

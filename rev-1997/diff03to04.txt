@@ -1,0 +1,1192 @@
+*** draft-fielding-url-syntax-03.txt	Mon Jan 20 20:34:55 1997
+--- draft-fielding-url-syntax-04.txt	Thu Mar 27 14:01:09 1997
+***************
+*** 1,72 ****
+  Network Working Group                                     T. Berners-Lee
+  INTERNET-DRAFT                                                   MIT/LCS
+! <draft-fielding-url-syntax-03>                               R. Fielding
+  Expires six months after publication date.                   U.C. Irvine
+                                                               L. Masinter
+                                                         Xerox Corporation
+!                                                         29 December 1996
+  
+  
+!                     Uniform Resource Locators (URL)
+  
+  Status of this Memo
+  
+     This document is an Internet-Draft.  Internet-Drafts are working
+!    documents of the Internet Engineering Task Force (IETF), its
+!    areas, and its working groups.  Note that other groups may also
+!    distribute working documents as Internet-Drafts.
+  
+     Internet-Drafts are draft documents valid for a maximum of six
+     months and may be updated, replaced, or obsoleted by other
+     documents at any time.  It is inappropriate to use Internet-Drafts
+!    as reference material or to cite them other than as
+!    ``work in progress.''
+  
+!    To learn the current status of any Internet-Draft, please check
+!    the ``1id-abstracts.txt'' listing contained in the Internet-Drafts
+!    Shadow Directories on ftp.is.co.za (Africa), nic.nordu.net (Europe),
+!    munnari.oz.au (Pacific Rim), ds.internic.net (US East Coast),
+!    or ftp.isi.edu (US West Coast).
+  
+     Issues:
+        1. We need to define a mechanism for using IPv6 addresses in the
+           URL hostname which will not break existing systems too badly.
+!       2. Need a specific reference to the documents
+!          defining Content-Base and Content-Language.
+!       3. Examples should include one with multiple parameters and
+           one with multiple queries.
+-       4. Suggestion to include a 'normalization' algorithm. Should we?
+-       5. Is there semantics to empty fragment identifiers?
+-       6. clarify issue with http://4kids/blah, where non FQDN is used.
+-       7. Add [MHTML] reference   
+-       8. URN/URI/URL issue
+     
+  Abstract
+  
+     A Uniform Resource Locator (URL) is a compact string representation
+     of a location for use in identifying an abstract or physical
+!    resource.  This document defines the general syntax and semantics of
+!    URLs, including both absolute and relative locators, and guidelines
+!    for their use. It revises and replaces the generic definitions in
+!    RFC 1738 and RFC 1808.
+  
+  1. Introduction
+  
+     Uniform Resource Locators (URLs) provide a simple and extensible
+!    means for identifying a resource by its location.  This specification
+!    of URL syntax and semantics is derived from concepts introduced by
+!    the World Wide Web global information initiative, whose use of such
+!    objects dates from 1990 and is described in "Universal Resource
+!    Identifiers in WWW", RFC 1630 [1].  The specification of URLs is
+!    designed to meet the recommendations laid out in "Functional
+!    Recommendations for Internet Resource Locators", RFC 1736 [9].
+! 
+!    This document updates and merges RFC 1738 "Uniform Resource Locators"
+!    [2] and RFC 1808 "Relative Uniform Resource Locators" [6] in order to
+!    define a single, general syntax for all URLs.  It excludes those
+!    portions of RFC 1738 that defined the specific syntax of individual
+!    URL schemes; those portions will be updated as separate documents,
+!    as will the process for registration of new URL schemes.
+  
+     All significant changes from the prior RFCs are noted in Appendix F.
+  
+--- 1,69 ----
++ 
+  Network Working Group                                     T. Berners-Lee
+  INTERNET-DRAFT                                                   MIT/LCS
+! <draft-fielding-url-syntax-04>                               R. Fielding
+  Expires six months after publication date.                   U.C. Irvine
+                                                               L. Masinter
+                                                         Xerox Corporation
+!                                                           March 26, 1997
+  
+  
+!     Uniform Resource Locators (URL): Generic Syntax and Semantics
+  
+  Status of this Memo
+  
+     This document is an Internet-Draft.  Internet-Drafts are working
+!    documents of the Internet Engineering Task Force (IETF), its areas,
+!    and its working groups.  Note that other groups may also distribute
+!    working documents as Internet-Drafts.
+  
+     Internet-Drafts are draft documents valid for a maximum of six
+     months and may be updated, replaced, or obsoleted by other
+     documents at any time.  It is inappropriate to use Internet-Drafts
+!    as reference material or to cite them other than as ``work in
+!    progress.''
+  
+!    To learn the current status of any Internet-Draft, please check the
+!    ``1id-abstracts.txt'' listing contained in the Internet-Drafts
+!    Shadow Directories on ftp.is.co.za (Africa), nic.nordu.net
+!    (Europe), munnari.oz.au (Pacific Rim), ds.internic.net (US East
+!    Coast), or ftp.isi.edu (US West Coast).
+  
+     Issues:
+        1. We need to define a mechanism for using IPv6 addresses in the
+           URL hostname which will not break existing systems too badly.
+! 	Proposal: *hex *["." *hex] ".ipv6"
+! 	I.e., treat the top level domain of "ipv6" as special.
+!       2. Examples should include one with multiple parameters and
+           one with multiple queries.
+     
+  Abstract
+  
+     A Uniform Resource Locator (URL) is a compact string representation
+     of a location for use in identifying an abstract or physical
+!    resource.  This document defines the general syntax and semantics
+!    of URLs, including both absolute and relative locators, and
+!    guidelines for their use. It revises and replaces the generic
+!    definitions in RFC 1738 and RFC 1808.
+  
+  1. Introduction
+  
+     Uniform Resource Locators (URLs) provide a simple and extensible
+!    means for identifying a resource by its location.  This
+!    specification of URL syntax and semantics is derived from concepts
+!    introduced by the World Wide Web global information initiative,
+!    whose use of such objects dates from 1990 and is described in
+!    "Universal Resource Identifiers in WWW" [RFC1630].  The
+!    specification of URLs is designed to meet the recommendations laid
+!    out in "Functional Recommendations for Internet Resource Locators"
+!    [RFC1736].
+! 
+!    This document updates and merges "Uniform Resource Locators"
+!    [RFC1738] and "Relative Uniform Resource Locators" [RFC1808] in
+!    order to define a single, general syntax for all URLs.  It excludes
+!    those portions of RFC 1738 that defined the specific syntax of
+!    individual URL schemes; those portions will be updated as separate
+!    documents, as will the process for registration of new URL schemes.
+  
+     All significant changes from the prior RFCs are noted in Appendix F.
+  
+***************
+*** 115,121 ****
+     URLs are a subset of Uniform Resource Identifiers (URI), which also
+     includes the notion of Uniform Resource Names (URN).  A URN differs
+     from a URL in that it identifies a resource in a location-independent
+!    fashion (see RFC 1737, [11]).  URNs are defined by a separate set of
+     specifications.
+  
+     Although this specification restricts its discussion to URLs, the
+--- 112,118 ----
+     URLs are a subset of Uniform Resource Identifiers (URI), which also
+     includes the notion of Uniform Resource Names (URN).  A URN differs
+     from a URL in that it identifies a resource in a location-independent
+!    fashion (see [RFC1737]).  URNs are defined by a separate set of
+     specifications.
+  
+     Although this specification restricts its discussion to URLs, the
+***************
+*** 149,158 ****
+     Many other URL schemes have been defined.
+     
+     The scheme defines the namespace of the URL.  Although many URL
+!    schemes are named after protocols, this does not imply that the only
+!    way to access the URL's resource is via the named protocol.
+!    Gateways, proxies, caches, and name resolution services might be used
+!    to access some resources, independent of the protocol of their
+     origin, and the resolution of some URLs may require the use of more
+     than one protocol (e.g., both DNS and HTTP are typically used to
+     access an "http" URL's resource when it can't be found in a local
+--- 146,155 ----
+     Many other URL schemes have been defined.
+     
+     The scheme defines the namespace of the URL.  Although many URL
+!    schemes are named after protocols, this does not imply that the
+!    only way to access the URL's resource is via the named protocol.
+!    Gateways, proxies, caches, and name resolution services might be
+!    used to access some resources, independent of the protocol of their
+     origin, and the resolution of some URLs may require the use of more
+     than one protocol (e.g., both DNS and HTTP are typically used to
+     access an "http" URL's resource when it can't be found in a local
+***************
+*** 161,180 ****
+  1.3. URL Transcribability
+  
+     The URL syntax has been designed to promote transcribability as one
+!    of its main concerns. A URL is a sequence of characters, i.e., letters,
+!    digits, and special characters.  A URL may be represented in a
+!    variety of ways: e.g., ink on paper, pixels on a screen, or a
+!    sequence of octets in a coded character set.  The interpretation of a
+!    URL depends only on the characters used and not how those characters
+     are represented on the wire.
+  
+     The goal of transcribability can be described by a simple scenario.
+     Imagine two colleagues, Sam and Kim, sitting in a pub at an
+!    international conference and exchanging research ideas.  Sam asks Kim
+!    for a location to get more information, so Kim writes the URL for the
+!    research site on a napkin.  Upon returning home, Sam takes out the
+!    napkin and types the URL into a computer, which then retrieves the
+!    information to which Kim referred.
+  
+     There are several design concerns revealed by the scenario:
+  
+--- 158,178 ----
+  1.3. URL Transcribability
+  
+     The URL syntax has been designed to promote transcribability as one
+!    of its main concerns. A URL is a sequence of characters from a very
+!    limited set, i.e. the letters of the basic Latin alphabet, digits,
+!    and some special characters.  A URL may be represented in a variety
+!    of ways: e.g., ink on paper, pixels on a screen, or a sequence of
+!    octets in a coded character set.  The interpretation of a URL
+!    depends only on the characters used and not how those characters
+     are represented on the wire.
+  
+     The goal of transcribability can be described by a simple scenario.
+     Imagine two colleagues, Sam and Kim, sitting in a pub at an
+!    international conference and exchanging research ideas.  Sam asks
+!    Kim for a location to get more information, so Kim writes the URL
+!    for the research site on a napkin.  Upon returning home, Sam takes
+!    out the napkin and types the URL into a computer, which then
+!    retrieves the information to which Kim referred.
+  
+     There are several design concerns revealed by the scenario:
+  
+***************
+*** 194,203 ****
+     These design concerns are not always in alignment.  For example, it
+     is often the case that the most meaningful name for a URL component
+     would require characters which cannot be typed on most keyboards.
+!    The ability to transcribe the resource
+!    location from one medium to another was considered more
+!    important than having its URL consist of the most meaningful of
+!    components.
+  
+     In a few cases, exceptions were made for characters already in
+     widespread use within URLs: the "~", "$" and "#" characters might
+--- 192,203 ----
+     These design concerns are not always in alignment.  For example, it
+     is often the case that the most meaningful name for a URL component
+     would require characters which cannot be typed on most keyboards.
+!    The ability to transcribe the resource location from one medium to
+!    another was considered more important than having its URL consist
+!    of the most meaningful of components.  In local and regional
+!    contexts and with improving technology, users might benefit from
+!    being able to use a wider range of characters.  However, such use
+!    is not guaranteed to work, and should therefore be avoided.
+  
+     In a few cases, exceptions were made for characters already in
+     widespread use within URLs: the "~", "$" and "#" characters might
+***************
+*** 218,224 ****
+     the syntax requirements.
+  
+     The second convention is a BNF-like grammar, used to define the
+!    formal URL syntax.  The grammar is that of RFC 822 [5], except that
+     "|" is used to designate alternatives.  Briefly, rules are separated
+     from definitions by an equal "=", indentation is used to continue a
+     rule definition over more than one line, literals are quoted with "",
+--- 218,224 ----
+     the syntax requirements.
+  
+     The second convention is a BNF-like grammar, used to define the
+!    formal URL syntax.  The grammar is that of [RFC822], except that
+     "|" is used to designate alternatives.  Briefly, rules are separated
+     from definitions by an equal "=", indentation is used to continue a
+     rule definition over more than one line, literals are quoted with "",
+***************
+*** 265,271 ****
+     used conventionally as delimiters around URLs were excluded.  The
+     restricted set of characters consists of digits, letters, and a few
+     graphic symbols corresponding to a subset of the graphic printable
+!    characters of the US-ASCII coded character set [12]; they are
+     common to most of the character encodings and input facilities
+     available to Internet users.
+  
+--- 265,271 ----
+     used conventionally as delimiters around URLs were excluded.  The
+     restricted set of characters consists of digits, letters, and a few
+     graphic symbols corresponding to a subset of the graphic printable
+!    characters of the US-ASCII coded character set [ASCII]; they are
+     common to most of the character encodings and input facilities
+     available to Internet users.
+  
+***************
+*** 280,286 ****
+  
+        urlc        = reserved | unreserved | escaped
+  
+! 1.5. Characters, octets, and encodings
+  
+     URLs are sequences of characters. Parts of those sequences of
+     characters are then used to represent sequences of octets. In turn,
+--- 280,286 ----
+  
+        urlc        = reserved | unreserved | escaped
+  
+! 2.1. Characters, octets, and encodings
+  
+     URLs are sequences of characters. Parts of those sequences of
+     characters are then used to represent sequences of octets. In turn,
+***************
+*** 288,312 ****
+     encoding scheme) to represent characters. This means that when
+     dealing with URLs it's necessary to work at three levels:
+  
+!                      represented characters
+!                                 ^
+!                                 |
+!                                 v
+!                               octets
+!                                 ^
+!                                 |
+!                                 v
+!                          URL characters
+! 
+!    This looks more complicated than necessary if all one is dealing
+!    with is file names in ASCII, but is necessary when dealing with the
+!    wide variety of systems in use. URL characters may represent octets
+!    directly or with escape sequences (Section 2.3). Octets may
+!    sometimes represent characters in ASCII, in other character
+!    encodings, or sometimes be used to represent data that does not
+!    correspond to characters at all.
+! 
+! 2.1. Reserved Characters
+  
+     Many URLs include components consisting of, or delimited by, certain
+     special characters.  These characters are called "reserved", since
+--- 288,311 ----
+     encoding scheme) to represent characters. This means that when
+     dealing with URLs it's necessary to work at three levels:
+  
+!     represented characters <-> octets <-> URL characters
+!    
+!    where one mapping (a character encoding) is used to convert a
+!    sequence of characters to a sequence of octets, and another mapping
+!    (using ASCII or the escape encoding) is used to convert between a
+!    sequence of octets and a sequence of characters.  This looks more
+!    complicated than necessary if all one is dealing with is file names
+!    in ASCII, but it is necessary when dealing with the wide variety of
+!    systems in use.
+!    
+!    In current practice, many different character encoding schemes are
+!    used in the first mapping (between sequences of represented
+!    characters and sequences of octets) and there is generally no
+!    representation in the URL itself of which mapping was used.  For
+!    this reason, a client without knowledge of the origination
+!    mechanism cannot reliably unescape characters for display.
+!    
+! 2.2. Reserved Characters
+  
+     Many URLs include components consisting of, or delimited by, certain
+     special characters.  These characters are called "reserved", since
+***************
+*** 328,334 ****
+     reserved if the semantics of the URL changes if the character is
+     replaced with its escaped ASCII encoding.
+  
+! 2.2. Unreserved Characters
+  
+     Data characters which are allowed in a URL but do not have a reserved
+     purpose are called unreserved.  These include upper and lower case
+--- 327,333 ----
+     reserved if the semantics of the URL changes if the character is
+     replaced with its escaped ASCII encoding.
+  
+! 2.3. Unreserved Characters
+  
+     Data characters which are allowed in a URL but do not have a reserved
+     purpose are called unreserved.  These include upper and lower case
+***************
+*** 344,350 ****
+     of the URL, but this should not be done unless the URL is being used
+     in a context which does not allow the unescaped character to appear.
+  
+! 2.3. Escape Sequences 
+  
+     Data must be escaped if it does not have a representation using an
+     unreserved character; this includes data that does not correspond
+--- 343,349 ----
+     of the URL, but this should not be done unless the URL is being used
+     in a context which does not allow the unescaped character to appear.
+  
+! 2.4. Escape Sequences 
+  
+     Data must be escaped if it does not have a representation using an
+     unreserved character; this includes data that does not correspond
+***************
+*** 352,358 ****
+     also data that corresponds to characters used to delimit a URL from
+     its context.
+     
+! 2.3.1. Escaped Encoding
+  
+     An escaped octet is encoded as a character triplet, consisting
+     of the percent character "%" followed by the two hexadecimal digits
+--- 351,357 ----
+     also data that corresponds to characters used to delimit a URL from
+     its context.
+     
+! 2.4.1. Escaped Encoding
+  
+     An escaped octet is encoded as a character triplet, consisting
+     of the percent character "%" followed by the two hexadecimal digits
+***************
+*** 363,369 ****
+        hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
+                              "a" | "b" | "c" | "d" | "e" | "f"
+  
+! 2.3.2. When to Escape and Unescape
+  
+     A URL is always in an escaped form, since escaping or unescaping a
+     completed URL might change its semantics.  Normally, the only time
+--- 362,368 ----
+        hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
+                              "a" | "b" | "c" | "d" | "e" | "f"
+  
+! 2.4.2. When to Escape and Unescape
+  
+     A URL is always in an escaped form, since escaping or unescaping a
+     completed URL might change its semantics.  Normally, the only time
+***************
+*** 391,408 ****
+     data character as another escaped character, or vice versa in the
+     case of escaping an already escaped string.
+  
+! 2.3.3. Excluded Characters
+  
+     Although they are not used within the URL syntax, we include here a
+     description of those US-ASCII characters which have been excluded
+     and the reasons for their exclusion.
+  
+!       excluded    = control | space | delims | unwise | national
+  
+!    All characters corresponding to the control characters in the
+!    US-ASCII coded character set are unsafe to use within a URL, both
+!    because they are non-printable and because they are likely to be
+!    misinterpreted by some control mechanisms.
+  
+        control     = <US-ASCII coded characters 00-1F and 7F hexadecimal>
+  
+--- 390,407 ----
+     data character as another escaped character, or vice versa in the
+     case of escaping an already escaped string.
+  
+! 2.4.3. Excluded Characters
+  
+     Although they are not used within the URL syntax, we include here a
+     description of those US-ASCII characters which have been excluded
+     and the reasons for their exclusion.
+  
+!       excluded    = control | space | delims | unwise | others
+  
+!    The control characters in the US-ASCII coded character set are
+!    unsafe to use within a URL, both because they are non-printable and
+!    because they are likely to be misinterpreted by some control
+!    mechanisms.
+  
+        control     = <US-ASCII coded characters 00-1F and 7F hexadecimal>
+  
+***************
+*** 418,425 ****
+     excluded because they are often used as the delimiters around URLs in
+     text documents and protocol fields.  The character "#" is excluded
+     because it is used to delimit a URL from a fragment identifier in URL
+!    references (Section 3). The percent character "%" is excluded because it is used
+!    for the encoding of escaped characters.
+  
+        delims      = "<" | ">" | "#" | "%" | <">
+     
+--- 417,424 ----
+     excluded because they are often used as the delimiters around URLs in
+     text documents and protocol fields.  The character "#" is excluded
+     because it is used to delimit a URL from a fragment identifier in URL
+!    references (Section 3). The percent character "%" is excluded because
+!    it is used for the encoding of escaped characters.
+  
+        delims      = "<" | ">" | "#" | "%" | <">
+     
+***************
+*** 433,449 ****
+     sections are excluded because they are often difficult or impossible
+     to transcribe using traditional computer keyboards and software.
+  
+!       national    = <Any character not in the reserved, unreserved,
+                       control, space, delims, or unwise sets>
+  
+     Data corresponding to excluded characters must be escaped in order
+     to be properly represented within a URL.  However, there do exist
+!    some systems that allow characters from the "unwise" and "national"
+     sets to be used in URL references (section 3); a robust
+     implementation should be prepared to handle those characters when
+     it is possible to do so.
+  
+! 
+  3. URL References
+  
+     A common source of confusion in the use and interpretation of Uniform
+--- 432,448 ----
+     sections are excluded because they are often difficult or impossible
+     to transcribe using traditional computer keyboards and software.
+  
+!       others      = <Any character not in the reserved, unreserved,
+                       control, space, delims, or unwise sets>
+  
+     Data corresponding to excluded characters must be escaped in order
+     to be properly represented within a URL.  However, there do exist
+!    some systems that allow characters from the "unwise" and "others"
+     sets to be used in URL references (section 3); a robust
+     implementation should be prepared to handle those characters when
+     it is possible to do so.
+  
+!    
+  3. URL References
+  
+     A common source of confusion in the use and interpretation of Uniform
+***************
+*** 484,489 ****
+--- 483,493 ----
+     to the identified fragment of that document.  Traversal of such a
+     reference should not result in an additional retrieval action.
+  
++    However, if the URL reference occurs in a context that is always
++    intended to result in a new request, as in the cases of HTML's
++    FORM "action" attribute and IMG "src" attribute [RFC1866], then
++    an empty URL reference represents the URL of the current document
++    and should be replaced by that URL when transformed into a request.
+  
+  4. Generic URL Syntax
+  
+***************
+*** 544,570 ****
+     most URL schemes use a common sequence of four main components to
+     define the location of a resource
+  
+!       <scheme>://<server><path>?<query>
+  
+     each of which, except <scheme>, may be absent from a particular URL.
+!    For example, some URL schemes do not allow a server component, and
+!    others do not use a query component.
+  
+! 4.3.1. Server Component
+  
+     URL schemes that involve the direct use of an IP-based protocol to a
+!    specified host on the Internet use a common syntax for the server
+     component of the URL's scheme-specific data:
+  
+          <user>:<password>@<host>:<port>
+  
+     Some or all of the parts "<user>:<password>@", ":<password>", and
+!    ":<port>" may be excluded.  The server component is preceded by a
+     double slash "//" and is terminated by the next slash "/" or by the
+!    end of the URL.  Within the server component, the characters ":",
+     "@", "?", and "/" are reserved.
+  
+!       server        = [ [ user [ ":" password ] "@" ] hostport ]
+  
+     The user name and password, if present, are followed by a commercial
+     at-sign "@".
+--- 548,574 ----
+     most URL schemes use a common sequence of four main components to
+     define the location of a resource
+  
+!       <scheme>://<site><path>?<query>
+  
+     each of which, except <scheme>, may be absent from a particular URL.
+!    For example, some URL schemes do not allow a <site> component, and
+!    others do not use a <query> component.
+  
+! 4.3.1. Site Component
+  
+     URL schemes that involve the direct use of an IP-based protocol to a
+!    specified host on the Internet use a common syntax for the <site>
+     component of the URL's scheme-specific data:
+  
+          <user>:<password>@<host>:<port>
+  
+     Some or all of the parts "<user>:<password>@", ":<password>", and
+!    ":<port>" may be excluded.  The <site> component is preceded by a
+     double slash "//" and is terminated by the next slash "/" or by the
+!    end of the URL.  Within the <site> component, the characters ":",
+     "@", "?", and "/" are reserved.
+  
+!       <site>        = [ [ user [ ":" password ] "@" ] hostport ]
+  
+     The user name and password, if present, are followed by a commercial
+     at-sign "@".
+***************
+*** 592,604 ****
+        hostnumber    = 1*digit "." 1*digit "." 1*digit "." 1*digit
+        port          = *digit
+  
+!    Domain names take the form as described in Section 3.5 of RFC 1034
+!    [10] and Section 2.1 of RFC 1123 [4]: a sequence of domain labels
+!    separated by ".", each domain label starting and ending with an
+!    alphanumerical character and possibly also containing "-" characters.
+!    The rightmost domain label will never start with a digit, though,
+!    which syntactically distinguishes all domain names from the IP
+!    addresses.
+  
+     The port is the network port number for the server.  Most schemes
+     designate protocols that have a default port number.  Another port
+--- 596,610 ----
+        hostnumber    = 1*digit "." 1*digit "." 1*digit "." 1*digit
+        port          = *digit
+  
+!    Hostnames take the form as described in Section 3.5 of [RFC1034]
+!    and Section 2.1 of [RFC1123]: a sequence of domain labels separated
+!    by ".", each domain label starting and ending with an
+!    alphanumerical character and possibly also containing "-"
+!    characters.  The rightmost domain label will never start with a
+!    digit, though, which syntactically distinguishes all domain names
+!    from hostnumbers. To actually be "Uniform" as a resource locator,
+!    a URL hostname should be a fully qualified domain names. In practice,
+!    however, the host component may be a local domain literal.
+  
+     The port is the network port number for the server.  Most schemes
+     designate protocols that have a default port number.  Another port
+***************
+*** 606,618 ****
+     host by a colon.  If the port is omitted, the default port number is
+     assumed.
+  
+!    A server component is not required for a URL scheme to make use of
+!    relative references.  A base URL without a server component implies
+!    that any relative reference will also be without a server component.
+  
+  4.3.2. Path Component
+  
+!    The path component contains data, specific to the scheme or server,
+     regarding the details of how the resource can be accessed.
+  
+        path          = [ "/" ] path_segments
+--- 612,624 ----
+     host by a colon.  If the port is omitted, the default port number is
+     assumed.
+  
+!    A site component is not required for a URL scheme to make use of
+!    relative references.  A base URL without a site component implies
+!    that any relative reference will also be without a site component.
+  
+  4.3.2. Path Component
+  
+!    The path component contains data, specific to the scheme or site,
+     regarding the details of how the resource can be accessed.
+  
+        path          = [ "/" ] path_segments
+***************
+*** 650,660 ****
+     though it might be considered opaque by later processes.
+  
+     Although the BNF defines what is allowed in each component, it is
+!    ambiguous in terms of differentiating between a server component and
+     a path component that begins with two slash characters.  The greedy
+     algorithm is used for disambiguation: the left-most matching rule
+     soaks up as much of the URL reference string as it is capable of
+!    matching.  In other words, the server component wins.
+     
+     Readers familiar with regular expressions should see Appendix B for a
+     concrete parsing example and test oracle.
+--- 656,666 ----
+     though it might be considered opaque by later processes.
+  
+     Although the BNF defines what is allowed in each component, it is
+!    ambiguous in terms of differentiating between a site component and
+     a path component that begins with two slash characters.  The greedy
+     algorithm is used for disambiguation: the left-most matching rule
+     soaks up as much of the URL reference string as it is capable of
+!    matching.  In other words, the site component wins.
+     
+     Readers familiar with regular expressions should see Appendix B for a
+     concrete parsing example and test oracle.
+***************
+*** 665,672 ****
+     It is often the case that a group or "tree" of documents has been
+     constructed to serve a common purpose; the vast majority of URLs in
+     these documents point to locations within the tree rather than
+!    outside of it.  Similarly, documents located at a particular server
+!    are much more likely to refer to other resources on that server than
+     to resources at remote sites.
+  
+     Relative addressing of URLs allows document trees to be partially
+--- 671,678 ----
+     It is often the case that a group or "tree" of documents has been
+     constructed to serve a common purpose; the vast majority of URLs in
+     these documents point to locations within the tree rather than
+!    outside of it.  Similarly, documents located at a particular site
+!    are much more likely to refer to other resources at that site than
+     to resources at remote sites.
+  
+     Relative addressing of URLs allows document trees to be partially
+***************
+*** 684,690 ****
+     A relative reference beginning with two slash characters is termed a
+     network-path reference.  Such references are rarely used.
+  
+!       net_path      = "//" server [ abs_path ]
+  
+     A relative reference beginning with a single slash character is
+     termed an absolute-path reference.
+--- 690,696 ----
+     A relative reference beginning with two slash characters is termed a
+     network-path reference.  Such references are rarely used.
+  
+!       net_path      = "//" site [ abs_path ]
+  
+     A relative reference beginning with a single slash character is
+     termed an absolute-path reference.
+***************
+*** 767,780 ****
+     agents manipulating such media types will be able to obtain the
+     appropriate syntax from that media type's specification.  An example
+     of how the base URL can be embedded in the Hypertext Markup Language
+!    (HTML) [3] is provided in Appendix D.
+  
+!    MIME messages [7] are considered to be composite documents.  The base URL of a
+!    message can be specified within the message headers (or equivalent
+!    tagged metainformation) of the message.  For protocols that make use
+!    of message headers like those described in MIME [7], the base URL
+!    can be specified by the Content-Base or Content-Location header
+!    fields.
+  
+        Content-Base      = "Content-Base" ":" absoluteURL
+  
+--- 773,786 ----
+     agents manipulating such media types will be able to obtain the
+     appropriate syntax from that media type's specification.  An example
+     of how the base URL can be embedded in the Hypertext Markup Language
+!    (HTML) [RFC1866] is provided in Appendix D.
+  
+!    MIME messages [RFC2045] are considered to be composite documents.
+!    The base URL of a message can be specified within the message
+!    headers (or equivalent tagged metainformation) of the message.  For
+!    protocols that make use of message headers like those described in
+!    MIME [RFC2045], the base URL can be specified by the Content-Base
+!    or Content-Location[RFC2068] header fields.
+  
+        Content-Base      = "Content-Base" ":" absoluteURL
+  
+***************
+*** 813,819 ****
+     encapsulated.
+  
+     Composite media types, such as the "multipart/*" and "message/*"
+!    media types defined by MIME[8], define a hierarchy of
+     retrieval context for their enclosed documents.  In other words, the
+     retrieval context of a component part is the base URL of the
+     composite entity of which it is a part.  Thus, a composite entity can
+--- 819,825 ----
+     encapsulated.
+  
+     Composite media types, such as the "multipart/*" and "message/*"
+!    media types defined by MIME[RFC2046], define a hierarchy of
+     retrieval context for their enclosed documents.  In other words, the
+     retrieval context of a component part is the base URL of the
+     composite entity of which it is a part.  Thus, a composite entity can
+***************
+*** 864,870 ****
+     1) The URL reference is parsed into the potential four components and
+        fragment identifier, as described in Section 4.4.
+  
+!    2) If the path component is empty and the scheme, server, and query
+        components are undefined, then it is a reference to the current
+        document and we are done.
+  
+--- 870,876 ----
+     1) The URL reference is parsed into the potential four components and
+        fragment identifier, as described in Section 4.4.
+  
+!    2) If the path component is empty and the scheme, site, and query
+        components are undefined, then it is a reference to the current
+        document and we are done.
+  
+***************
+*** 873,883 ****
+        absolute URL and we are done.  Otherwise, the reference URL's
+        scheme is inherited from the base URL's scheme component.
+  
+!    4) If the server component is defined, then the reference is a
+        network-path and we skip to step 7.  Otherwise, the reference
+!       URL's server is inherited from the base URL's server component,
+        which will also be undefined if the URL scheme does not use a
+!       server component.
+  
+     5) If the path component begins with a slash character ("/"), then
+        the reference is an absolute-path and we skip to step 7.
+--- 879,889 ----
+        absolute URL and we are done.  Otherwise, the reference URL's
+        scheme is inherited from the base URL's scheme component.
+  
+!    4) If the site component is defined, then the reference is a
+        network-path and we skip to step 7.  Otherwise, the reference
+!       URL's site is inherited from the base URL's site component,
+        which will also be undefined if the URL scheme does not use a
+!       site component.
+  
+     5) If the path component begins with a slash character ("/"), then
+        the reference is an absolute-path and we skip to step 7.
+***************
+*** 930,941 ****
+           result = ""
+  
+           if scheme is defined then
+               append scheme to result
+               append ":" to result
+  
+!          if server is defined then
+               append "//" to result
+!              append server to result
+  
+           append path to result
+  
+--- 936,948 ----
+           result = ""
+  
+           if scheme is defined then
++ 
+               append scheme to result
+               append ":" to result
+  
+!          if site is defined then
+               append "//" to result
+!              append site to result
+  
+           append path to result
+  
+***************
+*** 964,977 ****
+     Resolution examples are provided in Appendix C.
+  
+  
+! 6. Security Considerations
+  
+     A URL does not in itself pose a security threat.  Users should beware
+     that there is no general guarantee that a URL, which at one time
+     located a given resource, will continue to do so.  Nor is there any
+     guarantee that a URL will not locate a different resource at some
+     later point in time, due to the lack of any constraint on how a given
+!    server apportions its namespace.  Such a guarantee can only be
+     obtained from the person(s) controlling that namespace and the
+     resource in question.
+  
+--- 971,997 ----
+     Resolution examples are provided in Appendix C.
+  
+  
+! 6. URL Normalization and Equivalence
+! 
+!    In many cases, different URL strings may actually identify the
+!    identical resource. For example, the host names used in URLs are
+!    actually case insensitive, and the URL <http://www.XEROX.com> is
+!    equivalent to <http://www.xerox.com>. In general, the rules for
+!    equivalence and definition of a normal form, if any, are scheme
+!    dependent. When a scheme uses elements of the common syntax, it
+!    will also use the common syntax equivalence rules, namely that host
+!    name is case independent, and a URL with an explicit ":port", where
+!    the port is the default for the scheme, is equivalent to one
+!    where the port is elided.
+!    
+! 7. Security Considerations
+  
+     A URL does not in itself pose a security threat.  Users should beware
+     that there is no general guarantee that a URL, which at one time
+     located a given resource, will continue to do so.  Nor is there any
+     guarantee that a URL will not locate a different resource at some
+     later point in time, due to the lack of any constraint on how a given
+!    site apportions its namespace.  Such a guarantee can only be
+     obtained from the person(s) controlling that namespace and the
+     resource in question.
+  
+***************
+*** 981,987 ****
+     cause a possibly damaging remote operation to occur.  The unsafe URL
+     is typically constructed by specifying a port number other than that
+     reserved for the network protocol in question.  The client
+!    unwittingly contacts a server which is in fact running a different
+     protocol.  The content of the URL contains instructions which, when
+     interpreted according to this other protocol, cause an unexpected
+     operation.  An example has been the use of gopher URLs to cause an
+--- 1001,1007 ----
+     cause a possibly damaging remote operation to occur.  The unsafe URL
+     is typically constructed by specifying a port number other than that
+     reserved for the network protocol in question.  The client
+!    unwittingly contacts a site which is in fact running a different
+     protocol.  The content of the URL contains instructions which, when
+     interpreted according to this other protocol, cause an unexpected
+     operation.  An example has been the use of gopher URLs to cause an
+***************
+*** 1005,1059 ****
+  
+  7. Acknowledgements
+  
+!    This document was derived from RFC 1738 [2] and RFC 1808 [6]; the
+!    acknowledgements in those specifications still apply.  In addition,
+!    contributions by Lauren Wood, Martin Duerst, Gisle Aas, Martijn
+!    Koster, Ryan Moats and Foteos Macrides are gratefully acknowledged.
+     
+  8. References
+  
+!    [1] Berners-Lee, T., "Universal Resource Identifiers in WWW: A
+!        Unifying Syntax for the Expression of Names and Addresses of
+!        Objects on the Network as used in the World-Wide Web", RFC 1630,
+!        CERN, June 1994.
+  
+!    [2] Berners-Lee, T., Masinter, L., and M. McCahill, Editors, "Uniform
+!        Resource Locators (URL)", RFC 1738, CERN, Xerox Corporation,
+!        University of Minnesota, December 1994.
+  
+!    [3] Berners-Lee T., and D. Connolly, "HyperText Markup Language
+!        Specification -- 2.0", RFC 1866, MIT/W3C, November 1995.
+  
+!    [4] Braden, R., Editor, "Requirements for Internet Hosts --
+!        Application and Support", STD 3, RFC 1123, IETF, October 1989.
+  
+!    [5] Crocker, D., "Standard for the Format of ARPA Internet Text
+!        Messages", STD 11, RFC 822, UDEL, August 1982.
+  
+!    [6] Fielding, R., "Relative Uniform Resource Locators", RFC 1808,
+!        UC Irvine, June 1995.
+  
+!    [7] N. Freed & N. Borenstein, "Multipurpose Internet Mail
+!        Extensions (MIME) Part One: Format of Internet Message Bodies,"
+!        RFC 2045, November 1996.
+  
+!    [8] Freed, N., and N. Freed, "Multipurpose Internet Mail
+!        Extensions (MIME): Part Two: Media Types", RFC 2046, Innosoft, Bellcore,
+!        November 1996.
+  
+!    [9] Kunze, J., "Functional Recommendations for Internet Resource
+!        Locators", RFC 1736, IS&T, UC Berkeley, February 1995.
+  
+!   [10] Mockapetris, P., "Domain Names - Concepts and Facilities",
+!        STD 13, RFC 1034, USC/Information Sciences Institute,
+!        November 1987.
+  
+!   [11] Sollins, K., and L. Masinter, "Functional Requirements for
+!        Uniform Resource Names", RFC 1737, MIT/LCS, Xerox Corporation,
+!        December 1994.
+  
+!   [12] US-ASCII. "Coded Character Set -- 7-bit American Standard Code
+!        for Information Interchange", ANSI X3.4-1986.
+  
+  
+  9. Authors' Addresses
+--- 1025,1084 ----
+  
+  7. Acknowledgements
+  
+!    This document was derived from RFC 1738 [RFC1738] and RFC 1808
+!    [RFC1808]; the acknowledgements in those specifications still
+!    apply.  In addition, contributions by Lauren Wood, Martin Duerst,
+!    Gisle Aas, Martijn Koster, Ryan Moats and Foteos Macrides are
+!    gratefully acknowledged.
+     
+  8. References
+  
+! [RFC1630] Berners-Lee, T., "Universal Resource Identifiers in WWW: A
+!    Unifying Syntax for the Expression of Names and Addresses of
+!    Objects on the Network as used in the World-Wide Web", RFC 1630,
+!    CERN, June 1994.
+  
+! [RFC1738] Berners-Lee, T., Masinter, L., and M. McCahill, Editors,
+!    "Uniform Resource Locators (URL)", RFC 1738, CERN, Xerox
+!    Corporation, University of Minnesota, December 1994.
+  
+! [RFC1866] Berners-Lee T., and D. Connolly, "HyperText Markup Language
+!    Specification -- 2.0", RFC 1866, MIT/W3C, November 1995.
+  
+! [RFC1123] Braden, R., Editor, "Requirements for Internet Hosts --
+!    Application and Support", STD 3, RFC 1123, IETF, October 1989.
+  
+! [RFC822] Crocker, D., "Standard for the Format of ARPA Internet Text
+!    Messages", STD 11, RFC 822, UDEL, August 1982.
+  
+! [RFC1808] Fielding, R., "Relative Uniform Resource Locators", RFC 1808,
+!    UC Irvine, June 1995.
+  
+! [RFC2045] N. Freed & N. Borenstein, "Multipurpose Internet Mail
+!    Extensions (MIME) Part One: Format of Internet Message Bodies," RFC
+!    2045, November 1996.
+  
+! [RFC2046] Freed, N., and N. Freed, "Multipurpose Internet Mail
+!    Extensions (MIME): Part Two: Media Types", RFC 2046, Innosoft,
+!    Bellcore, November 1996.
+  
+! [RFC1736] Kunze, J., "Functional Recommendations for Internet Resource
+!    Locators", RFC 1736, IS&T, UC Berkeley, February 1995.
+  
+! [RFC1034] Mockapetris, P., "Domain Names - Concepts and Facilities",
+!    STD 13, RFC 1034, USC/Information Sciences Institute, November
+!    1987.
+  
+! [RFC2110] Palme, J., Hopmann, A. "MIME E-mail Encapsulation of 
+!    Agregate Documents, such as HTML (MHTML)", RFC 2110, Stockholm
+!    University/KTH, Microsoft Corporation, March 1997.
+!    
+! [RFC1737] Sollins, K., and L. Masinter, "Functional Requirements for
+!    Uniform Resource Names", RFC 1737, MIT/LCS, Xerox Corporation,
+!    December 1994.
+  
+! [ASCII] US-ASCII. "Coded Character Set -- 7-bit American Standard Code
+!    for Information Interchange", ANSI X3.4-1986.
+  
+  
+  9. Authors' Addresses
+***************
+*** 1096,1108 ****
+        generic-URL   = scheme ":" relativeURL
+  
+        relativeURL   = net_path | abs_path | rel_path
+!       net_path      = "//" server [ abs_path ]
+        abs_path      = "/"  rel_path
+        rel_path      = [ path_segments ] [ "?" query ]
+  
+        scheme        = 1*( alpha | digit | "+" | "-" | "." )
+  
+!       server        = [ [ user [ ":" password ] "@" ] hostport ]
+        user          = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+        password      = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+        hostport      = host [ ":" port ]
+--- 1121,1133 ----
+        generic-URL   = scheme ":" relativeURL
+  
+        relativeURL   = net_path | abs_path | rel_path
+!       net_path      = "//" site [ abs_path ]
+        abs_path      = "/"  rel_path
+        rel_path      = [ path_segments ] [ "?" query ]
+  
+        scheme        = 1*( alpha | digit | "+" | "-" | "." )
+  
+!       site          = [ [ user [ ":" password ] "@" ] hostport ]
+        user          = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+        password      = *( unreserved | escaped | ";" | "&" | "=" | "+" )
+        hostport      = host [ ":" port ]
+***************
+*** 1185,1191 ****
+     can determine the value of the four components and fragment as
+  
+        scheme   = $2
+!       server   = $4
+        path     = $5
+        query    = $7
+        fragment = $9
+--- 1210,1216 ----
+     can determine the value of the four components and fragment as
+  
+        scheme   = $2
+!       site     = $4
+        path     = $5
+        query    = $7
+        fragment = $9
+***************
+*** 1240,1246 ****
+     Parsers must be careful in handling the case where there are more
+     relative path ".." segments than there are hierarchical levels in the
+     base URL's path.  Note that the ".." syntax cannot be used to change
+!    the server component of a URL.
+  
+        ../../../g    =  http://a/../g
+        ../../../../g =  http://a/../../g
+--- 1265,1271 ----
+     Parsers must be careful in handling the case where there are more
+     relative path ".." segments than there are hierarchical levels in the
+     base URL's path.  Note that the ".." syntax cannot be used to change
+!    the site component of a URL.
+  
+        ../../../g    =  http://a/../g
+        ../../../../g =  http://a/../../g
+***************
+*** 1272,1278 ****
+     Finally, some older parsers allow the scheme name to be present in a
+     relative URL if it is the same as the base URL scheme.  This is
+     considered to be a loophole in prior specifications of partial URLs
+!    [1] and should be avoided by future parsers.
+  
+        http:g        =  http:g
+        http:         =  http:
+--- 1297,1303 ----
+     Finally, some older parsers allow the scheme name to be present in a
+     relative URL if it is the same as the base URL scheme.  This is
+     considered to be a loophole in prior specifications of partial URLs
+!    [RFC1630] and should be avoided by future parsers.
+  
+        http:g        =  http:g
+        http:         =  http:
+***************
+*** 1283,1289 ****
+     It is useful to consider an example of how the base URL of a document
+     can be embedded within the document's content.  In this appendix, we
+     describe how documents written in the Hypertext Markup Language
+!    (HTML) [3] can include an embedded base URL.  This appendix does not
+     form a part of the relative URL specification and should not be
+     considered as anything more than a descriptive example.
+  
+--- 1308,1314 ----
+     It is useful to consider an example of how the base URL of a document
+     can be embedded within the document's content.  In this appendix, we
+     describe how documents written in the Hypertext Markup Language
+!    (HTML) [RFC1866] can include an embedded base URL.  This appendix does not
+     form a part of the relative URL specification and should not be
+     considered as anything more than a descriptive example.
+  
+***************
+*** 1396,1411 ****
+     just US-ASCII octets.  Unless otherwise noted here, these
+     modifications do not affect the URL syntax.
+  
+!    Both RFC 1738 and RFC 1808 refer to the "reserved" set of characters
+!    as if URL-interpreting servers were limited to a single set of
+!    characters with a reserved purpose (i.e., as meaning something other
+!    than the data to which the characters correspond), and that this set
+!    was fixed by the URL scheme.  However, this has not been true in
+!    practice; any character which is interpreted differently when it is
+!    escaped is, in effect, reserved.  Furthermore, the interpreting
+!    engine on a server is often dependent on the resource, not just the
+!    URL scheme.  The description of reserved characters has been changed
+!    accordingly.
+  
+     The plus "+" character was added to those in the "reserved" set,
+     since it is treated as reserved within some URL components.
+--- 1421,1436 ----
+     just US-ASCII octets.  Unless otherwise noted here, these
+     modifications do not affect the URL syntax.
+  
+!    Both RFC 1738 and RFC 1808 refer to the "reserved" set of
+!    characters as if URL-interpreting software were limited to a single
+!    set of characters with a reserved purpose (i.e., as meaning
+!    something other than the data to which the characters correspond),
+!    and that this set was fixed by the URL scheme.  However, this has
+!    not been true in practice; any character which is interpreted
+!    differently when it is escaped is, in effect, reserved.
+!    Furthermore, the interpreting engine on a HTTP server is often
+!    dependent on the resource, not just the URL scheme.  The
+!    description of reserved characters has been changed accordingly.
+  
+     The plus "+" character was added to those in the "reserved" set,
+     since it is treated as reserved within some URL components.
+***************
+*** 1415,1425 ****
+     difficulty to transcribe it with some keyboards.
+  
+     The question-mark "?" character was removed from the set of allowed
+!    characters for the user and password in the server component, since
+     testing showed that many applications treat it as reserved for
+     separating the query component from the rest of the URL.
+  
+!    RFC 1738 specified that the path was separated from the server
+     portion of a URL by a slash.  RFC 1808 followed suit, but with a
+     fudge of carrying around the separator as a "prefix" in order to
+     describe the parsing algorithm.  RFC 1630 never had this problem,
+--- 1440,1450 ----
+     difficulty to transcribe it with some keyboards.
+  
+     The question-mark "?" character was removed from the set of allowed
+!    characters for the user and password in the site component, since
+     testing showed that many applications treat it as reserved for
+     separating the query component from the rest of the URL.
+  
+!    RFC 1738 specified that the path was separated from the site
+     portion of a URL by a slash.  RFC 1808 followed suit, but with a
+     fudge of carrying around the separator as a "prefix" in order to
+     describe the parsing algorithm.  RFC 1630 never had this problem,
+***************
+*** 1471,1477 ****
+     the URL scheme, so the associated description has been updated to
+     reflect that.
+  
+!    The BNF term <net_loc> has been replaced with <server>, since the
+     latter more accurately describes its use and purpose.
+  
+     Extensive testing of current client applications demonstrated that
+--- 1496,1502 ----
+     the URL scheme, so the associated description has been updated to
+     reflect that.
+  
+!    The BNF term <net_loc> has been replaced with <site>, since the
+     latter more accurately describes its use and purpose.
+  
+     Extensive testing of current client applications demonstrated that
+***************
+*** 1489,1491 ****
+--- 1514,1518 ----
+     append the reference's query component to a relative path before
+     merging it with the base path.  The resolution algorithm has been
+     changed accordingly.
++ 
++ 

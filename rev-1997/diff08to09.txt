@@ -1,0 +1,102 @@
+*** draft-fielding-url-syntax-08.txt	Tue Oct 14 23:02:52 1997
+--- draft-fielding-url-syntax-09.txt	Tue Oct 21 21:01:58 1997
+***************
+*** 1,7 ****
+  Network Working Group                            T. Berners-Lee, MIT/LCS
+  INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
+! draft-fielding-url-syntax-08              L. Masinter, Xerox Corporation
+! Expires six months after publication date               October 14, 1997
+  
+  
+      Uniform Resource Locators (URL): Generic Syntax and Semantics
+--- 1,7 ----
+  Network Working Group                            T. Berners-Lee, MIT/LCS
+  INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
+! draft-fielding-url-syntax-09              L. Masinter, Xerox Corporation
+! Expires six months after publication date               October 21, 1997
+  
+  
+      Uniform Resource Locators (URL): Generic Syntax and Semantics
+***************
+*** 590,610 ****
+  
+        hostport      = host [ ":" port ]
+        host          = hostname | IPv4address
+!       hostname      = *( domainlabel "." ) toplabel
+        domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+        toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+        IPv4address   = 1*digit "." 1*digit "." 1*digit "." 1*digit
+        port          = *digit
+  
+!    Hostnames take the form described in Section 3.5 of [RFC1034] and
+     Section 2.1 of [RFC1123]: a sequence of domain labels separated by
+     ".", each domain label starting and ending with an alphanumeric
+     character and possibly also containing "-" characters.  The rightmost
+     domain label of a fully qualified domain name will never start with a
+     digit, thus syntactically distinguishing domain names from IPv4
+!    addresses.  To actually be "Uniform" as a resource locator, a URL
+!    hostname should be a fully qualified domain name. In practice,
+!    however, the host component may be a local domain literal.
+  
+        Note: A suitable representation for including a literal IPv6
+        address as the host part of a URL is desired, but has not yet
+--- 590,612 ----
+  
+        hostport      = host [ ":" port ]
+        host          = hostname | IPv4address
+!       hostname      = *( domainlabel "." ) toplabel [ "." ]
+        domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+        toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+        IPv4address   = 1*digit "." 1*digit "." 1*digit "." 1*digit
+        port          = *digit
+  
+!    Hostnames take the form described in Section 3 of [RFC1034] and
+     Section 2.1 of [RFC1123]: a sequence of domain labels separated by
+     ".", each domain label starting and ending with an alphanumeric
+     character and possibly also containing "-" characters.  The rightmost
+     domain label of a fully qualified domain name will never start with a
+     digit, thus syntactically distinguishing domain names from IPv4
+!    addresses, and may be followed by a single "." if it is necessary to
+!    distinguish between the complete domain name and any local domain.
+!    To actually be "Uniform" as a resource locator, a URL hostname should
+!    be a fully qualified domain name.  In practice, however, the host
+!    component may be a local domain literal.
+  
+        Note: A suitable representation for including a literal IPv6
+        address as the host part of a URL is desired, but has not yet
+***************
+*** 1003,1010 ****
+     This document was derived from RFC 1738 [RFC1738] and RFC 1808
+     [RFC1808]; the acknowledgements in those specifications still
+     apply.  In addition, contributions by Lauren Wood, Martin Duerst,
+!    Gisle Aas, Martijn Koster, Ryan Moats and Foteos Macrides are
+!    gratefully acknowledged.
+     
+  9. References
+  
+--- 1005,1012 ----
+     This document was derived from RFC 1738 [RFC1738] and RFC 1808
+     [RFC1808]; the acknowledgements in those specifications still
+     apply.  In addition, contributions by Lauren Wood, Martin Duerst,
+!    Gisle Aas, Martijn Koster, Ryan Moats, Foteos Macrides and
+!    Dave Kristol are gratefully acknowledged.
+     
+  9. References
+  
+***************
+*** 1159,1165 ****
+                           "=" | "+" )
+        hostport      = host [ ":" port ]
+        host          = hostname | IPv4address
+!       hostname      = *( domainlabel "." ) toplabel
+        domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+        toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+        IPv4address   = 1*digit "." 1*digit "." 1*digit "." 1*digit
+--- 1161,1167 ----
+                           "=" | "+" )
+        hostport      = host [ ":" port ]
+        host          = hostname | IPv4address
+!       hostname      = *( domainlabel "." ) toplabel [ "." ]
+        domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
+        toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+        IPv4address   = 1*digit "." 1*digit "." 1*digit "." 1*digit

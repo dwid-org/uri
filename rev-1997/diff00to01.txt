@@ -1,0 +1,636 @@
+*** draft-fielding-url-syntax-00.txt	Sun Nov 17 17:59:38 1996
+--- draft-fielding-url-syntax-01.txt	Tue Nov 26 13:57:25 1996
+***************
+*** 2,13 ****
+  
+  Network Working Group                                     T. Berners-Lee
+  INTERNET-DRAFT                                                   MIT/LCS
+! <draft-fielding-url-syntax-00>                               R. Fielding
+  Expires six months after publication date.                   U.C. Irvine
+                                                               L. Masinter
+                                                         Xerox Corporation
+  
+!                                                         13 November 1996
+  
+  
+                      Uniform Resource Locators (URL)
+--- 2,13 ----
+  
+  Network Working Group                                     T. Berners-Lee
+  INTERNET-DRAFT                                                   MIT/LCS
+! <draft-fielding-url-syntax-01>                               R. Fielding
+  Expires six months after publication date.                   U.C. Irvine
+                                                               L. Masinter
+                                                         Xerox Corporation
+  
+!                                                         26 November 1996
+  
+  
+                      Uniform Resource Locators (URL)
+***************
+*** 33,54 ****
+     or ftp.isi.edu (US West Coast).
+  
+     Issues:
+!       1. The descriptions of the components in Section 4 are not yet
+!          complete.
+!       2. We need to define a mechanism for using IPv6 addresses in the
+           URL hostname which will not break existing systems too badly.
+!       3. Section 7 (New URL Schemes) needs input from the Applications
+           Area A.D.'s.
+  
+  
+  Abstract
+  
+     A Uniform Resource Locator (URL) is a compact string representation
+!    of the location for a resource that is available via the Internet.
+!    This document defines the general syntax and semantics of URLs,
+!    including both absolute and relative locators, and guidelines for
+!    their use and for the definition of new URL schemes.  It revises and
+!    replaces the generic definitions in RFC 1738 and RFC 1808.
+  
+  
+  1. Introduction
+--- 33,55 ----
+     or ftp.isi.edu (US West Coast).
+  
+     Issues:
+!       1. We need to define a mechanism for using IPv6 addresses in the
+           URL hostname which will not break existing systems too badly.
+!       2. Section 7 (New URL Schemes) needs input from the Applications
+           Area A.D.'s.
++       3. Removal of the parameters component allows for a simplification
++          of the URL parsing description, since they can now be parsed
++          by scanning from left-to-right.  This is not yet in the text.
+  
+  
+  Abstract
+  
+     A Uniform Resource Locator (URL) is a compact string representation
+!    of a location for use in identifying an abstract or physical
+!    resource.  This document defines the general syntax and semantics of
+!    URLs, including both absolute and relative locators, and guidelines
+!    for their use and for the definition of new URL schemes.  It revises
+!    and replaces the generic definitions in RFC 1738 and RFC 1808.
+  
+  
+  1. Introduction
+***************
+*** 86,97 ****
+           "retrievable", such as human beings, corporations, and actual
+           books in a library.
+  
+!          The resource is the conceptual entity defined by the identity,
+!          not necessarily the thing which holds that identity at one
+!          particular instance in time.  Thus, a resource can remain
+!          constant even when its content---the thing(s) to which it
+!          currently corresponds---changes over time, provided that the
+!          identity is not changed in the process.
+  
+        Locator
+           A locator is an object that identifies a resource by its
+--- 87,98 ----
+           "retrievable", such as human beings, corporations, and actual
+           books in a library.
+  
+!          The resource is the conceptual mapping to an entity or set of
+!          entities, not necessarily the entity which corresponds to that
+!          mapping at any particular instance in time.  Thus, a resource
+!          can remain constant even when its content---the entities to
+!          which it currently corresponds---changes over time, provided
+!          that the conceptual mapping is not changed in the process.
+  
+        Locator
+           A locator is an object that identifies a resource by its
+***************
+*** 131,141 ****
+        -- telnet scheme for interactive services via the TELNET Protocol
+  
+     Many other URL schemes have been defined.  Section 7 describes how
+!    new schemes are defined and registered.  Although many URL schemes
+!    are named after protocols, this does not imply that the only way to
+!    access the URL's resource is via the named protocol.  Gateways,
+!    proxies, caches, and name resolution services might be used to access
+!    some resources, independent of the protocol of their origin.
+  
+  1.2. URL Transcribability
+  
+--- 132,146 ----
+        -- telnet scheme for interactive services via the TELNET Protocol
+  
+     Many other URL schemes have been defined.  Section 7 describes how
+!    new schemes are defined and registered.  The scheme defines the
+!    namespace of the URL.  Although many URL schemes are named after
+!    protocols, this does not imply that the only way to access the URL's
+!    resource is via the named protocol.  Gateways, proxies, caches, and
+!    name resolution services might be used to access some resources,
+!    independent of the protocol of their origin, and the resolution of
+!    some URLs may require the use of more than one protocol (e.g., both
+!    DNS and HTTP are typically used to access an "http" URL's resource
+!    when it can't be found in a local cache).
+  
+  1.2. URL Transcribability
+  
+***************
+*** 144,150 ****
+     digits, and special characters.  A URL may be represented in a
+     variety of ways: e.g., ink on paper, pixels on a screen, or a
+     sequence of octets in a coded character set.  The interpretation of a
+!    URL depends only on the identity of the characters used.
+  
+     The goal of transcribability can be described by a simple scenario.
+     Imagine two colleagues, Sam and Kim, sitting in a pub at an
+--- 149,156 ----
+     digits, and special characters.  A URL may be represented in a
+     variety of ways: e.g., ink on paper, pixels on a screen, or a
+     sequence of octets in a coded character set.  The interpretation of a
+!    URL depends only on the characters used and not how those characters
+!    are represented on the wire.
+  
+     The goal of transcribability can be described by a simple scenario.
+     Imagine two colleagues, Sam and Kim, sitting in a pub at an
+***************
+*** 304,310 ****
+     the same escaped encoding regardless of the larger octet character
+     set.  The coded character set chosen must correspond to the character
+     set of the mechanism that will interpret the URL component in which
+!    the escaped character is used.
+     
+  2.3.2. When to Escape and Unescape
+  
+--- 310,324 ----
+     the same escaped encoding regardless of the larger octet character
+     set.  The coded character set chosen must correspond to the character
+     set of the mechanism that will interpret the URL component in which
+!    the escaped character is used.  A sequence of escape triplets are
+!    used if the character is coded as a sequence of octets.
+! 
+!    Any character, from any character set, can be included in a URL via
+!    the escaped encoding, provided that the mechanism which will
+!    interpret the URL has an octet encoding for that character.  However,
+!    only that mechanism (the originator of the URL) can determine which
+!    character is represented by the octet.  A client without knowledge of
+!    the origination mechanism cannot unescape the character for display.
+     
+  2.3.2. When to Escape and Unescape
+  
+***************
+*** 413,419 ****
+  
+     A URL reference which does not contain a URL is a reference to the
+     current document.  In other words, an empty URL reference within a
+!    document is interpreted as a reference to the top of that document,
+     and a reference containing only a fragment identifier is a reference
+     to the identified fragment of that document.  Traversal of such a
+     reference should not result in an additional retrieval action.
+--- 427,433 ----
+  
+     A URL reference which does not contain a URL is a reference to the
+     current document.  In other words, an empty URL reference within a
+!    document is interpreted as a reference to the start of that document,
+     and a reference containing only a fragment identifier is a reference
+     to the identified fragment of that document.  Traversal of such a
+     reference should not result in an additional retrieval action.
+***************
+*** 421,427 ****
+     When parsing a URL reference, the fragment identifier (if any) is
+     extracted first.  If the reference contains a crosshatch "#"
+     character, then the substring after the first (left-most) crosshatch
+!    and up to the end of the parse string is the fragment identifier.  If
+     the crosshatch is the last character, or no crosshatch is present,
+     then the fragment identifier is empty.  The crosshatch separator is
+     discarded.
+--- 435,441 ----
+     When parsing a URL reference, the fragment identifier (if any) is
+     extracted first.  If the reference contains a crosshatch "#"
+     character, then the substring after the first (left-most) crosshatch
+!    and up to the end of the reference is the fragment identifier.  If
+     the crosshatch is the last character, or no crosshatch is present,
+     then the fragment identifier is empty.  The crosshatch separator is
+     discarded.
+***************
+*** 498,504 ****
+  
+        net_path    = "//" server [ abs_path ]
+        abs_path    = "/"  rel_path
+!       rel_path    = [ path ] [ ";" parameters ] [ "?" query ]
+  
+     It is not necessary for all URLs within a given scheme to be
+     restricted to the generic-URL syntax, since the hierarchical
+--- 512,518 ----
+  
+        net_path    = "//" server [ abs_path ]
+        abs_path    = "/"  rel_path
+!       rel_path    = [ path ] [ "?" query ]
+  
+     It is not necessary for all URLs within a given scheme to be
+     restricted to the generic-URL syntax, since the hierarchical
+***************
+*** 522,539 ****
+     The URL syntax is dependent upon the scheme.  Some schemes use
+     reserved characters like "?" and ";" to indicate special components,
+     while others just consider them to be part of the path.  However,
+!    most URL schemes use a common sequence of five main components to
+     define the location of a resource
+  
+!       <scheme>://<server>/<path>;<parameters>?<query>
+  
+     each of which, except <scheme>, may be absent from a particular URL.
+  
+!    The order of the components is important.  If both <parameters> and
+!    <query> are present, the <query> information must occur after the
+!    <parameters>.  A URL reference is parsed into its components from the
+!    outside-in: fragment, scheme, server, query, parameters, and then
+!    path.
+  
+  4.3.1. Server Component
+  
+--- 536,553 ----
+     The URL syntax is dependent upon the scheme.  Some schemes use
+     reserved characters like "?" and ";" to indicate special components,
+     while others just consider them to be part of the path.  However,
+!    most URL schemes use a common sequence of four main components to
+     define the location of a resource
+  
+!       <scheme>://<server>/<path>?<query>
+  
+     each of which, except <scheme>, may be absent from a particular URL.
++    For example, some URL schemes do not allow a server component, and
++    others do not use a query component.
+  
+!    The order of the components is important.  A URL reference is parsed
+!    into its components from the outside-in: fragment, scheme, server,
+!    query, and then path.
+  
+  4.3.1. Server Component
+  
+***************
+*** 546,564 ****
+     Some or all of the parts "<user>:<password>@", ":<password>", and
+     ":<port>" may be excluded.  The server component is preceded by a
+     double slash "//" and is terminated by the next slash "/" or by the
+!    end of the URL.  The different components obey the following rules:
+  
+        server         = [ [ user [ ":" password ] "@" ] hostport ]
+  
+        user           = *[ unreserved | escaped |
+! 			  ";" | "?" | "&" | "=" | "+" ]
+  
+        password       = *[ unreserved | escaped |
+! 			  ";" | "?" | "&" | "=" | "+" ]
+! 
+!    The user name (and password), if present, are followed by a
+!    commercial at-sign "@".  Within the user and password fields, the
+!    characters ":", "@", and "/" are reserved.
+  
+     Note that an empty user name or password is different than no user
+     name or password; there is no way to specify a password without
+--- 560,578 ----
+     Some or all of the parts "<user>:<password>@", ":<password>", and
+     ":<port>" may be excluded.  The server component is preceded by a
+     double slash "//" and is terminated by the next slash "/" or by the
+!    end of the URL.
+  
+        server         = [ [ user [ ":" password ] "@" ] hostport ]
+  
++    The user name and password, if present, are followed by a commercial
++    at-sign "@".  Within the user and password fields, the characters
++    ":", "@", and "/" are reserved.
++ 
+        user           = *[ unreserved | escaped |
+!                           ";" | "?" | "&" | "=" | "+" ]
+  
+        password       = *[ unreserved | escaped |
+!                           ";" | "?" | "&" | "=" | "+" ]
+  
+     Note that an empty user name or password is different than no user
+     name or password; there is no way to specify a password without
+***************
+*** 567,572 ****
+--- 581,590 ----
+     while <ftp://foo:@host.com/> has a user name of "foo" and an
+     empty password.
+  
++    The host is a domain name of a network host, or its IPv4 address as a
++    set of four decimal digit groups separated by ".".  A suitable
++    representation for IPv6 addresses has not yet been determined.
++ 
+        hostport     = host [ ":" port ]
+        host         = hostname | hostnumber
+        hostname     = *( domainlabel "." ) toplabel
+***************
+*** 575,583 ****
+        hostnumber   = 1*digit "." 1*digit "." 1*digit "." 1*digit
+        port         = *digit
+  
+!    The host is a domain name of a network host, or its IP address as a
+!    set of four decimal digit groups separated by ".".  Fully qualified
+!    domain names take the form as described in Section 3.5 of RFC 1034
+     [9] and Section 2.1 of RFC 1123 [5]: a sequence of domain labels
+     separated by ".", each domain label starting and ending with an
+     alphanumerical character and possibly also containing "-" characters.
+--- 593,599 ----
+        hostnumber   = 1*digit "." 1*digit "." 1*digit "." 1*digit
+        port         = *digit
+  
+!    Domain names take the form as described in Section 3.5 of RFC 1034
+     [9] and Section 2.1 of RFC 1123 [5]: a sequence of domain labels
+     separated by ".", each domain label starting and ending with an
+     alphanumerical character and possibly also containing "-" characters.
+***************
+*** 599,617 ****
+     is present, the entire remaining reference is the server component.
+     The double-slash separator is discarded.
+  
+  4.3.2. Path Component
+  
+!    The path component contains data specific to the scheme or server.
+!    It typically specifies the details of how the resource can be
+!    accessed.  Note that the "/" between the host (or port) and the
+!    url-path is NOT part of the url-path.
+! 
+!       path        = fsegment *( "/" segment )
+!       fsegment    = 1*pchar
+!       segment     =  *pchar
+  
+        pchar       = unreserved | escaped | ":" | "@" | "&" | "=" | "+"
+  
+     When parsing a URL reference, the path is extracted after all other
+     components.  The remaining reference is the URL path and the slash
+     "/" that might precede it.  Although the initial slash is not part of
+--- 615,644 ----
+     is present, the entire remaining reference is the server component.
+     The double-slash separator is discarded.
+  
++    A server component is not required for a URL scheme to make use of
++    relative references.  A base URL without a server component implies
++    that any relative reference will also be without a server component.
++ 
+  4.3.2. Path Component
+  
+!    The path component contains data, specific to the scheme or server,
+!    regarding the details of how the resource can be accessed.  Note that
+!    the "/" separator between the server component and the path component
+!    is NOT part of the path.
+! 
+!       path        = segment *( "/" segment )
+!       segment     = *pchar *( ";" param )
+!       param       = *pchar
+  
+        pchar       = unreserved | escaped | ":" | "@" | "&" | "=" | "+"
+  
++    The path may consist of a sequence of path segments separated by a
++    single slash "/" character.  Within a path segment, the characters
++    "/", ";", and "?" are reserved.  Each path segment may include a
++    sequence of parameters, indicated by the semicolon ";" character.
++    The parameters are not significant to the parsing of relative
++    references.
++ 
+     When parsing a URL reference, the path is extracted after all other
+     components.  The remaining reference is the URL path and the slash
+     "/" that might precede it.  Although the initial slash is not part of
+***************
+*** 619,654 ****
+     so that later processes can differentiate between relative and
+     absolute paths, as described in Section 7.
+  
+!    Authors should be aware that path names which contain a colon ":"
+     character cannot be used as the first component of a relative URL
+     path (e.g., "this:that") because they will likely be mistaken for a
+     scheme name.  It is therefore necessary to precede such cases with
+     other components (e.g., "./this:that") in order for them to be
+     referenced as a relative path.
+  
+! 4.3.3. Parameters Component
+! 
+!    The parameters component is a sequence of semi-colon-separated
+!    attributes.
+! 
+!       parameters  = param *( ";" param )
+!       param       = *( pchar | "/" )
+! 
+!    When parsing a URL reference, the parameters component (if any) is
+!    extracted after the query component.  If the remaining reference
+!    contains a semicolon ";" character, then the substring after the
+!    first (left-most) semicolon and up to the end of the reference is the
+!    parameters component.  If the semicolon is the last character, or no
+!    semicolon is present, then the parameters component is empty.  The
+!    semicolon separator is discarded.
+! 
+! 4.3.4. Query Component
+  
+     The query component is a string of information to be interpreted by
+     the resource.
+  
+        query       = *urlchar
+  
+     When parsing a URL reference, the query component (if any) is
+     extracted after the server component.  If the remaining reference
+     contains a question mark "?" character, then the substring after the
+--- 646,680 ----
+     so that later processes can differentiate between relative and
+     absolute paths, as described in Section 7.
+  
+!    A relative reference beginning with a single slash character is
+!    termed an absolute-path reference.
+! 
+!    A relative reference which does not begin with a scheme name or a
+!    slash character is termed a relative-path reference.  Within a
+!    relative-path reference, the complete path segments "." and ".." have
+!    special meanings: "the current hierarchy level" and "the level above
+!    this hierarchy level", respectively.  Although this is very similar
+!    to their use within Unix-based filesystems to indicate directory
+!    levels, these path components are only active when resolving
+!    relative-path references to their absolute form (Section 6).
+! 
+!    Authors should be aware that path segments which contain a colon ":"
+     character cannot be used as the first component of a relative URL
+     path (e.g., "this:that") because they will likely be mistaken for a
+     scheme name.  It is therefore necessary to precede such cases with
+     other components (e.g., "./this:that") in order for them to be
+     referenced as a relative path.
+  
+! 4.3.3. Query Component
+  
+     The query component is a string of information to be interpreted by
+     the resource.
+  
+        query       = *urlchar
+  
++    Within a query component, the characters "/", "&", "=", and "+" are
++    reserved.
++ 
+     When parsing a URL reference, the query component (if any) is
+     extracted after the server component.  If the remaining reference
+     contains a question mark "?" character, then the substring after the
+***************
+*** 812,833 ****
+  
+     Step 3: If the URL reference's <server> is non-empty, we skip to
+             Step 7.  Otherwise, the URL reference inherits the <server>
+!            (if any) of the base URL.
+  
+     Step 4: If the URL reference path is preceded by a slash "/", the
+             path is not relative and we skip to Step 7.
+  
+     Step 5: If the URL reference path is empty (and not preceded by a
+!            slash), then the URL reference inherits the base URL path,
+!            and
+! 
+!            a) if the URL reference's <parameters> is non-empty, we skip
+!               to step 7; otherwise, it inherits the <parameters> of the
+!               base URL (if any) and
+! 
+!            b) if the URL reference's <query> is non-empty, we skip to
+!               step 7; otherwise, it inherits the <query> of the base
+!               URL (if any) and we skip to step 7.
+  
+     Step 6: The last segment of the base URL's path (anything
+             following the rightmost slash "/", or the entire path if no
+--- 838,854 ----
+  
+     Step 3: If the URL reference's <server> is non-empty, we skip to
+             Step 7.  Otherwise, the URL reference inherits the <server>
+!            (if any) of the base URL.  If the base URL's has no <server>
+!            component, then neither does the relative reference.
+  
+     Step 4: If the URL reference path is preceded by a slash "/", the
+             path is not relative and we skip to Step 7.
+  
+     Step 5: If the URL reference path is empty (and not preceded by a
+!            slash), then the URL reference inherits the base URL path.
+!            If the URL reference's <query> is non-empty, we skip to
+!            step 7; otherwise, it inherits the <query> of the base
+!            URL (if any) and we skip to step 7.
+  
+     Step 6: The last segment of the base URL's path (anything
+             following the rightmost slash "/", or the entire path if no
+***************
+*** 855,866 ****
+             the base URL, are recombined to give the absolute form of
+             the URL reference.
+  
+-    Parameters, regardless of their purpose, do not form a part of the
+-    URL path and thus do not affect the resolving of relative paths.  In
+-    particular, the presence or absence of the ";type=d" parameter on an
+-    ftp URL does not affect the interpretation of paths relative to that
+-    URL.
+- 
+     The above algorithm is intended to provide an example by which the
+     output of implementations can be tested -- implementation of the
+     algorithm itself is not required.  For example, some systems may find
+--- 876,881 ----
+***************
+*** 929,935 ****
+  9. Acknowledgements
+  
+     Most of this document was derived from RFC 1738 [2] and RFC 1808 [7];
+!    the acknowledgements in those specifications still apply.
+  
+  
+  10. References
+--- 944,951 ----
+  9. Acknowledgements
+  
+     Most of this document was derived from RFC 1738 [2] and RFC 1808 [7];
+!    the acknowledgements in those specifications still apply.  In
+!    addition, this draft has benefitted from comments by Lauren Wood.
+  
+  
+  10. References
+***************
+*** 1015,1022 ****
+     protocols which provide a context for their interpretation.
+  
+     In some cases, it will be necessary to distinguish URLs from other
+!    possible data structures in a syntactic structure.  In this case, is
+!    recommended that URLs be preceded with a prefix consisting of the
+     characters "URL:".  For example, this prefix may be used to
+     distinguish URLs from other kinds of URIs.
+  
+--- 1031,1038 ----
+     protocols which provide a context for their interpretation.
+  
+     In some cases, it will be necessary to distinguish URLs from other
+!    possible data structures in a syntactic structure.  In this case, it
+!    is recommended that URLs be preceded with a prefix consisting of the
+     characters "URL:".  For example, this prefix may be used to
+     distinguish URLs from other kinds of URIs.
+  
+***************
+*** 1070,1083 ****
+        g/            =  http://a/b/c/g/
+        /g            =  http://a/g
+        //g           =  http://g
+!       ?y            =  http://a/b/c/d;p?y
+        g?y           =  http://a/b/c/g?y
+!       g?y/./x       =  http://a/b/c/g?y/./x
+!       #s            =  http://a/b/c/d;p?q#s
+        g#s           =  http://a/b/c/g#s
+-       g#s/./x       =  http://a/b/c/g#s/./x
+        g?y#s         =  http://a/b/c/g?y#s
+!       ;x            =  http://a/b/c/d;x
+        g;x           =  http://a/b/c/g;x
+        g;x?y#s       =  http://a/b/c/g;x?y#s
+        .             =  http://a/b/c/
+--- 1086,1097 ----
+        g/            =  http://a/b/c/g/
+        /g            =  http://a/g
+        //g           =  http://g
+!       ?y            =  http://a/b/c/?y
+        g?y           =  http://a/b/c/g?y
+!       #s            =  (current document)#s
+        g#s           =  http://a/b/c/g#s
+        g?y#s         =  http://a/b/c/g?y#s
+!       ;x            =  http://a/b/c/;x
+        g;x           =  http://a/b/c/g;x
+        g;x?y#s       =  http://a/b/c/g;x?y#s
+        .             =  http://a/b/c/
+***************
+*** 1095,1101 ****
+     normal practice, all URL parsers should be capable of resolving them
+     consistently.  Each example uses the same base as above.
+  
+!    An empty reference refers to the top of the current document.
+  
+        <>            =  http://a/b/c/d;p?q
+  
+--- 1109,1115 ----
+     normal practice, all URL parsers should be capable of resolving them
+     consistently.  Each example uses the same base as above.
+  
+!    An empty reference refers to the start of the current document.
+  
+        <>            =  http://a/b/c/d;p?q
+  
+***************
+*** 1124,1129 ****
+--- 1138,1149 ----
+        ./g/.         =  http://a/b/c/g/
+        g/./h         =  http://a/b/c/g/h
+        g/../h        =  http://a/b/c/h
++       g;x=1/./y     =  http://a/b/c/g;x=1/y
++       g;x=1/../y    =  http://a/b/c/y
++       g?y/./x       =  http://a/b/c/g?y/x
++       g?y/../x      =  http://a/b/c/x
++       g#s/./x       =  http://a/b/c/g#s/./x
++       g#s/../x      =  http://a/b/c/g#s/../x
+  
+     Finally, some older parsers allow the scheme name to be present in a
+     relative URL if it is the same as the base URL scheme.  This is
+***************
+*** 1254,1256 ****
+--- 1274,1286 ----
+  
+     The BNF term <net_loc> has been replaced with <server>, since the
+     latter more accurately describes its use and purpose.
++ 
++    Extensive testing of current client applications demonstrated that
++    the majority of deployed systems do not use the ";" character to
++    indicate trailing parameter information, and that the presence of a
++    semicolon in a path segment does not affect the relative parsing of
++    that segment.  Therefore, parameters have been removed as a separate
++    component and are now allowed in any path segment.  Their influence
++    has been removed from the algorithm for resolving a relative URL
++    reference.  The resolution examples in Appendix C have been modified
++    to reflect this change.

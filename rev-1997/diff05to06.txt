@@ -1,0 +1,100 @@
+*** draft-fielding-url-syntax-05.txt	Wed May  7 19:51:19 1997
+--- draft-fielding-url-syntax-06.txt	Thu Jul 31 17:13:08 1997
+***************
+*** 1,8 ****
+- 
+  Network Working Group                            T. Berners-Lee, MIT/LCS
+  INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
+! draft-fielding-url-syntax-05              L. Masinter, Xerox Corporation
+! Expires six months after publication date                    May 2, 1997
+  
+      Uniform Resource Locators (URL): Generic Syntax and Semantics
+  
+--- 1,7 ----
+  Network Working Group                            T. Berners-Lee, MIT/LCS
+  INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
+! draft-fielding-url-syntax-06              L. Masinter, Xerox Corporation
+! Expires six months after publication date                  July 30, 1997
+  
+      Uniform Resource Locators (URL): Generic Syntax and Semantics
+  
+***************
+*** 891,902 ****
+           is a complete path segment not equal to "..", that
+           "<segment>/.." is removed.
+  
+!       h) If the buffer string contains a question-mark "?" character,
+           then the reference URL's query component is the substring after
+           the first (left-most) question-mark.  Otherwise, the reference
+           URL's query component is set undefined.
+  
+!       i) The reference URL's new path component is the buffer string up
+           to, but not including, the first question-mark character or the
+           end of the buffer string.
+  
+--- 890,909 ----
+           is a complete path segment not equal to "..", that
+           "<segment>/.." is removed.
+  
+!       h) If the resulting buffer string still begins with one or more
+!          complete path segments of "..", then the reference is
+!          considered to be in error.  Implementations may handle this
+!          error by retaining these components in the resolved path
+!          (i.e., treating them as part of the final URL), by removing
+!          them from the resolved path (i.e., discarding relative levels
+!          above the root), or by avoiding traversal of the reference.
+! 
+!       i) If the buffer string contains a question-mark "?" character,
+           then the reference URL's query component is the substring after
+           the first (left-most) question-mark.  Otherwise, the reference
+           URL's query component is set undefined.
+  
+!       j) The reference URL's new path component is the buffer string up
+           to, but not including, the first question-mark character or the
+           end of the buffer string.
+  
+***************
+*** 1267,1272 ****
+--- 1274,1296 ----
+        g#s/./x       =  http://a/b/c/g#s/./x
+        g#s/../x      =  http://a/b/c/g#s/../x
+  
++    Note that within a relative URL, "?", ";", and "#" that are not
++    leading characters are not interpreted with their reserved meaning;
++    in some cases, this results in illegal URLs.
++ 
++    While the rules for resolving partial/relative URLs since the have
++    been such that if relative symbolic elements end up at the
++    beginning of paths they should be retained,
++ 
++       /../s/x      =  http://a/../s/x
++ 
++    in practice, most parsers will strip lead relative symbolic
++    elements in the destination URL, such that
++ 
++      /../s/x       = http://a/s/x   
++ 
++    Because of the ambiguity, such relative forms should be avoided.
++    
+     Some parsers allow the scheme name to be present in a relative URL
+     if it is the same as the base URL scheme.  This is considered to be
+     a loophole in prior specifications of partial URLs [RFC1630]. Its
+***************
+*** 1350,1356 ****
+     that the hyphen may or may not actually be part of the URL.
+  
+     Using <> angle brackets around each URL is especially recommended
+- 
+     as a delimiting style for URLs that contain whitespace.
+  
+     The prefix "URL:" (with or without a trailing space) was
+--- 1374,1379 ----
+***************
+*** 1488,1493 ****
+     append the reference's query component to a relative path before
+     merging it with the base path.  The resolution algorithm has been
+     changed accordingly.
+- 
+- 
+  
+--- 1511,1514 ----

@@ -1,0 +1,1415 @@
+--- draft-fielding-url-syntax-09.txt	Tue Oct 21 21:01:58 1997
++++ draft-fielding-url-syntax-10.txt	Thu Nov  6 19:19:30 1997
+@@ -1,10 +1,10 @@
+ Network Working Group                            T. Berners-Lee, MIT/LCS
+ INTERNET-DRAFT                                 R. Fielding,  U.C. Irvine
+-draft-fielding-url-syntax-09              L. Masinter, Xerox Corporation
+-Expires six months after publication date               October 21, 1997
++draft-fielding-url-syntax-10              L. Masinter, Xerox Corporation
++Expires six months after publication date              November 06, 1997
+ 
+ 
+-    Uniform Resource Locators (URL): Generic Syntax and Semantics
++    Uniform Resource Identifiers (URI): Generic Syntax and Semantics
+ 
+ 
+ Status of this Memo
+@@ -28,40 +28,40 @@
+ 
+ Abstract
+ 
+-   A Uniform Resource Locator (URL) is a compact string representation
+-   of a location for use in identifying an abstract or physical
+-   resource.  This document defines the general syntax and semantics
+-   of URLs, including both absolute and relative locators, and
+-   guidelines for their use; it revises and replaces the generic
+-   definitions in RFC 1738 and RFC 1808.
++   A Uniform Resource Identifier (URI) is a compact string
++   representation of a location (URL) or name (URN) for use in
++   identifying an abstract or physical resource.  This document defines
++   the general syntax and semantics of URIs, including both absolute and
++   relative forms, and guidelines for their use; it revises and replaces
++   the generic definitions in RFC 1738 and RFC 1808.
+ 
+ 1. Introduction
+ 
+-   Uniform Resource Locators (URLs) provide a simple and extensible
+-   means for identifying a resource by its location.  This
+-   specification of URL syntax and semantics is derived from concepts
+-   introduced by the World Wide Web global information initiative,
+-   whose use of such objects dates from 1990 and is described in
+-   "Universal Resource Identifiers in WWW" [RFC1630].  The
+-   specification of URLs is designed to meet the recommendations laid
+-   out in "Functional Recommendations for Internet Resource Locators"
+-   [RFC1736].
++   Uniform Resource Identifiers (URIs) provide a simple and extensible
++   means for identifying a resource.  This specification of URI syntax
++   and semantics is derived from concepts introduced by the World Wide
++   Web global information initiative, whose use of such objects dates
++   from 1990 and is described in "Universal Resource Identifiers in WWW"
++   [RFC1630].  The specification of URIs is designed to meet the
++   recommendations laid out in "Functional Recommendations for Internet
++   Resource Locators" [RFC1736] and "Functional Requirements for Uniform
++   Resource Names" [RFC1737].
+ 
+    This document updates and merges "Uniform Resource Locators"
+    [RFC1738] and "Relative Uniform Resource Locators" [RFC1808] in
+-   order to define a single, general syntax for all URLs.  It excludes
++   order to define a single, general syntax for all URIs.  It excludes
+    those portions of RFC 1738 that defined the specific syntax of
+    individual URL schemes; those portions will be updated as separate
+-   documents, as will the process for registration of new URL schemes.
++   documents, as will the process for registration of new URI schemes.
+    This document does not discuss the issues and recommendation for
+    dealing with characters outside of the US-ASCII character set;
+    those recommendations are discussed in a separate document.
+ 
+    All significant changes from the prior RFCs are noted in Appendix G.
+ 
+-1.1 Overview of URLs
++1.1 Overview of URIs
+ 
+-   URLs are characterized by the following definitions:
++   URIs are characterized by the following definitions:
+ 
+       Uniform
+          Uniformity of syntax and semantics allows the mechanism for
+@@ -69,10 +69,10 @@
+          to locate those resources and the operations applied to those
+          resources once they have been located.  New types of resources,
+          access mechanisms, and operations can be introduced without
+-         changing the protocols and data formats that use URLs.
+-         Uniformity of syntax means that the same locator is used
++         changing the protocols and data formats that use URIs.
++         Uniformity of syntax means that the same identifier is used
+          independent of the locale, character representation, or
+-         system type of the user entering the URL.
++         system type of the user entering the URI.
+ 
+       Resource
+          A resource can be anything that has identity.  Familiar
+@@ -89,33 +89,66 @@
+          which it currently corresponds---changes over time, provided
+          that the conceptual mapping is not changed in the process.
+ 
+-      Locator
+-         A locator is an object that identifies a resource by its
+-         location.  In the case of URLs, the object is a sequence of
+-         characters with a restricted syntax.  An absolute locator
+-         identifies a location independent of any context, whereas a
+-         relative locator identifies a location relative to the
+-         context in which it is found.
+-
+-   URLs are used to `locate' resources by providing an abstract
+-   identification of the resource location.  Having located a resource,
+-   a system may perform a variety of operations on the resource, as
+-   might be characterized by such words as `access', `update',
+-   `replace', or `find attributes'.
+-
+-1.2. URL, URN, and URI
+-
+-   URLs are a subset of Uniform Resource Identifiers (URI), which also
+-   includes the notion of Uniform Resource Names (URN).  A URN differs
+-   from a URL in that it identifies a resource in a
+-   location-independent fashion (see [RFC1737]). This specification
+-   restricts its discussion to URLs. The syntax and semantics of other
+-   URIs are defined by a separate set of specifications, although
+-   it is expected that any URI notation would have a compatible syntax.
+-   
+-1.3. Example URLs
++      Identifier
++         An identifier is an object that can act as a reference to
++         something that has identity.  In the case of URIs, the object
++         is a sequence of characters with a restricted syntax.  An
++         absolute identifier refers to a resource independent of the
++         context in which the identifier is used, whereas a relative
++         identifier refers to a resource by describing the difference
++         within a hierarchical namespace between the current context
++         and an absolute identifier of the resource.
++         
++   Having identified a resource, a system may perform a variety of
++   operations on the resource, as might be characterized by such words
++   as `access', `update', `replace', or `find attributes'.
++
++1.2. URI, URL, and URN
++
++   A URI can be further classified as a locator, a name, or both.
++   Uniform Resource Locators (URL) is the subset of URI that can be used
++   to `locate' resources by providing an abstract identification of the
++   resource location within the identifier (i.e., by using common
++   network name resolution mechanisms to identify the mechanisms for
++   accessing a resource).  Uniform Resource Names (URN) is the subset
++   of URI that are intended to remain globally unique and persistent
++   even when the resource ceases to exist or becomes unavailable.
++
++   The URI scheme (Section 4.1) defines the namespace of the URI, and
++   thus may further restrict the syntax and semantics of identifiers
++   using that scheme.  This specification defines those elements of the
++   URI syntax which are either required of all URI schemes or are common
++   to many URI schemes.  It thus defines the syntax and semantics that
++   are needed to implement a scheme-independent parsing mechanism for
++   URI references, such that the scheme-dependent handling of a URI can
++   be postponed until the scheme-dependent semantics are needed.  We use
++   the term URL below when describing syntax or semantics that only
++   apply to locators.
++
++   Although many URL schemes are named after protocols, this does not
++   imply that the only way to access the URL's resource is via the named
++   protocol.  Gateways, proxies, caches, and name resolution services
++   might be used to access some resources, independent of the protocol
++   of their origin, and the resolution of some URLs may require the use
++   of more than one protocol (e.g., both DNS and HTTP are typically used
++   to access an "http" URL's resource when it can't be found in a local
++   cache).
++
++   The "urn" scheme has been reserved to establish the requirements for
++   a standardized URN namespace, as defined in "URN Syntax" [RFC2141]
++   and its related specifications.
++
++   Most of the examples in this specification demonstrate URLs, since
++   they allow the most varied use of the syntax and often have a
++   hierarchical namespace.  A parser of the URI syntax is capable of
++   parsing both URL and URN references as a generic URI; once the scheme
++   is determined, the scheme-specific parsing can be performed on the
++   generic URI components.  In other words, the URI syntax is a superset
++   of the syntax of all URI schemes.
++
++1.3. Example URIs
+ 
+-   The following examples illustrate URLs which are in common use.
++   The following examples illustrate URIs which are in common use.
+ 
+    ftp://ftp.is.co.za/rfc/rfc1808.txt
+       -- ftp scheme for File Transfer Protocol services
+@@ -135,65 +168,55 @@
+    telnet://melvyl.ucop.edu/
+       -- telnet scheme for interactive services via the TELNET Protocol
+ 
+-   Many URL schemes have been defined.  The scheme defines the
+-   namespace of the URL.  Although many URL schemes are named after
+-   protocols, this does not imply that the only way to access the
+-   URL's resource is via the named protocol.  Gateways, proxies,
+-   caches, and name resolution services might be used to access some
+-   resources, independent of the protocol of their origin, and the
+-   resolution of some URLs may require the use of more than one
+-   protocol (e.g., both DNS and HTTP are typically used to access an
+-   "http" URL's resource when it can't be found in a local cache).
++1.4. Hierarchical URIs and Relative Forms
+ 
+-1.4. Hierarchical URLs and Relative Forms
+-
+-   URL schemes may support a hierarchical naming system, where the
++   URI schemes may support a hierarchical naming system, where the
+    hierarchy of the name is denoted by a "/" delimiter separating the
+-   components in the scheme. There is a `relative' form of URL reference
+-   which is used in conjunction with a `base' URL (of a hierarchical
+-   scheme) to produce another URL. The syntax of hierarchical URLs is
+-   described in Section 4, and the relative URL calculation is described
++   components in the scheme. There is a `relative' form of URI reference
++   which is used in conjunction with a `base' URI (of a hierarchical
++   scheme) to produce another URI. The syntax of hierarchical URIs is
++   described in Section 4, and the relative URI calculation is described
+    in Section 5.
+ 
+-1.5. URL Transcribability
++1.5. URI Transcribability
+ 
+-   The URL syntax was designed with global transcribability as one of
+-   its main concerns. A URL is a sequence of characters from a very
++   The URI syntax was designed with global transcribability as one of
++   its main concerns. A URI is a sequence of characters from a very
+    limited set, i.e. the letters of the basic Latin alphabet, digits,
+-   and a few special characters.  A URL may be represented in a
++   and a few special characters.  A URI may be represented in a
+    variety of ways: e.g., ink on paper, pixels on a screen, or a
+    sequence of octets in a coded character set.  The interpretation of
+-   a URL depends only on the characters used and not how those
++   a URI depends only on the characters used and not how those
+    characters are represented in a network protocol.
+ 
+    The goal of transcribability can be described by a simple scenario.
+    Imagine two colleagues, Sam and Kim, sitting in a pub at an
+    international conference and exchanging research ideas.  Sam asks
+-   Kim for a location to get more information, so Kim writes the URL
++   Kim for a location to get more information, so Kim writes the URI
+    for the research site on a napkin.  Upon returning home, Sam takes
+-   out the napkin and types the URL into a computer, which then
++   out the napkin and types the URI into a computer, which then
+    retrieves the information to which Kim referred.
+ 
+    There are several design concerns revealed by the scenario:
+ 
+-      o  A URL is a sequence of characters, which is not always
++      o  A URI is a sequence of characters, which is not always
+          represented as a sequence of octets.
+ 
+-      o  A URL may be transcribed from a non-network source, and thus
++      o  A URI may be transcribed from a non-network source, and thus
+          should consist of characters which are most likely to be able
+          to be typed into a computer, within the constraints imposed by
+          keyboards (and related input devices) across languages and
+          locales.
+ 
+-      o  A URL often needs to be remembered by people, and it is easier
+-         for people to remember a URL when it consists of meaningful
++      o  A URI often needs to be remembered by people, and it is easier
++         for people to remember a URI when it consists of meaningful
+          components.
+ 
+    These design concerns are not always in alignment.  For example, it
+-   is often the case that the most meaningful name for a URL component
++   is often the case that the most meaningful name for a URI component
+    would require characters which cannot be typed into some systems.
+-   The ability to transcribe the resource location from one medium to
+-   another was considered more important than having its URL consist
++   The ability to transcribe the resource identifier from one medium to
++   another was considered more important than having its URI consist
+    of the most meaningful of components.  In local and regional
+    contexts and with improving technology, users might benefit from
+    being able to use a wider range of characters; such use is not
+@@ -214,7 +237,7 @@
+    the syntax requirements.
+ 
+    The second convention is a BNF-like grammar, used to define the
+-   formal URL syntax.  The grammar is that of [RFC822], except that
++   formal URI syntax.  The grammar is that of [RFC822], except that
+    "|" is used to designate alternatives.  Briefly, rules are separated
+    from definitions by an equal "=", indentation is used to continue a
+    rule definition over more than one line, literals are quoted with "",
+@@ -224,10 +247,10 @@
+    element; n defaults to 0.
+ 
+    Unlike many specifications which use a BNF-like grammar to define the
+-   bytes (octets) allowed by a protocol, the URL grammar is defined in
++   bytes (octets) allowed by a protocol, the URI grammar is defined in
+    terms of characters.  Each literal in the grammar corresponds to the
+    character it represents, rather than to the octet encoding of that
+-   character in any particular coded character set.  How a URL is
++   character in any particular coded character set.  How a URI is
+    represented in terms of bits and bytes on the wire is dependent upon
+    the character encoding of the protocol used to transport it, or the
+    charset of the document which contains it.
+@@ -249,32 +272,32 @@
+ 
+       alphanum = alpha | digit
+ 
+-   The complete URL syntax is collected in Appendix A.
++   The complete URI syntax is collected in Appendix A.
+ 
+-2. URL Characters and Escape Sequences
++2. URI Characters and Escape Sequences
+ 
+-   URLs consist of a restricted set of characters, primarily chosen to
++   URIs consist of a restricted set of characters, primarily chosen to
+    aid transcribability and usability both in computer systems and in
+    non-computer communications. Characters used conventionally as
+-   delimiters around URLs were excluded.  The restricted set of
++   delimiters around URIs were excluded.  The restricted set of
+    characters consists of digits, letters, and a few graphic symbols
+    were chosen from those common to most of the character encodings
+    and input facilities available to Internet users.
+ 
+-   Within a URL, characters are either used as delimiters, or to
++   Within a URI, characters are either used as delimiters, or to
+    represent strings of data (octets) within the delimited portions.
+    Octets are either represented directly by a character (using the
+    US-ASCII character for that octet) or by an escape encoding.  This
+    representation is elaborated below.
+    
+-2.1 URLs and non-ASCII characters   
++2.1 URIs and non-ASCII characters   
+    
+-   While URLs are sequences of characters and those characters are
++   While URIs are sequences of characters and those characters are
+    used (within delimited sections) to represent sequences of octets,
+    in some cases those sequences of octets are used (via a 'charset'
+    or character encoding scheme) to represent sequences of characters:
+    
+-   URL char. sequence <-> octet sequence <-> original char. sequence
++   URI char. sequence <-> octet sequence <-> original char. sequence
+    
+    In cases where the original character sequence contains characters
+    that are strictly within the set of characters defined in the
+@@ -286,39 +309,40 @@
+    In general practice, many different character encoding schemes are
+    used in the second mapping (between sequences of represented
+    characters and sequences of octets) and there is generally no
+-   representation in the URL itself of which mapping was used. While
+-   there is a strong desire to provide for a general and uniform
+-   mapping between more general scripts and URLs, the standard for
+-   such use is outside of the scope of this document.
++   representation in the URI itself of which mapping was used unless
++   the URI scheme requires a specific mapping.  While there is a strong
++   desire to provide for a general and uniform mapping between more
++   general scripts and URIs, the standard for such use is outside of the
++   scope of this document.
+ 
+-   More systematic treatment of character encoding within URLs is
++   More systematic treatment of character encoding within URIs is
+    currently under development.
+ 
+ 2.2. Reserved Characters
+ 
+-   Many URLs include components consisting of or delimited by, certain
++   Many URIs include components consisting of or delimited by, certain
+    special characters.  These characters are called "reserved", since
+-   their usage within the URL component is limited to their reserved
+-   purpose.  If the data for a URL component would conflict with the
++   their usage within the URI component is limited to their reserved
++   purpose.  If the data for a URI component would conflict with the
+    reserved purpose, then the conflicting data must be escaped before
+-   forming the URL.
++   forming the URI.
+    
+       reserved    = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+"
+ 
+    The "reserved" syntax class above refers to those characters which
+-   are allowed within a URL, but which may not be allowed within a
+-   particular component of the generic URL syntax; they are used as
++   are allowed within a URI, but which may not be allowed within a
++   particular component of the generic URI syntax; they are used as
+    delimiters of the components described in Section 4.3.
+ 
+    Characters in the "reserved" set are not reserved in all contexts.
+-   The set of characters actually reserved within any given URL
++   The set of characters actually reserved within any given URI
+    component is defined by that component. In general, a character is
+-   reserved if the semantics of the URL changes if the character is
++   reserved if the semantics of the URI changes if the character is
+    replaced with its escaped US-ASCII encoding.
+ 
+ 2.3. Unreserved Characters
+ 
+-   Data characters which are allowed in a URL but do not have a reserved
++   Data characters which are allowed in a URI but do not have a reserved
+    purpose are called unreserved.  These include upper and lower case
+    letters, decimal digits, and a limited set of punctuation marks and
+    symbols.
+@@ -329,7 +353,7 @@
+                     "*" | "'" | "(" | ")" | ","
+ 
+    Unreserved characters can be escaped without changing the semantics
+-   of the URL, but this should not be done unless the URL is being used
++   of the URI, but this should not be done unless the URI is being used
+    in a context which does not allow the unescaped character to appear.
+ 
+ 2.4. Escape Sequences
+@@ -353,27 +377,28 @@
+ 
+ 2.4.2. When to Escape and Unescape
+ 
+-   A URL is always in an "escaped" form, since escaping or unescaping
+-   a completed URL might change its semantics.  Normally, the only
+-   time escape encodings can safely be made is when the URL is being
++   A URI is always in an "escaped" form, since escaping or unescaping
++   a completed URI might change its semantics.  Normally, the only
++   time escape encodings can safely be made is when the URI is being
+    created from its component parts; each component may have its own
+    set of characters which are reserved, so only the mechanism
+    responsible for generating or interpreting that component can
+    determine whether or not escaping a character will change its
+-   semantics. Likewise, a URL must be separated into its components
++   semantics. Likewise, a URI must be separated into its components
+    before the escaped characters within those components can be safely
+    decoded.
+ 
+    In some cases, data that could be represented by an unreserved
+    character may appear escaped; for example, some of the unreserved
+-   "mark" characters are automatically escaped by some systems. It is
+-   safe to unescape these within the body of a URL.  For example,
+-   "%7e" is sometimes used instead of "~" in http URL path, but the
+-   two can be used interchangeably.
++   "mark" characters are automatically escaped by some systems.  If the
++   given URI scheme defines a canonicalization algorithm, then
++   unreserved characters may be unescaped according to that algorithm.
++   For example, "%7e" is sometimes used instead of "~" in an http URL
++   path, but the two are equivalent for an http URL.
+ 
+    Because the percent "%" character always has the reserved purpose of
+    being the escape indicator, it must be escaped as "%25" in order to
+-   be used as data within a URL.  Implementers should be careful not to
++   be used as data within a URI.  Implementers should be careful not to
+    escape or unescape the same string more than once, since unescaping
+    an already unescaped string might lead to misinterpreting a percent
+    data character as another escaped character, or vice versa in the
+@@ -381,29 +406,29 @@
+ 
+ 2.4.3. Excluded US-ASCII Characters
+ 
+-   Although they are disallowed within the URL syntax, we include here
++   Although they are disallowed within the URI syntax, we include here
+    a description of those US-ASCII characters which have been excluded
+    and the reasons for their exclusion.
+ 
+    The control characters in the US-ASCII coded character set are not
+-   used within a URL, both because they are non-printable and because
++   used within a URI, both because they are non-printable and because
+    they are likely to be misinterpreted by some control mechanisms.
+ 
+    control     = <US-ASCII coded characters 00-1F and 7F hexadecimal>
+ 
+    The space character is excluded because significant spaces may
+-   disappear and insignificant spaces may be introduced when URLs are
++   disappear and insignificant spaces may be introduced when URIs are
+    transcribed or typeset or subjected to the treatment of
+-   word-processing programs.  Whitespace is also used to delimit URLs
++   word-processing programs.  Whitespace is also used to delimit URIs
+    in many contexts.
+    
+    space       = <US-ASCII coded character 20 hexadecimal>
+ 
+    The angle-bracket "<" and ">" and double-quote (") characters are
+-   excluded because they are often used as the delimiters around URLs
++   excluded because they are often used as the delimiters around URIs
+    in text documents and protocol fields.  The character "#" is
+-   excluded because it is used to delimit a URL from a fragment
+-   identifier in URL references (Section 3). The percent character "%"
++   excluded because it is used to delimit a URI from a fragment
++   identifier in URI references (Section 3). The percent character "%"
+    is excluded because it is used for the encoding of escaped
+    characters.
+ 
+@@ -416,135 +441,129 @@
+    unwise      = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
+ 
+    Data corresponding to excluded characters must be escaped in order
+-   to be properly represented within a URL.
+-
+-3. URL-based references and URLs
++   to be properly represented within a URI.
+ 
+-   In practice, resource locators consist not only of complete URLs,
+-   but other resource references which contain either an absolute
+-   or relative URL form, and may be followed by a fragment identifier.
+-   The terminology around the use of URLs has been confusing.
++3. URI References
+ 
+-   The term "URL-reference" is used here to denote the common usage of
+-   a resource locator.  A URL reference may be absolute or relative,
++   The term "URI-reference" is used here to denote the common usage of
++   a resource identifier.  A URI reference may be absolute or relative,
+    and may have additional information attached in the form of a
+-   fragment identifier.  However, "the URL" which results from such a
+-   reference includes only the absolute URL after the fragment
+-   identifier (if any) is removed and after any relative URL is
++   fragment identifier.  However, "the URI" which results from such a
++   reference includes only the absolute URI after the fragment
++   identifier (if any) is removed and after any relative URI is
+    resolved to its absolute form.  Although it is possible to limit
+-   the discussion of URL syntax and semantics to that of the absolute
+-   result, most usage of URLs is within general URL references, and it
+-   is impossible to obtain the URL from such a reference without also
++   the discussion of URI syntax and semantics to that of the absolute
++   result, most usage of URIs is within general URI references, and it
++   is impossible to obtain the URI from such a reference without also
+    parsing the fragment and resolving the relative form.
+ 
+-      URL-reference = [ absoluteURL | relativeURL ] [ "#" fragment ]
++      URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
+ 
+-   The syntax for relative URLs is a shortened form of that for absolute
+-   URLs, where some prefix of the URL is missing and certain path
++   The syntax for relative URIs is a shortened form of that for absolute
++   URIs, where some prefix of the URI is missing and certain path
+    components ("." and "..") have a special meaning when interpreting a
+    relative path.
+ 
+-   When a URL reference is used to perform a retrieval action on the
++   When a URI reference is used to perform a retrieval action on the
+    identified resource, the optional fragment identifier, separated from
+-   the URL by a crosshatch ("#") character, consists of additional
++   the URI by a crosshatch ("#") character, consists of additional
+    reference information to be interpreted by the user agent after the
+    retrieval action has been successfully completed.  As such, it is not
+-   part of a URL, but is often used in conjunction with a URL.  The
++   part of a URI, but is often used in conjunction with a URI.  The
+    format and interpretation of fragment identifiers is dependent on the
+    media type of the retrieval result.
+ 
+-      fragment      = *urlc
++      fragment      = *uric
+ 
+-   A URL reference which does not contain a URL is a reference to the
+-   current document.  In other words, an empty URL reference within a
++   A URI reference which does not contain a URI is a reference to the
++   current document.  In other words, an empty URI reference within a
+    document is interpreted as a reference to the start of that document,
+    and a reference containing only a fragment identifier is a reference
+    to the identified fragment of that document.  Traversal of such a
+    reference should not result in an additional retrieval action.
+-   However, if the URL reference occurs in a context that is always
++   However, if the URI reference occurs in a context that is always
+    intended to result in a new request, as in the case of HTML's FORM
+-   element, then an empty URL reference represents the base URL of the
+-   current document and should be replaced by that URL when transformed
++   element, then an empty URI reference represents the base URI of the
++   current document and should be replaced by that URI when transformed
+    into a request.
+ 
+-4. Generic URL Syntax
++4. Generic URI Syntax
+ 
+ 4.1. Scheme
+ 
+    Just as there are many different methods of access to resources,
+-   there are a variety of schemes for describing the location of such
+-   resources.  The URL syntax consists of a sequence of components
+-   separated by reserved characters, with the first component defining
+-   the semantics for the remainder of the URL string.
++   there are a variety of schemes for identifying such resources.  The
++   URI syntax consists of a sequence of components separated by reserved
++   characters, with the first component defining the semantics for the
++   remainder of the URI string.
+ 
+-   In general, absolute URLs are written as follows:
++   In general, absolute URIs are written as follows:
+ 
+       <scheme>:<scheme-specific-part>
+ 
+-   An absolute URL contains the name of the scheme being used (<scheme>)
++   An absolute URI contains the name of the scheme being used (<scheme>)
+    followed by a colon (":") and then a string (the <scheme-specific-
+    part>) whose interpretation depends on the scheme.
+ 
+    Scheme names consist of a sequence of characters.  The lower case
+    letters "a"--"z", digits, and the characters plus ("+"), period
+    ("."), and hyphen ("-") are allowed.  For resiliency, programs
+-   interpreting URLs should treat upper case letters as equivalent to
++   interpreting URIs should treat upper case letters as equivalent to
+    lower case in scheme names (e.g., allow "HTTP" as well as "http").
+ 
+       scheme        = 1*( alpha | digit | "+" | "-" | "." )
+ 
+-   Relative URL references are distinguished from absolute URLs in that
++   Relative URI references are distinguished from absolute URIs in that
+    they do not begin with a scheme name.  Instead, the scheme is
+-   inherited from the base URL, as described in Section 5.2.
++   inherited from the base URI, as described in Section 5.2.
+ 
+-4.2. Opaque and Hierarchical URLs
++4.2. Opaque and Hierarchical URIs
+ 
+-   The URL syntax does not require that the scheme-specific-part have
++   The URI syntax does not require that the scheme-specific-part have
+    any general structure or set of semantics which is common among all
+-   URLs.  However, a subset of URLs do share a common syntax for
+-   representing hierarchical relationships within the locator namespace.
+-   This generic-URL syntax is used in interpreting relative URLs.
++   URIs.  However, a subset of URIs do share a common syntax for
++   representing hierarchical relationships within the namespace.
++   This generic-URI syntax is used in interpreting relative URIs.
+ 
+-      absoluteURL   = generic-URL | opaque-URL
++      absoluteURI   = generic-URI | opaque-URI
+ 
+-      opaque-URL    = scheme ":" *urlc
++      opaque-URI    = scheme ":" *uric
+ 
+-      generic-URL   = scheme ":" relativeURL
++      generic-URI   = scheme ":" relativeURI
+ 
+-   The separation of the URL grammar into <generic-URL> and <opaque-URL>
++   The separation of the URI grammar into <generic-URI> and <opaque-URI>
+    is redundant, since both rules will successfully parse any string of
+-   <urlc> characters.  The distinction is simply to clarify that a
+-   parser of relative URL references (Section 5) will view a URL as a
+-   generic-URL, whereas a handler of absolute references need only view
+-   it as an opaque-URL.
++   <uric> characters.  The distinction is simply to clarify that a
++   parser of relative URI references (Section 5) will view a URI as a
++   generic-URI, whereas a handler of absolute references need only view
++   it as an opaque-URI.
+ 
+-   URLs which are hierarchical in nature use the slash "/" character for
++   URIs which are hierarchical in nature use the slash "/" character for
+    separating hierarchical components.  For some file systems, a "/"
+-   character (used to denote the hierarchical structure of a URL) is the
+-   delimiter used to construct a file name hierarchy, and thus the URL
++   character (used to denote the hierarchical structure of a URI) is the
++   delimiter used to construct a file name hierarchy, and thus the URI
+    path will look similar to a file pathname.  This does NOT imply that
+-   the resource is a file or that the URL maps to an actual filesystem
++   the resource is a file or that the URI maps to an actual filesystem
+    pathname.
+ 
+-4.3. URL Syntactic Components
++4.3. URI Syntactic Components
+ 
+-   The URL syntax is dependent upon the scheme.  Some schemes use
++   The URI syntax is dependent upon the scheme.  Some schemes use
+    reserved characters like "?" and ";" to indicate special components,
+    while others just consider them to be part of the path.  However,
+-   most URL schemes use a common sequence of four main components to
+-   define the location of a resource
++   most URI schemes use a common sequence of four main components:
+ 
+       <scheme>://<site><path>?<query>
+ 
+-   each of which, except <scheme>, may be absent from a particular URL.
+-   For example, some URL schemes do not allow a <site> component, and
++   each of which, except <scheme>, may be absent from a particular URI.
++   For example, some URI schemes do not allow a <site> component, and
+    others do not use a <query> component.
+ 
+ 4.3.1. Site Component
+ 
+-   Many URL schemes include a top hierarchical element for a naming
++   Many URI schemes include a top hierarchical element for a naming
+    authority, such that the namespace defined by the remainder of the
+-   URL is governed by that authority.  This <site> component is
++   URI is governed by that authority.  This <site> component is
+    typically defined by an Internet-based server or a scheme-specific
+    registry of naming authorities.
+ 
+@@ -552,18 +571,18 @@
+ 
+    The <site> component is preceded by a double slash "//" and is
+    terminated by the next slash "/", question-mark "?", or by the end of
+-   the URL.  Within the <site> component, the characters ":", "@", "?",
++   the URI.  Within the <site> component, the characters ":", "@", "?",
+    and "/" are reserved.
+ 
+    The structure of a registry-based naming authority is specific to the
+-   URL scheme, but constrained to the allowed characters for <site>.
++   URI scheme, but constrained to the allowed characters for <site>.
+ 
+       authority     = *( unreserved | escaped |
+                          ";" | ":" | "@" | "&" | "=" | "+" )
+ 
+    URL schemes that involve the direct use of an IP-based protocol to a
+    specified server on the Internet use a common syntax for the <site>
+-   component of the URL's scheme-specific data:
++   component of the URI's scheme-specific data:
+ 
+         <userinfo>@<host>:<port>
+ 
+@@ -581,7 +600,7 @@
+ 
+    Some URL schemes use the format "user:password" in the <userinfo>
+    field. This practice is NOT RECOMMENDED, because the passing of
+-   authentication information in clear text (such as URLs) has proven to
++   authentication information in clear text (such as URIs) has proven to
+    be a security risk in almost every case where it has been used.
+    
+    The host is a domain name of a network host, or its IPv4 address as
+@@ -618,8 +637,8 @@
+    host by a colon.  If the port is omitted, the default port number is
+    assumed.
+ 
+-   A site component is not required for a URL scheme to make use of
+-   relative references.  A base URL without a site component implies
++   A site component is not required for a URI scheme to make use of
++   relative references.  A base URI without a site component implies
+    that any relative reference will also be without a site component.
+ 
+ 4.3.2. Path Component
+@@ -648,35 +667,35 @@
+    The query component is a string of information to be interpreted by
+    the resource.
+ 
+-      query         = *urlc
++      query         = *uric
+ 
+    Within a query component, the characters "/", "&", "=", and "+" are
+    reserved.
+ 
+-4.4. Parsing a URL Reference
++4.4. Parsing a URI Reference
+ 
+-   A URL reference is typically parsed according to the four main
+-   components in order to determine what components are present and
+-   whether or not the reference is relative or absolute.  The individual
+-   components are then parsed for their subparts and to verify their
+-   validity.  A reference is parsed as if it is a generic-URL, even
+-   though it might be considered opaque by later processes.
++   A URI reference is typically parsed according to the four main
++   components and fragment identifier in order to determine what
++   components are present and whether the reference is relative or
++   absolute.  The individual components are then parsed for their
++   subparts and to verify their validity.  A reference is parsed as if
++   it is a generic-URI, even though it might be considered opaque by
++   later processes.
+ 
+    Although the BNF defines what is allowed in each component, it is
+    ambiguous in terms of differentiating between a site component and
+    a path component that begins with two slash characters.  The greedy
+    algorithm is used for disambiguation: the left-most matching rule
+-   soaks up as much of the URL reference string as it is capable of
++   soaks up as much of the URI reference string as it is capable of
+    matching.  In other words, the site component wins.
+    
+    Readers familiar with regular expressions should see Appendix B for a
+    concrete parsing example and test oracle.
+ 
+-
+-5. Relative URL References
++5. Relative URI References
+ 
+    It is often the case that a group or "tree" of documents has been
+-   constructed to serve a common purpose; the vast majority of URLs in
++   constructed to serve a common purpose; the vast majority of URIs in
+    these documents point to locations within the tree rather than
+    outside of it.  Similarly, documents located at a particular site
+    are much more likely to refer to other resources at that site than
+@@ -686,13 +705,13 @@
+    independent of their location and access scheme.  For instance, it is
+    possible for a single set of hypertext documents to be simultaneously
+    accessible and traversable via each of the "file", "http", and "ftp"
+-   schemes if the documents refer to each other using relative URLs.
++   schemes if the documents refer to each other using relative URIs.
+    Furthermore, such document trees can be moved, as a whole, without
+    changing any of the relative references.  Experience within the WWW
+    has demonstrated that the ability to perform relative referencing
+    is necessary for the long-term usability of embedded URLs.
+ 
+-      relativeURL   = net_path | abs_path | rel_path
++      relativeURI   = net_path | abs_path | rel_path
+ 
+    A relative reference beginning with two slash characters is termed a
+    network-path reference.  Such references are rarely used.
+@@ -718,34 +737,37 @@
+    (Section 5.2).
+ 
+    Authors should be aware that a path segment which contains a colon
+-   character cannot be used as the first segment of a relative URL path
++   character cannot be used as the first segment of a relative URI path
+    (e.g., "this:that"), because it would be mistaken for a scheme name.
+    It is therefore necessary to precede such segments with other
+    segments (e.g., "./this:that") in order for them to be referenced as
+    a relative path.
+ 
+-   It is not necessary for all URLs within a given scheme to be
+-   restricted to the generic-URL syntax, since the hierarchical
+-   properties of that syntax are only necessary when relative URLs are
++   It is not necessary for all URIs within a given scheme to be
++   restricted to the generic-URI syntax, since the hierarchical
++   properties of that syntax are only necessary when relative URIs are
+    used within a particular document.  Documents can only make use of
+-   relative URLs when their base URL fits within the generic-URL syntax.
++   relative URIs when their base URI fits within the generic-URI syntax.
+    It is assumed that any document which contains a relative reference
+-   will also have a base URL that obeys the syntax.  In other words,
+-   relative URLs cannot be used within a document that has an unsuitable
+-   base URL.
+-
+-5.1. Establishing a Base URL
+-
+-   The term "relative URL" implies that there exists some absolute "base
+-   URL" against which the relative reference is applied.  Indeed, the
+-   base URL is necessary to define the semantics of any relative URL
++   will also have a base URI that obeys the syntax.  In other words,
++   relative URIs cannot be used within a document that has an unsuitable
++   base URI.
++
++   Some URI schemes do not allow a hierarchical syntax matching the
++   generic-URI syntax, and thus cannot use relative references.
++
++5.1. Establishing a Base URI
++
++   The term "relative URI" implies that there exists some absolute "base
++   URI" against which the relative reference is applied.  Indeed, the
++   base URI is necessary to define the semantics of any relative URI
+    reference; without it, a relative reference is meaningless.  In order
+-   for relative URLs to be usable within a document, the base URL of
++   for relative URIs to be usable within a document, the base URI of
+    that document must be known to the parser.
+ 
+-   The base URL of a document can be established in one of four ways,
++   The base URI of a document can be established in one of four ways,
+    listed below in order of precedence.  The order of precedence can be
+-   thought of in terms of layers, where the innermost defined base URL
++   thought of in terms of layers, where the innermost defined base URI
+    has the highest precedence.  This can be visualized graphically as:
+ 
+       .----------------------------------------------------------.
+@@ -755,20 +777,20 @@
+       |  |  |  |  .----------------------------------.  |  |  |  |
+       |  |  |  |  |       <relative_reference>       |  |  |  |  |
+       |  |  |  |  `----------------------------------'  |  |  |  |
+-      |  |  |  | (5.1.1) Base URL embedded in the       |  |  |  |
++      |  |  |  | (5.1.1) Base URI embedded in the       |  |  |  |
+       |  |  |  |         document's content             |  |  |  |
+       |  |  |  `----------------------------------------'  |  |  |
+-      |  |  | (5.1.2) Base URL of the encapsulating entity |  |  |
++      |  |  | (5.1.2) Base URI of the encapsulating entity |  |  |
+       |  |  |         (message, document, or none).        |  |  |
+       |  |  `----------------------------------------------'  |  |
+-      |  | (5.1.3) URL used to retrieve the entity            |  |
++      |  | (5.1.3) URI used to retrieve the entity            |  |
+       |  `----------------------------------------------------'  |
+-      | (5.1.4) Default Base URL is application-dependent        |
++      | (5.1.4) Default Base URI is application-dependent        |
+       `----------------------------------------------------------'
+ 
+-5.1.1. Base URL within Document Content
++5.1.1. Base URI within Document Content
+ 
+-   Within certain document media types, the base URL of the document can
++   Within certain document media types, the base URI of the document can
+    be embedded within the content itself such that it can be readily
+    obtained by a parser.  This can be useful for descriptive documents,
+    such as tables of content, which may be transmitted to others through
+@@ -776,86 +798,86 @@
+    USENET news).
+ 
+    It is beyond the scope of this document to specify how, for each
+-   media type, the base URL can be embedded.  It is assumed that user
++   media type, the base URI can be embedded.  It is assumed that user
+    agents manipulating such media types will be able to obtain the
+    appropriate syntax from that media type's specification.  An example
+-   of how the base URL can be embedded in the Hypertext Markup Language
++   of how the base URI can be embedded in the Hypertext Markup Language
+    (HTML) [RFC1866] is provided in Appendix D.
+ 
+-   A mechanism for embedding the base URL within MIME container types
++   A mechanism for embedding the base URI within MIME container types
+    (e.g., the message and multipart types) is defined by MHTML
+    [RFC2110].  Protocols that do not use the MIME message header syntax,
+    but which do allow some form of tagged metainformation to be included
+    within messages, may define their own syntax for defining the base
+-   URL as part of a message.
++   URI as part of a message.
+ 
+-5.1.2. Base URL from the Encapsulating Entity
++5.1.2. Base URI from the Encapsulating Entity
+ 
+-   If no base URL is embedded, the base URL of a document is defined by
++   If no base URI is embedded, the base URI of a document is defined by
+    the document's retrieval context.  For a document that is enclosed
+    within another entity (such as a message or another document), the
+-   retrieval context is that entity; thus, the default base URL of the
+-   document is the base URL of the entity in which the document is
++   retrieval context is that entity; thus, the default base URI of the
++   document is the base URI of the entity in which the document is
+    encapsulated.
+ 
+-5.1.3. Base URL from the Retrieval URL
++5.1.3. Base URI from the Retrieval URI
+ 
+-   If no base URL is embedded and the document is not encapsulated
++   If no base URI is embedded and the document is not encapsulated
+    within some other entity (e.g., the top level of a composite entity),
+-   then, if a URL was used to retrieve the base document, that URL shall
+-   be considered the base URL.  Note that if the retrieval was the
+-   result of a redirected request, the last URL used (i.e., that which
+-   resulted in the actual retrieval of the document) is the base URL.
++   then, if a URI was used to retrieve the base document, that URI shall
++   be considered the base URI.  Note that if the retrieval was the
++   result of a redirected request, the last URI used (i.e., that which
++   resulted in the actual retrieval of the document) is the base URI.
+ 
+-5.1.4. Default Base URL
++5.1.4. Default Base URI
+ 
+    If none of the conditions described in Sections 5.1.1--5.1.3 apply,
+-   then the base URL is defined by the context of the application.
++   then the base URI is defined by the context of the application.
+    Since this definition is necessarily application-dependent, failing
+-   to define the base URL using one of the other methods may result in
++   to define the base URI using one of the other methods may result in
+    the same content being interpreted differently by different types of
+    application.
+    
+    It is the responsibility of the distributor(s) of a document
+-   containing relative URLs to ensure that the base URL for that
++   containing relative URIs to ensure that the base URI for that
+    document can be established.  It must be emphasized that relative
+-   URLs cannot be used reliably in situations where the document's
+-   base URL is not well-defined.
++   URIs cannot be used reliably in situations where the document's
++   base URI is not well-defined.
+ 
+ 5.2. Resolving Relative References to Absolute Form
+ 
+-   This section describes an example algorithm for resolving URL
+-   references which might be relative to a given base URL.
++   This section describes an example algorithm for resolving URI
++   references which might be relative to a given base URI.
+ 
+-   The base URL is established according to the rules of Section 5.1 and
++   The base URI is established according to the rules of Section 5.1 and
+    parsed into the four main components as described in Section 4.4.
+    Note that only the scheme component is required to be present in the
+-   base URL; the other components may be empty or undefined.  A
++   base URI; the other components may be empty or undefined.  A
+    component is undefined if its preceding separator does not appear in
+-   the URL reference; the path component is never undefined, though it
+-   may be empty.  The base URL's query component is not used by the
++   the URI reference; the path component is never undefined, though it
++   may be empty.  The base URI's query component is not used by the
+    resolution algorithm and may be discarded.
+    
+-   For each URL reference, the following steps are performed in order:
++   For each URI reference, the following steps are performed in order:
+ 
+-   1) The URL reference is parsed into the potential four components and
++   1) The URI reference is parsed into the potential four components and
+       fragment identifier, as described in Section 4.4.
+ 
+    2) If the path component is empty and the scheme, site, and query
+       components are undefined, then it is a reference to the current
+-      document and we are done.  Otherwise, the reference URL's query
++      document and we are done.  Otherwise, the reference URI's query
+       and fragment components are defined as found (or not found) within
+-      the URL reference and not inherited from the base URL.
++      the URI reference and not inherited from the base URI.
+ 
+    3) If the scheme component is defined, indicating that the reference
+       starts with a scheme name, then the reference is interpreted as an
+-      absolute URL and we are done.  Otherwise, the reference URL's
+-      scheme is inherited from the base URL's scheme component.
++      absolute URI and we are done.  Otherwise, the reference URI's
++      scheme is inherited from the base URI's scheme component.
+ 
+    4) If the site component is defined, then the reference is a
+       network-path and we skip to step 7.  Otherwise, the reference
+-      URL's site is inherited from the base URL's site component,
+-      which will also be undefined if the URL scheme does not use a
++      URI's site is inherited from the base URI's site component,
++      which will also be undefined if the URI scheme does not use a
+       site component.
+ 
+    5) If the path component begins with a slash character ("/"), then
+@@ -863,10 +885,10 @@
+ 
+    6) If this step is reached, then we are resolving a relative-path
+       reference.  The relative path needs to be merged with the base
+-      URL's path.  Although there are many ways to do this, we will
++      URI's path.  Although there are many ways to do this, we will
+       describe a simple method using a separate string buffer.
+ 
+-      a) All but the last segment of the base URL's path component is
++      a) All but the last segment of the base URI's path component is
+          copied to the buffer.  In other words, any characters after the
+          last (right-most) slash character, if any, are excluded.
+ 
+@@ -893,15 +915,15 @@
+          complete path segments of "..", then the reference is
+          considered to be in error.  Implementations may handle this
+          error by retaining these components in the resolved path
+-         (i.e., treating them as part of the final URL), by removing
++         (i.e., treating them as part of the final URI), by removing
+          them from the resolved path (i.e., discarding relative levels
+          above the root), or by avoiding traversal of the reference.
+ 
+-      h) The remaining buffer string is the reference URL's new path
++      h) The remaining buffer string is the reference URI's new path
+          component.
+ 
+-   7) The resulting URL components, including any inherited from the
+-      base URL, are recombined to give the absolute form of the URL
++   7) The resulting URI components, including any inherited from the
++      base URI, are recombined to give the absolute form of the URI
+       reference.  Using pseudocode, this would be
+ 
+          result = ""
+@@ -946,9 +968,9 @@
+ 
+    Resolution examples are provided in Appendix C.
+ 
+-6. URL Normalization and Equivalence
++6. URI Normalization and Equivalence
+ 
+-   In many cases, different URL strings may actually identify the
++   In many cases, different URI strings may actually identify the
+    identical resource. For example, the host names used in URLs are
+    actually case insensitive, and the URL <http://www.XEROX.com> is
+    equivalent to <http://www.xerox.com>. In general, the rules for
+@@ -961,14 +983,16 @@
+    
+ 7. Security Considerations
+ 
+-   A URL does not in itself pose a security threat.  Users should beware
++   A URI does not in itself pose a security threat.  Users should beware
+    that there is no general guarantee that a URL, which at one time
+    located a given resource, will continue to do so.  Nor is there any
+    guarantee that a URL will not locate a different resource at some
+    later point in time, due to the lack of any constraint on how a given
+    site apportions its namespace.  Such a guarantee can only be
+    obtained from the person(s) controlling that namespace and the
+-   resource in question.
++   resource in question.  A specific URI scheme may include additional
++   semantics, such as name persistence, if those semantics are required
++   of all naming authorities for that scheme.
+ 
+    It is sometimes possible to construct a URL such that an attempt to
+    perform a seemingly harmless, idempotent operation, such as the
+@@ -1005,8 +1029,8 @@
+    This document was derived from RFC 1738 [RFC1738] and RFC 1808
+    [RFC1808]; the acknowledgements in those specifications still
+    apply.  In addition, contributions by Lauren Wood, Martin Duerst,
+-   Gisle Aas, Martijn Koster, Ryan Moats, Foteos Macrides and
+-   Dave Kristol are gratefully acknowledged.
++   Gisle Aas, Martijn Koster, Ryan Moats, Foteos Macrides, Dave Kristol,
++   and Daniel LaLiberte are gratefully acknowledged.
+    
+ 9. References
+ 
+@@ -1042,6 +1066,8 @@
+ [RFC1736] Kunze, J., "Functional Recommendations for Internet Resource
+    Locators", RFC 1736, IS&T, UC Berkeley, February 1995.
+ 
++[RFC2141] Moats, R., "URN Syntax", RFC 2141, AT&T, May 1997.
++
+ [RFC1034] Mockapetris, P., "Domain Names - Concepts and Facilities",
+    STD 13, RFC 1034, USC/Information Sciences Institute, November
+    1987.
+@@ -1137,14 +1163,14 @@
+ 
+ Appendices
+ 
+-A. Collected BNF for URLs
++A. Collected BNF for URIs
+ 
+-      URL-reference = [ absoluteURL | relativeURL ] [ "#" fragment ]
+-      absoluteURL   = generic-URL | opaque-URL
+-      opaque-URL    = scheme ":" *urlc
+-      generic-URL   = scheme ":" relativeURL
++      URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
++      absoluteURI   = generic-URI | opaque-URI
++      opaque-URI    = scheme ":" *uric
++      generic-URI   = scheme ":" relativeURI
+ 
+-      relativeURL   = net_path | abs_path | rel_path
++      relativeURI   = net_path | abs_path | rel_path
+       net_path      = "//" site [ abs_path ]
+       abs_path      = "/"  rel_path
+       rel_path      = [ path_segments ] [ "?" query ]
+@@ -1173,11 +1199,11 @@
+       param         = *pchar
+       pchar         = unreserved | escaped | ":" | "@" | "&" | "=" | "+"
+ 
+-      query         = *urlc
++      query         = *uric
+ 
+-      fragment      = *urlc
++      fragment      = *uric
+ 
+-      urlc          = reserved | unreserved | escaped
++      uric          = reserved | unreserved | escaped
+       reserved      = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+"
+       unreserved    = alpha | digit | mark
+       mark          = "$" | "-" | "_" | "." | "!" | "~" |
+@@ -1200,16 +1226,16 @@
+                  "8" | "9"
+ 
+ 
+-B. Parsing a URL Reference with a Regular Expression
++B. Parsing a URI Reference with a Regular Expression
+ 
+-   As described in Section 4.4, the generic-URL syntax is not sufficient
+-   to disambiguate the components of some forms of URL.  Since the
++   As described in Section 4.4, the generic-URI syntax is not sufficient
++   to disambiguate the components of some forms of URI.  Since the
+    "greedy algorithm" described in that section is identical to the
+    disambiguation method used by POSIX regular expressions, it is
+    natural and commonplace to use a regular expression for parsing the
+-   potential four components and fragment identifier of a URL reference.
++   potential four components and fragment identifier of a URI reference.
+ 
+-   The following line is the regular expression for breaking-down a URL
++   The following line is the regular expression for breaking-down a URI
+    reference into its components.
+ 
+       ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
+@@ -1244,17 +1270,17 @@
+       query    = $7
+       fragment = $9
+ 
+-   and, going in the opposite direction, we can recreate a URL reference
++   and, going in the opposite direction, we can recreate a URI reference
+    from its components using the algorithm in step 7 of Section 5.2.
+ 
+ 
+-C. Examples of Resolving Relative URL References
++C. Examples of Resolving Relative URI References
+ 
+-   Within an object with a well-defined base URL of
++   Within an object with a well-defined base URI of
+ 
+       http://a/b/c/d;p?q
+ 
+-   the relative URLs would be resolved as follows:
++   the relative URIs would be resolved as follows:
+ 
+ C.1.  Normal Examples
+ 
+@@ -1284,7 +1310,7 @@
+ C.2.  Abnormal Examples
+ 
+    Although the following abnormal examples are unlikely to occur in
+-   normal practice, all URL parsers should be capable of resolving them
++   normal practice, all URI parsers should be capable of resolving them
+    consistently.  Each example uses the same base as above.
+ 
+    An empty reference refers to the start of the current document.
+@@ -1293,14 +1319,14 @@
+ 
+    Parsers must be careful in handling the case where there are more
+    relative path ".." segments than there are hierarchical levels in
+-   the base URL's path.  Note that the ".." syntax cannot be used to
+-   change the site component of a URL.
++   the base URI's path.  Note that the ".." syntax cannot be used to
++   change the site component of a URI.
+ 
+       ../../../g    =  http://a/../g
+       ../../../../g =  http://a/../../g
+ 
+    In practice, some implementations strip leading relative symbolic
+-   elements (".", "..") after applying a relative URL calculation, based
++   elements (".", "..") after applying a relative URI calculation, based
+    on the theory that compensating for obvious author errors is better
+    than allowing the request to fail.  Thus, the above two references
+    will be interpreted as "http://a/g" by some implementations.
+@@ -1315,7 +1341,7 @@
+       g..           =  http://a/b/c/g..
+       ..g           =  http://a/b/c/..g
+ 
+-   Less likely are cases where the relative URL uses unnecessary or
++   Less likely are cases where the relative URI uses unnecessary or
+    nonsensical forms of the "." and ".." complete path segments.
+ 
+       ./../g        =  http://a/b/g
+@@ -1325,8 +1351,8 @@
+       g;x=1/./y     =  http://a/b/c/g;x=1/y
+       g;x=1/../y    =  http://a/b/c/y
+ 
+-   All client applications remove the query component from the base URL
+-   before resolving relative URLs.  However, some applications fail to
++   All client applications remove the query component from the base URI
++   before resolving relative URIs.  However, some applications fail to
+    separate the reference's query and/or fragment components from a
+    relative path before merging it with the base path.  This error is
+    rarely noticed, since typical usage of a fragment never includes the
+@@ -1338,28 +1364,28 @@
+       g#s/./x       =  http://a/b/c/g#s/./x
+       g#s/../x      =  http://a/b/c/g#s/../x
+ 
+-   Some parsers allow the scheme name to be present in a relative URL
+-   if it is the same as the base URL scheme.  This is considered to be
+-   a loophole in prior specifications of partial URLs [RFC1630]. Its
++   Some parsers allow the scheme name to be present in a relative URI
++   if it is the same as the base URI scheme.  This is considered to be
++   a loophole in prior specifications of partial URIs [RFC1630]. Its
+    use should be avoided.
+ 
+       http:g        =  http:g
+       http:         =  http:
+ 
+ 
+-D. Embedding the Base URL in HTML documents
++D. Embedding the Base URI in HTML documents
+ 
+-   It is useful to consider an example of how the base URL of a
++   It is useful to consider an example of how the base URI of a
+    document can be embedded within the document's content.  In this
+    appendix, we describe how documents written in the Hypertext Markup
+-   Language (HTML) [RFC1866] can include an embedded base URL.  This
+-   appendix does not form a part of the URL specification and should not
++   Language (HTML) [RFC1866] can include an embedded base URI.  This
++   appendix does not form a part of the URI specification and should not
+    be considered as anything more than a descriptive example.
+ 
+    HTML defines a special element "BASE" which, when present in the
+    "HEAD" portion of a document, signals that the parser should use
+-   the BASE element's "HREF" attribute as the base URL for resolving
+-   any relative URLs.  The "HREF" attribute must be an absolute URL.
++   the BASE element's "HREF" attribute as the base URI for resolving
++   any relative URIs.  The "HREF" attribute must be an absolute URI.
+    Note that, in HTML, element and attribute names are
+    case-insensitive.  For example:
+ 
+@@ -1372,7 +1398,7 @@
+       </BODY></HTML>
+ 
+    A parser reading the example document should interpret the given
+-   relative URL "../x" as representing the absolute URL
++   relative URI "../x" as representing the absolute URI
+ 
+       <http://www.ics.uci.edu/Test/a/x>
+ 
+@@ -1380,48 +1406,48 @@
+    obtained.
+ 
+ 
+-E. Recommendations for Delimiting URLs in Context
++E. Recommendations for Delimiting URIs in Context
+ 
+-   URLs are often transmitted through formats which do not provide a
++   URIs are often transmitted through formats which do not provide a
+    clear context for their interpretation.  For example, there are
+-   many occasions when URLs are included in plain text; examples
++   many occasions when URIs are included in plain text; examples
+    include text sent in electronic mail, USENET news messages, and,
+    most importantly, printed on paper.  In such cases, it is important
+-   to be able to delimit the URL from the rest of the text, and in
++   to be able to delimit the URI from the rest of the text, and in
+    particular from punctuation marks that might be mistaken for part
+-   of the URL.
++   of the URI.
+ 
+-   In practice, URLs are delimited in a variety of ways, but usually
++   In practice, URIs are delimited in a variety of ways, but usually
+    within double-quotes "http://test.com/", angle brackets
+    <http://test.com/>, or just using whitespace
+ 
+                   http://test.com/
+ 
+-   These wrappers do not form part of the URL.
++   These wrappers do not form part of the URI.
+ 
+-   In the case where a fragment identifier is associated with a URL
++   In the case where a fragment identifier is associated with a URI
+    reference, the fragment would be placed within the brackets as well
+-   (separated from the URL with a "#" character).
++   (separated from the URI with a "#" character).
+ 
+    In some cases, extra whitespace (spaces, linebreaks, tabs, etc.)
+-   may need to be added to break long URLs across lines. The
+-   whitespace should be ignored when extracting the URL.
++   may need to be added to break long URIs across lines. The
++   whitespace should be ignored when extracting the URI.
+ 
+    No whitespace should be introduced after a hyphen ("-") character.
+    Because some typesetters and printers may (erroneously) introduce a
+    hyphen at the end of line when breaking a line, the interpreter of a
+-   URL containing a line break immediately after a hyphen should ignore
++   URI containing a line break immediately after a hyphen should ignore
+    all unescaped whitespace around the line break, and should be aware
+-   that the hyphen may or may not actually be part of the URL.
++   that the hyphen may or may not actually be part of the URI.
+ 
+-   Using <> angle brackets around each URL is especially recommended
+-   as a delimiting style for URLs that contain whitespace.
++   Using <> angle brackets around each URI is especially recommended
++   as a delimiting style for URIs that contain whitespace.
+ 
+    The prefix "URL:" (with or without a trailing space) was
+    recommended as a way to used to help distinguish a URL from other
+    bracketed designators, although this is not common in practice.
+    
+-   For robustness, software that accepts user-typed URLs should
++   For robustness, software that accepts user-typed URIs should
+    attempt to recognize and strip both delimiters and embedded
+    whitespace.
+ 
+@@ -1432,7 +1458,7 @@
+       net/rfc/>.  Note the warning in <http://www.ics.uci.edu/pub/
+       ietf/uri/historical.html#WARNING>.
+ 
+-   contains the URL references
++   contains the URI references
+ 
+       http://www.w3.org/Addressing/
+       ftp://ds.internic.net/rfc/
+@@ -1471,17 +1497,17 @@
+ 
+ G.1. Additions
+ 
+-   Section 3 (URL References) was added to stem the confusion
+-   regarding "what is a URL" and how to describe fragment identifiers
+-   given that they are not part of the URL, but are part of the URL
++   Section 3 (URI References) was added to stem the confusion
++   regarding "what is a URI" and how to describe fragment identifiers
++   given that they are not part of the URI, but are part of the URI
+    syntax and parsing concerns.  In addition, it provides a reference
+    definition for use by other IETF specifications (HTML, HTTP, etc.)
+-   which have previously attempted to redefine the URL syntax in order
+-   to account for the presence of fragment identifiers in URL
++   which have previously attempted to redefine the URI syntax in order
++   to account for the presence of fragment identifiers in URI
+    references.
+ 
+    Section 2.4 was rewritten to clarify a number of misinterpretations
+-   and to leave room for fully internationalized URLs.
++   and to leave room for fully internationalized URIs.
+ 
+    Appendix F on abbreviated URLs was added to describe the shortened
+    references often seen on television and magazine advertisements and
+@@ -1489,27 +1515,29 @@
+ 
+ G.2. Modifications from both RFC 1738 and RFC 1808
+ 
+-   Confusion regarding the terms "character encoding", the URL
++   Changed to URI syntax and semantics instead of just URL.
++
++   Confusion regarding the terms "character encoding", the URI
+    "character set", and the escaping of characters with %<hex><hex>
+    equivalents has (hopefully) been reduced.  Many of the BNF rule
+    names regarding the character sets have been changed to more
+    accurately describe their purpose and to encompass all "characters"
+    rather than just US-ASCII octets.  Unless otherwise noted here,
+-   these modifications do not affect the URL syntax.
++   these modifications do not affect the URI syntax.
+ 
+    Both RFC 1738 and RFC 1808 refer to the "reserved" set of
+-   characters as if URL-interpreting software were limited to a single
++   characters as if URI-interpreting software were limited to a single
+    set of characters with a reserved purpose (i.e., as meaning
+    something other than the data to which the characters correspond),
+-   and that this set was fixed by the URL scheme.  However, this has
++   and that this set was fixed by the URI scheme.  However, this has
+    not been true in practice; any character which is interpreted
+    differently when it is escaped is, in effect, reserved.
+    Furthermore, the interpreting engine on a HTTP server is often
+-   dependent on the resource, not just the URL scheme.  The
++   dependent on the resource, not just the URI scheme.  The
+    description of reserved characters has been changed accordingly.
+ 
+    The plus "+" character was added to those in the "reserved" set,
+-   since it is treated as reserved within some URL components.
++   since it is treated as reserved within some URI components.
+ 
+    The tilde "~" character was added to those in the "unreserved" set,
+    since it is extensively used on the Internet in spite of the
+@@ -1523,15 +1551,15 @@
+    The question-mark "?" character was removed from the set of allowed
+    characters for the userinfo in the site component, since
+    testing showed that many applications treat it as reserved for
+-   separating the query component from the rest of the URL.
++   separating the query component from the rest of the URI.
+ 
+    RFC 1738 specified that the path was separated from the site
+-   portion of a URL by a slash.  RFC 1808 followed suit, but with a
++   portion of a URI by a slash.  RFC 1808 followed suit, but with a
+    fudge of carrying around the separator as a "prefix" in order to
+    describe the parsing algorithm.  RFC 1630 never had this problem,
+    since it considered the slash to be part of the path.  In writing
+    this specification, it was found to be impossible to accurately
+-   describe and retain the difference between the two URLs
++   describe and retain the difference between the two URIs
+       <foo:/bar>   and   <foo:bar>
+    without either considering the slash to be part of the path (as
+    corresponds to actual practice) or creating a separate component just
+@@ -1551,7 +1579,7 @@
+    expected to handle the case where the ":" separator between host and
+    port is supplied without a port.
+ 
+-   The recommendations for delimiting URLs in context (Appendix E) have
++   The recommendations for delimiting URIs in context (Appendix E) have
+    been adjusted to reflect current practice.
+ 
+ G.4. Modifications from RFC 1808
+@@ -1571,10 +1599,10 @@
+    fields defined by MHTML [RFC2110].
+ 
+    RFC 1808 described various schemes as either having or not having the
+-   properties of the generic-URL syntax.  However, the only requirement
++   properties of the generic-URI syntax.  However, the only requirement
+    is that the particular document containing the relative references
+-   have a base URL which abides by the generic-URL syntax, regardless of
+-   the URL scheme, so the associated description has been updated to
++   have a base URI which abides by the generic-URI syntax, regardless of
++   the URI scheme, so the associated description has been updated to
+    reflect that.
+ 
+    The BNF term <net_loc> has been replaced with <site>, since the
+@@ -1587,7 +1615,7 @@
+    semicolon in a path segment does not affect the relative parsing of
+    that segment.  Therefore, parameters have been removed as a separate
+    component and may now appear in any path segment.  Their influence
+-   has been removed from the algorithm for resolving a relative URL
++   has been removed from the algorithm for resolving a relative URI
+    reference.  The resolution examples in Appendix C have been modified
+    to reflect this change.
+ 
