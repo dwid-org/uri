@@ -50,20 +50,11 @@ Abstract
 
 1.  Introduction
 
-   This work is derived from concepts introduced by the World-Wide Web
-   global information initiative, whose use of such objects dates from
-   1990 and is described in "Universal Resource Identifiers in WWW",
-   RFC 1630 [1].  This document is a companion to RFC 1738, 
-   "Uniform Resource Locators (URL)" [2], which specifies the
-   syntax and semantics of absolute URLs.  A URL is "absolute" if it
-   can be interpreted consistently and unambiguously, with global scope,
-   independent of any other URL.
-
    This document describes the syntax and semantics for "relative"
    Uniform Resource Locators (relative URLs): a compact representation
    of the location of a resource relative to an absolute base URL.
-   The syntax of relative URLs is a subset of that defined for
-   Uniform Resource Locators.
+   It is a companion to RFC 1738, "Uniform Resource Locators (URL)" [2],
+   which specifies the syntax and semantics of absolute URLs.
 
    A common use for Uniform Resource Locators is to embed them within
    a document (referred to as the "base" document) for the purpose of
