@@ -187,9 +187,8 @@
    term "Uniform Resource Locator" (URL) refers to the subset of URIs
    that, in addition to identifying the resource, provide a means of
    locating the resource by describing its primary access mechanism
-   (e.g., its network "location"), rather than by some other attributes
-   it may have.  The term "Uniform Resource Name" (URN) refers to the
-   subset of URIs that are required to remain globally unique and
+   (e.g., its network "location").  The term "Uniform Resource Name" (URN)
+   refers to the subset of URIs that are required to remain globally unique and
    persistent even when the resource ceases to exist or becomes unavailable.
 </t>
 <t>
@@ -358,55 +357,16 @@ telnet://melvyl.ucop.edu/
    the syntax requirements.
 </t>
 <t>
-   The second convention is a BNF-like grammar, used to define the
-   formal URI syntax.  The grammar is that of <xref target="RFC822"/>, except that "|"
-   is used to designate alternatives.  Briefly, rules are separated from
-   definitions by an equal "=", indentation is used to continue a rule
-   definition over more than one line, literals are quoted with "",
-   parentheses "(" and ")" are used to group elements, optional elements
-   are enclosed in "[" and "]" brackets, and elements may be preceded
-   with &lt;n&gt;*&lt;m&gt; to designate n or more (up to m) repetitions
-   of the following element; n defaults to 0, m defaults to infinity.
-</t>
-<t>
-   Unlike many specifications that use a BNF-like grammar to define the
-   bytes (octets) allowed by a protocol, the URI grammar is defined in
-   terms of characters.  Each literal in the grammar corresponds to the
-   character it represents, rather than to the octet encoding of that
-   character in any particular coded character set.  How a URI is
-   represented in terms of bits and bytes on the wire is dependent upon
+   The second convention is a formal grammar defined using the
+   Augmented Backus-Naur Form (ABNF) notation of <xref target="RFC2234"/>.
+   Although the ABNF defines syntax in terms of the ASCII character
+   encoding <xref target="ASCII"/>, the URI syntax should be interpreted
+   in terms of the character that the ASCII-encoded octet represents,
+   rather than the octet encoding itself.  How a URI is represented
+   in terms of bits and bytes on the wire is dependent upon
    the character encoding of the protocol used to transport it, or the
-   charset of the document which contains it.
+   charset of the document that contains it.
 </t>
-<figure><preamble>
-<iref item="alpha" primary="true"/>
-<iref item="lowalpha" primary="true"/>
-<iref item="upalpha" primary="true"/>
-<iref item="digit" primary="true"/>
-<iref item="alphanum" primary="true"/>
-<iref item="URI grammar" subitem="alpha" primary="true"/>
-<iref item="URI grammar" subitem="lowalpha" primary="true"/>
-<iref item="URI grammar" subitem="upalpha" primary="true"/>
-<iref item="URI grammar" subitem="digit" primary="true"/>
-<iref item="URI grammar" subitem="alphanum" primary="true"/>
-   The following definitions are common to many elements:
-</preamble>
-<artwork>
-   alpha    = lowalpha | upalpha
-
-   lowalpha = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" |
-              "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" |
-              "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
-
-   upalpha  = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" |
-              "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" |
-              "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
-
-   digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
-              "8" | "9"
-
-   alphanum = alpha | digit
-</artwork></figure>
 <t>
    The complete URI syntax is collected in Appendix A.
 </t>
@@ -425,7 +385,7 @@ telnet://melvyl.ucop.edu/
    input facilities available to Internet users.
 <iref item="URI grammar" subitem="uric" primary="true"/>
 </preamble><artwork>
-   uric          = reserved | unreserved | escaped
+   uric          = reserved / unreserved / escaped
 </artwork></figure>
 <t>
    Within a URI, characters are either used as delimiters or to
@@ -506,8 +466,8 @@ URI character sequence->octet sequence->original character sequence
    forming the URI.
 <iref item="URI grammar" subitem="reserved" primary="true"/>
 </preamble><artwork>
-   reserved    = "[" | "]" | ";" | "/" | "?" | 
-                 ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+   reserved    = "[" / "]" / ";" / "/" / "?" / 
+                 ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 </artwork></figure>
 <t>
    The "reserved" syntax class above refers to those characters that are
@@ -535,9 +495,9 @@ URI character sequence->octet sequence->original character sequence
 <iref item="URI grammar" subitem="unreserved" primary="true"/>
 <iref item="URI grammar" subitem="mark" primary="true"/>
 </preamble><artwork>
-   unreserved  = alphanum | mark
+   unreserved  = ALPHA / DIGIT / mark
 
-   mark        = "-" | "_" | "." | "!" | "~" | "*" | "'" | "(" | ")"
+   mark        = "-" / "_" / "." / "!" / "~" / "*" / "'" / "(" / ")"
 </artwork></figure>
 <t>
    Unreserved characters can be escaped without changing the semantics
@@ -558,17 +518,13 @@ URI character sequence->octet sequence->original character sequence
 <section title="Escaped Encoding">
 <figure><preamble>
 <iref item="escaped" primary="true"/>
-<iref item="hex" primary="true"/>
    An escaped octet is encoded as a character triplet, consisting of the
    percent character "%" followed by the two hexadecimal digits
    representing the octet code. For example, "%20" is the escaped
    encoding for the US-ASCII space character.
 <iref item="URI grammar" subitem="escaped" primary="true"/>
-<iref item="URI grammar" subitem="hex" primary="true"/>
 </preamble><artwork>
-   escaped     = "%" hex hex
-   hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
-                         "a" | "b" | "c" | "d" | "e" | "f"
+   escaped     = "%" HEXDIG HEXDIG
 </artwork></figure>
 </section>
 
@@ -610,39 +566,29 @@ URI character sequence->octet sequence->original character sequence
    description of those US-ASCII characters that have been excluded and
    the reasons for their exclusion.
 </t>
-<figure><preamble>
-<iref item="control" primary="true"/>
-   The control characters in the US-ASCII coded character set are not
+<t>
+   The control characters (CTL) in the US-ASCII coded character set are not
    used within a URI, both because they are non-printable and because
    they are likely to be misinterpreted by some control mechanisms.
-<iref item="URI grammar" subitem="control" primary="true"/>
-</preamble><artwork>
-   control     = &lt;US-ASCII coded characters 00-1F and 7F hexadecimal&gt;
-</artwork></figure>
-<figure><preamble>
-<iref item="space" primary="true"/>
-   The space character is excluded because significant spaces may
+</t>
+<t>
+   The space character (SP) is excluded because significant spaces may
    disappear and insignificant spaces may be introduced when a URI is
    transcribed or typeset or subjected to the treatment of word-processing
    programs.  Whitespace is also used to delimit a URI in many
    contexts.
-<iref item="URI grammar" subitem="space" primary="true"/>
-</preamble><artwork>
-   space       = &lt;US-ASCII coded character 20 hexadecimal&gt;
-</artwork></figure>
+</t>
+<figure><preamble>
 <iref item="delims" primary="true"/>
-<t>
    The angle-bracket "&lt;" and "&gt;" and double-quote (") characters are
    excluded because they are often used as the delimiters around a URI in
    text documents and protocol fields.  The character "#" is excluded
    because it is used to delimit a URI from a fragment identifier in a URI
    reference (Section 4). The percent character "%" is excluded because
    it is used for the encoding of escaped characters.
-</t>
-<figure><preamble>
 <iref item="URI grammar" subitem="delims" primary="true"/>
 </preamble><artwork>
-   delims      = "&lt;" | "&gt;" | "#" | "%" | &lt;"&gt;
+   delims      = "&lt;" / "&gt;" / "#" / "%" / DQUOTE
 </artwork></figure>
 <figure><preamble>
 <iref item="unwise" primary="true"/>
@@ -651,7 +597,7 @@ URI character sequence->octet sequence->original character sequence
    used as delimiters.
 <iref item="URI grammar" subitem="unwise" primary="true"/>
 </preamble><artwork>
-   unwise      = "{" | "}" | "|" | "\" | "^" | "`"
+   unwise      = "{" / "}" / "|" / "\" / "^" / "`"
 </artwork></figure>
 <t>
    Data corresponding to excluded characters must be escaped in order to
@@ -669,7 +615,7 @@ URI character sequence->octet sequence->original character sequence
 <figure><artwork>
    &lt;scheme&gt;:&lt;scheme-specific-part&gt;
 </artwork></figure>
-<iref item="absoluteURI" primary="true"/>
+<iref item="absolute-URI" primary="true"/>
 <t>
    An absolute URI contains the name of the scheme being used (&lt;scheme&gt;)
    followed by a colon (":") and then a string (the &lt;scheme-specific-part&gt;)
@@ -690,9 +636,9 @@ URI character sequence->octet sequence->original character sequence
    For example, some URI schemes do not allow an &lt;authority&gt; component,
    and others do not use a &lt;query&gt; component.
 </t>
-<iref item="URI grammar" subitem="absoluteURI" primary="true"/>
+<iref item="URI grammar" subitem="absolute-URI" primary="true"/>
 <figure><artwork>
-   absoluteURI   = scheme ":" ( hier_part | opaque_part )
+   absolute-URI  = scheme ":" ( hier-part / opaque-part )
 </artwork></figure>
 <figure><preamble>
    URIs that are hierarchical in nature use the slash "/" character for
@@ -702,36 +648,36 @@ URI character sequence->octet sequence->original character sequence
    path will look similar to a file pathname.  This does NOT imply that
    the resource is a file or that the URI maps to an actual filesystem
    pathname.
-<iref item="hier_part" primary="true"/>
-<iref item="net_path" primary="true"/>
-<iref item="abs_path" primary="true"/>
-<iref item="URI grammar" subitem="hier_part" primary="true"/>
-<iref item="URI grammar" subitem="net_path" primary="true"/>
-<iref item="URI grammar" subitem="abs_path" primary="true"/>
+<iref item="hier-part" primary="true"/>
+<iref item="net-path" primary="true"/>
+<iref item="abs-path" primary="true"/>
+<iref item="URI grammar" subitem="hier-part" primary="true"/>
+<iref item="URI grammar" subitem="net-path" primary="true"/>
+<iref item="URI grammar" subitem="abs-path" primary="true"/>
 </preamble><artwork>
-   hier_part     = [ net_path | abs_path ] [ "?" query ]
+   hier-part     = [ net-path / abs-path ] [ "?" query ]
 
-   net_path      = "//" authority [ abs_path ]
+   net-path      = "//" authority [ abs-path ]
 
-   abs_path      = "/"  path_segments
+   abs-path      = "/"  path-segments
 </artwork></figure>
 <figure><preamble>
    URIs that do not make use of the slash "/" character for separating
    hierarchical components are considered opaque by the generic URI
    parser.
-<iref item="opaque_part" primary="true"/>
-<iref item="uric_no_slash" primary="true"/>
-<iref item="URI grammar" subitem="opaque_part" primary="true"/>
-<iref item="URI grammar" subitem="uric_no_slash" primary="true"/>
+<iref item="opaque-part" primary="true"/>
+<iref item="uric-no-slash" primary="true"/>
+<iref item="URI grammar" subitem="opaque-part" primary="true"/>
+<iref item="URI grammar" subitem="uric-no-slash" primary="true"/>
 </preamble><artwork>
-   opaque_part   = uric_no_slash *uric
+   opaque-part   = uric-no-slash *uric
 
-   uric_no_slash = unreserved | escaped | "[" | "]" | ";" | "?" |
-                   ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+   uric-no-slash = unreserved / escaped / "[" / "]" / ";" / "?" /
+                   ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 </artwork></figure>
 <t>
-   We use the term &lt;path&gt; to refer to both the &lt;abs_path&gt; and
-   &lt;opaque_part&gt; constructs, since they are mutually exclusive for any
+   We use the term &lt;path&gt; to refer to both the &lt;abs-path&gt; and
+   &lt;opaque-part&gt; constructs, since they are mutually exclusive for any
    given URI and can be parsed as a single component.
 </t>
 
@@ -753,7 +699,7 @@ URI character sequence->octet sequence->original character sequence
    well as "http").
 <iref item="URI grammar" subitem="scheme" primary="true"/>
 </preamble><artwork>
-   scheme        = alpha *( alpha | digit | "+" | "-" | "." )
+   scheme        = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
 </artwork></figure>
 <t>
    Relative URI references are distinguished from absolute URI in that
@@ -772,7 +718,7 @@ URI character sequence->octet sequence->original character sequence
    registry of naming authorities.
 <iref item="URI grammar" subitem="authority" primary="true"/>
 </preamble><artwork>
-   authority     = server | reg_name
+   authority     = server / reg-name
 </artwork></figure>
 <t>
    The authority component is preceded by a double slash "//" and is
@@ -789,14 +735,14 @@ URI character sequence->octet sequence->original character sequence
 
 <section title="Registry-based Naming Authority">
 <figure><preamble>
-<iref item="reg_name" primary="true"/>
+<iref item="reg-name" primary="true"/>
    The structure of a registry-based naming authority is specific to the
    URI scheme, but constrained to the allowed characters for an
    authority component.
-<iref item="URI grammar" subitem="reg_name" primary="true"/>
+<iref item="URI grammar" subitem="reg-name" primary="true"/>
 </preamble><artwork>
-   reg_name      = 1*( unreserved | escaped | ";" |
-                       ":" | "@" | "&amp;" | "=" | "+" | "$" | "," )
+   reg-name      = 1*( unreserved / escaped / ";" /
+                       ":" / "@" / "&amp;" / "=" / "+" / "$" / "," )
 </artwork></figure>
 </section>
 
@@ -809,7 +755,7 @@ URI character sequence->octet sequence->original character sequence
    component of the URI's scheme-specific data:
 </t>
 <figure><artwork>
-&lt;userinfo&gt;@&lt;host&gt;:&lt;port&gt;
+   &lt;userinfo&gt;@&lt;host&gt;:&lt;port&gt;
 </artwork></figure>
 <t>
    where &lt;userinfo&gt; may consist of a user name and, optionally,
@@ -829,8 +775,8 @@ URI character sequence->octet sequence->original character sequence
    "@".
 <iref item="URI grammar" subitem="userinfo" primary="true"/>
 </preamble><artwork>
-   userinfo      = *( unreserved | escaped | ";" |
-                      ":" | "&amp;" | "=" | "+" | "$" | "," )
+   userinfo      = *( unreserved / escaped / ";" /
+                      ":" / "&amp;" / "=" / "+" / "$" / "," )
 </artwork></figure>
 <t>
    Some URI schemes use the format "user:password" in the userinfo
@@ -857,13 +803,14 @@ URI character sequence->octet sequence->original character sequence
 <iref item="URI grammar" subitem="port" primary="true"/>
 </preamble><artwork>
    hostport      = host [ ":" port ]
-   host          = IPv6reference | IPv4address | hostname
-   port          = *digit
+   host          = IPv6reference / IPv4address / hostname
+   port          = *DIGIT
 </artwork></figure>
 <figure><preamble>
 <iref item="hostname" primary="true"/>
 <iref item="domainlabel" primary="true"/>
 <iref item="toplabel" primary="true"/>
+<iref item="alphanum" primary="true"/>
    A hostname takes the form described in Section 3 of <xref target="RFC1034"/>
    and Section 2.1 of <xref target="RFC1123"/>: a sequence of domain labels
    separated by ".", each domain label starting and ending with an alphanumeric
@@ -875,10 +822,12 @@ URI character sequence->octet sequence->original character sequence
 <iref item="URI grammar" subitem="hostname" primary="true"/>
 <iref item="URI grammar" subitem="domainlabel" primary="true"/>
 <iref item="URI grammar" subitem="toplabel" primary="true"/>
+<iref item="URI grammar" subitem="alphanum" primary="true"/>
 </preamble><artwork>
    hostname      = *( domainlabel "." ) toplabel [ "." ]
-   domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
-   toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+   domainlabel   = alphanum / alphanum *( alphanum / "-" ) alphanum
+   toplabel      = ALPHA / ALPHA *( alphanum / "-" ) alphanum
+   alphanum      = ALPHA / DIGIT
 </artwork></figure>
 <figure><preamble>
 <iref item="IPv4" primary="true"/>
@@ -926,7 +875,7 @@ URI character sequence->octet sequence->original character sequence
                  ( h4 2( ":" h4 ) "::" 0*2( h4 ":" ) IPv4address ) /
                  ( h4 3( ":" h4 ) "::" 0*1( h4 ":" ) IPv4address )
 
-   h4          = 1*4hex
+   h4          = 1*4HEXDIG
 </artwork></figure>
 </section>
 </section>
@@ -937,24 +886,24 @@ URI character sequence->octet sequence->original character sequence
    The path component contains data, specific to the authority (or the
    scheme if there is no authority component), identifying the resource
    within the scope of that scheme and authority.
-<iref item="path_segments" primary="true"/>
+<iref item="path-segments" primary="true"/>
 <iref item="segment" primary="true"/>
 <iref item="param" primary="true"/>
 <iref item="pchar" primary="true"/>
 <iref item="URI grammar" subitem="path" primary="true"/>
-<iref item="URI grammar" subitem="path_segments" primary="true"/>
+<iref item="URI grammar" subitem="path-segments" primary="true"/>
 <iref item="URI grammar" subitem="segment" primary="true"/>
 <iref item="URI grammar" subitem="param" primary="true"/>
 <iref item="URI grammar" subitem="pchar" primary="true"/>
 </preamble><artwork>
-   path          = [ abs_path | opaque_part ]
+   path          = [ abs-path / opaque-part ]
 
-   path_segments = segment *( "/" segment )
+   path-segments = segment *( "/" segment )
    segment       = *pchar *( ";" param )
    param         = *pchar
 
-   pchar         = unreserved | escaped |
-                   ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+   pchar         = unreserved / escaped /
+                   ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 </artwork></figure>
 <t>
    The path may consist of a sequence of path segments separated by a
@@ -973,8 +922,8 @@ URI character sequence->octet sequence->original character sequence
    the resource.
 <iref item="URI grammar" subitem="query" primary="true"/>
 </preamble><artwork>
-   query         = unreserved | escaped | ";" | "/" | "?" | 
-                   ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+   query         = unreserved / escaped / ";" / "/" / "?" / 
+                   ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 </artwork></figure>
 <t>
    Within a query component, the characters ";", "/", "?", ":", "@",
@@ -999,15 +948,15 @@ URI character sequence->octet sequence->original character sequence
    parsing the fragment and resolving the relative form.
 <iref item="URI grammar" subitem="URI-reference" primary="true"/>
 </preamble><artwork>
-   URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
+   URI-reference = [ absolute-URI / relative-URI ] [ "#" fragment ]
 </artwork></figure>
 <figure><preamble>
-<iref item="URIwf" primary="true"/>
+<iref item="absolute-URI-reference" primary="true"/>
    Many protocol elements allow only the absolute form of a URI with
    an optional fragment identifier.
-<iref item="URI grammar" subitem="URIwf" primary="true"/>
+<iref item="URI grammar" subitem="absolute-URI-reference" primary="true"/>
 </preamble><artwork>
-   URIwf = absoluteURI [ "#" fragment ]
+   absolute-URI-reference = absolute-URI [ "#" fragment ]
 </artwork></figure>
 <t>
    The syntax for a relative URI is a shortened form of that for an absolute
@@ -1028,8 +977,8 @@ URI character sequence->octet sequence->original character sequence
    part of a URI, but is often used in conjunction with a URI.
 <iref item="URI grammar" subitem="fragment" primary="true"/>
 </preamble><artwork>
-   fragment      = unreserved | escaped | ";" | "/" | "?" |
-                   ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+   fragment      = unreserved / escaped / ";" / "/" / "?" /
+                   ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 </artwork></figure>
 <t>
    The semantics of a fragment identifier is a property of the data
@@ -1090,7 +1039,7 @@ URI character sequence->octet sequence->original character sequence
 </section>
 
 <section title="Relative URI References">
-<iref item="relativeURI" primary="true"/>
+<iref item="relative-URI" primary="true"/>
 <t>
    It is often the case that a group or "tree" of documents has been
    constructed to serve a common purpose; the vast majority of URIs in
@@ -1111,35 +1060,35 @@ URI character sequence->octet sequence->original character sequence
    necessary for the long-term usability of embedded URIs.
 </t>
 <figure><preamble>
-   The relative URI syntax takes advantage of the &lt;hier_part&gt; syntax
-   of &lt;absoluteURI&gt; (Section 3) in order to express a reference that is
+   The relative URI syntax takes advantage of the &lt;hier-part&gt; syntax
+   of &lt;absolute-URI&gt; (Section 3) in order to express a reference that is
    relative to the namespace of another hierarchical URI.
-<iref item="URI grammar" subitem="relativeURI" primary="true"/>
+<iref item="URI grammar" subitem="relative-URI" primary="true"/>
 </preamble><artwork>
-   relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
+   relative-URI  = [ net-path / abs-path / rel-path ] [ "?" query ]
 </artwork></figure>
 <t>
    A relative reference beginning with two slash characters is termed a
-   network-path reference, as defined by &lt;net_path&gt; in Section 3.  Such
+   network-path reference, as defined by &lt;net-path&gt; in Section 3.  Such
    references are rarely used.
 </t>
 <t>
    A relative reference beginning with a single slash character is
-   termed an absolute-path reference, as defined by &lt;abs_path&gt; in
+   termed an absolute-path reference, as defined by &lt;abs-path&gt; in
    Section 3.
 </t>
 <figure><preamble>
-<iref item="rel_path" primary="true"/>
-<iref item="rel_segment" primary="true"/>
+<iref item="rel-path" primary="true"/>
+<iref item="rel-segment" primary="true"/>
    A relative reference that does not begin with a scheme name or a
    slash character is termed a relative-path reference.
-<iref item="URI grammar" subitem="rel_path" primary="true"/>
-<iref item="URI grammar" subitem="rel_segment" primary="true"/>
+<iref item="URI grammar" subitem="rel-path" primary="true"/>
+<iref item="URI grammar" subitem="rel-segment" primary="true"/>
 </preamble><artwork>
-   rel_path      = rel_segment [ abs_path ]
+   rel-path      = rel-segment [ abs-path ]
 
-   rel_segment   = 1*( unreserved | escaped | ";" |
-                       "@" | "&amp;" | "=" | "+" | "$" | "," )
+   rel-segment   = 1*( unreserved / escaped / ";" /
+                       "@" / "&amp;" / "=" / "+" / "$" / "," )
 </artwork></figure>
 <t>
    Within a relative-path reference, the complete path segments "." and
@@ -1160,10 +1109,10 @@ URI character sequence->octet sequence->original character sequence
 </t>
 <t>
    It is not necessary for all URI within a given scheme to be
-   restricted to the &lt;hier_part&gt; syntax, since the hierarchical
+   restricted to the &lt;hier-part&gt; syntax, since the hierarchical
    properties of that syntax are only necessary when a relative URI is
    used within a particular document.  Documents can only make use of
-   a relative URI when their base URI fits within the &lt;hier_part&gt; syntax.
+   a relative URI when their base URI fits within the &lt;hier-part&gt; syntax.
    It is assumed that any document which contains a relative reference
    will also have a base URI that obeys the syntax.  In other words, a
    relative URI cannot be used within a document that has an unsuitable
@@ -1171,7 +1120,7 @@ URI character sequence->octet sequence->original character sequence
 </t>
 <t>
    Some URI schemes do not allow a hierarchical syntax matching the
-   &lt;hier_part&gt; syntax, and thus cannot use relative references.
+   &lt;hier-part&gt; syntax, and thus cannot use relative references.
 </t>
 
 <section title="Establishing a Base URI">
@@ -1190,23 +1139,23 @@ URI character sequence->octet sequence->original character sequence
    has the highest precedence.  This can be visualized graphically as:
 </t>
 <figure><artwork>
-.----------------------------------------------------------.
-|  .----------------------------------------------------.  |
-|  |  .----------------------------------------------.  |  |
-|  |  |  .----------------------------------------.  |  |  |
-|  |  |  |  .----------------------------------.  |  |  |  |
-|  |  |  |  |       &lt;relative_reference&gt;       |  |  |  |  |
-|  |  |  |  `----------------------------------'  |  |  |  |
-|  |  |  | (5.1.1) Base URI embedded in the       |  |  |  |
-|  |  |  |         document's content             |  |  |  |
-|  |  |  `----------------------------------------'  |  |  |
-|  |  | (5.1.2) Base URI of the encapsulating entity |  |  |
-|  |  |         (message, document, or none).        |  |  |
-|  |  `----------------------------------------------'  |  |
-|  | (5.1.3) URI used to retrieve the entity            |  |
-|  `----------------------------------------------------'  |
-| (5.1.4) Default Base URI is application-dependent        |
-`----------------------------------------------------------'
+   .----------------------------------------------------------.
+   |  .----------------------------------------------------.  |
+   |  |  .----------------------------------------------.  |  |
+   |  |  |  .----------------------------------------.  |  |  |
+   |  |  |  |  .----------------------------------.  |  |  |  |
+   |  |  |  |  |       &lt;relative-reference&gt;       |  |  |  |  |
+   |  |  |  |  `----------------------------------'  |  |  |  |
+   |  |  |  | (5.1.1) Base URI embedded in the       |  |  |  |
+   |  |  |  |         document's content             |  |  |  |
+   |  |  |  `----------------------------------------'  |  |  |
+   |  |  | (5.1.2) Base URI of the encapsulating entity |  |  |
+   |  |  |         (message, document, or none).        |  |  |
+   |  |  `----------------------------------------------'  |  |
+   |  | (5.1.3) URI used to retrieve the entity            |  |
+   |  `----------------------------------------------------'  |
+   | (5.1.4) Default Base URI is application-dependent        |
+   `----------------------------------------------------------'
 </artwork></figure>
 
 <section title="Base URI within Document Content">
@@ -1329,7 +1278,7 @@ URI character sequence->octet sequence->original character sequence
                T.query = R.query;
             else
                -- An empty reference refers to the current document
-               return (current_document, fragment);
+               return (current-document, fragment);
             endif;
          else
             if (R.path starts-with "/") then
@@ -1524,10 +1473,10 @@ next component separator or the end of the reference.
    It also incorporates the update (with corrections) for IPv6 literals
    in the host syntax, as defined by Robert M. Hinden, Brian E. Carpenter,
    and Larry Masinter in <xref target="RFC2732"/>.
-   In addition, contributions by Reese Anschultz, Adam M. Costello,
-   Jason Diamond, Henry Holtzman, Bruce Lilly, Julian Reschke,
-   Miles Sabin, Ronald Tschalaer, Marc Warne, and Henry Zongaro
-   are gratefully acknowledged.
+   In addition, contributions by Reese Anschultz, Tim Bray, Dan Connolly,
+   Adam M. Costello, Jason Diamond, Henry Holtzman, Bruce Lilly,
+   Michael Mealling, Julian Reschke, Miles Sabin, Ronald Tschalaer,
+   Marc Warne, and Henry Zongaro are gratefully acknowledged.
 </t>
 </section>
 </middle>
@@ -1562,24 +1511,6 @@ next component separator or the end of the reference.
 <date month='October' year='1989'></date></front>
 <seriesInfo name='STD' value='3' />
 <seriesInfo name='RFC' value='1123' />
-</reference>
-
-<reference anchor='RFC822'>
-<front>
-<title abbrev='Standard for ARPA Internet Text Messages'>Standard for the format of ARPA Internet text messages</title>
-<author initials='D.H.' surname='Crocker' fullname='David H. Crocker'>
-<organization>University of Delaware, Dept. of Electrical Engineering</organization>
-<address>
-<postal>
-<street></street>
-<city>Newark</city>
-<region>DE</region>
-<code>19711</code>
-<country>US</country></postal>
-<email>DCrocker@UDel-Relay</email></address></author>
-<date month='August' day='13' year='1982'></date></front>
-<seriesInfo name='STD' value='11' />
-<seriesInfo name='RFC' value='822' />
 </reference>
 
 <reference anchor='RFC2234'>
@@ -2099,41 +2030,44 @@ Science, University of California, Irvine</organization>
 
 <section title="Collected BNF for URI">
 <figure><artwork>
-URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
-absoluteURI   = scheme ":" ( hier_part | opaque_part )
-relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
+absolute-URI-reference = absolute-URI [ "#" fragment ]
 
-hier_part     = [ net_path | abs_path ] [ "?" query ]
-opaque_part   = uric_no_slash *uric
+URI-reference = [ absolute-URI / relative-URI ] [ "#" fragment ]
+absolute-URI  = scheme ":" ( hier-part / opaque-part )
+relative-URI  = [ net-path / abs-path / rel-path ] [ "?" query ]
 
-uric_no_slash = unreserved | escaped | "[" | "]" | ";" | "?" |
-                ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+hier-part     = [ net-path / abs-path ] [ "?" query ]
+opaque-part   = uric-no-slash *uric
 
-net_path      = "//" authority [ abs_path ]
-abs_path      = "/"  path_segments
-rel_path      = rel_segment [ abs_path ]
+uric-no-slash = unreserved / escaped / "[" / "]" / ";" / "?" /
+                ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 
-rel_segment   = 1*( unreserved | escaped | ";" |
-                   "@" | "&amp;" | "=" | "+" | "$" | "," )
+net-path      = "//" authority [ abs-path ]
+abs-path      = "/"  path-segments
+rel-path      = rel-segment [ abs-path ]
 
-scheme        = alpha *( alpha | digit | "+" | "-" | "." )
+rel-segment   = 1*( unreserved / escaped / ";" /
+                   "@" / "&amp;" / "=" / "+" / "$" / "," )
 
-authority     = server | reg_name
+scheme        = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
 
-reg_name      = 1*( unreserved | escaped | ";" | 
-                    ":" | "@" | "&amp;" | "=" | "+" | "$" | "," )
+authority     = server / reg-name
+
+reg-name      = 1*( unreserved / escaped / ";" / 
+                    ":" / "@" / "&amp;" / "=" / "+" / "$" / "," )
 
 server        = [ [ userinfo "@" ] hostport ]
-userinfo      = *( unreserved | escaped | ";" |
-                   ":" | "&amp;" | "=" | "+" | "$" | "," )
+userinfo      = *( unreserved / escaped / ";" /
+                   ":" / "&amp;" / "=" / "+" / "$" / "," )
 
 hostport      = host [ ":" port ]
-host          = IPv6reference | IPv4address | hostname
-port          = *digit
+host          = IPv6reference / IPv4address / hostname
+port          = *DIGIT
 
 hostname      = *( domainlabel "." ) toplabel [ "." ]
-domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
-toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
+domainlabel   = alphanum / alphanum *( alphanum / "-" ) alphanum
+toplabel      = ALPHA / ALPHA *( alphanum / "-" ) alphanum
+alphanum      = ALPHA / DIGIT
 
 IPv4address   = dec-octet "." dec-octet "." dec-octet "." dec-octet
 dec-octet     = DIGIT /                         ; 0-9
@@ -2157,43 +2091,29 @@ IPv6address   = (                       7( h4 ":" )   h4   ) /
                 ( h4 2( ":" h4 ) "::" 0*2( h4 ":" ) IPv4address ) /
                 ( h4 3( ":" h4 ) "::" 0*1( h4 ":" ) IPv4address )
 
-h4            = 1*4hex
+h4            = 1*4HEXDIG
 
-path          = [ abs_path | opaque_part ]
-path_segments = segment *( "/" segment )
+path          = [ abs-path / opaque-part ]
+path-segments = segment *( "/" segment )
 segment       = *pchar *( ";" param )
 param         = *pchar
-pchar         = unreserved | escaped |
-                ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+pchar         = unreserved / escaped /
+                ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 
-query         = unreserved | escaped | ";" | "/" | "?" | 
-                ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+query         = unreserved / escaped / ";" / "/" / "?" / 
+                ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 
-fragment      = unreserved | escaped | ";" | "/" | "?" | 
-                ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
+fragment      = unreserved / escaped / ";" / "/" / "?" / 
+                ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
 
-uric          = reserved | unreserved | escaped
-reserved      = "[" | "]" | ";" | "/" | "?" | 
-                ":" | "@" | "&amp;" | "=" | "+" | "$" | ","
-unreserved    = alphanum | mark
-mark          = "-" | "_" | "." | "!" | "~" | "*" | "'" |
-                "(" | ")"
+uric          = reserved / unreserved / escaped
+reserved      = "[" / "]" / ";" / "/" / "?" / 
+                ":" / "@" / "&amp;" / "=" / "+" / "$" / ","
+unreserved    = ALPHA / DIGIT / mark
+mark          = "-" / "_" / "." / "!" / "~" / "*" / "'" /
+                "(" / ")"
 
-escaped       = "%" hex hex
-hex           = digit | "A" | "B" | "C" | "D" | "E" | "F" |
-                        "a" | "b" | "c" | "d" | "e" | "f"
-
-alphanum      = alpha | digit
-alpha         = lowalpha | upalpha
-
-lowalpha = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" |
-           "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" |
-           "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
-upalpha  = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" |
-           "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" |
-           "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
-digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
-           "8" | "9"
+escaped       = "%" HEXDIG HEXDIG
 </artwork></figure>
 </section>
 
@@ -2367,7 +2287,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
 </t>
 <figure><artwork>
    http:g        =  http:g           ; for validating parsers
-                 |  http://a/b/c/g   ; for backwards compatibility
+                 /  http://a/b/c/g   ; for backwards compatibility
 </artwork></figure>
 
 </section>
@@ -2524,7 +2444,7 @@ digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
 IPv6 literals have been added to the list of possible identifiers
 for the host portion of a server component, as described by
 <xref target="RFC2732"/>, with the addition of "[" and "]" to
-the reserved, uric, and uric_no_slash sets.  Square brackets are
+the reserved, uric, and uric-no-slash sets.  Square brackets are
 now specified as reserved for the authority component, allowed
 within the opaque part of an opaque URI, and not allowed in the
 hierarchical syntax except for their use as delimiters for an
@@ -2548,15 +2468,15 @@ octet to the range 0-255.
 <section title="Modifications from RFC 2396">
 <t>
 The ad-hoc BNF syntax has been replaced with the ABNF of
-<xref target="RFC2234"/>.  The only significant change this
-caused is that rule names that formerly included underscore
-will now have to be defined with a dash instead.  This change
-has not yet been finished.
+<xref target="RFC2234"/>.  This change required all rule names that
+formerly included underscore characters to be renamed with a dash instead.
+Likewise, absoluteURI and relativeURI have been changed to absolute-URI
+and relative-URI, respectively, for consistency.
 </t>
 <t>
-The ABNF of hier_part and relativeURI (Section 3) has been corrected
+The ABNF of hier-part and relative-URI (Section 3) has been corrected
 to allow a relative URI path to be empty.  This also allows an
-absoluteURI to consist of nothing after the "scheme:", as is present
+absolute-URI to consist of nothing after the "scheme:", as is present
 in practice with the "DAV:" namespace <xref target="RFC2518"/> and
 the "about:" URI used by many browser implementations.
 </t>

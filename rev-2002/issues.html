@@ -21,9 +21,6 @@
 <td nowrap="nowrap"><a href="#025-rel_segment">025-rel_segment</a></td><td>rel_segment is defined without distinguishing param</td><td>syntax</td><td>accepted</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><a href="#026-ABNF">026-ABNF</a></td><td>replace existing BNF with standard ABNF of RFC 2234</td><td>formalism</td><td>accepted</td>
-</tr>
-<tr>
 <td nowrap="nowrap"><a href="#008-URIvsURIref">008-URIvsURIref</a></td><td bgcolor="#FFFFCC">URI versus URI Reference</td><td>uri</td><td>pending</td>
 </tr>
 <tr>
@@ -88,6 +85,9 @@
 </tr>
 <tr>
 <td nowrap="nowrap"><a href="#023-URI-plural">023-URI-plural</a></td><td>URI or URIs for plural</td><td>intro</td><td>fixed 00</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="#026-ABNF">026-ABNF</a></td><td>replace existing BNF with standard ABNF of RFC 2234</td><td>formalism</td><td>fixed 00</td>
 </tr>
 </table>
 <br>
@@ -565,7 +565,8 @@ I used absoluteURI and URI_reference with their rfc2396 meanings.
   27 Oct 2002,
   draft 00:
   <pre>
-URIwf has been added to the section on URI reference and the BNF.
+absolute-URI-reference has been added to the section on URI reference
+and the ABNF.
 </pre>
 </td>
 </tr>
@@ -678,7 +679,7 @@ to (in 03):
   14 Sep 2002,
   draft 00:
   <pre>
-Fixed by making the path optional in the BNF:
+Fixed by making the path optional in the ABNF:
 
 2396:
 
@@ -686,8 +687,8 @@ Fixed by making the path optional in the BNF:
    hier_part     = ( net_path | abs_path ) [ "?" query ]
 
 draft-00:
-   relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
-   hier_part     = [ net_path | abs_path ] [ "?" query ]
+   relative-URI  = [ net-path / abs-path / rel-path ] [ "?" query ]
+   hier-part     = [ net-path / abs-path ] [ "?" query ]
 
 </pre>
 </td>
@@ -967,7 +968,7 @@ http://www.ietf.org/rfc/rfc2732.txt
 IPv6 literals have been added to the list of possible identifiers
 for the host portion of a server component, as described by RFC 2732,
 with the addition of "[" and "]" to the reserved, uric, and
-uric_no_slash sets.  Square brackets are now specified as reserved
+uric-no-slash sets.  Square brackets are now specified as reserved
 for the authority component, allowed within the opaque part of an
 opaque URI, and not allowed in the hierarchical syntax except for
 their use as delimiters for an IPv6reference within host.  In order
@@ -1167,7 +1168,7 @@ interoperability issues with deployed systems.
 IPv6 literals have been added to the list of possible identifiers
 for the host portion of a server component, as described by RFC 2732,
 with the addition of "[" and "]" to the reserved, uric, and
-uric_no_slash sets.  Square brackets are now specified as reserved
+uric-no-slash sets.  Square brackets are now specified as reserved
 for the authority component, allowed within the opaque part of an
 opaque URI, and not allowed in the hierarchical syntax except for
 their use as delimiters for an IPv6reference within host.  In order
@@ -1283,9 +1284,8 @@ Fixed by making the path optional in the BNF:
    hier_part     = ( net_path | abs_path ) [ "?" query ]
 
 draft-00:
-   relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
-   hier_part     = [ net_path | abs_path ] [ "?" query ]
-
+   relative-URI  = [ net-path | abs-path | rel-path ] [ "?" query ]
+   hier-part     = [ net-path | abs-path ] [ "?" query ]
 </pre>
 </td>
 </tr>
@@ -2221,7 +2221,7 @@ I'll find a better way to write it.
       replace existing BNF with standard ABNF of RFC 2234</h2>
 <table cellpadding="4" width="100%" border="1">
 <tr>
-<th width="40%">formalism</th><th>accepted</th>
+<th width="40%">formalism</th><th>fixed 00</th>
 </tr>
 <tr>
 <td colspan="2">report:
@@ -2233,6 +2233,21 @@ It also looks like we'll have to switch to the formal ABNF of
 RFC 2234 in order to define IPv4 addresses correctly.  At least
 that will make the IESG happier, but it sure is a pain in the
 editorial fingers.
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">action:
+  <a href="mailto:fielding_AT_apache.org">Roy T. Fielding</a>,
+  28 Oct 2002,
+  draft 00:
+  <pre>
+The ad-hoc BNF syntax has been replaced with the ABNF of RFC 2234.
+This change required all rule names that formerly included underscore
+characters to be renamed with a dash instead.
+
+Likewise, absoluteURI and relativeURI have been changed to absolute-URI
+and relative-URI, respectively, for consistency.
 </pre>
 </td>
 </tr>

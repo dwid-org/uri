@@ -445,7 +445,8 @@ I used absoluteURI and URI_reference with their rfc2396 meanings.
   <date sort="20021027">27 Oct 2002</date>
   <where>draft 00</where>
 <pre>
-URIwf has been added to the section on URI reference and the BNF.
+absolute-URI-reference has been added to the section on URI reference
+and the ABNF.
 </pre>
  </action>
 </issue>
@@ -546,7 +547,7 @@ to (in 03):
   <date sort="20020914">14 Sep 2002</date>
   <where>draft 00</where>
 <pre>
-Fixed by making the path optional in the BNF:
+Fixed by making the path optional in the ABNF:
 
 2396:
 
@@ -554,8 +555,8 @@ Fixed by making the path optional in the BNF:
    hier_part     = ( net_path | abs_path ) [ "?" query ]
 
 draft-00:
-   relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
-   hier_part     = [ net_path | abs_path ] [ "?" query ]
+   relative-URI  = [ net-path / abs-path / rel-path ] [ "?" query ]
+   hier-part     = [ net-path / abs-path ] [ "?" query ]
 
 </pre>
  </action>
@@ -809,7 +810,7 @@ http://www.ietf.org/rfc/rfc2732.txt
 IPv6 literals have been added to the list of possible identifiers
 for the host portion of a server component, as described by RFC 2732,
 with the addition of "[" and "]" to the reserved, uric, and
-uric_no_slash sets.  Square brackets are now specified as reserved
+uric-no-slash sets.  Square brackets are now specified as reserved
 for the authority component, allowed within the opaque part of an
 opaque URI, and not allowed in the hierarchical syntax except for
 their use as delimiters for an IPv6reference within host.  In order
@@ -995,7 +996,7 @@ interoperability issues with deployed systems.
 IPv6 literals have been added to the list of possible identifiers
 for the host portion of a server component, as described by RFC 2732,
 with the addition of "[" and "]" to the reserved, uric, and
-uric_no_slash sets.  Square brackets are now specified as reserved
+uric-no-slash sets.  Square brackets are now specified as reserved
 for the authority component, allowed within the opaque part of an
 opaque URI, and not allowed in the hierarchical syntax except for
 their use as delimiters for an IPv6reference within host.  In order
@@ -1097,9 +1098,8 @@ Fixed by making the path optional in the BNF:
    hier_part     = ( net_path | abs_path ) [ "?" query ]
 
 draft-00:
-   relativeURI   = [ net_path | abs_path | rel_path ] [ "?" query ]
-   hier_part     = [ net_path | abs_path ] [ "?" query ]
-
+   relative-URI  = [ net-path | abs-path | rel-path ] [ "?" query ]
+   hier-part     = [ net-path | abs-path ] [ "?" query ]
 </pre>
  </action>
 </issue>
@@ -1957,7 +1957,7 @@ I'll find a better way to write it.
  <type>formalism</type>
  <name>026-ABNF</name>
  <title>replace existing BNF with standard ABNF of RFC 2234</title>
- <status>accepted</status>
+ <status>fixed 00</status>
  <report>
   <author email="fielding_AT_apache.org">Roy T. Fielding</author>
   <date sort="20021022">22 Oct 2002</date>
@@ -1969,6 +1969,19 @@ that will make the IESG happier, but it sure is a pain in the
 editorial fingers.
 </pre>
  </report>
+ <action>
+  <author email="fielding_AT_apache.org">Roy T. Fielding</author>
+  <date sort="20021028">28 Oct 2002</date>
+  <where>draft 00</where>
+<pre>
+The ad-hoc BNF syntax has been replaced with the ABNF of RFC 2234.
+This change required all rule names that formerly included underscore
+characters to be renamed with a dash instead.
+
+Likewise, absoluteURI and relativeURI have been changed to absolute-URI
+and relative-URI, respectively, for consistency.
+</pre>
+ </action>
 </issue>
 
 </issuelist>
