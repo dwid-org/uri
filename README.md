@@ -1,31 +1,47 @@
-# QUIC Protocol
+# URI Specification Development
 
-This is the working area for the IETF QUIC Working Group documents for the
-QUIC protocol suite.
+This is a working area for the IETF specifications on URI, Relative URLs,
+and Hypertext References. It includes most of the editor's revision history
+for the specifications leading up to
+[RFC1808](https://tools.ietf.org/html/rfc1808),
+[RFC2396](https://tools.ietf.org/html/rfc2396), and
+[RFC3986](https://tools.ietf.org/html/rfc3986), along with various
+[URL parsing tests](https://dwid-org.github.io/uri/test/) and copies of
+[related RFCs](https://dwid-org.github.io/uri/rfc/).
 
-## Core Transport Protocol
+Please note that the IETF URI working group concluded long ago. However,
+we still use the [URI mailing list](https://lists.w3.org/Archives/Public/uri/)
+for discussion of URI-related drafts by individual authors.
 
-* [Editor's copy](https://quicwg.github.io/base-drafts/draft-ietf-quic-transport.html)
-* [Working Group Draft](https://tools.ietf.org/html/draft-ietf-quic-transport)
-* [Compare Working Group Draft and Editor's copy](https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-ietf-quic-transport&url2=https://quicwg.github.io/base-drafts/draft-ietf-quic-transport.txt)
+## Hypertext References
 
-## Loss Detection & Congestion Control
+* TBD: these links are not usable yet.
+* [Editor's copy](https://dwid-org.github.io/uri/href-2017/draft-fielding-uri-href.html)
+* [Internet Draft](https://tools.ietf.org/html/draft-fielding-uri-href)
+* [Compare Internet Draft and Editor's copy](https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-fielding-uri-href&url2=https://dwid-org.github.io/uri/href-2017/draft-fielding-uri-href.txt)
+* [Draft History](https://datatracker.ietf.org/doc/draft-fielding-uri-href/)
+* [Source Repo](https://github.com/dwid-org/uri/tree/master/href-2017)
 
-* [Editor's copy](https://quicwg.github.io/base-drafts/draft-ietf-quic-recovery.html)
-* [Working Group Draft](https://tools.ietf.org/html/draft-ietf-quic-recovery)
-* [Compare Working Group Draft and Editor's copy](https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-ietf-quic-recovery&url2=https://quicwg.github.io/base-drafts/draft-ietf-quic-recovery.txt)
+## Uniform Resource Identifier (URI): Generic Syntax
 
-## TLS Mapping
+* [Editor's copy](https://dwid-org.github.io/uri/rev-2002/rfc2396bis.html)
+* [RFC3986](https://tools.ietf.org/html/rfc3986) \[[html](https://dwid-org.github.io/uri/rfc/rfc3986.html)\]
+* [Draft History](https://datatracker.ietf.org/doc/rfc3986/)
+* [Source Repo](https://github.com/dwid-org/uri/tree/master/rev-2002)
 
-* [Editor's copy](https://quicwg.github.io/base-drafts/draft-ietf-quic-tls.html)
-* [Working Group Draft](https://tools.ietf.org/html/draft-ietf-quic-tls)
-* [Compare Working Group Draft and Editor's copy](https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-ietf-quic-tls&url2=https://quicwg.github.io/base-drafts/draft-ietf-quic-tls.txt)
+## Uniform Resource Identifiers (URI): Generic Syntax
 
-## HTTP Mapping
+* [Editor's copy](https://dwid-org.github.io/uri/rev-1997/uri.txt)
+* [RFC2396](https://tools.ietf.org/html/rfc2396) \[[html](https://dwid-org.github.io/uri/rfc/rfc2396.html)\]
+* [Draft History](https://datatracker.ietf.org/doc/rfc2396/)
+* [Source Repo](https://github.com/dwid-org/uri/tree/master/rev-1997)
 
-* [Editor's copy](https://quicwg.github.io/base-drafts/draft-ietf-quic-http.html)
-* [Working Group Draft](https://tools.ietf.org/html/draft-ietf-quic-http)
-* [Compare Working Group Draft and Editor's copy](https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-ietf-quic-http&url2=https://quicwg.github.io/base-drafts/draft-ietf-quic-http.txt)
+## Relative Uniform Resource Locators
+
+* [Editor's copy](https://dwid-org.github.io/uri/rev-1994/rurl-spec.txt)
+* [RFC1808](https://tools.ietf.org/html/rfc1808) \[[local](https://dwid-org.github.io/uri/rfc/rfc1808.txt)\]
+* [Draft History](https://datatracker.ietf.org/doc/rfc1808/)
+* [Source Repo](https://github.com/dwid-org/uri/tree/master/rev-1994)
 
 ## Building the Draft
 
@@ -38,8 +54,9 @@ $ make
 This requires that you have the necessary software installed.  See [the
 instructions](https://github.com/martinthomson/i-d-template/blob/master/doc/SETUP.md).
 
-
 ## Contributing
 
 See our
 [guidelines for contribution](https://github.com/quicwg/base-drafts/blob/master/CONTRIBUTING.md).
+Please avoid suggesting any changes to the historical portions of this archive,
+since those won't be accepted.
