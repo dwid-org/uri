@@ -1,10 +1,19 @@
-# Contributing to QUIC
+# Contributing to URI Specification Development
 
-Before submitting feedback, please familiarize yourself with our current issues list(s). If you're
-new to this, you may also want to read the [Tao of the IETF](https://www.ietf.org/tao.html).
+This repo contains documentation and code for which the copyright might be
+owned by various authors and/or employers. All contributors agree that
+their contributions are intended as both an [IETF Contribution](#note-well)
+and as an open source Contribution under the [Apache License 2.0](LICENSE).
+Contributions that are in the public domain remain in the public domain
+regardless of their incorporation in other works.
 
-**Be aware that all contributions fall under the "NOTE WELL" terms outlined below.**
+The [Apache License 2.0](LICENSE) is the downstream license for all files
+herein unless otherwise noted inside an individual file (e.g., RFCs have
+their own license text and an additional BSD-style license on code fragments).
 
+Before submitting feedback, please familiarize yourself with our current
+issues list(s). If you are new to this, you may also want to read the
+[Tao of the IETF](https://www.ietf.org/tao.html).
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -18,7 +27,6 @@ new to this, you may also want to read the [Tao of the IETF](https://www.ietf.or
 - [NOTE WELL](#note-well)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 
 ## Following Discussion
 
@@ -92,17 +100,18 @@ Please do not use a pull request to open a new design issue; it may not be notic
 
 ## Code of Conduct
 
-The [IETF Guidelines for Conduct](https://tools.ietf.org/html/rfc7154) applies to all Working Group
-communications and meetings.
+The [IETF Guidelines for Conduct](https://tools.ietf.org/html/rfc7154) applies
+to all Working Group communications and meetings.
 
 
 ## NOTE WELL
 
-Any submission to the [IETF](https://www.ietf.org/) intended by the Contributor for publication as
-all or part of an IETF Internet-Draft or RFC and any statement made within the context of an IETF
-activity is considered an "IETF Contribution". Such statements include oral statements in IETF
-sessions, as well as written and electronic communications made at any time or place, which are
-addressed to:
+Any submission to the [IETF](https://www.ietf.org/) intended by the
+Contributor for publication as all or part of an IETF Internet-Draft or
+RFC and any statement made within the context of an IETF activity is
+considered an "IETF Contribution". Such statements include oral
+statements in IETF sessions, as well as written and electronic
+communications made at any time or place, which are addressed to:
 
  * The IETF plenary session
  * The IESG, or any member thereof on behalf of the IESG
@@ -117,15 +126,15 @@ addressed to:
    [RFC 3979](https://tools.ietf.org/html/rfc3979)
    (updated by [RFC 4879](https://tools.ietf.org/html/rfc4879)).
 
-Statements made outside of an IETF session, mailing list or other function, that are clearly not
-intended to be input to an IETF activity, group or function, are not IETF Contributions in the
-context of this notice.
+Statements made outside of an IETF session, mailing list or other function,
+that are clearly not intended to be input to an IETF activity, group or
+function, are not IETF Contributions in the context of this notice.
 
-Please consult [RFC 5378](https://tools.ietf.org/html/rfc5378) and [RFC
-3979](https://tools.ietf.org/html/rfc3979) for details.
+Please consult [RFC 5378](https://tools.ietf.org/html/rfc5378) and
+[RFC 3979](https://tools.ietf.org/html/rfc3979) for details.
 
-A participant in any IETF activity is deemed to accept all IETF rules of process, as documented in
-Best Current Practices RFCs and IESG Statements.
+A participant in any IETF activity is deemed to accept all IETF rules of
+process, as documented in Best Current Practices RFCs and IESG Statements.
 
-A participant in any IETF activity acknowledges that written, audio and video records of meetings
-may be made and may be available to the public.
+A participant in any IETF activity acknowledges that written, audio and
+video records of meetings may be made and may be available to the public.
