@@ -48,8 +48,7 @@ instructions](https://github.com/martinthomson/i-d-template/blob/master/doc/SETU
 
 ### Contributing
 
-See our
-[guidelines for contribution](https://github.com/quicwg/base-drafts/blob/master/CONTRIBUTING.md).
+See our [guidelines for contribution](CONTRIBUTING.md).
 Please avoid suggesting any changes to the historical portions of this archive,
 since those won't be accepted.
 
