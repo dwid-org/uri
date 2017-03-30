@@ -58,7 +58,7 @@ since those won't be accepted.
 
 ### Uniform Resource Identifiers (URI): Generic Syntax
 
-* [RFC2396](https://tools.ietf.org/html/rfc2396) \[[html](https://dwid-org.github.io/uri/rfc/rfc2396.html)\]
+* [RFC2396](https://tools.ietf.org/html/rfc2396) \[[html](https://dwid-org.github.io/uri/rfc/rfc2396.html), [xml](https://dwid-org.github.io/uri/rfc/rfc2396.xml)\]
 * [Editor's copy](https://dwid-org.github.io/uri/rev-1997/uri.txt)
 * [Draft History](https://datatracker.ietf.org/doc/rfc2396/)
 * [Source Repo](https://github.com/dwid-org/uri/tree/master/rev-1997)
