@@ -1,0 +1,365 @@
+Network Working Group                                  Murali R. Krishnan
+INTERNET-DRAFT                                            Microsoft Corp.
+<draft-murali-url-gopher>                                    James Casey
+                                                            Harlequin Inc
+Expires six months from                                      Dec 4, 1996
+
+
+
+                         A Gopher URL Format
+
+Status of this Memo
+
+   This document is an Internet-Draft. Internet-Drafts are working
+   documents of the Internet Engineering Task Force (IETF), its areas,
+   and its working groups. Note that other groups may also distribute
+   working documents as Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months 
+   and may be updated, replaced, or obsoleted by other documents at any 
+   time. It is inappropriate to use Internet-Drafts as reference material
+   or to cite them other than as "work in progress."
+
+   To learn the current status of any Internet-Draft, please check
+   the "1id-abstracts.txt" listing contained in the Internet-Drafts Shadow
+   Directories on ftp.is.co.za (Africa), ds.internic.net (US East Coast), 
+   nic.nordu.net (Europe), ftp.isi.edu (US West Coast), or
+    munnari.oz.au (Pacific Rim).
+
+   Distribution of this document is unlimited. Please send comments
+   to the proposed URI working group at uri@bunyip.com. General discussions 
+   about URL and the applications which use URLs should take place on the 
+   uri@bunyip.com.
+
+Abstract
+
+   This document defines the format of Uniform Resource Locators (URL)
+   for the Gopher and Gopher+ protocols using the general URL syntax
+   defined in RFC xxxx, "Uniform Resource Locators (URL)".
+   
+   It is a one of a suite of documents which replace RFC 1738,
+   "Uniform Resource Locators", and RFC 1808, "Relative Uniform Resource
+   Locators".
+
+Table of Contents
+
+   1.  Introduction
+   2.  Gopher URL syntax
+        2.1  Specification
+        2.2  Basic Retrieval
+        2.3  Gopher Search Retrieval
+        2.4  Gopher+ Items
+        2.5  Gopher+ Data representation
+        2.6  Gopher+ Item attribute collections
+        2.7  References to Gopher+ attributes
+        2.8  Gopher+ alternate views
+        2.9  Relative Gopher URLs
+   3.  Issues
+        3.1  Gopher+ electronic forms
+        3.2  Gopher+ items with electronic forms
+   4.  Security Considerations
+   5.  Acknowledgements
+   6.  References
+   7.  Authors Addresses
+   A.  Changes from RFC 1738 and RFC 1808
+
+1. Introduction
+
+  The Gopher URL scheme specifies the format of URL used for distributed 
+  document search and retrieval using the Internet Gopher Protocol.
+
+  The base Gopher protocol is described in RFC 1436 [1] and supports items 
+  and collection of items (directories). Each item is identified with a Gopher
+  type and user-visible name. The Gopher+ protocol [2] is a set
+  of upward compatible extensions to the base protocol. It supports 
+  associating arbitrary number of attributes and alternate data 
+  representations with a Gopher item. Gopher+ also supports querying a 
+  subset of item attributes and selective retrieval.
+
+  The Gopher URLs as proposed in RFC 1738 [3] support both Gopher and Gopher+
+  items and attributes. This document updates that specification. It uses
+  the BNF and basic rules as laid out in section 4.3 of [RFC-URL-SYNTAX].
+
+
+2.  Gopher URL syntax
+
+ 2.1  Specification
+
+  A Gopher URL follows the common internet scheme syntax as defined in 
+  section 4.3 of [RFC-URL-SYNTAX]:
+
+        gopher://<host>[:<port>]/<gopher-path>
+
+  where
+
+        <gopher-path> :=  <gopher-type><selector> | 
+                          <gopher-type><selector>%09<search> |
+                          <gopher-type><selector>%09<search>%09<gopher+_string>
+
+        <gopher-type> := '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7'
+                         '8' | '9' | '+' | 'I' | 'g' | 'T'
+
+        <selector>    := *pchar     Refer to RFC 1808 [4]
+        <search>      := *pchar
+        <gopher+_string> := *uchar  Refer to RFC 1738 [3]
+        
+  If the optional port is omitted, the port defaults to 70. 
+
+  <gopher-type> is a single character field to denote the Gopher type
+  of the resource to which the URL refers to. 
+
+  <selector> is an opaque string supplied by the Gopher server for retrieving
+  an item. The selector strings are a sequence of octets which may contain any
+  octets other than hexadecimal 09 (US-ASCII HT or tab), hexadecimal 0A 
+  (US-ASCII LF or line-feed), and 0D (US-ASCII CR or carriage-return). Gopher
+  uses the combination <CR><LF> to terminate a line in the request. 
+  Gopher clients send the selector string to the Gopher server to retrieve 
+  an item. The gopher-type field is used by clients to interpret the response
+  type expected. Note that some <selector> strings begin with a copy of the 
+  <gopher-type> character, in which case the character will occur twice in 
+  the URL consecutively.
+
+  Within the <gopher-path>, no characters are reserved. The clients are
+  not permitted to make any interpretation of the selector string. The
+  entire <gopher-path> may be empty, in which case the delimiting "/" 
+  is also optional and the <gopher-type> defaults to "1". The selector string
+  may be an empty string; this is how the Gopher clients refer to the 
+  top-level directory on the Gopher server.
+
+ 2.2  Basic Retrieval
+  
+  The response may be interpreted by a client or a proxy, and URLs will
+  be constructed for any embedded gopher items in the response. The
+  specification of Gopher URL construction from a response is dependent
+  on extraction of the selector, search and Gopher+ portions from it and
+  is beyond the scope of this document.
+
+ 2.3  Gopher Search Retrieval
+  
+  If the URL refers to a search to be submitted (i.e., Gopher type is '7'),
+  to a Gopher search engine, then the selector is followed by an encoded
+  tab (%09) and the search string. To submit the search to a Gopher search
+  engine, the client should send the decoded <selector> string,
+  a tab (unencoded), the search string and terminating <CR><LF> to the Gopher
+  server. The search string can contain any character except the <CR>, <LF>
+  or <HT> characters.
+
+ 2.4  Gopher+ Items
+  
+  The URLs for Gopher+ items have a second encoded tab (%09) and a Gopher+
+  string. The <gopher+_string> represents information required for 
+  retrieval of Gopher+ items. Gopher+ supports items with arbitrary sets
+  of attributes (including +ABSTRACT, +VIEWS, etc), alternate views,
+  and may have electronic forms.
+
+  To retrieve the data associated with a Gopher+ URL, a client will connect
+  to the Gopher server, and send the Gopher selector, a tab (unencoded),
+  <search> string, another tab (unencoded), and the <gopher+_string>. The 
+  client also should be prepared to receive a Gopher+ response back from
+  the server.
+
+  Even in the cases where <search> string is empty, the URL should
+  include two tabs %09 between the <selector> and the <gopher+_string>,
+  with the tabs occurring consecutively.
+
+ 2.5  Gopher+ data representation
+  
+  The Gopher+ server tags the responses of directory listing with an appropriate
+  Gopher+ string to indicate the availability of Gopher+ items. An item
+  is tagged with a "+" to denote that this is a Gopher+ item or with a "?"
+  to indicate that the item has a +ASK form associated with it. 
+  
+  A Gopher URL with a <gopher+_string> consisting of only a "+" refers to the
+  default view (data representation) of the item. An item with additional
+  attributes in the <gopher+_string> can be used for requesting alternate 
+  views of the item. A <gopher+_string> containing only a "?" refers to an
+  item with a Gopher electronic form associated with it.
+
+ 2.6  Gopher+ item attribute collections
+  
+  The Gopher URL's <gopher+_string> consists of "!" or "$" to refer to the
+  attributes of Gopher+ items. A "!" refers to all the attributes for the 
+  particular Gopher+ item (think of it as "i" inverted, where "i" means
+  information). A "$" refers to all the attributes of all items in a Gopher
+  directory. If "$" is used with a non-directory item, it is equivalent
+  to a "!".
+    
+ 2.7  References to specific Gopher+ attributes
+
+  <gopher+_string>  :=  !<attribute_name>  | $<attribute_name> |
+			!<attribute_list>  | $<attribute_list>
+  <attribute_list>  :=  <attribute_name> *[ "%20" <attribute_name> ]
+
+  A Gopher+ item may have multiple attributes. The URL's <gopher+_string>
+  can contain "!<attribute_name>" to refer to specific attributes. For example,
+  to refer to the attribute containing the abstract of an item, the 
+  <gopher+_string> would be "!+ABSTRACT". To refer to the attribute containing
+  the views of all items in a directory, the Gopher+ string will be "$+VIEWS".
+
+  A subset of attributes may be specified using a sequence of attribute names
+  separated by hex-coded spaces. For example, "!+ABSTRACT%20+ADMIN" refers 
+  to the +ABSTRACT and +ADMIN attributes of an item.
+
+  A client will include the appropriate <gopher+_string> in the form
+  as specified in section 2.4 above, to retrieve the particular set of 
+  attributes.
+
+ 2.8  Gopher+ alternate views
+
+  Gopher+ supports query and retrieval of alternate data representations 
+  (alternate views) of items. Alternate views are referred to using the 
+  following <gopher+_string>:
+  
+   <gopher+_string> := +<view_name>%20<language_name>
+
+   where
+
+     <view_name> is a MIME content type
+     <language_name> consists of the ISO-639 language code and ISO-3166
+                  country code joined together with a "_".
+
+  For example, a <gopher+_string> of "+text/html%20Es_ES" refers to the 
+  Spanish language html alternate view of the Gopher+ item.
+
+  To retrieve a Gopher+ alternate view, a Gopher+ client sends the appropriate
+  view and language name as the Gopher+ string. All alternate views available
+  can be queried using +VIEWS attribute for the item.
+
+ 2.9 Relative Gopher URLs
+
+   Since the Gopher URL syntax matches the generic-URL syntax, it supports
+   all forms of relative URLs defined in [RFC-URL-SYNTAX].
+
+3.  Issues
+
+ 3.1  Gopher+ electronic forms
+
+  Gopher+ electronic forms are cumbersome to use and are limited in scope.
+  The number of Gopher servers themselves are very low around in the internet.
+  Only a limited number of servers support Gopher+ protocol and among them
+  only a minority has support for electronic forms. 
+  
+  It is proposed that we remove the specification of ASK forms from this 
+  revision of Gopher URLs. If it is required (for compatibility or some such
+  reasons), section 3.2 outlines the encoding of electronic forms in
+  Gopher URLs.
+
+ 3.2  Gopher+ items with electronic forms
+  
+  The Gopher+ items tagged with a "?" have an electronic form associated with
+  them. Such items require client to fetch the item's +ASK attribute to get 
+  the form definition, and then ask the user to fill out the form and return
+  the user's responses along with the selector string to retrieve the item.
+  Gopher+ clients know how to do this but are activated only when the tag "?" 
+  in the Gopher+ item. 
+
+  The <gopher+_string> for an URL that refers to the response generated 
+  for such an electronic form (using +ASK) is of the form:
+  
+   <gopher+_string> := +%09<data_indicator><CR><LF><ask_items>.<CR><LF>
+
+  where
+
+   <data_indicator> := '1'
+   <CR>             := "%0D"
+   <LF>             := "%0A"
+   <ask_items>      := "+-1"<CR><LF> *[<ask_item_value><CR><LF>]
+
+  For example, a form with two values "New York" and "USA" will appear as
+
+    +%091%0D%0A+-1%0D%0ANew%20York%0D%0AUSA%0D%0A.%0D%0A
+
+  Note that the space in "New York" is encoded when used inside the URL's 
+  <gopher+_string>
+
+  To retrieve such an item, the gopher+ client sends:
+  
+    <gopher_selector><tab>+<tab>1<cr><lf>
+    +-1<cr><lf>
+    New York<cr><lf>
+    USA<cr><lf>
+    .<cr><lf>
+
+4.  Security Considerations
+
+  The same security considerations as specified in [RFC-URL-SYNTAX]
+  applies here as well. Gopher does not support users to logon. Hence there is
+  no need and way to specify username or password. This reduces the security
+  implications from wrong usage.
+
+5.  Acknowledgements
+
+  This document is derived from RFC 1738 and RFC 1808. The acknowledgements 
+  from the specifications still applies.
+
+6.  References
+
+   [1]  Anklesaria, F., McCahill, M., Lindner, P., Johnson, D., Torrey, D.,
+        and B. Alberti, "The Internet Gopher Protocol (a distributed document
+	search and retrieval protocol)", RFC 1436, University of Minnesota, 
+	March 1993.
+	
+   [2]  Anklesaria, F., Lindner, P., McCahill, M., Torrey, D., Johnson, D.,
+        and B. Alberti, "Gopher+: Upward compatible enhancements to the 
+        Internet Gopher Protocol", University of Minnesota, July 1993.
+	March 1993.
+
+   [3]  Berners-Lee, T., Masinter, L., and M. McCahill, Editors, "Uniform
+	Resource Locators (URL)", RFC 1738, CERN, Xerox Corporation, 
+	University of Minnesota, December 1994.
+	
+   [4]  Fielding, R., "Relative Uniform	Resource Locators", RFC 1808, 
+	University of California, Irvine, June 1995.
+	
+   [RFC-URL-SYNTAX] Berners-Lee, T., Fielding, R., Masinter L.,
+       "Uniform Resource Locators (URL)", <draft-uri-url-syntax-00>, 
+       MIT/LCS, U.C. Irvine, Xerox Corporation, October 1996.
+
+7. Authors Addresses
+
+   Murali R. Krishnan
+   Microsoft Corporation
+   One Microsoft Way
+   Redmond, WA 98052, USA
+
+   Phone: (206)-703-0229
+   Fax:   (206)-936-7329
+   Email: muralik@microsoft.com
+
+   James Casey
+   Harlequin Inc
+   1010 El Camino Real
+   Suite 310
+   Menlo Park, CA 94025
+
+   Phone: (415)-833-4023
+   Email: jamesc@harlequin.com
+
+Note to RFC Editor 
+   This reference should change when status of generic syntax draft changes.
+
+Appendix
+
+A. Changes from RFC 1738 and RFC 1808
+
+   Section 3.4 of RFC 1738, and parts of section 2.2, 2.3 of RFC 1808, were
+   used as the basis for this draft.
+
+   Section 2.10 has been created to address the use of relative URLs in
+   the Gopher scheme based on RFC 1808.
+
+   Section 2.1 specifies the lists of all valid Gopher types and overrides
+   the general specification found in section 3.4.1 of RFC 1738.
+
+   Section 2.8 specifies the use of +VIEWS attribute to query Gopher+ alternate
+   views. In RFC 1738 it was mentioned as +VIEW. This draft overrides RFC 1738.
+
+   Section 3.1 proposes dropping support for +ASK electronic forms from
+   the Gopher URLs. +ASK forms are only way to have interactive forms in 
+   Gopher. Given it is used in very limited places, it is less important.
+
+   [RFC-URL-SYNTAX] rationalizes the two BNFs provided in the RFC 1738
+   and RFC 1808, which means the set of allowable characters in any
+   selector or search parameters of the Gopher URL is slightly different from
+   that allowed by RFC 1738. This is documented fully in appendix E 'Summary
+   of non-editorial changes' of [RFC-URL-SYNTAX].

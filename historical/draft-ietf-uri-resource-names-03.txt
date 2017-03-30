@@ -1,0 +1,405 @@
+INTERNET DRAFT
+
+Uniform Resource Names
+<name to be assigned by IANA>
+Expires April 20, 1995
+
+- Mitra <mitra@path.net>
+- Chris Weider <clw@bunyip.com>
+- Mike Mealling <michael.mealling@oit.gatech.edu>
+
+       Uniform Resource Names (URN)
+
+
+Status of this memo
+
+This document is an Internet-Draft. Internet-Drafts are working
+documents of the Internet Engineering Task Force (IETF), its areas,
+and its working groups. Note that other groups may also distribute
+working documents as Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six
+months. Internet-Drafts may be updated, replaced, or obsoleted by
+other documents at any time. It s not appropriate to use Internet-
+Drafts as reference material or to cite them other than as a "working
+draft" or "work in progress."
+
+To learn the current status of any Internet-Draft, please check the
+1id-abstracts.txt listing contained n the Internet-Drafts Shadow
+Directories on ds.internic.net, nic.nordu.net, ftp.isi.edu or
+munnari.oz.au.
+
+This Internet Draft expires April 20, 1995.
+
+
+Abstract
+
+This document defines a syntax for URNs, and operational rules for
+their assignment and usage. The intent is to provide enough
+information for implementors of IIIR systems to use these in their
+work.
+
+
+Operational test bed
+
+This document also specifies the procedures that will be used for an
+operational testbed. Please contact any of the authors to confirm
+you have the latest version before implementing, or look in
+<http://www.path.net/mitra/urn.html>
+
+
+Syntax
+
+The URN consists of four parts, its header "URN", a namespace
+identifier,a naming authority ID, and an opaque string. The naming
+authority ID is assigned by a distributed process defined below, the
+opaque string is assigned by the owner of the naming authority ID,
+subject to the rules defined below.
+
+A typical URN might look like this:
+
+<URN:dns:path.net:mitra1234>
+
+Case is not significant. White space is not significant within a URN,
+this includes the characters Space, Tab, CR, LF and hyphen. Since a
+URN may contain carriage returns (for example inserted by naming
+Authoritys) it must always be delimited, how it is delimited is defined
+by the context, for example it might be part of another data
+structure, in free text it is delimited by "<" and ">".
+
+The BNF for a canonical URN (i.e. white space stripped, and converted
+to lower case) is:
+
+URNinText ::= "<" URN ">"
+URN ::= Urntag ":" NameScheme ":" Naming AuthorityId ":"
+OpaqueString
+NameScheme ::= "dns" | "isbn" | xasciis
+Urntag ::= "urn"
+Naming AuthorityId ::= NameScheme PubName
+NameScheme ::= "dns:" FQDN
+# Note there is only one name scheme defined for the testbed, it is
+expected to be extended.
+Naming AuthorityId ::= "dns:" FQDN | RegisteredString
+FQDN ::= Dnsasciis
+Dnsasciis ::= "a..z0..9" | "."
+# Open question - are dashes allowed in DNS names?
+RegisteredString ::= xasciis
+OpaqueString ::= xasciis
+xasciis ::= xascii [ xasciis ]
+xascii ::= "a...z" "0" .. "9" "." "/"  percentcoded
+percentcoded ::= "%" 0..9a..f 0..9a..f
+
+
+Equality of URNs
+
+The rules under syntax imply that to compare two URNs for equality,
+the following procedure, or an equivalent, should be followed.
+Canonisize each URN by, stripping all space, tab, CR, LF and hyphen
+characters, and converting all A..Z to a..z
+Do a string compare on the results.
+
+Two important things to note about this,
+a) this compares the URN's, not the bytes they might point to.
+Because a publisher gets to decide on what changes require the
+allocation of a URN, two documents may have the same URN but a
+different series of bytes.
+b) to compare two URNs, there is no need for a net access.
+
+
+Rules for allocating naming Authority ids
+
+It is crucial to the scalability of this scheme that naming Authority
+ids are allocated in a distributed fashion.
+
+The best model we have for this is the existing DNS, and using it gives
+us some other benefits. Therefore, it is proposed (for the test-bed)
+that the owner of a FQDN automatically has the right to use of that
+string (and descendants of it) as a publisher ID, subject to the
+following constraints.
+1) This FQDN has not previously been used as a naming Authority ID,
+this only constrains those cases where a FQDN is being reused (see
+below).
+2) A resolution service is made available conforming to the rules
+below. For example in order to use the naming Authority ID
+"path.net" I would need to ensure that there was a resolution
+service at "uri.path.net", or a CNAME at uri.path.net to a resolution
+service.
+Note by this, we are expecting that some higher level FQDNs, for
+example mit.edu might be split up differently for naming Authority
+IDs than for machines, e.g. physics.mit.edu. Also note, that the
+naming Authority ID is essentially an opaque string, stucture is for
+allocation purposes ONLY. Pulling them apart and inferring structure
+is explicitly not allowed.
+
+
+Rules for allocating URNs
+
+URNs, or rather the opaque string portion, are allocated by the owner
+of the naming AuthorityID, in any form they wish - subject to the
+character set constraints defined above.
+The publisher decides what changes require allocation of a new URN -
+and valid choices may range from requiring a new URN for any
+change in the bytes, to assigning a single URN for all versions of a
+work in all languages.
+
+
+URN to URL or URC resolution
+
+For the test-bed, the following resolution scheme will be used:
+
+Client sends the URN <urn:dns:foo.bar:12345> to its proxy server in a
+protocol the client speaks (e.g. Gopher or HTTP)
+
+If the server hasnt cached the URC already {
+
+    If the Server (or its DNS) has not cached the Resolution server {
+
+        it asks the DNS for "uri.foo.bar", and caches the resulting IP
+address(s).
+    }
+
+    The server sends the URN to the Resolution server, using a minimal
+whois++ syntax,
+    specifically.  TEMPLATE=urc;URN=urn:dns:foo.bar:12345
+
+    The server receives a URC in whois++ format, {help I need an
+example here}
+%220 Command Ok
+
+# FULL URC 1
+
+# URC <serverhandle>:<recordhandle>
+URN:URN:dns:foo.bar:12345
+Title:Moby Dick
+Abstract:
+-Moby Dick
+-This is the story of a guy, a boat, and a very big fish.
++It concerns this guy called Ishmael who is kind of hung
++up on killing this very big fish.
+Author:Melville, Herman <herman.mellville@fiction.com>
+URL:http://www.fiction.com/books/fish/whales/moby.dick.html
+Content-Type: text/html
+URL:ftp://ftp.bunyip.com/sillybooks/moby.dick.ps
+
+# END
+
+
+Connections closed.....
+}
+
+The server converts this URC into a format the client can understand,
+e.g a Gopher menu, or a HTML document, and transmits it to the
+client.
+
+The client either automatically chooses the desired URL, or presents
+the results to the user to make that decision.
+
+At a later date, or even earlier, some resolvers might provide more
+services, in particular it is expected to add:
+
+Redirection, so that a resolver can refer a query
+
+Writing, so that a cache/replicator can register a new location
+
+Adding Template=URL.
+
+An important note, is that this doesnt define that every URN will
+always be resolvable - in fact, their may not be a net-accessable
+version of the URN. What it defines is that a reasonable client can
+take a single deterministic action involving a single DNS access, and a
+single net transaction, and know that for the vast majority of cases
+if the URN is resolvable it will have been resolved.
+
+This also doesnt say that every publisher must run a URN->URL
+resolution service. It is perfectly acceptable that uri.foo.bar is a
+CNAME for a resolution service run at a different address.
+
+This also doesnt require the client to always use this resolution
+service, it is anticipated that some clients may wish to access the
+resolution service directly.
+
+It should also be noted, that in order to deal with scaling problems,
+that final deployment may require resolution servers on foo.bar.uri
+rather than uri.foo.bar.
+
+
+Grandfathering in of existing numbering schemes
+
+It is intended to grandfather in existing schemes to the extent
+possible, without constraining an optimal solution for the future.
+
+ISBN
+ISBN's consist of a string of digits which look opaque to the user,
+but actally contain two distinct parts, the first is the publisher. So
+assuming an ISBN of 1234567890 where 12345 is the naming
+authority id, the URN would be  <urn:isbn:12345:1234567890>.
+With "isbn" being a new PubId naming scheme. Until there is an
+intent to run a resolution service for this, then the syntax will not
+be frozen.
+
+ISSN
+ISSNs will be handled similarly at such time that someone who
+understands them can fill in the detailes and run a resolver.
+
+Anonymous FTP archives
+There is a desire to be able to retrofit the existing FTP archives so
+that, resource location tools such as archie could better de-
+duplicate things. However - since there is no obvious publisher-id
+in this case, its probably better to do de-duplication via
+checksums. Alternatively, archie could retroactively publish all of
+the files with something like <urn:archie:123456790> where the
+opaque string would be an MD5 checksum, however its hard to see
+what this gains? This area will need to be given more work.
+
+
+Integration with existing IIIR schemes
+
+Gopher
+It is anticipated that Gopher will handle URNs by taking the
+following actions.
+Add "URN=" as a valid attribute in .Links files, and in the protocol
+Support multiple "URL=" attributes in .Links files and in the
+protocol
+Run a gateway at a ToBeDecided location, e.g. "urn.umn.edu"
+Possibly integrate the URN proxy server into the server (as for
+ftp)
+For backwards compatability (and rapid deployment) URNs will be
+able to be passed in Gopher0, in the
+form "Host=urn.umn.edu" (or whatever address is decided)
+"Port=70" (or whatever decided), "Path=urn:dns:foo.bar:12345"
+
+WWW
+The most obvious way to handle this in WWW is to:
+ replace the anchor with the URN, i.e.
+<href=urn:mitra.path.net:12345>
+the clients need to able to redirect the URN scheme to a specific
+address, currently this (we believe) is easy only with those clients
+that redirect all schemes to a proxy server.
+When a client sends "GET urn:mitra.path.net:12345" to the proxy
+server, it will return a HTML document with one or more URCs to
+choose from.
+A usefull extension to HTML would be to be able to handle multiple
+href= in a link, enabling both a URN and a cached URL to be in a
+single link.
+
+WAIS
+Its unclear how to best integrate URNs into WAIS.  The first step
+would be to replace the URL returned in the QueryResponse, with a
+URN. Since this is just an opaque string which is always returned
+to the same WAIS server, that WAIS server could then return the
+appropriate document. Unfortunately it doesnt appear that there
+is any way withing the current WAIS protocol for the server to
+offer the client a choice of variants, however a smart (i.e. new)
+client could take the URN and either do its own URN->URC lookup,
+or potentially could pass the URN as the search term of a WAIS
+query to a gateway that would return a QueryResponse consisting
+of the URLs for this URN.
+
+
+Problems and their solutions
+
+LIFNs
+
+Keith's requirement for an identifier independant of location, but
+identifying only one particular combination of bytes is met by a
+simple URC consisting of the URN as defined above and a
+checksum.
+
+What happens when a FQDN gets reused?
+
+If a FQDN has never been used as the naming Authority ID of URNs
+then reuse poses no problem. However if the FQDN has been used
+as a naming Authority ID then there are two possible solutions.
+a) The new owner agrees to continue to resolve or arrange for
+resolution of the old URNs, or to redirect queries for those URNs to
+the previous owners resolution service.
+b) The new owner applies for a new naming Authority ID, either a
+totally new FQDN, or a subid of the previous FQDN that has not
+been used by the old owner.
+
+Reliance on DNS
+
+This scheme specifies DNS as the method for obtaining the location
+of a resolution service. However there are concerns that this
+scheme should be able to outlast DNS. There are two areas of
+issue - existing URNs and new URNs:
+Firstly the abscence of DNS does not invalidate the syntax as a
+scheme for uniquely identifying documents. However - at such a
+time, a new RFC would be required specifying an alternative
+means of resolution - since DNS going away would require
+rewriting almost every internet application, defining and then
+recoding, for a new resolution scheme is going to be small in
+comparisom.
+Secondly - abscence of DNS does not mean that FQDNs will go
+away, so these (or any successor specifying a unique name) still
+remain as a valid way of assigning naming Authority ids.
+
+
+How it addresses the requirements document
+
+This section still needs writing, I dont have the requirements in front
+of me at the moment.
+
+
+Server side code library
+
+Mike Mealing will coordinate pulling together a simple library for
+the proxy server to fetch and cache results. This library will enable
+gopher and http gateways to be built on a common underlying code,
+so that lessons learned in the test-bed can be rapidly deployed.
+
+
+Every object has a name
+
+It is NOT assumed in this scheme, and certainly not in the test-bed,
+that every object on the net has a name, objects which do not have
+a name, can simply not be resolved using this scheme, but can be
+handled using existing schemes.
+
+How to register a name (and authentication)
+
+It is intended that there be a simple, fast way to register a new URL
+for a URN. This will probably be by adding writing back into this
+minimal whois++, it is also possible that manual - e.g. HTML forms,
+and Gopher Ask blocks, can be used for this.  {detailed specification
+to be found by Mike}
+
+There is an important issue of authentication of information returned
+from the resolver, initially, for the testbed, we assume out-of-band
+authentication between the naming Authority and the resolver, but
+nowhere else, so the client should be able to trust the URN specific
+information in the URC, but NOT the URL related information. So for
+example a client can trust an MD5 checksum at the top of the URC,
+and then verify against the document returned.  In a long term , the
+current (and to be discussed ) thinking is that this same URN specific
+information, will be signed by the naming authority, but this relies on
+a currently non-existant security infrastructure.
+
+
+URL -> URN
+
+We believe that URL -> URN resolution drops out easily in existing
+protocols, e.g. Gopher+ can tell  you the attributes (including URN) of
+a URL, HTTP can be used similarly.
+
+
+Port assignment
+
+We need an IANA defined port for the resolution service,
+preferably NOT that of whois++ since it might handle different
+functions.
+
+
+Propogation of meta-information
+
+There are some specific requirements for propogation of Meta-
+information that need addressing, especially when it comes to
+propogating charging and copyright information and ensuring that
+this gets handled.
+
+=======================================================================
+Mitra                                                    mitra@path.net
+Internet Consulting                                       (415)488-0944
+<http://www.path.net/mitra>                           fax (415)488-0988
+
+

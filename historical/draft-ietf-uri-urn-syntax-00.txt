@@ -1,0 +1,137 @@
+
+IETF URI Working Group                                         Paul E. Hoffman
+Internet-Draft                                               Proper Publishing
+draft-ietf-uri-urn-syntax-00                                   Ron Daniel, Jr.
+Expires October 21, 1995                        Los Alamos National Laboratory
+
+
+                             Generic URN Syntax
+
+Status of this memo
+
+This document is an Internet-Draft. Internet-Drafts are working documents
+of the Internet Engineering Task Force (IETF), its areas, and its working
+groups. Note that other groups may also distribute working documents as
+Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months.
+Internet-Drafts may be updated, replaced, or obsoleted by other documents
+at any time. It s not appropriate to use Internet- Drafts as reference
+material or to cite them other than as a "working draft" or "work in
+progress."
+
+To learn the current status of any Internet-Draft, please check the
+1id-abstracts.txt listing contained n the Internet-Drafts Shadow
+Directories on ds.internic.net, nic.nordu.net, ftp.isi.edu or
+munnari.oz.au.
+
+Abstract
+
+This document defines the syntax for Uniform Resource Names (URNs). This
+syntax is basically the same as the URN syntax described in RFC 1630.
+
+This document does not cover any specific resolution schemes or the format
+of resolution results. It is expected that these issues (and other
+URN-related topics) will be covered in different Internet Drafts submitted
+to the IETF URI Working Group.
+
+1. Introduction
+
+A URN (Uniform Resource Name) is the name of a resource within the context
+of a larger Internet information architecture known as Uniform Resource
+Identification [URIS]. The minimum set of requirements for URNs are
+described in [URNR]. An overview of URN resolution is given in [URNO].
+
+2. Syntax
+
+URNs are simple text strings. A URN consists of two fields seperated by a
+colon (:). The two fields are:
+ - The type of naming authority of the URN, called the SchemeID
+ - The name of the element for the URN, called the ElementID
+
+When URNs appear in free text, or in other places where it is not known
+that they are URNs, they should be shown in a separate syntactic wrapper.
+The start of the wrapper is an opening angle backet (<), the string "URN"
+(the case of the letters does not matter), and a delimiting colon (:). The
+tail of the wrapper is a closing angle bracket (>). Freestanding URNs that
+include any white space must be wrapped in this fashion.
+
+For example, a URN stored in a database might look like:
+     x-dns-2:library.bigstate.edu:aj17-mcc
+
+The same URN, appearing in a mail message, would look like
+     <urn:x-dns-2:library.bigstate.edu:aj17-mcc>
+
+The first and SchemeID fields are case insensitive. The case sensitivity
+and character set of the ElementID field depends on the value of the
+SchemeID field. White space (the characters Space, Tab, CR, and LF) is
+allowed but is not significant within a URN.
+
+URNs are often displayed and transmitted in the same media as URLs. In
+order to minimize problems with interoperability, encoding of characters in
+URNs follow the same rules used by URLs in [URL].
+
+2.1 SchemeIDs
+
+The SchemeID field describes what kind of naming authority is used. This is
+the authority by which the ElementIDs are defined.
+
+SchemeIDs are case insensitive identifiers of the URN resolution scheme
+used to resolve a URN. SchemeIDs starting with the characters "x-" are
+reserved for experimental purposes. Because all URN schemes are currently
+experimental, all URN SchemeIDs should begin with "x-" until the schemes
+are approved by the IETF URI Working Group. The Internet Assigned Numbers
+Authority (IANA) will maintain a registry of SchemeIDs.
+
+2.2 ElementIDs
+
+The ElementID is the element that will be resolved. It is important to note
+that this is not the "name" part of the URN: the combination of the three
+fields in a URN is the only definition of the resource's name. For example,
+consider the two URNs:
+<urn:x-dns-2:physics.bigstate.edu:thesis12>
+<urn:x-wlnk:physics.bigstate.edu:thesis12>
+They might be names of completely different Internet resources, similar
+resources, or even the same resource. However, even though the ElementIDs
+are the same in the two URNs, the two URNs are different.
+
+For all Element IDs in all SchemeIDs, the characters "#" (hex 23) and "?"
+(hex 3F) are reserved for future use. Also, ">" (hex 3E) is reserved since
+it is the wrapper closing character. The ":" (hex 3A) character is not
+reserved, but its semantics of seperating fields should not be casually
+ignored.
+
+3. Security Implications
+
+Although there are security implications in resolving URNs, there are no
+security implications in defining their syntax.
+
+4. References
+
+[URIS] RFC 1630, "Universal Resource Identifiers in WWW".
+
+[URL] RFC 1738, "Uniform Resource Locators (URL)".
+
+[URNO] Internet-Draft, "URN Resolution Overview". The name of the draft at
+the time of this writing is "draft-ietf-uri-urn-res-descrip-00".
+
+[URNR] RFC 1737, "Functional Requirements for Uniform Resource Names".
+
+5. Author Contact Information
+
+Paul E. Hoffman
+Proper Publishing
+127 Segre Place
+Santa Cruz, CA, USA  95060
+voice:  (408) 426-6222
+phoffman@proper.com
+
+Ron Daniel Jr.
+MS B287
+Los Alamos National Laboratory
+Los Alamos, NM, USA 87545
+voice:  (505) 665-0597
+fax:  (505) 665-4939
+rdaniel@lanl.gov
+
+

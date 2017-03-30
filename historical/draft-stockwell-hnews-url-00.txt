@@ -1,0 +1,120 @@
+Internet-Draft                                Ted Stockwell
+draft-stockwell-hnews-url-00.txt              early morning software
+June 17, 1998
+Expires six months after above date
+
+
+                       The hnews URL scheme
+
+Status of This Memo
+
+This document is an Internet-Draft.  Internet-Drafts are working
+documents of the Internet Engineering Task Force (IETF), its
+areas, and its working groups.  Note that other groups may also
+distribute working documents as Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six
+months and may be updated, replaced, or obsoleted by other
+documents at any time.  It is inappropriate to use Internet-
+Drafts as reference material or to cite them other than as
+"work in progress."
+
+To view the entire list of current Internet-Drafts, please check
+the "1id-abstracts.txt" listing contained in the Internet-Drafts
+Shadow Directories on ftp.is.co.za (Africa), ftp.nordu.net
+(Northern Europe), ftp.nis.garr.it (Southern Europe), munnari.oz.au
+(Pacific Rim), ftp.ietf.org (US East Coast), or ftp.isi.edu
+(US West Coast).
+
+
+Abstract
+
+HNEWS [1] is an HTTP-tunneling variant of the NNTP news protocol.  
+This document defines the format of Uniform Resource Locators(URLs) 
+identifying news messages and groups provided by HNEWS servers.  
+The syntax of 'hnews' URLs is designed to be compatible with the 
+current common usage of the 'news' URL scheme.  Specifically, the 
+'hnews' URL scheme is designed according to recommendations made in 
+[NEWS_URL_SCHEME].  [NEWS_URL_SCHEME] is based on the general 
+specification of all URL schemes in "Uniform Resource Locators (URL): 
+Generic Syntax and Semantics" [RFC URI SYNTAX].
+
+1. The 'hnews' URL scheme
+
+The hnews URL scheme is used to designate a message or a set of
+messages available from an HNEWS server.  The hnews URL scheme is 
+meant to designate the same kinds of objects as the 'news' URL 
+scheme except that 'hnews' objects are retrieved using the HNEWS 
+protocol instead of the USENET news protocol used to retrieve 
+'news' objects.
+
+Therefore, the syntax of the 'hnews' URL scheme is hereby declared 
+to be EXACTLY the same as the 'news' URL scheme except that 'hnews' 
+URLs begin with the scheme designator "hnews" instead of the scheme 
+designator "news".  
+The semanatics of the 'hnews' URL scheme is hereby declared to be 
+EXACTLY the same as the 'news' URL scheme except that objects 
+referenced by 'hnews' URLs are retrieved with the HNEWS protocol 
+defined in [1] instead of the USENET news protocol used to retrieve
+objects referenced by 'news' URLs.
+The default port (in server) of 'hnews' URLs is 80.
+
+See [NEWS_URL_SCHEME] for a description of the 'news' URL scheme. 
+If the syntax or semantics of the 'news' URL scheme should be changed 
+by future documents published by the IETF then those future documents 
+also change the syntax or semantics of the 'hnews' URL scheme.
+
+
+2. Examples
+
+An URL to read a newsgroup from anywhere (usually locally):
+
+    <hnews:alt.adoptive.parenting>
+
+An URL to read a specific message from anywhere (usually locally):
+
+    <hnews:EFGJG4.7A@deshaw.com>
+
+An URL to read a specific message from a designated site, using port 
+8080 instead of the default port of 80:
+
+    <hnews://java.sun.com:8080/servlet/NewsServlet/5rb1or$67v@news.jumpnet.com>
+
+An URL to read a newsgroup from a designated site:
+
+    <hnews://www.microsoft.com/cgi-bin/news/misc.transport.air-industry.cargo>
+
+An URL to read all the newsgroups from a designated site:
+Notice that the server name has multiple slashes in it.
+We know that no message number or message id is specified because the 
+URL ends with a slash.  URLs that include a message number or ID will 
+never end with a slash.
+
+    <hnews://www.adenine.c.dna.affrc.go.jp/cgi-bin/news/>
+
+
+3. References
+
+[1] Ted Stockwell, "HNEWS: An HTTP-Tunneling News Protocol",
+Internet-Draft, <draft-stockwell-hnews-protocol-00.txt>, 
+early morning software, July 1998
+
+[NEWS_URL_SCHEME] Alfred S. Gilman, "The 'news' URL scheme",
+Internet-Draft, <draft-gilman-news-url-01.txt>, 
+Arlington VA, March, 1998
+
+[RFC-URI-SYNTAX] Berners-Lee, T., Fielding, R., Masinter L.,
+"Uniform Resource Locators (URL): Generic Syntax and Semantics",
+Work in Progress <draft-fielding-uri-syntax-02>, MIT/LCS,
+U.C. Irvine, Xerox Corporation, Mar 1998.
+
+4. Author contact information:
+
+Ted Stockwell
+early morning software
+2222 Preston Lakes Court
+Plainfield, IL 60544
+emorning@ix.netcom.com
+
+
+

@@ -1,0 +1,605 @@
+Uniform Resource Identifiers Working Group                     Michael Mealling
+INTERNET-DRAFT                                  Georgia Institute of Technology
+Expires: 8 January 95
+
+                                                                      8 July 94
+
+
+
+           Encoding and Use of Uniform Resource Characteristics
+                  <draft-ietf-uri-urc-spec-00.txt>
+
+STATUS OF THIS MEMO
+
+     This document is an Internet-Draft.  Internet-Drafts are working
+     documents of the Internet Engineering Task Force (IETF), its areas,
+     and its working groups.  Note that other groups may also distribute
+     working documents as Internet-Drafts.
+
+     Internet-Drafts are draft documents valid for a maximum of six
+     months and may be updated, replaced, or obsoleted by other
+     documents at any time.  It is inappropriate to use Internet- Drafts
+     as reference material or to cite them other than as ``work in
+     progress.''
+
+     To learn the current status of any Internet-Draft, please check the
+     ``1id-abstracts.txt'' listing contained in the Internet- Drafts
+     Shadow Directories on ds.internic.net (US East Coast),
+     nic.nordu.net (Europe), ftp.isi.edu (US West Coast), or
+     munnari.oz.au (Pacific Rim).
+
+Abstract
+********
+
+     This document describes a Uniform Resource Characteristic, a method for
+     encoding information about a given network resource. This information is
+     called meta-information since it is not information that is actually found
+     in the resource itself. The design of this Uniform Resource Characteristic 
+     was driven by the set of design requirements as specified in the 
+     "Specification of Uniform Resource Characteristics" Internet draft 
+     [Mealling 94]. The method of encoding is based on the simple use of 
+     attribute/value pairs utilized in several existing network systems 
+     including RFC822 e-mail headers, IAFA templates, and the draft whois++ 
+     system [Deutsch 94]. In addition to the specification, several examples 
+     are provided which illustrate complex information encoding and actual 
+     client/server using whois++ as the protocol.
+
+Uniform Resource Characteristics
+********************************
+
+1: Introduction
+***************
+
+This specification fulfills the requirements of the draft Uniform Resource
+Characteristic Requirements document [Mealling 94] in a way that utilizes
+existing systems and services. This specification not only solves these
+requirements but also solves several apparent problems within the proposed
+information architecture. In addition to the requirements outlined in the
+requirements document, other design goals were added such as simplicity and
+use of existing technology. The resulting encoding method provides for a
+simple yet extensible method for describing the characteristics of a resource
+without requiring that the user doing the data collection be extremely
+knowledgeable about the underlying technology. 
+
+2: Design Goals
+===============
+
+In addition to the design requirements in the draft requirements specification,
+several requirements were added in order to make sure that a system that
+utilized URCs did not need to be overly complex. These design requirements
+are listed below with an explanation of each.
+
+ o Simplicity: A URC specification must be simple enough for practically
+   anyone to understand or to encode. This allows users to encode and
+   maintain a given URC without the need for esoteric computer science
+   knowledge. 
+ o Extensibility: Any specification must be able to encompass a great deal
+   of growth and change in the elements that it may contain. This should
+   allow the development of wholly new and different URIs without the
+   need for developing a completely new system for encapsulating and
+   transporting them. 
+ o Compatibility: Since URCs will be utilized by vastly different systems
+   on vastly different networks it must be encoded in such a way as to
+   allow very complex systems to communication complex information
+   via very simple gateways and access methods. 
+ o Use of existing and developing technology: In order to be able to
+   implement something soon, an encoding specification should allow
+   existing systems to be easily retrofitted to use URCs. The use of
+   existing systems that already support object similar to URCs is
+   encouraged. 
+
+These design goals specify an encoding method that is very simple and easy to
+read and/or write. This should allow anyone to easily incorporate a URC
+handling system into any platform or network without the need for large
+amounts of parsing or coding. 
+
+3: Encoding specification
+=========================
+
+3.1: Design Decisions:
+++++++++++++++++++++++
+
+At its simplest, meta-information about a given resource can be specified as a
+simple attribute-value pair. The only two items that are needed to specify the
+author of a document is something to identify the given text element as
+having the identity of "Author" and then the text element itself. There are
+several ways to write this relationship. The simplest by far is to specify some
+type of equality character between the two elements. It then becomes a simple
+exercise of selecting the equality character and specifying some method of
+encoding special situations such as character quoting and line continuation.
+
+With the additional design requirement of utilizing existing work and systems
+already in use it is useful to recognize that several existing systems use 
+either RFC822 header type encoding or similar encodings that use the colon as 
+the attribute-value equality character. Currently many Archie servers support
+the IAFA [Emtage 1994] template specification that is used to encode specific
+pieces of meta-information about items available for anonymous ftp.
+
+3.2: Encoding
++++++++++++++
+
+Therefore, the encoding of a Uniform Resource Characteristic will follow the
+following encoding structure:
+
+[attribute_name]:[value]
+
+where attribute_name is of a specified set of well known attribute_names that
+should be recognized, but not necessarily acted on, by all implementations.
+Experimental attribute_names should be encoded with the
+[X-attribute_name] notation. [value] is a text string that may flow over
+several lines. In the event that a text line flows over several lines the first
+character of the continued line should be a space. Specifics about what
+information is contained and how it is encoded with respect to the [value] is 
+left up to the specification of each [attribute-name].
+
+There are no attribute/value pairs that are required to be a part of a URC. 
+
+Minimal set of attribute/value pairs
+++++++++++++++++++++++++++++++++++++
+
+In order to allow work to proceed some set of initial attribute/value pairs must
+be specified. The pairs listed below are a basic set of useful and badly needed
+items. It is intended that any additions or subtractions from this list will be
+handled by the Uniform Resource Identifier Working Group. It is also
+intended that this list should be extended since the full usefulness of URCs is
+beyond the scope of these pairs listed. 
+
+
+ o URN:
+   This attribute/value pair is dependent on the outcome of the
+   discussions in the URI-WG of the IETF. A URN is a Uniform
+   Resource Name [Sollins 94] which is used to give a resource a name
+   that can be used instead of a URL. The only requirement it makes on
+   URNs is that it begin with "URN:" so that it follows the same method
+   of identification as a URL.
+
+   Example (dependent on the decision concerning URNs):
+
+   URN:IANA:626:oit.5647
+
+
+ o URL:
+   This pair must conform to the current Uniform Resource Locator
+   specification as defined in the URL Internet-Draft[Berners-Lee 94-1].
+
+   Example:
+
+   URL:http://www.gatech.edu/ietf/urc.encoding.html
+
+
+ o LIFN:
+   This pair is a place holder for the development of a URI that
+   specifically addresses the function of Location Independent File
+   Names. The example given is for illustration purposes only and is not
+   indicative of any current specification or draft.
+
+   Example:
+
+   LIFN:md5:2039874029834059283709475029387405928374095827394875
+
+
+ o Author:
+   This pair will encode the name of the Author of a given document or
+   resource. Since many cultures have different ways of writing names
+   there are no requirements on how a name should be written. Thus it is
+   encouraged that users encode names in the most common format i.e.
+   first, middle and last in English societies.
+
+   Example:
+
+   Author: Michael Mealling
+
+
+ o TTL:
+   This pair encodes a Time To Live measured in seconds. Infinity is
+   denoted by the '+' character. This element references the attribute/value 
+   pair directly preceding it (see section 4) and is meant as a caching aid.
+
+   Example:
+
+   TTL:86400
+
+
+ o Abstract:
+   This pair encodes a short abstract about the given resource. Any
+   characters are allowed. Line continuation follows normal rules.
+
+   Example:
+
+   Abstract: 
+           This document explores the various flight patterns and speeds of
+    unladden African and European swallows. A companion document concerning
+    the relative velocities of swallows ladden with coconuts is available.
+
+
+
+In addition to the above all of the header fields listed in the current HTTP
+specification [Berners-Lee 93-2] are included with several caveats that are
+listed below:
+
+ o Header line order:
+   Currently, the header lines are specified to be able to occur in any
+   order. Since a URC contains structured information (see section 4) a
+   URC used in the context of HTTP must maintain the order of any
+   given header fields.
+
+ o URI header field:
+   Since a URC can contain URLs and URNs, the URI header should be
+   removed and URL: and URN: added. Also, it is unclear in the HTTP
+   specification whether the URI field pertains to the body object to follow
+   or whether the client should then load that given URL. This should be
+   clarified. 
+
+ o Version header field:
+   In order to give some ability to utilize different version schemes it is
+   recommended that the Version field be given the idea of schemas so
+   that machine based algorithms can be used to differentiate resources.
+   For this specification only one schema is given but more can be
+   developed.
+
+    o Schema 1: decimal This schema specifies the use of the
+      standard decimal type of version enumeration. For example,
+      this is version 1.0 of this document. At the authors or publishers
+      whim it can change to version 1.1 or even 2.0.
+
+      Example:
+
+      Version:decimal:1.0
+
+4: Internal Structure
+=====================
+
+In order for a URC to be able to encode meta-information about several
+instances of objects and to be able to show such relationships between those
+objects, there must be some structure to a URC. The easiest and most elegant
+method is simply to introduce a set of precedence rules onto the above set of
+attribute/value pairs. This allows the URC to be broken up into specific
+subsections that only pertain to other objects. 
+
+As above, this set of precedence rules is extensible by the IETF URI Working
+Group. 
+
+
+ o URNs have precedence over all other pairs, except for LIFNs.
+
+   A URN is a name for a resource which can be represented by several
+   actual instances. 
+
+   Example: 
+
+   URN:IANA:626:oit.5674
+   URL:http://www.gatech.edu/iiir/urc2.paper.html
+   URL:gopher://gopher.gatech.edu:2048/iiir/urc2.paper
+
+   In this example the URN has global scope. This example describes a
+   resource who's name is the URN which has two occurences on the
+   net: one via http and another via gopher. 
+
+ o LIFNs are equal to URNs in precedence only.
+
+   An LIFN has many of the same characteristics of a URN. While there
+   is no current specification of exactly what a LIFN is or does this paper
+   will attempt to place them in the structure of a URC. This is definitely
+   up for discussion.
+   Example: 
+
+   URN:IANA:626:oit.5674
+   LIFN:osi8eu4o95wuoi4uowi8e45f8w34owoerp
+   URL:http://www.gatech.edu/iiir/urc2.paper.html
+
+   This example designates that this URN is also known by the given
+   LIFN and that both have the given URL as an instance. 
+
+ o URLs have precedence over all other pairs except for URNs
+   and LIFNs until the occurrence of a new URL.
+
+   A URL is one instantiation of a given resource. Any given
+   attribute/value pair can describe that specific instance except for a
+   URN or LIFN which are described by a URL.
+
+   Example: 
+
+   URN:IANA:626:oit.5674
+   URL:http://www.gatech.edu/iiir/urc2.paper.html
+   Content-Type: text/html
+   Content-Length: 89345
+   URL:gopher://gopher.gatech.edu:2048/iiir/urc2.paper
+   Content-Type: text/plain
+   Content-Length: 4563
+
+   Since URLs only have precedence over whatever is between them and
+   the next URL, this example shows that the MIME Content headers
+   only describe the URL directly above them. Thus the meaning of this
+   URC is that this URN has two given instances and that the first
+   instance is an HTML document of 89345 bytes and that the second is a
+   plain text document of 4563 bytes. 
+
+ o TTLs have no precedence over any other attribute/value pair
+   and therefore describe any element directly before it.
+
+   A TTL element is meant as a caching aid. It is important to be able to
+   identify certain elements of a URC as having a specific time to live.
+   The TTL element will then specify the time to live of whichever
+   element immediately precedes the TTL attribute/value pair.
+
+   Example: 
+
+   URN:IANA:626:oit.5674
+   TTL: +
+   URL:http://www.gatech.edu/iiir/urc2.paper.html
+   TTL:2592000
+   Content-Type: text/html
+   Content-Length: 89345
+
+   In this example the first TTL is not needed since a URN has an infinite
+   time to live. This one is simply used as an illustration. The next one
+   specifies that the given URL has a time to live of 30 days. Since the
+   next two elements describe that URL, it can be assumed that those two
+   elements also have the same time to live. 
+
+
+4.1 Other possible elements and precedence rules
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+In the interest of possible examples and real world uses, listed below are
+several possible additions to the above list of attribute/value pairs and
+precedence rules. These are only meant for discussion and are not part of the
+current specification.
+
+Possible future attribute/value pairs: 
+
+
+ o Collection:
+
+   This pair will allow the encoder to specify other URNs or URLs that
+   are considered to be in a collection with the given URN or URL. 
+
+   Example: 
+
+   URN:IANA:626:oit.5674
+   Collection:URN:IANA:626:oit.5673
+              URN:IANA:1:ietf-uri-002
+              URN:IANA:1:ietf-uri-003
+
+   This simply means that the given URN is in a collection and that some
+   of its members are given as a list. 
+
+ o Authoritative:
+
+   This pair will give the location of the authoritative URC server for the
+   given URN. This will serve as a pointer of last resort for the URC of
+   the given URN. This would require some method of being able to
+   identify a given URC database server.
+
+   Example: 
+
+   URN:IANA:626:oit.5674
+   Authoritative:URL:whois://whois.gatech.edu:7070/template=urc
+
+
+
+Possible future precedence rules:
+
+ o Multiple URNs in the same URC denote simple relationship
+
+   This is simply used as a method for the URC server to return
+   additional URNs that it thinks may be of value to the client. This is
+   useful if the server can do link prediction. If a client can already have a
+   URC for a given URN cached then it doesn not have to do a network call for
+   that related resource.
+
+   Example: 
+
+   URN:IANA:626:oit.5674
+   URL:http://www.gatech.edu/iiir/urc2.paper.html
+   URN:IANA:1:ietf-uri-002
+   URL:http://cnri.reston.va.us/internet-drafts/draft-ietf-uri-urn2urc.txt
+
+   This simply is the server's way of telling the client if the user is
+   interested in this resource that he/she may also be interested in the
+   other one. 
+
+ o Relationship operations denoted by special attribute/value pairs 
+
+   Attribute/value pairs could be specified that allow different types of
+   precedence rules to apply in different instances. A Block: pair could
+   specify a set of values that describe a specific URL or URN without
+   interacting with the given external precedence rules. These block
+   pairs would have numbers assigned to denote block nesting.
+
+   Example: 
+
+   URN:IANA:626:oit.5674
+   Authoritative:URL:whois://whois.gatech.edu:7070/template=urc
+   Block:1
+   URN:IANA:626:oit.5600
+   URN:IANA:626:oit.5601
+   URN:IANA:626:oit.5602
+   Block:1
+
+   This illustrates that the URNs in block number 1 also have the
+   given authoritative site as their authoritative URC server.
+
+5: Usage of URCs
+================
+
+In order for URCs to be useful they must be contained in some type of
+network based retrieval tool. This will allow for URCs to be used as a
+resolution service with considerable power. Currently there are several
+systems that could be retrofitted to handle URCs. One of the best suited
+services is the draft whois++ [Deutsch 94]. Whois++ is an extension to the
+trivial WHOIS service which allows servers to make more structure
+information available. Additions to the trivial WHOIS protocol allow for
+communication between whois++ servers so that information can be shared
+across collections of servers.
+
+The two primary advantages to using whois++ are that the data is structured
+in the same template format as URCs and that the distributed nature allows a
+search to start local and expand globally as required. Below are several
+sessions between some client and a whois++ server in which example URCs
+are given:
+
+
+A complete discussion of the capabilities and uses of the whois++ protocol are
+beyond the scope of this paper. Please refer to current internet-drafts for a
+much more indepth review of the whois++ protocol. 
+
+URC lookup based on URN
++++++++++++++++++++++++
+
+In this example a client program has connected to a whois++ server and has
+requested a record that contains the given URN. 
+
+% 220-This is merlin (GATECH01) running KTH-whois++ ver.1.4
+% 220 Enter search string or type 'help' for help.
+template=urn;URN=IANA:623:oit:cs:ftp-and-telnet
+% 201 Command okay
+# FULL 1
+ 
+# URN GATECH02
+ URN:IANA:623:oit:cs:ftp-and-telnet
+ Title: Intro to FTP and Telnet
+ Author: Adam Arrowood
+ URL:file://ftp.gatech.edu/pub/docs/ftp.telnet.ps
+ Content-Type:  text/postscript
+ Size: 1MB
+ URL:http://www.gatech.edu/oit/info/ftp.telnet.html
+ Content-Type: text/html
+ Size: 600K
+ Cost: US$0.25
+ 
+# END
+% 226 Transfer complete
+% 203 Bye!
+
+The URC that was returned contains two instances of the resource whose title
+and author are given below the URN. This URC describes the resource Intro
+to FTP and Telnet which was written by Adam Arrowood and is available via
+anonymous ftp in postscript and WWW in HTML. 
+
+
+
+URC lookup based on URL 
+++++++++++++++++++++++++
+
+In this example a client does not know the URN of a given document, but does
+know the URL of a particular instance of the resource. Here, the client gives
+the server the URL and hopefully receives a current URC which may
+contain the URN. 
+
+% 220-This is merlin (GATECH01) running KTH-whois++ ver.1.4
+% 220 Enter search string or type 'help' for help.
+template=urn;URL=http://www.gatech.edu/oit/info/pccards.html  
+% 201 Command okay
+# FULL 1
+ 
+# URN GATECH01
+ URN:IANA:623:oit:ns:pccards
+ Title: Supported PC Network Cards at Georgia Tech
+ Author: Jimmy Lemkuhle
+ URL:http://www.gatech.edu/oit/info/pccards.html
+ Size: 256K
+ Content-Type: text/html
+ 
+# END
+% 226 Transfer complete
+% 203 Bye!
+
+The URC that was returned describes one instance of a resource who's URN,
+title and author are now known, plus information on the size and format of
+the particular instance.
+
+
+
+URC lookup based on given meta-information
+++++++++++++++++++++++++++++++++++++++++++
+
+In this example a client may know a resources Title and Author, but nothing
+else. The client can use these to attempt to find the given resource on the net. 
+
+% 220-This is merlin (GATECH01) running KTH-whois++ ver.1.4
+% 220 Enter search string or type 'help' for help.
+template=urn;title=Intro\ to\ FTP\ and\ Telnet;author=Arrowood
+% 201 Command okay
+# FULL 1
+ 
+# URN GATECH02
+ URN:IANA:623:oit:cs:ftp-and-telnet
+ Title: Intro to FTP and Telnet
+ Author: Adam Arrowood
+ URL:file://ftp.gatech.edu/pub/docs/ftp.telnet.ps
+ Content-Type:  text/postscript
+ Size: 1MB
+ URL:http://www.gatech.edu/oit/info/ftp.telnet.html
+ Content-Type: text/html
+ Size: 600K
+ Cost: US$0.25
+ 
+# END
+% 226 Transfer complete
+% 203 Bye!
+Connection closed by foreign host.
+
+The URC that was returned now contains information that the client can
+cache such as the URN and URLs. 
+
+
+
+URC lookup via URN with only URLs returned
+++++++++++++++++++++++++++++++++++++++++++
+
+In this example the client is only requesting URLs to be returned. This may be
+due to a limited client that can not deal with other types of meta-information
+or due to a need for a faster search.
+
+% 220-This is merlin (GATECH01) running KTH-whois++ ver.1.4
+% 220 Enter search string or type 'help' for help.
+template=urn;URN=IANA:626:oit:cs:ftp-and-telnet;include=urn
+% 201 Command okay
+# FULL 1
+ 
+# URN GATECH02
+ URN:IANA:623:oit:cs:ftp-and-telnet
+ URL:file://ftp.gatech.edu/pub/docs/ftp.telnet.ps
+ URL:http://www.gatech.edu/oit/info/ftp.telnet.html
+ 
+# END
+% 226 Transfer complete
+% 203 Bye!
+Connection closed by foreign host.
+
+This is an example of a relatively small and limited URC. It contains no
+particularly interesting meta-information, but it does provide a basic URN to
+URL resolution service.
+
+6. References
+=============
+
+[Mealling 94] 
+   Mealling, Michael, Specification of Uniform Resource
+   Characteristics, April 5, 1994
+<URL:ftp://cnri.reston.va.us/internet-drafts/draft-ietf-uri-urc-00.txt>
+[Deutsch 94] 
+   Deutsch P., Schoutlz R., Flatstrom P., and Weider C,Architecture of
+   the WHOIS++ service, April 6, 1994.
+<URL:ftp://cnri.reston.va.us/internet-drafts/draft-ietf-wnils-whois-arch-00.txt>
+[Emtage 94] 
+   Emtage A., Deutsch P., Publishing Information on the Internet with
+   Anonymous FTP, May 1994.
+<URL:ftp://cnri.reston.va.us/internet-drafts/draft-ietf-iiir-publishing-01.txt>
+[Sollins 94] 
+   Sollins K., Masinter L.,Requirements of Uniform Resource Names,
+   March 26, 1994.
+<URL:ftp://cnri.reston.va.us/internet-drafts/draft-sollins-urn-00.txt>
+[Berners-Lee 94-1] 
+   Berners-Lee T.,Uniform Resource Locators (URL), March 21, 1994.
+<URL:ftp://cnri.reston.va.us/internet-drafts/draft-ietf-uri-url-03.txt>
+[Berners-Lee 93-2] 
+   Berners-Lee T.,Hypertext Transfer Protocol (HTTP), Nov 5, 1993.
+<URL:ftp://cnri.reston.va.us/internet-drafts/draft-ietf-iiir-http-00.txt>
+-- 
+------------------------------------------------------------------------------
+<HR><A HREF="http://www.gatech.edu/michael.html">
+<ADDRESS>Michael Mealling</ADDRESS>
+<ADDRESS>michael.mealling@oit.gatech.edu</ADDRESS></A>
+

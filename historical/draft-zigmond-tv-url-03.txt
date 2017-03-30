@@ -1,0 +1,331 @@
+
+
+Network Working Group                                       D. Zigmond 
+nternet Draft                                     WebTV Networks, Inc. 
+Document: draft-zigmond-tv-url-03.txt                       M. Vickers 
+                                           Liberate Technologies, Inc.
+Category: Informational                                  December 2000 
+ 
+Internet-Draft                                       
+ 
+ 
+        Uniform Resource Identifiers for Television Broadcasts 
+    
+    
+1. Status of this Document 
+    
+   This document is an Internet-Draft and is in full conformance with 
+   all provisions of Section 10 of RFC2026.  
+    
+   Internet-Drafts are working documents of the Internet Engineering 
+   Task Force (IETF), its areas, and its working groups. Note that 
+   other groups may also distribute working documents as Internet-
+   Drafts.  
+    
+   Internet-Drafts are draft documents valid for a maximum of six 
+   months and may be updated, replaced, or obsoleted by other documents 
+   at any time. It is inappropriate to use Internet- Drafts as 
+   reference material or to cite them other than as "work in progress." 
+    
+   The list of current Internet-Drafts can be accessed at 
+   http://www.ietf.org/ietf/1id-abstracts.txt  
+    
+   The list of Internet-Draft Shadow Directories can be accessed at 
+   http://www.ietf.org/shadow.html. 
+    
+    
+   Distribution of this document is unlimited. Please send comments to 
+   djz@corp.webtv.net and mav@liberate.com. 
+    
+    
+2. Introduction 
+    
+   World-Wide Web browsers are starting to appear on a variety of 
+   consumer electronic devices, such as television sets and television 
+   set-top boxes, which are capable of receiving television programming 
+   from either terrestrial broadcast, satellite broadcast, or cable. In 
+   this context there is a need to reference television broadcasts 
+   using the URI format described in [RFC 2396]. This document 
+   describes a widely-implemented URI scheme to refer to such 
+   broadcasts. 
+ 
+3. Television URI 
+    
+   The basic structure of a television URI is: 
+    
+        tv:<broadcast> 
+    
+
+ 
+Zigmond                                                              1 
+
+
+
+
+
+
+
+            Uniform Resource Identifiers for TV Broadcasts January, 2000
+                                    
+   where broadcast is a description of the data source. The description 
+   takes the form of a DNS-style identifier for a particular broadcaster 
+   or television network. For example: 
+    
+        tv:wqed.org           the WQED station 
+        tv:nbc.com            the NBC network 
+    
+    
+3.1. Scheme-only form 
+    
+   A simplest form of the "tv:" URI scheme is used to refer to the 
+   "current" or "default" channel: 
+    
+        tv: 
+    
+   This URI refers to whichever television broadcast is currently being 
+   received by the device. It is often used in combination with HTML 
+   content that is actually being broadcast along with the audio and 
+   video, where the meaning of "current broadcast" is quite unambiguous 
+   (because it is the broadcast along with which the content containing 
+   the URI was received). This is in fact the most common usage of the 
+   "tv:" scheme today, and is explicitly referenced by the recently 
+   published specification of the Advanced Television Enhancement Forum 
+   [ATVEF 1.1]. 
+    
+    
+3.2 DNS-style identifiers 
+    
+   Television broadcasts traditionally have been identified in a variety 
+   of ways.  All terrestrial television broadcasters are assigned call 
+   signs (such as "KDKA" or "WQED") to identify their signal. These are 
+   generally assigned by national authorities (such as the Federal 
+   Communications Commission in the United States) and are world unique.  
+   The global namespace is managed by the International 
+   Telecommunications Union, which assigns portions to member countries 
+   (see [ITU RR]).  
+    
+   Many modern television networks are not broadcasted over-the-air, but 
+   available only through cable or satellite subscriptions.  The 
+   identifiers for these networks (such as the familiar "CNN" and "HBO") 
+   are not regulated at this time.  In some countries, even over-the-air 
+   broadcasters use these sorts of identifiers, rather than call signs. 
+    
+   Unfortunately, these two namespaces overlap, with most network 
+   identifiers also being valid call signs.  Furthermore, network 
+   identifiers are not world unique, and many cases exist of name 
+   collisions.  (For example, both the Australian Broadcast Corporation 
+   and the American Broadcasting Company identify themselves as "ABC".)  
+   In order to ensure uniqueness, the "tv:" scheme uses DNS-style 
+   identifiers for all broadcast streams.  Because these build on the 
+   existing registration system for DNS hostname, all name collisions 
+   can be resolved through the existing DNS dispute resolution 
+   processes. 
+    
+
+ 
+Zigmond            Informational-Expires July, 2000                  2 
+
+
+
+
+
+
+
+            Uniform Resource Identifiers for TV Broadcasts January, 2000
+                                    
+   In the simplest form, domain names themselves are used as broadcast 
+   identifiers.  For example: 
+ 
+          tv:abc.com          the American Broadcast Company 
+          tv:abc.co.au        the Australian Broadcast Corporation 
+    
+   In some cases, networks have multiple broadcast streams that need to 
+   be distinguished.  This is also handled in DNS style: 
+    
+          tv:east.hbo.com     HBO East 
+          tv:west.hbo.com     HBO West 
+    
+   It is important to note that these DNS-style identifiers need not 
+   match real hostnames; they should not be resolved to IP addresses 
+   using DNS.  Thus, using the terms as defined in RFC 2396, the "tv:" 
+   scheme is a Uniform Resource Identifier and not a Uniform Resource 
+   Locator. 
+    
+   In order to support these identifiers in a "tv:" URI, a receiver must 
+   implement a means to map known identifiers to frequencies. The nature 
+   of this map and the way in which it is used are currently browser- 
+   and device-specific and are beyond the scope of this document. In 
+   this way, the "tv:" scheme is somewhat analogous to the "news:" and 
+   "file:" schemes in [1]: it merely names a television broadcast signal 
+   but assumes that the local browser has some means for actually 
+   retrieving that signal on the local device.  A variety of software 
+   systems currently provide device-specific mappings from such 
+   identifiers to specific channel numbers or directly to frequencies.  
+   These systems can be incorporated into television sets or set-top 
+   boxes to facilitate the interpretation of television URIs by the 
+   client device. 
+ 
+ 
+3.3 Obsolete forms 
+    
+   Previous drafts of this specification allowed broadcasts to be 
+   identified by channel numbers, such as "tv:4", and this form is 
+   currently supported by several independent platforms.  The channel 
+   numbers generally correspond to tuning frequencies in the various 
+   national broadcast frequency standards; for example, "tv:4" in the 
+   United states would be found at 66 MHz.  However, because this 
+   mapping of channel numbers to frequencies varies from country to 
+   country, this form is particularly ill-suited to use on the 
+   Internet.   
+    
+   Previous drafts also allowed network identifiers and call signs to 
+   be used directly as broadcast identifiers, as in "tv:abc" and 
+   "tv:kron".  These forms should not be used because of the name 
+   collision issues described in the previous section. 
+ 
+    
+4. BNF for Television URIs 
+    
+   The following is a formal specification for the new URIs: 
+    
+ 
+Zigmond            Informational-Expires July, 2000                  3 
+
+
+
+
+
+
+
+            Uniform Resource Identifiers for TV Broadcasts January, 2000
+                                    
+      tvuri          = "tv:" [ broadcast ] 
+      broadcast      = dns-identifier  
+      dns-identifier = *( domainlabel "." ) toplabel [ "." ] 
+      domainlabel    = alphanum | alphanum *( alphanum | "-" ) alphanum 
+      toplabel       = alpha | alpha *( alphanum | "-" ) alphanum 
+    
+    
+   The definitions of alpha and alphanum are from [RFC 2396].  
+   Furthermore, the definition of dns-identifier is identical the 
+   definition of hostname in RFC 2396, and is case-insensitive. 
+    
+    
+5. Acknowledgments 
+    
+   Many of the ideas in this document came out of conversations with 
+   Andrew Lochart. Other people who supplied valuable input include Matt 
+   Trifiro and Eric Del Sesto.  The original draft of this URI scheme 
+   was developed while the author was at Wink Communications.  More 
+   recent suggestions have come from Lee Acton, Jonathan Boltax, Dean 
+   Blackketter, Michael Dolan, Iain Hackett, Jim Helman, Sean McDowell, 
+   David Mott, Scott Watson, and others in the ATVEF Technical Working 
+   Group (which the authors co-chaired), and from Craig Finseth, Gomer 
+   Thomas, Harald Alvestrand, and Larry Masinter. 
+    
+    
+6. Security Considerations 
+    
+   This new URI scheme is subject to the same security implications as 
+   the general URI scheme described in [RFC 2396]. It is possible that 
+   the mere act of viewing a television broadcast signal may cause costs 
+   to be incurred to the viewer in some instances (e.g., "pay-per-view" 
+   movies and events). Any software that uses this URI scheme to allow 
+   automatic tuning of a client device to a particular television 
+   broadcast signal should alert users before performing actions that 
+   may incur costs to the user. 
+    
+    
+7. IANA Considerations 
+    
+   All broadcast identifiers must be registered with IANA. IANA will use 
+   a hierarchical allocation (see [RFC 2434]) to assign identifiers. 
+   Only the owner of a domain may register identifiers within that 
+   domain. For example, only HBO may register names within "hbo.com", 
+   and only BBC may register names within "bbc.co.uk". Within their 
+   domains, registrants will have complete freedom in their choice of 
+   identifiers, and, as noted above, these identifiers need not match 
+   actual hostnames. The complete list of registered broadcast 
+   identifiers will be publicly available from IANA. 
+    
+    
+8. References 
+    
+   [RFC 2396] Berners-Lee, T., Fielding, R., Masinter, L., "Uniform 
+   Resource Identifiers (URI): Generic Syntax", RFC 2396, August 1998. 
+   http://www.ietf.org/rfc/rfc2396.txt 
+ 
+Zigmond            Informational-Expires July, 2000                  4 
+
+
+
+
+
+
+
+            Uniform Resource Identifiers for TV Broadcasts January, 2000
+                                    
+ 
+   [ATVEF 1.1] Advanced Television Enhancement Forum, "Advanced 
+   Television Enhancement Forum Specification Version 1.1r26," February 
+   1999.  http://www.atvef.com/atvef_spec/TVE-public-1-1r26.htm  
+    
+   [ITU RR] International Telecommunications Union, "Radio Regulations," 
+   1998.  See especially Article S19, "Identification of stations," and 
+   Appendix S42, "Table of allocation of international call sign 
+   series." 
+    
+   [RFC 2434] Narton, T., Alvestrand, H., "Guidelines for Writing an 
+   IANA Considerations Section in RFCs", RFC 2434, October 1998.  
+   http://www.ietf.org/rfc/rfc2434.txt 
+    
+ 
+9. Authors' Address 
+    
+   Dan Zigmond 
+   WebTV Networks, Inc. 
+   1065 La Avenida 
+   Mountain View, CA 94043 
+   USA 
+    
+   Email: djz@corp.webtv.net 
+    
+   Mark Vickers 
+   Liberate Technologies 
+   2 Circle Star Way 
+   San Carlos, CA  94070 
+   USA 
+    
+   Email: mav@liberate.com 
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+Zigmond            Informational-Expires July, 2000                  5 
+
+
+
+
+
+
+

@@ -1,0 +1,221 @@
+IETF URI Working Group                                         Paul E. Hoffman
+Internet-Draft                                               Proper Publishing
+draft-ietf-uri-urn-res-descrip-00                              Ron Daniel, Jr.
+Expires October 21, 1995                        Los Alamos National Laboratory
+
+
+                           URN Resolution Overview
+
+Status of this memo
+
+This document is an Internet-Draft. Internet-Drafts are working documents
+of the Internet Engineering Task Force (IETF), its areas, and its working
+groups. Note that other groups may also distribute working documents as
+Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months.
+Internet-Drafts may be updated, replaced, or obsoleted by other documents
+at any time. It s not appropriate to use Internet- Drafts as reference
+material or to cite them other than as a "working draft" or "work in
+progress."
+
+To learn the current status of any Internet-Draft, please check the
+1id-abstracts.txt listing contained n the Internet-Drafts Shadow
+Directories on ds.internic.net, nic.nordu.net, ftp.isi.edu or
+munnari.oz.au.
+
+Abstract
+
+This document gives an overview of how Uniform Resource Names (URNs) will
+be resolved. It describes how different URN resolution schemes will fit
+together, the requirements for the multiple URN schemes, expectations for
+URN clients, and other general resolution issues.
+
+This document does not cover any specific resolution schemes, the syntax
+for URNs, or the format of resolution results. It is expected that these
+issues (and other URN-related topics) will be covered in different Internet
+Drafts submitted to the IETF URI Working Group.
+
+1. Introduction
+
+A URN (Uniform Resource Name) is the name of a resource within the context
+of a larger Internet information architecture known as Uniform Resource
+Identification. URNs are simple text strings that unambiguously identify an
+Internet resource. Any Internet resource may have multiple names, but all
+uses of a particular name identify the same resources, as viewed by their
+publisher.
+
+Using a URN resolution service, an Internet user or program can retrieve
+information about the named resource. The minimum set of requirements for
+URNs are described in [URNR].
+
+Resolving a URN returns information about that named resource, such as a
+description of the resource, the location or locations of the resource, and
+bibliographic information about the resource. URNs differ from URLs
+(Uniform Resource Locators) described in RFC 1738 [URL] in that URNs allow
+resources on the Internet to be specified by name instead of by location.
+URNs return information about the resource, not the resource itself.
+
+Using URNs has many advantages for identifying resources, including:
+
+- The information in a resource may move in the future. For example, as
+some Internet services get too popular for their original hosts, they move
+to different systems which have different URLs. Also, a service might move
+from host system to host system with the person who maintains it.
+
+- Users can easily access metainformation about a resource without
+accessing the resource itself. A user might want to see the bibliographic
+information about a resource without getting the resource, particularly if
+it costs money to get the resource. Other useful metainformation that a
+user might want to see before accessing a resource includes the name of the
+maintainer of the resource, the language in which the resource is in, the
+price of the resource, the requirements of the user before reading the
+resource, and so on.
+
+- A resource may exist in many locations on the Internet. By resolving a
+single URN, the user can get a list of URLs from which to access the
+resource and more complete bibliographic information from a URC [URC]. This
+list can include valuable metainformation such as suggestions about the
+best location for the user to retrieve the resource from based on cost,
+speed, or other factors.
+
+It is important to understand that URNs are neither a superset or a subset
+of URLs: they are different. The difference between URNs and URLs is
+similar to that between the title of a book and a locator for it on the
+shelf.
+
+2. Syntax
+
+The syntax for URNs is described in [URNS]. This general syntax has
+provision for multiple, specific URN schemes.
+
+3. URN Resolution Schemes
+
+There are many methods for resolving URNs. Each method is called a
+"scheme". A URN resolution scheme defines the following:
+- the name of the scheme, described in [URNS]
+- the syntax for the scheme-specific part of the URN
+- the transport protocol or protocols used to resolve URN with that scheme
+- the types of resolution results that the scheme might return
+
+Having more than one URN resolution scheme allows URNs to be used for such
+naming schemes as ISBNs (International Standard Book Numbering system),
+ISSNs (International Standard Serial Numbering system), and other naming
+schemes that are not currently on the Internet. It also allows for naming
+schemes that can be resolved in ways that are distributed and not
+location-specific.
+
+Each scheme is defined in its own Internet Draft. These drafts must include
+all the above information, as well as how the scheme meets the requirements
+in [URNR].
+
+4. Overview of URN Resolution
+
+URN resolution can be described in two parts: the resolution request and
+the resolution result. A resolution request describes the URN to be
+resolved to the resolution server. A resolution result is the text that is
+returned from the resolution server; it gives the requested information
+about the resource named in the URN.
+
+4.1 Resolution Requests
+
+A URN is resolved by communicating with a URN resolution service. At a
+minimum, all URN resolution services provide a request/response system: a
+single URN is specified, and a single response is returned. The service can
+be stateless or can preserve state, depending on the communication protocol
+used. Each resolution request must give enough information to the
+resolution server that it can completely and unambiguously identify which
+URN is being specified. More capable URN resolvers may accept queries which
+select sets of URNs, but their operation is outside the scope of this
+draft.
+
+The current query-response system for resolving URNs is quite simple.
+Future extensions to this system will accommodate more capable query
+languages.
+
+4.2 Resolution Results
+
+The resolution request specifies the information desired in the response.
+This might be simple list of URLs, or a more informative reply with a great
+deal of additional information. If possible, the request should be able to
+indicate the desired format for the response, such as plain text, HTML, or
+some application specific binary encoding suitable for cryptographic
+operations.
+
+The resolution server returns the results of each resolution request in a
+single response.
+
+If the resolution request specifies desired formats for the response, the
+resolution server should attempt to return only those types of results.
+However, it is acknowledged that this may be impractical or impossible for
+some resolution servers, and the client should be able to handle (or at
+least ignore) resolution results that are not of a requested type.
+
+5. URN Resolution Clients, Proxies, and Caching
+
+URN clients are allowed to interpret the resolution result and present the
+user with a better interface than just the text that is returned. For
+example, an intelligent Gopher-based URN client resolving an HTTP-based URN
+could go through a Gopher-to-HTTP gateway can select the URLs with the
+"gopher:" scheme and create a Gopher menu of them. Similarly, an
+intelligent HTML-based URN client can reformat a resolution result as HTML
+text with the URLs as links that can be selected.
+
+In order to make URN resolution available to as many Internet users as
+possible, it is assumed that resolution may take place through protocol
+proxies and gateways. Proxies and gateways allow Internet users who do not
+have URN clients, or whose clients do not speak in all the transport
+protocols described in the various URN schemes, to resolve URNs. Current
+proxies and gateways should work well for this purpose, but they should be
+enhanced and more widely available. Some sites will choose to have local
+proxies and gateways, while other sites will allow people from outside
+their site to use their proxies and gateways freely.
+
+URN resolution clients, proxies, and gateways may choose to cache
+resolution results in order to speed resolution and to reduce Internet
+traffic. Caching should only be performed using the native mechanisms in
+the transport protocols to assure that URNs whose response content changes
+rapidly are not accidentally cached.
+
+6. Security Implications
+
+Attempting to resolve a URN can cause unencoded messages to be sent between
+two systems on the Internet, and thus can introduce many security concerns.
+Resolution requests and responses can be logged at the originating site,
+the recipient site, and intermediary sites along the delivery path. If
+secure encryption is not used, resolution requests and responses can also
+be read at any of those sites.
+
+All the security implications of each transport protocol are probably the
+same for URNs transported using those protocols.
+
+7. References
+
+[URC] Internet-Draft, "URC Scenarios and Requirements". The name of the
+draft at the time of this writing is "draft-ietf-uri-urc-req-01".
+
+[URL] RFC 1738, "Uniform Resource Locators (URL)".
+
+[URNR] RFC 1737, "Functional Requirements for Uniform Resource Names".
+
+[URNS] Internet-Draft, "Generic URN Syntax". The name of the draft at the
+time of this writing is "draft-ietf-uri-urn-syntax-00".
+
+8. Author Contact Information
+
+Paul E. Hoffman
+Proper Publishing
+127 Segre Place
+Santa Cruz, CA, USA  95060
+voice:  (408) 426-6222
+phoffman@proper.com
+
+Ron Daniel Jr.
+MS B287
+Los Alamos National Laboratory
+Los Alamos, NM, USA 87545
+voice:  (505) 665-0597
+fax:  (505) 665-4939
+rdaniel@lanl.gov
+
+

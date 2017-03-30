@@ -1,0 +1,278 @@
+IETF URI Working Group                                 Mark Madsen
+INTERNET-DRAFT                                             APM Ltd
+draft-ietf-uri-urn-madsen-critique-00.txt
+Expires: 19 January 1996                               14 July 1995
+
+
+	   A Critique of Existing URN Proposals
+
+Abstract
+
+This document criticises existing URN (Uniform Resource Name)
+proposals in the light of generality, extensibility, and general
+futureproofing.  The idea is to draw upon the best characteristics of
+the existing proposals so as to converge on an acceptably functional
+and nonrestrictive draft specification for both URN syntax and
+resolution schemes.
+
+
+Status of This Memo
+
+     This document is an Internet-Draft.  Internet-Drafts are working
+     documents of the Internet Engineering Task Force (IETF), its
+     areas, and its working groups.  Note that other groups may also
+     distribute working documents as Internet-Drafts.
+
+     Internet-Drafts are draft documents valid for a maximum of six
+     months and may be updated, replaced, or obsoleted by other
+     documents at any time.  It is inappropriate to use Internet-
+     Drafts as reference material or to cite them other than as
+     ``work in progress.''
+
+     To learn the current status of any Internet-Draft, please check
+     the ``1id-abstracts.txt'' listing contained in the Internet-
+     Drafts Shadow Directories on ftp.is.co.za (Africa),
+     nic.nordu.net (Europe), munnari.oz.au (Pacific Rim),
+     ds.internic.net (US East Coast), or ftp.isi.edu (US West Coast).
+
+
+1. Introduction
+
+The URI (Uniform Resource identifier) Working Group is currently
+stalled on the issue of how to implement URNs.  There is no shortage
+of proposals, but no single proposal has been perfected, and all
+contain shortcomings which have prevented them gaining widespread
+support from the members of the working group.
+
+The aim of this document is to criticise the existing proposals in a
+constructive manner, so as to draw out their positive qualities, and
+then to develop a modular scheme for combining these best components
+into new URN schemes.
+
+Some specific architectural considerations are derived and discussed
+in the following section.
+
+
+2. General Issues
+
+Requirements on URNs are discussed in [S&M].  These may be divided
+into requirements on URNs themselves (global scope, location
+independence, global uniqueness, and persistence), requirements on URN
+schemes (scalability, legacy support, extensibility, independence of
+naming authorities, resolvability), and requirements on URN encodings
+(single encoding, simple comparison, transcribability,
+transportability, parsability).
+
+To these requirements could be added the necessity not to make any URN
+scheme into a straitjacket for future Internet development.
+Fulfillment of this requirement will clearly only be possible if the
+issues relating to URN construction are separated from those relating
+to resolution of URNs into other classes of Uniform Resources.
+
+The next few sections discuss the existing proposals and documents in
+the light of the considerations derived in this section.
+
+
+3. Critiques of URN Proposals
+
+The proposals are treated in chronological order.
+
+
+3.1 The Path URN Scheme
+
+This is described in internet draft draft-ietf-uri-urn-path-00.txt
+"The Path URN Specification" by Daniel LaLiberte and Michael Shapiro.
+
+The path scheme is based on the idea of an hierarchical name space,
+with naming authorities being responsible for specified subtrees of
+the name space.  The problem with this, as with any other hierarchical
+scheme, is that of management of the levels near the root.  Experience
+with DNS (Domain Naming Scheme) shows that this can be a serious
+problem when weaknesses in the distribution of structure ar exposed by
+use (as is presently the case with the .com subhierarchy).  Since
+there are expected always to be many more resources in the Internet
+than machines, the management problems can be expected to be severe.
+Management issues are not addressed in the path scheme proposal.
+
+The reason for the hierarchy built into the path scheme is that it
+builds in the association between (sets of) naming authorities and
+resolution services.  URN resolution is therefore an in-principle
+terminating process, which is a positive point in favour of the
+scheme.  In practice, failures will isolate entire subtrees of the
+hierarchy from resolution.  DNS service failures are typically
+softened by the practice of maintaining caches of all lookups: this
+will not work as well for URN resolution because the Internet-wide
+rate of creation and alteration of resources can reasonably be
+expected to be many orders of magnitude greater than the addition of
+new IP addresses.
+
+A stronger criticism of the path scheme is that the hierarchical
+process of resolution ties each resource's URN to a particular
+resolution service in perpetuity.  Furthermore, the worst-case
+scenario for resolution of a URN could involve as many resolution
+services as there are components in the path of the URN under this
+scheme.
+
+Tying URN construction and assignation to resolution in any way is a
+stringent limit on the freedom of future Internet engineering to
+exploit new technologies.  At the time of writing, trading technology
+is becoming widespread.  Future traders could be badly hindered by
+being constrained to resolve URNs in a path hierarchy.  This is not to
+say that hierarchical schemes cannot or should not be built: in fact,
+they may work better than any other type in certain circumstances and
+for certain purposes.  However, it is easy to impose an hierarchical
+resolution structure on a general namespace, so long as that namespace
+is not itself tied to some other restrictive resolution scheme.
+
+Many of the criticisms that apply to this scheme can be equally well
+applied to some of the others discussed below.
+
+
+3.2 The x-dns-2 Scheme
+
+This is described in internet draft draft-ietf-uri-urn-x-dns-2-00.txt
+"x-dns-2 URN Scheme" by Paul Hoffman and Ron Daniel.
+
+This scheme is subject to the same criticism as the path scheme about
+the way that the syntax incorporates the resolution service in the URN
+itself.  However, this scheme will coexist reasonably well with other
+schemes, because it encodes the "x-dns-2" scheme name in the URN as
+well.  However, this means that resolvers unfamiliar with this scheme
+convention may have difficulty in resolving such a URN.
+
+Resolution in this scheme is handled by doing a standard DNS lookup to
+find the resolution authority, and requesting direct resolution of the
+URN from them.  Whether DNS can scale to cope with the number of
+resolution requests that could conceivably be generated in such a
+scenario seems doubtfuul.  This also exposes the fact that the scheme,
+like the path scheme, relies on the naming authority and resolution
+service being closely linked, an assumption which is unlikely to
+remain true in the long term, as commercial and specialised resolution
+services are set up.
+
+A more serious criticism is that the scheme is tightly constrained in
+two ways.  One is that it relies on being able to use HTTP headers.
+This is a weakness, since one of the ways currently being considered
+for improving HTTP's slowness is to change the ways in which headers
+are dealt with.  Similarly, the scheme uses the HTTP status-line for
+tracking resolution success and failure.  Thus the scheme is seen to
+be too closely tied to HTTP to have a long lifetime.
+
+
+3.3 The Handle Scheme
+
+This is described in internet draft draft-ietf-uri-urn-handles-00.txt
+"The Handle System" by William Harms and David Ely.
+
+The handle scheme shares many characteristics with the aformentioned
+URN schemes.  There is a namesapce hierarchy, in which there are extra
+features, such as the ability for naming authorities to create
+subsidiary naming authorities.  There is a global handle server, which
+is distributed, and local handle servers, which gives a more flexible
+model of how resolution may proceed.  However, these servers are again
+both naming authorities and resolution services, with all the
+limitations that implies.
+
+The handle syntax itself seems too complicated for naming, and
+sepcifies that the handles carry along with them sets of typed
+structured information, and corresponding administrative information.
+This is restrictive, and collides badly with the URI-WG's attempt to
+provide a functionally clean repository for resource metadata in the
+framework of URC schemes.
+
+The proposal also considers such issues as handle administration tols,
+access to services through firewalls, and cacheing of handles.  While
+important, these issues are orthogonal to the construction of naming
+scheme frameworks, and should be left to other documents.
+
+
+3.4 The OCLC Scheme
+
+This is slightly different from the preceding documents and is
+described in internet draft draft-ietf-uri-urn-resolution-01.txt "URN
+Services" by Keith Shafer, Eric Miller, Vincent Tkac and Stuart Weibel.
+
+This scheme is the most flexible of those proposed.  It allows for the
+existence of different naming authorities with different authority
+levels, and for different resolution services.  It does provide for
+the "author" of a resource to specify the resolution service to be
+used for a given URN.  This is a drawback in two ways, firstly that it
+restricts the freedom to generate new resolution services, and
+secondly it leaves old URNs high and dry when the author-specified
+resolution service overloads/fails/explodes.  It is also probably a
+bad idea to assume that with each resource there can be associated an
+author that is a single coherent entity.
+
+It is interesting and useful that this proposal recommends a
+resolution-request syntax, but it is important that this should be
+seen only as a baseline, since different resolution services will
+almost certainly wish to offer differentiating syntaxes and resolution
+criteria.  The proposed URN sysntax itself consists simply of the
+naming authority name paired with the opaque string assigned to the
+resource by that authority.  This means that the naming authority can
+still be queried for validation of a URN, but that it is not in
+general expected to provide the resolution service itself.
+
+Another advantage of decoupling naming and resolution as seen in this
+scheme is that for small URN collections issued by single naming
+authorities, the optimisation of having those naming authorities offer
+their own resolution service is simply arranged: other resolution
+services simply each maintain a table of known naming authrities,
+marking each according to whether they perform resolution or not.
+
+
+Summary and Conclusions
+
+None of the existing proposals is entirely satisfactory.  The most
+promising framework from the point of view of extensibility and
+future-proofness would be one constructed on the basis of the OCLC
+scheme.  it is recommended that this be implemented and tested, along
+with implementation specifications for the other schemes to show how
+they compare mutually when built on top of this basic framework.
+
+The result of following this recommendation will be a framework within
+which multiple URN schemes can coexist, each offering their own
+particular advantages in a given situation, while allowing naming
+authorities to issue URNs appropriately.
+
+
+Security Considerations
+
+This document does not raise any security considerations beyond those
+normally associated with URN storage and resolution.  Note, however,
+that any URN scheme intended to allow secure resolution must provide
+for encryption of transmitted URN data.  This point has been
+emphasised by Mark Fisher in a sequence of messages to the URI-WG
+mailing list.
+
+
+Acknowledgements
+
+The author is grateful to Andrew Herbert, Rob van der Linden, Nigel
+Edwards and Owen Rees for discussions relating to the management and
+resolution of URNs.  Thanks also go to those authors who have written
+the internet drafts discussed in this document.
+
+
+References
+
+[Madsen95] Mark Madsen, "Decoupling the URL Scheme from the Transport
+Protocol", June 1995.
+<URL:http://www.ansa.co.uk/phase3-activities/decoupling.html>
+
+[S&M] Karen Sollins and Larry Masinter, "Functional Requirements for
+Uniform Resource Names", RFC 1737, December 1994.
+
+
+Author's Address
+
+Mark Madsen <msm@ansa.co.uk>
+Information Services Framework Group
+Architecture Projects Management Ltd
+Poseidon House, Castle Park
+Cambridge CB3 0RD, UK
+
+Telephone +44-1223-568934
+Facsimile +44-1223-359779
+
+

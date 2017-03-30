@@ -1,0 +1,157 @@
+INTERNET-DRAFT                                                    S. Williamson
+Expires six months from July 1997                                   M. Mealling
+                                                        Network Solutions, Inc.
+
+               The RWhois Version 1.x Uniform Resource Locator
+                  <draft-mealling-rwhoisurl-01.txt>
+
+Status of this Memo
+
+This document is an Internet-Draft.  Internet-Drafts
+are working documents of the Internet Engineering Task Force (IETF),
+its areas, and its working groups.  Note that other groups may
+also distribute working documents as Internet-Drafts.
+
+Internet-Drafts are draft documents valid
+for a maximum of six months and may be updated, replaced, or obsoleted
+by other documents at any time.  It is inappropriate to use Internet-Drafts
+as reference material or to cite them other than as work
+in progress.
+
+To learn the current status of any Internet-Draft,
+please check the 1id-abstracts.txt listing  contained
+in the Internet-Drafts Shadow Directories on ds.internic.net (US
+East Coast), nic.nordu.net (Europe), ftp.isi.edu (US West Coast),
+or munnari.oz.au (Pacific Rim).
+
+1. Abstract
+
+RWhois is an Internet directory access protocol, defined in RFC1714 [1] and
+RFC2167 [3]. This document describes a format for an RWhois Uniform Resource
+Locator (URL) that will allow Internet clients to have direct access to the
+RWhois protocol. An RWhois URL will represent a single query to an RWhois
+server.
+
+2. URL Definition
+
+An RWhois URL begins with the protocol prefix "rwhois" and is defined by the
+following ABNF grammar.
+
+     RWHOISURL = "rwhois://" [ SERVER ] "/"  [ QUERY ]
+
+     SERVER    = 1 *DNSCHAR *["." 1*DNSCHAR] [ ":" 1..65535 ]
+
+     QUERY     = [ CLASS ] "?" TERMS
+
+     CLASS     = 1*ALPHA
+
+     TERMS     = a list of query terms as defined in RFC 1714 and/or RFC2167
+
+     DNSCHAR   = ALPHA/DIGIT/DASH
+
+     ALPHA     = "a".."z"/"A".."Z"
+
+     DIGIT     = 0..9
+
+     DASH      = "-"
+
+The RWhois prefix indicates an entry or entries residing in the RWhois
+server running on the given hostname at the given port number as encoded in
+SERVER. The default port is TCP port 4321. Any URL-illegal characters (e.g.,
+spaces) MUST be escaped using the % method described in RFC 1738.
+
+The CLASS specifies the RWhois class to which the object(s) in question
+belong. If the CLASS part of the URL is omitted, all data contained in the
+server will be searched. Please note that this may cause ambiguities that
+may not be intended. Those developers encoding RWhois URLs should encode the
+class if it is available. Note that if the entry resides in the RWhois
+namespace, it should be reachable from any RWhois server in that tree. If
+the SERVER part of the URL is missing, it is assumed to be a local query.
+
+If the QUERY is missing then the URL does not identify a particular object,
+authority-area or class. Instead it simply identifies the server. In the
+event a client receives such a URL it should connect to the server and
+initiate its default behavior for connecting to a new and possibly unknown
+server. Suggested behaviors include checking for that servers available
+classes and/or authority-areas.
+
+3. RWhois Version 1.0 vs. 1.5 Interoperability
+
+This URL is meant to work with both the 1.0 and 1.5 versions of the RWhois
+protocol. There are two issues that developers should be aware of when using
+this URL.
+
+   * Output Display and Restriction Keywords
+
+     In RWhois Version 1.0, an additional pre-query term could be specified
+     that determined which values were returned to the client. These were
+     derived from the original whois [RFC954] specification and included
+     items like dump (#), SUMMARY ($), and FULL (=). Since a URL is used to
+     point to the instance of the object and not its representation, the
+     developer should determine what display type and restriction to use for
+     his/her particular application. Thus, even though this term is
+     considered part of the query in 1.0, it MUST NOT to be used in the URL
+     itself.
+
+   * Authority Areas
+
+     Version 1.5 has a much stronger concept of authority areas. This should
+     be kept in mind when encoding a particular URL so that no ambiguity is
+     encountered for similar objects in different authority areas. Thus, as
+     with CLASS, the authority area should be encoded whenever it is
+     available.
+
+4. Examples
+
+The following are some example RWhois URLs using the format defined above.
+
+   * An RWhois URL referring to the domain class objects that contain the
+     string "network solutions", available from the local RWhois server.
+
+     rwhois:///domain?network%20solutions
+
+   * An RWhois URL referring to the domain class containing the string
+     "network solutions" on a particular RWhois server. This URL corresponds
+     to a base object search of the domain class.
+
+     rwhois://netman1.netsol.com/domain?network%20solutions
+
+   * An RWhois URL referring to the set of entries found by querying the
+     local RWhois server and looking for a person with the name of "Scott
+     Williamson". Note the % encoded quotes and space.
+
+     rwhois:///person?name=%42scott%20williamson%42
+
+5. Security Considerations
+
+The RWhois URL format does not provide a way to specify security information
+to use when resolving the URL. It is expected that such requests will either
+be unauthenticated or the client will be able to negotiate the security
+requirements. The security implications of resolving an RWhois URL are the
+same as those of resolving any RWhois query. See the RFC 1714 and RFC 2167
+for more details.
+
+6. Prototype Implementation Availability
+
+There is a prototype implementation of the specification defined in this
+document available. It is the RWhois client, provided in both source and
+binary forms. See for more details.
+
+7. Bibliography
+
+[1] Williamson, S., and Kosters, M., "RWhois Protocol", RFC 1714,
+March, 1995.
+
+[2] Berners-Lee, T., Masinter, L., and McCahill, M., "Uniform Resource
+Locators (URL)", RFC 1738, December, 1994.
+
+[3] Williamson, S., M. Kosters, D. Blacka, J. Singh, K. Zeilstra,
+"Referral Whois (RWhois) Protocol V1.5", RFC 2167, June, 1997.
+
+8. Authors' Addresses
+
+ Scott Williamson            Michael Mealling
+ 505 Huntmar Park Dr.        505 Huntmar Park Dr.
+ Herndon, VA 22070           Herndon, VA 22070
+ Phone: (703) 742-4820       Phone: (770) 491-1379
+ email: scottw@rwhois.net    email: michaelm@rwhois.net

@@ -1,0 +1,379 @@
+
+IETF URI Working Group                                         Paul E. Hoffman
+Internet-Draft                                               Proper Publishing
+draft-ietf-uri-urn-x-dns-2-00                                  Ron Daniel, Jr.
+Expires October 21, 1995                         Los Alamos National Laboratory
+
+
+                              x-dns-2 URN Scheme
+
+Status of this memo
+
+This document is an Internet-Draft. Internet-Drafts are working documents
+of the Internet Engineering Task Force (IETF), its areas, and its working
+groups. Note that other groups may also distribute working documents as
+Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months.
+Internet-Drafts may be updated, replaced, or obsoleted by other documents
+at any time. It s not appropriate to use Internet- Drafts as reference
+material or to cite them other than as a "working draft" or "work in
+progress."
+
+To learn the current status of any Internet-Draft, please check the
+1id-abstracts.txt listing contained n the Internet-Drafts Shadow
+Directories on ds.internic.net, nic.nordu.net, ftp.isi.edu or
+munnari.oz.au.
+
+Abstract
+
+This document defines a scheme for resolving Uniform Resource Names (URNs)
+using the domain name system. The scheme, called x-dns-2, allows URN
+publishers to create URN resolvers without central registration, and
+without changing or adding any domain names.
+
+1. Introduction
+
+The x-dns-2 scheme is a URN resolution scheme. These schemes are described
+in [URNO]. The main features of x-dns-2 are very easy and quick
+implementation, commonly-used transport protocols, and wide range of
+resolution results.
+
+2. Syntax
+
+The generic syntax all URN schemes must follow is described in [URNS].
+Within that framework, the SchemeID for the approach described in this
+draft is "x-dns-2". The ElementID has two parts, separated by a colon (hex
+3A):
+- The AuthorityID, the domain name of the resolving host
+- The RequestID, the request that is sent to the resolving host
+
+Thus, a typical URN using the x-dns-2 scheme might be:
+<urn:x-dns-2:library.bigstate.edu:aj17-mcc>
+In this case, the AuthorityID is "library.bigstate.edu" and the RequestID
+is "aj17-mcc".
+
+In the x-dns-2 scheme, the AuthorityID is a fully qualifed domain name
+(FQDN) [DNS] for a machine or set of machines that will run the resolution
+service from which someone can resolve the RequestID. The owner or
+maintainer of each domain name has the exclusive right to create, and the
+exclusive right to resolve or cause to be resolved, RequestIDs specific to
+that domain name. The case of the characters in the AuthorityIDs is not
+significant.
+
+The owner or maintainer of a FQDN automatically has the right to use of
+that FQDN as an AuthorityID if it follows the rules in this section.
+
+- Any host may resolve URNs without prior registration or authorization.
+
+- AuthorityIDs cannot be reused if that FQDN has previously been used as an
+AuthorityID, unless the new owner or maintainer of that FQDN agrees to
+maintain all the previously-assigned RequestIDs.
+
+- A conforming resolution service must made available at all IP addresses
+returned by resolving the FQDN. If resolving the FQDN results in more than
+one IP address, all the IP addresses must resolve the same set of URNs, and
+each URN should be resolved equivalently at each IP address when at all
+possible.
+
+- The AuthorityID is to be treated as an opaque string. Inferring a
+structure based on the domain names within the FQDN is unwise.
+
+- RequestIDs that begin with exactly "urn+" are reserved for special
+resolution, as described later.
+
+The same RequestIDs on different domain names are explicitly unrelated. The
+case of the characters in RequestIDs can be significant; however, current
+practice dictates that they should not be case-sensitive. RequestIDs are
+opaque, meaning that attempting to infer structure from the name is unwise.
+
+3. Transport Protocol
+
+URNs in the x-dns-2 scheme are resolved through the HTTP version 1.0
+protocol [HTTP]. HTTP is chosen as the resolution protocol because of its
+current wide use on the Internet, and because it allows for resolution
+requests and resolution results that are compatible with those required for
+URNs. Further, the content-negotiation portion of the HTTP protocol
+provides a mechanism for gracefully handling future capabilities of URN
+resolvers. The URN resolution specification may keep up with improvements
+to the HTTP specification, such as future versions, security enhancements,
+and so on.
+
+Note that this section uses language defined in the HTTP version 1.0 draft.
+
+Currently, the URN-resolving HTTP server for the x-dns-2 scheme shall be
+located at TCP port 4500. After registration with the IANA, the port number
+required will change to an IANA-reserved port number.
+
+Because of the requirements in section 5.4 of the current HTTP 1.0
+specification, the resolution request under HTTP is in the form of a URL.
+It is expected that this URL will later be defined within [URL]. The
+anticipated format for the client-side representation of the URL is the
+same as that of the URN itself. If the HTTP version 1.0 specification
+changes to allow non-URI forms for requests, no URL for x-dns-2 URNs is
+required.
+
+3.1 Resolution Requests
+
+When passed to the HTTP URN resolver, the first three fields of the URN are
+stripped off, leaving only the RequestID. The Method is always "GET". Thus,
+a typical request might look like:
+
+GET current-version-of-price-list HTTP/1.0
+
+x-dns-2 URN HTTP clients can send URN resolution requests as HTTP
+Simple-Requests or Full-Requests. It is strongly urged that clients use the
+Full-Request format so that General-Headers and Request-Headers can be
+passed. Although not required, a good resolution request creator should be
+able to include the Accept Request-Header.
+
+The Accept header is used to specify the format of information desired by
+the user, if any. If the URN resolution client has no preference, no Accept
+header should be used.
+
+For example, a request where the user wanted to see results only in "urc-0"
+format might look like:
+
+GET alb002 HTTP/1.0
+Accept: text/urc-0
+
+It is urged that x-dns-2 URN resolvers should also be able to interpret and
+act on all standard HTTP Request-Headers.
+
+4. Resolution Results
+
+The resolution request specifies the information desired in the response.
+This might be simple list of URLs, or a more informative reply with a great
+deal of additional information. HTTP's Accept: header is used to indicate
+the desired format for the response, such as plain text, HTML, or some
+application specific binary encoding suitable for cryptographic operations.
+
+Formats for resolution results are described as Internet Media Types [IMT],
+previously called MIME Content-Types. The following formats for resolution
+results are defined for the x-dns-2 scheme:
+
+text/urc-0
+text/plain
+text/html
+
+text/urc-0 is a semi-structured format for Uniform Resource Characteristics
+(URCs) [URC]. It is intended for very simple forms of automatic processing.
+The urc-0 syntax is described in [URCZ]. It is anticipated that other URC
+formats that enable sophisticated processing based on information will be
+defined in the future.
+
+Both text/plain and text/html are intended to provide URN resolution
+capabilities to current software. This backward compatibility should ease
+the transition to a URN-based web.
+
+Other formats can be defined by using existing, or creating new, Internet
+Media Types. Formats can use any media type, although it is expected that
+most will use types "text" or "application".
+
+4.1 HTTP Status-Line
+
+The HTTP Status-Line is significant in URN resolution. The meaning of the
+Status-Codes for HTTP correspond to similar meanings for URN resolution,
+such as "200" for "OK", "301" for "Moved permanently", and so on. When at
+all possible, the URN resolver should include relevant Reason-Phrases in
+the Status-Lines, particularly for Status-Codes 301 and 302 (redirection).
+
+4.2 Format for text/html Resolution Results
+
+text/html can be used when the resolution result is meant to only be read
+by users with HTML clients. The structure is text formatted with HTML tags,
+as described in [HTML].
+
+text/html allows the URLs to be displayed as active links, but it is
+anticipated that HTML clients in the future will parse text/urc-0 and
+automatically display it as HTML with active links.
+
+4.3 Format for text/plain Resolution Results
+
+text/plain can be used when the resolution result is meant to only be read
+by humans. There is no structure implied in the format. Because it is not
+easily parsed by client programs, it should only be used when it is
+impossible to use other formats.
+
+5. Reserved Requests
+
+As mentioned before, RequestIDs beginning with "urn+" are reserved within
+the x-dns-2 scheme. The following requests, and their responses, are
+defined. The responses to the reserved requests may be in any of the known
+formats. The examples below are in text/urc0 format and use character set
+and language tags for illustration.
+
+5.1 urn+m: Metainformation About the Resolver (required)
+
+Returns metainformation about the resolver, such as who to contact with
+questions, the software it is running, and so on. There is no structure to
+the metainformation, but it is considered authoritative for each resolving
+host; it is likely that this will be a mailto URL of an administrative
+contact for the host system. This RequestID must be served by all
+conforming resolvers. For example:
+
+=====US-ASCII/en
+mailto:url-admin@flixco.com
+The URNs on this server mostly point to movies created by FlixCo.
+Other URNs are pointers to affiliated libraries of classic films. We are
+currently resolving URNs with CERN httpd 3.4a.
+
+5.2 urn+a: List of All RequestIDs (optional)
+
+Returns a pointer to a list of all RequestIDs that can be resolved by this
+resolver. This RequestID is optional, but may be of great value to
+resolution clients. The response includes a URL, where the URL points to
+the list. That list consists of lines, each line an RequestID followed by
+<CRLF>.
+
+The response may also be augmented with metainformation on the number of
+elements and so on. For example, a text/urc-0 response might be:
+
+=====US-ASCII/en
+ftp://ftp.flixco.com/pub/all-urns
+This file is a list of all URNs resolvable at urn.flixco.com. The
+file is about 50K, and is sorted with the most-recently added
+URNs at the end.
+
+5.3 urn+c: List of Child Naming Authorities (required)
+
+Returns a list of the naming authorities authorized by this one. Each name
+in the list is followed by <CRLF>. This local hierarchy information will
+make it possible, in principle, to make complete traversals of the web of
+URN resolvers for some SchemeIDs.
+
+5.4 urn+p: Name of Parent Naming Authority (required)
+
+Returns the name of the naming authority that authorized the naming
+authority on this resolver. If a naming authority has more than one parent,
+a list of names is returned. This is a local hierarchy operation that makes
+it possible, in principle, to perform complete traversals of the web of URN
+resolvers for some SchemeIDs.
+
+6. Meeting Requirements for URNs
+
+This proposal meets all the requirements stated in working draft for URN
+requirements. The basic requirements from that document are:
+
+6A. Function capabilities
+
+Global scope: The AuthorityIDs are global in scope.
+
+Global uniqueness: The combination of SchemeID and ElementID will always be
+unique.
+
+Persistence: It is easy for publishers to have their URNs last forever by
+allowing them to hand over the resolution to one or more hosts in the
+future. Even if the resolution of a particular URN no longer makes any
+sense, it is easy to fully resolve the URN to something that is readable by
+the user, and to do this forever.
+
+Scalability: If a site gets too busy, mirror sites can be specified using
+standard DNS procedures.
+
+Legacy support: Current naming systems can be easily incorporated by giving
+them their own SchemeIDs. Experimental SchemeIDs can be created with the
+"x-" scheme.
+
+Extensibility: All parts of the specification are designed to be
+extensible. Additional resolution requests and resolution results can be
+defined, and so on.
+
+Independence: All domain names are already independent.
+
+Resolution: The resolver uses a simple HTTP exchange, supported by dozens
+of browsers and servers today. Further, there are already email-to-HTTP
+gateways, allowing Internet users with only email access to resolve URNs
+immediately.
+
+6B. URN encoding
+
+Single encoding: URNs have an encoding that is independent of the
+resolution protocol. If additional resolution protocols are added, the
+encoding of the URNs does not change; instead, the resolution clients,
+proxies, and gateways change the request to fit the protocols.
+
+Simple comparison: All URNs are unique and therefore easily compared (after
+appropriate decoding and case translation).
+
+Human transcribability: URNs can be transcribed as easily as URLs.
+
+Transport friendliness: Like URLs, all characters that should affect
+Internet transport are encoded.
+
+Machine consumption: URNs and their results are easily parsed.
+
+Text recognition: URNs will stand out in free text due to the internal
+colons and the "urn" prefix.
+
+6C. Implications
+
+Uniqueness: Name assignment is delegated to domain naming authorities, who
+may then assign names.
+
+Scalability: The DNS naming authorities are scalable without any
+notification to, or approval from, a central authority. Given the ease of
+becoming the owner or maintainer of a FQDN, almost anyone should be able to
+become a x-dns-2 URN publisher with less difficulty than they have setting
+up most other Internet services.
+
+Mapping to URLs: URLs can be returned in any of the resolution results
+format types.
+
+Transcriptability: The character set for URNs is simple and small, the same
+as URLs.
+
+7. Security Implications
+
+In addition to the security implications described in [URNO], all the
+security implications of HTTP are probably the same for URNs. Security
+features that are added to HTTP will probably increase the security of
+resolving URNs.
+
+8. References
+
+[DNS] RFC 952, "DOD Internet Host Table Specification" and RFC 1123,
+"Requirements for Internet Hosts -- Application and Support".
+
+[HTML] Internet-Draft, "HyperText Markup Language Specification - 2.0". The
+name of the draft at the time of this writing is
+"draft-ietf-html-spec-01.txt".
+
+[HTTP] Internet-Draft, "Hypertext Transfer Protocol -- HTTP/1.0". The name
+of the draft at the time of this writing is
+"draft-ietf-http-v10-spec-00.txt".
+
+[IMT] RFC 1590 "Media Type Registration Procedure".
+
+[URC] Internet-Draft, "URC Scenarios and Requirements". The name of the
+draft at the time of this writing is "draft-ietf-uri-urc-req-00.txt".
+
+[URCZ] Internet-Draft, "Trivial URC Syntax: urc0". The name of the
+draft at the time of this writing is "draft-ietf-uri-urc-trivial-00".
+
+[URL] RFC 1738, "Uniform Resource Locators (URL)".
+
+[URNO] Internet-Draft, "URN Resolution Overview". The name of the draft at
+the time of this writing is "draft-ietf-uri-urn-res-descrip-00".
+
+[URNS] Internet-Draft, "Generic URN Syntax". The name of the draft at the
+time of this writing is "draft-ietf-uri-urn-syntax-00".
+
+9. Author Contact Information
+
+Paul E. Hoffman
+Proper Publishing
+127 Segre Place
+Santa Cruz, CA, USA  95060
+voice:  (408) 426-6222
+phoffman@proper.com
+
+Ron Daniel Jr.
+MS B287
+Los Alamos National Laboratory
+Los Alamos, NM, USA 87545
+voice:  (505) 665-0597
+fax:  (505) 665-4939
+rdaniel@lanl.gov
+
+

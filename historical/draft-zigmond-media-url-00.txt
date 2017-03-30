@@ -1,0 +1,198 @@
+  Network Working Group                                      D. Zigmond
+  Internet-Draft                                    Wink Communications
+  draft-zigmond-media-url-00.txt                           October 1996
+  Expire in six months
+
+
+       Uniform Resource Locators for Television and Telephony
+
+
+  1. Status of this Document
+
+  This document is an Internet-Draft.  Internet-Drafts are working
+  documents of the Internet Engineering Task Force (IETF), its Areas,
+  and its Working Groups.  Note that other groups may also distribute
+  working documents as Internet-Drafts.
+
+  Internet-Drafts are working documents valid for a maximum of six
+  months.  Internet-Drafts may be updated, replaced, or obsoleted by
+  other documents at any time.  It is not appropriate to use
+  Internet-Drafts as reference material or to cite them other than as a
+  "working draft" or "work in progress."
+
+  To learn the current status of any Internet-Draft, please check the
+  1id-abstracts.txt listing contained in the Internet-Drafts Shadow
+  Directories on ds.internic.net, nic.nordu.net, ftp.isi.edu, or
+  munnari.oz.au.
+
+  Distribution of this document is unlimited.  Please send comments to
+  dan.zigmond@wink.com.
+
+
+  2. Introduction
+
+  World-Wide Web browsers are starting to appear on a variety of
+  consumer electronic devices, such as televisions and both cellular and
+  wireline telephones.  On these devices, some of the URL schemes
+  described in [1] are inappropriate.  For example, many of these
+  devices lack local storage, so the "file" scheme is of little use.
+  However, these devices usually have access to other sources of
+  information, such as television broadcasts and voice telephone
+  services.  This draft proposes three new URL schemes for accessing
+  such information on appropriate devices.
+
+
+  3. Television Tuning URL
+
+  The basic structure of a television URL is:
+
+       tv://<channel>
+
+  where channel is an alpha-numeric description of the channel or
+  network to be tuned.  This can be either a channel number, or a
+  standard broadcaster identifier.  For example:
+
+       tv://nbc            tune to the NBC network
+       tv://wqed           tune to the WQED station
+       tv://12                  tune to channel 12
+
+  Note that for a browser to understand non-numeric channel identifiers,
+  it will require a local channel map for the device.  The nature of
+  this map and the way in which it is used will be browser- and
+  device-specific and is beyond the scope of this draft.  In this way,
+  the "tv" scheme is somewhat analagous to the "news" and "file" schemes
+  in [1], in that it merely names a television broadcast signal but
+  assumes that the local browser has some means for actually retrieving
+  that signal on the local device.
+
+
+  4. Telephone Dialing URL
+
+  The basic structure of a telephone URL is:
+
+       phone://[+<country-code>-]<phone-number>
+
+  where where both country-code and telephone-number are numeric
+  strings.  The phone-number may contain one or more hyphens ("-"); the
+  country-code cannot.  The effect of "fetching" a telephone URL is for
+  the device to dial the given phone number.  For example:
+
+       phone://+1-510-337-6359       dial a number in North America
+       phone://800-943-9465          dial a number in the local country
+
+  The first form (with country-code) is strongly recommended since it is
+  the only form that can be unambiguously parsed internationally.  The
+  device processing the phone URL is responsible for converting the URL
+  into the actual string of digits that needs to be dialed, potentially
+  adding digits particular to the local phone system or removing digits
+  not required to place the call from a given location.  The way in
+  which this is done will be browser- and device-specific and is beyond
+  the scope of this draft.
+
+  Unlike the "tv" scheme above (but like "fax" below), "phone" does
+  not designate a data object to be directly accessed.  In this way, it
+  is analogous to the "mailto" scheme in [1].
+
+
+  5. Facsimile Transmission URL
+
+  A fax URL describes a phone number to which facsimile transmissions
+  can be sent.  It has a form very similar to the "phone" scheme above:
+
+       fax://[+<country-code>-]<phone-number>
+
+  where the country-code and phone-number follow the same rules as for
+  "phone" URLs.  For example:
+
+       fax://+1-510-337-2960         send a fax in North America
+
+  Like "phone" above, the "fax" scheme is closely related to the
+  "mailto" scheme in [1], in that it it does not represent a data
+  object to be accessed directly.
+
+
+  6. BNF for Television and Telephone URLs
+
+  The following is a formal specification for the new URLs:
+
+  tvurl          = "tv://" channel
+  phoneurl       = "phone://" ["+" country-code "-"] phone-number
+  faxurl         = "fax://" ["+" country-code "-"] phone-number
+
+  channel        = *[ alpha | digit ]
+  country-code   = * digit
+  phone-number   = digit *[ digit | "-" ]
+
+
+  The following definitions are from RFC 1738. Between the Internet Draft
+  version and RFC 1738 two relevant changes were made: '=' was moved from
+  the <extra> character class to <reserved>, and <national> was removed from
+  the alternatives in <unreserved>. Neither <national> nor <punctuation> is
+  referred to in this document nor in RFC 1738.
+
+  lowalpha       = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" |
+                   "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" |
+                   "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" |
+                   "y" | "z"
+  hialpha        = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" |
+                   "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" |
+                   "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+
+  alpha          = lowalpha | hialpha
+  digit          = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
+                   "8" | "9"
+  safe           = "$" | "-" | "_" | "." | "+"
+  extra          = "!" | "*" | "'" | "(" | ")" | ","
+  national       = "{" | "}" | "|" | "\" | "^^" | "~" | "[" | "]" | "`"
+  punctuation    = "<" | ">" | "#" | "%" | <">
+
+  reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
+  hex            = digit | "A" | "B" | "C" | "D" | "E" | "F" |
+                   "a" | "b" | "c" | "d" | "e" | "f"
+  escape         = "%" hex hex
+  unreserved     = alpha | digit | safe | extra
+  uchar          = unreserved | escape
+  xchar          = unreserved | reserved | escape
+  digits         = 1*digit
+
+
+  7. Acknowledgments
+
+  Many of the ideas in this document came out of conversations with
+  Andrew Lochart.  Other people who supplied valuable input include Matt
+  Trifiro and Eric Del Sesto.
+
+
+  8. Security Considerations
+
+  The two new URL schemes are subject to the same security implications
+  as the general URL scheme [1], so the usual precautions apply.  This
+  means, for example, that a locator might no longer point to the object
+  that was originally intended.  It also means that it may be possible
+  to construct a URL so that an attempt to perform a harmless idempotent
+  operation such as the retrieval of an object will in fact cause a
+  possibly damaging remote operation to occur.  The telephone dialing
+  URL, in particular, may cause an unwanted telephone call to be placed,
+  possibly resulted in additional telephone charges to the user.
+
+
+  9. References
+
+     [1] Berners-Lee, T., Masinter, L., McCahill, M. (editors), "Uniform
+         Resource Locators (URL)", RFC 1738, December 1994.
+         ftp://ds.internic.net/rfc/rfc1738.txt
+
+
+  10. Author's Address
+
+  Dan Zigmond
+  Wink Communications
+  1001 Marina Village Parkway
+  Alameda CA 94501
+
+  Email: dan.zigmond@wink.com
+  Voice: +1-510-337-6359
+  Fax:   +1-510-337-2960
+
+
+

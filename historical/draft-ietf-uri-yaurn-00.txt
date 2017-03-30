@@ -1,0 +1,614 @@
+IETF URI Working Group                                         Paul E. Hoffman
+Internet-Draft                                               Proper Publishing
+draft-ietf-uri-yaurn-00.txt                                    Ron Daniel, Jr.
+Expires September 21, 1995                             Los Alamos National Lab.
+
+
+              Scheme/Authority/Element Uniform Resource Names (URNs)
+
+Status of this memo
+
+This document is an Internet-Draft. Internet-Drafts are working documents
+of the Internet Engineering Task Force (IETF), its areas, and its working
+groups. Note that other groups may also distribute working documents as
+Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months.
+Internet-Drafts may be updated, replaced, or obsoleted by other documents
+at any time. It s not appropriate to use Internet- Drafts as reference
+material or to cite them other than as a "working draft" or "work in
+progress."
+
+To learn the current status of any Internet-Draft, please check the
+1id-abstracts.txt listing contained n the Internet-Drafts Shadow
+Directories on ds.internic.net, nic.nordu.net, ftp.isi.edu or
+munnari.oz.au.
+
+Abstract
+
+This document defines a syntax for Uniform Resource Names (URNs), describes
+the protocols by which they are resolved, and gives operational rules for
+their assignment and use. The proposal meets all of the requirements for
+URNs previously proposed in the URI working group.
+
+1. Introduction
+
+A URN (Uniform Resource Name) is the name of a resource within the context
+of a larger Internet information architecture known as Uniform Resource
+Identification. URNs are simple text strings. Using a URN resolution
+service, an Internet user or program can retrieve information about the
+named resource.
+
+Resolving a URN returns information about that named resource, such as a
+description of the resource, the location or locations of the resource, and
+bibliographic information about the resource. URNs differ from URLs
+(Uniform Resource Locators) described in RFC 1738 [URL] in that URNs allow
+resources on the Internet to be specified by name instead of by location.
+URNs return information about the resource, not the resource itself.
+
+Using URNs has many advantages for describing resources, including:
+
+- The information in a resource may move in the future. For example, as
+some Internet services get too popular for their original hosts, they move
+to different systems which have different URLs. Also, a service might move
+from host system to host system with the person who maintains it.
+
+- Users can easily access metainformation about a resource without
+accessing the resource itself. A user might want to see the bibliographic
+information about a resource without getting the resource, particularly if
+it costs money to get the resource. Other useful metainformation that a
+user might want to see before accessing a resource includes the name of the
+maintainer of the resource, the language in which the resource is in, the
+price of the resource, the requirements of the user before reading the
+resource, and so on.
+
+- A resource may exist in many locations on the Internet. By resolving a
+single URN, the user can get a list of URLs from which to access the
+resource and more complete bibliographic information from a URC [URC]. This
+list can include valuable metainformation such as suggestions about the
+best location for the user to retrieve the resource from based on cost,
+speed, or other factors.
+
+It is important to understand that URNs are neither a superset or a subset
+of URLs: they are a different way of describing resources. The difference
+between URNs and URLs is similar to that between the title of a book and a
+locator for it on the shelf.
+
+Many of the ideas for the system proposed in this paper are adapted from
+the Intenet Draft "draft-ietf-uri-resource-names-03" [URNO]. However, our
+system has significant implementation differences from its predecessor.
+
+2. Syntax
+
+The URN consists of four fields, each part separated by a colon (:). The
+parts are:
+
+- The text string "urn"
+- The type of naming authority of the URN, called the SchemeID
+- The name of the authority for the URN, called the AuthorityID
+- The name of the element for the URN, called the ElementID
+
+For instance, a typical URN might look like:
+
+<urn:dns:library.bigstate.edu:aj17-mcc>
+
+The first and SchemeID fields are case insensitive. The case sensitivity
+and character set of the AuthorityID field depends on the value of the
+SchemeID field.  The case sensitivity and character set of the ElementID
+field depends on the value of the AuthorityID field. White space (the
+characters Space, Tab, CR, and LF) is allowed but is not significant within
+a URN. Freestanding URNs that include any white space must be enclosed in
+"<" and ">" characters.
+
+URNs are often displayed and transmitted in the same media as URLs. In
+order to minimize problems with interoperability, encoding of characters in
+URNs follow the same rules used by URLs in [URL].
+
+2.1 SchemeIDs
+
+The SchemeID field describes what kind of naming authority is used. This is
+the authority by which the AuthorityIDs are defined. The SchemeIDs
+currently defined are:
+
+SchemeID     Description
+dns          Domain Name System (RFC 952 and RFC 1123) [DNS]
+
+Although there is only one SchemeID currently defined, it is expected that
+others will be added in the future. This allows URNs to be used for such
+naming schemes as ISBNs (International Standard Book Numbering system),
+ISSNs (International Standard Serial Numbering system), and other naming
+schemes that are not currently on the Internet. It also allows for naming
+schemes that can be resolved in ways that are distributed and not
+location-specific.
+
+The Internet Assigned Numbers Authority (IANA) will maintain a registry of
+SchemeID names. SchemeID names starting with the characters "x-" are
+reserved for experimental purposes. It is strongly suggested that any new
+SchemeIDs be first proposed as Internet Drafts in the IETF Uniform Resource
+Identifier (URI) Working Group.
+
+2.2 AuthorityIDs
+
+The AuthorityID is the name of an individual, group, or system within the
+SchemeID that is allowed to create ElementIDs. The meaning of the
+AuthorityID depends on the system used by the SchemeID to create names for
+URNs.
+
+2.2.1 AuthorityIDs for the "dns" SchemeID
+
+Within the "dns" SchemeID, the AuthorityID is the fully-qualified domain
+name (FQDN) of the host system(s) that can create and resolve the
+ElementID. The owner or maintainer of each domain name has the exclusive
+right to create, and the exclusive right to resolve or cause to be
+resolved, ElementIDs specific to that domain name. The case of the
+characters in the AuthorityIDs is not significant.
+
+The owner or maintainer of a FQDN automatically has the right to use of
+that FQDN as an AuthorityID if it follows the rules in this section.
+
+- Any host may resolve URNs without prior registration or authorization.
+
+- AuthorityIDs cannot be reused if that FQDN has previously been used as an
+AuthorityID, unless the new owner or maintainer of that FQDN agrees to
+maintain all the previously-assigned ElementIDs.
+
+- A conforming resolution service must made available at the IP address
+returned by resolving the FQDN. If resolving the FQDN results in more than
+one IP address, all the IP addresses must resolve the same set of URNs, and
+each URN should be resolved equivalently at each IP address when at all
+possible.
+
+- The AuthorityID is to be treated as an opaque string. Inferring a
+structure based on the domain names within the FQDN is unwise.
+
+2.3 ElementIDs
+
+The ElementID is the element that will be resolved. It is important to note
+that this is not the "name" part of the URN: the combination of the four
+fields in a URN is the only definition of the resource's name. For example,
+the URN <urn:dns:physics.bigstate.edu:thesis12> and the URN
+<urn:dns:chris.lwr-ltd.co.uk:thesis12> might be names of completely
+different Internet resources, similar resources, or even the same resource.
+However, even though the ElementIDs are the same in the two URNs, the two
+URNs are different.
+
+The special cases for ElementIDs are:
+
+- Elements that begin with exactly "urn+" are reserved for special
+resolution, as described in section 3.5.
+
+- The characters "#" (hex 23) and "?" (hex 3F) are reserved for future use.
+
+2.3.1 ElementIDs for the "dns" SchemeID
+
+Within the "dns" SchemeID, the same ElementIDs on different domain names
+are explicitly unrelated. The case of the characters in ElementIDs can be
+significant; however, current practice dictates that they should not be
+case-sensitive. ElementIDs are opaque, meaning that attempting to infer
+structure from the name is unwise.
+
+3. Resolving URNs
+
+A URN is resolved by communicating with a URN resolution service. All URN
+resolution services are stateless, single-step systems: a single URN is
+specified, and a single response is returned. The model for URN resolution
+is the standard Internet connectionless client-server model.
+
+URNs are resolved through the HTTP version 1.0 protocol [HTTP]. HTTP is
+chosen as the resolution protocol because of its current wide use on the
+Internet, and because it allows for resolution requests and resolution
+results that are compatible with those required for URNs. Further, the
+content-negotiation portion of the HTTP protocol provides a mechanism for
+gracefully handling future capabilites of URN resolvers. The URN resolution
+may keep up with improvements to the HTTP specification, such as future
+versions, security enhancements, and so on.
+
+3.1 Mechanics of URN Resolution
+
+URN resolution can be described in two parts: the resolution request and
+the resolution result. A resolution request describes the URN to be
+resolved to the resolution server. A resolution result is the text that is
+returned from the resolution server; it gives the requested information
+about the resource named in the URN.
+
+The current query-response system for resolving URNs is quite simple.
+Future extensions to this system will accommodate more capable query
+languages.
+
+3.1.1 Resolution Requests
+
+Each resolution request must give enough information to the resolution
+server that it can completely and unambiguously identify which URN is being
+specified.
+
+The resolution request specifies the information desired in the response.
+This might be simple list of URLs, or a more informative reply with a great
+deal of additional information. HTTP's Accept: header is used to indicate
+the desired format for the response, such as plain text, HTML, or some
+application specific binary encoding suitable for cryptographic operations.
+
+3.1.2 Resolution Results
+
+The resolution server returns the results of the resolution request in a
+single message.
+
+If the resolution request specifies desired formats for the response, the
+resolution server should attempt to return only those types of results.
+However, it is acknowledged that this may be impractical or impossible for
+some HTTP servers, and the client should be able to handle (or at least
+ignore) resolution results that are not of a requested type.
+
+3.2 Resolving URNs
+
+Note that this section uses language defined in the HTTP version 1.0 draft.
+
+Currently, the URN-resolving HTTP server must be located at TCP port 4500.
+After registration with the IANA, the port number required will change to
+an IANA-reserved port number.
+
+Because of the requirements in section 5.4 of the current HTTP 1.0
+specification, the resolution request under HTTP is in the form of a URL.
+It is expected that this URL will later be defined within [URL]. The
+anticipated format for the client-side representation of the URL is the
+same as that of the URN itself. If the HTTP version 1.0 specification
+changes to allow non-URI forms for requests, no URL for URNs is required.
+
+3.3 Resolution Requests
+
+When passed to the HTTP URN resolver, the first three fields of the URN are
+stripped off, leaving only the ElementID. The Method is always "GET". Thus,
+a typical request might look like:
+
+GET current-version-of-price-list HTTP/1.0
+
+URN HTTP clients can send URN resolution requests as HTTP Simple-Requests
+or Full-Requests. It is strongly urged that clients use the Full-Request
+format so that General-Headers and Request-Headers can be passed. Although
+not required, a good resolution request creator should be able to include
+the Accept Request-Header.
+
+The Accept header is used to specify the format of information desired by
+the user, if any. If the URN resolution client has no preference, no Accept
+header should be used.
+
+For example, a request where the user only wanted to see results in "urc-0"
+format might look like:
+
+GET alb002 HTTP/1.0
+Accept: text/urc-0
+
+It is urged that URN resolvers should also be able to interpret and act on
+all standard HTTP Request-Headers.
+
+3.4 Resolution Results
+
+Formats for resolution results are described as Internet Media Types [IMT],
+previously called MIME Content-Types. Known formats for resolution results
+are described below.
+
+The following formats for resolution results are defined:
+
+text/urc-0
+text/plain
+text/html
+
+It is anticipated that other formats of URCs that include structured
+bibliographic information will be defined in the future.
+
+Other formats can be defined by using existing, or creating new, Internet
+Media Types. Formats can use any media type, although it is expected that
+most will use type "text" or "application".
+
+3.4.1 HTTP Status-Line
+
+The HTTP Status-Line is significant in URN resolution. The meaning of the
+Status-Codes for HTTP correspond to similar meanings for URN resolution,
+such as "200" for "OK", "301" for "Moved permanently", and so on. When at
+all possible, the URN resolver should include relevant Reason-Phrases in
+the Status-Lines, particularly for Status-Codes 301 and 302 (redirection).
+
+3.4.2 Format for text/urc-0 Resolution Results
+
+text/urc-0 is a structured format that can be easily parsed by programs,
+and can also be visually parsed by humans. Thus, resolution servers should
+prefer this format when possible.
+
+The format for urc-0 resolution results is:
+
+*[<header><CRLF><some-URL><CRLF>[<metainformation>]]
+
+Each part starts with a header that has the following form:
+
+=====[<charset>[/<language>]]
+
+<charset> is the character set used in the metainformation. The value for
+the field is one of "US-ASCII" or "ISO-8859-x", where "x" is a digit in the
+range "1" through "9". If not specified, the default is "US-ASCII".
+
+<language> is the language used in the metainformation. The value for the
+field is a language identification tag described in [LANG]. If not
+specified, the default is "x-unspecified".
+
+The returned URL must conform to [URL]. If the URL is more than one line
+long, it must begin with the characters "<URL:" and end with a ">"
+character, as described in [URL].
+
+The optional metainformation may be of any format and contain any text. The
+only restriction is that no line of the metainformation may begin with the
+characters "=====".
+
+3.4.2.1 Examples of urc-0 Resolution Results
+
+A resolution result that has a single URL and no metainformation might look
+like:
+
+     =====
+     ftp://elm.wnln.edu/pub/mirrors/phone-list.txt
+
+A resolution result that has a URL on multiple lines might look like:
+
+     =====
+     <URL:ftp://elm.wnln.edu/pub/mirrors
+     /phone-list.txt>
+
+A resolution result that has a multiple URLs might look like:
+
+     =====
+     ftp://elm.wnln.edu/pub/mirrors/phone-list.txt
+     =====
+     ftp://gagu.bigstate.edu/admin/phones.html
+
+A resolution result that has a multiple URLs with metainformation might
+look like:
+
+     =====US-ASCII
+     ftp://elm.wnln.edu/pub/mirrors/phone-list.txt
+     This is the most up-to-date version of the WNLN-Bigstate phone list. It is
+     maintained by Cheryl O'Donnell.
+     =====US-ASCII
+     ftp://gagu.bigstate.edu/admin/phones.html
+     This is the mirror of the first URL at Bigstate.
+
+3.4.3 Format for text/html Resolution Results
+
+text/html can be used when the resolution result is meant to only be read
+by users with HTML clients. The structure is text formatted with HTML tags,
+as described in [HTML].
+
+text/html allows the URLs to be displayed as active links, but it is
+anticipated that HTML clients in the future will parse text/urc-0 and
+automatically display it as HTML with active links.
+
+3.4.4 Format for text/plain Resolution Results
+
+text/plain can be used when the resolution result is meant to only be read
+by humans. There is no structure implied in the format. Because it is not
+easily parsed by client programs, it should only be used when it is
+impossible to use other formats.
+
+Both text/plain and text/html are intended to provide URN resolution
+capabilities to current software. This backward compatibility should ease
+the transition to a URN-based web.
+
+3.5 Reserved Requests
+
+As mentioned before, ElementIDs beginning with "urn+" are reserved. The
+following requests, and their responses, are defined. The responses to the
+reserved requests may be in any of the known formats (currently text/plain,
+text/html, and text/urc-0).
+
+3.5.1 urn+m: Meta-information About the Resolver (required)
+
+Returns meta-information about the resolver, such as who to contact with
+questions, the software it is running, and so on. There is no structure to
+the metainformation, but it is considered authoritative for each resolving
+host; it is likely that this will be a mailto URL of an administrative
+contact for the host system. This ElementID must be served by all
+conforming resolvers. For example:
+
+=====US-ASCII/en
+mailto:url-admin@flixco.com
+The URNs on this server mostly point to movies created by FlixCo.
+Other URNs are pointers to affiliated libraries of classic films. We are
+currently resolving URNs with CERN httpd 3.4a.
+
+3.5.2 urn+a: List of All ElementIDs (optional)
+
+Returns a pointer to a list of all ElementIDs that can be resolved by this
+resolver. This ElementID is optional, but may be of great value to
+resolution clients. The response includes a URL, where the URL points to
+the list. That list consists of lines, each line an ElementID followed by
+<CRLF>.
+
+The response may also be augmented with metainformation on the number of
+elements and so on. For example, a text/urc-0 response might be:
+
+=====US-ASCII/en
+ftp://ftp.flixco.com/pub/all-urns
+This file is a list of all URNs resolvable at urn.flixco.com. The
+file is about 50K, and is sorted with the most-recently added
+URNs at the end.
+
+3.5.3 urn+c: List of Child Naming Authorities (required)
+
+Returns a list of the naming authorities authorized by this one. Each name
+in the list is followed by <CRLF>. This local hierarchy information will
+make it possible, in principle, to make complete traversals of the web of
+URN resolvers for some SchemeIDs.
+
+3.5.4 urn+p: Name of Parent Naming Authority (required)
+
+Returns the name of the naming authority that authorized the naming
+authority on this resolver. If a naming authority has more than one parent,
+a list of names is returned. This is a local hierarchy operation that makes
+it possible, in principle, to perform complete traversals of the web of URN
+resolvers for some SchemeIDs.
+
+4. URN Resolution Clients, Proxies, and Gateways
+
+URN clients can interpret the resolution result and present the user with a
+better interface than just the text that is returned. For example, an
+intelligent Gopher-based URN client going through a Gopher-to-HTTP gateway
+can select the URLs with the "gopher:" scheme and create a Gopher menu of
+them. Similarly, an intelligent HTML-based URN client can reformat a
+resolution result that has a format of text/urc-0 as HTML text with the
+URLs as links that can be selected.
+
+In order to make URN resolution available to as many Internet users as
+possible, it is assumed that resolution may take place through HTTP proxies
+and gateways. Proxies and gateways allow Internet users who do not have URN
+or HTTP clients to resolve URNs. Current HTTP proxies and gateways should
+work well for this purpose, but they should be enhanced and more widely
+available. Some sites will choose to have local proxies and gateways, while
+other sites will allow people from outside their site to use their proxies
+and gateways freely.
+
+URN resolution client, proxies, and gateways should intelligently follow
+redirection as described in this specification. For example, if a URN
+resolver returns a Status-Line with Status-Codes 301 or 302, and that line
+contains a URN, the client, proxy, or gateway should attempt to resolve the
+original URN by substituting the new URN.
+
+5. Caching
+
+URN resolution clients, proxies, and gateways may choose to cache
+resolution results in order to speed resolution and to reduce Internet
+traffic. Caching should only be performed using the If-Modified-Since
+mechanism in HTTP so that URNs whose response content changes rapidly are
+not accidentally cached.
+
+6. Meeting Requirements for URNs
+
+This proposal meets all the requirements stated in working draft for URN
+requirements. The basic requirements from that document are:
+
+6A. Function capabilities
+
+Global scope: Each SchemeID will define a set of AuthorityIDs that are
+global in scope.
+
+Global uniqueness: The combination of SchemeID, AuthorityID, and ElementID
+will always be unique.
+
+Persistence: It is easy for publishers to have their URNs last forever by
+allowing them to hand over the resolution to one or more hosts in the
+future. Even if the resolution of a particular URN no longer makes any
+sense, it is easy to fully resolve the URN to something that is readable by
+the user, and to do this forever.
+
+Scalability: For the "dns" scheme, if a site gets too busy, mirror sites
+can be specified using standard DNS procedures.
+
+Legacy support: Current naming systems can be easily incorporated by giving
+them their own SchemeIDs. Experimental SchemeIDs can be created with the
+"X-" scheme.
+
+Extensibility: All parts of the specification are designed to be
+extensible. Additional resolution requests and resolution results can be
+defined, and so on.
+
+Independence: All SchemeIDs will be able to specify their own names,
+restricted only by the encoding rules of [URL].
+
+Resolution: The resolver uses a simple HTTP exchange, supported by dozens
+of browsers and servers today. Further, there are already email-to-HTTP
+gateways, allowing Internet users with only email access to resolve URNs
+immediately.
+
+6B. URN encoding
+
+Single encoding: URNs have an encoding that is independent of the
+resolution protocol. If additional resolution protocols are added, the
+encoding of the URNs does not change; instead, the resolution clients,
+proxies, and gateways change the request to fit the protocols.
+
+Simple comparison: All URNs are unique and therefore easily compared (after
+appropriate decoding and case translation).
+
+Human transcribability: URNs can be transcribed as easily as URLs.
+
+Transport friendliness: Like URLs, all characters that should affect
+Internet transport are encoded.
+
+Machine consumption: URNs and their results are easily parsed.
+
+Text recognition: URNs will stand out in free text due to the internal
+colons and the "urn" prefix.
+
+6C. Implications
+
+Uniqueness: Name assignment is delegated to naming authorities, who may
+then assign names.
+
+Scalability: The DNS naming authorities are scalable without any
+notification to, or approval from, a central authority. Additional
+SchemeIDs may or may not be scalable, depending on the wishes of the
+central authorities of the scheme. However, given the ease of becoming the
+owner or maintainer of a FQDN, almost anyone should be able to become a URN
+publisher with less difficulty than they have setting up most other
+Internet services.
+
+Mapping to URLs: URLs can be returned in any in any of the resolution
+results format types.
+
+Transcriptability: The character set for URNs is simple and small, the same
+as URLs.
+
+7. Security Implications
+
+Attempting to resolve a URN can cause unencoded messages to be sent between
+two systems on the Internet, and thus can introduce many security concerns.
+Resolution requests and responses can be logged at the originating site,
+the recipient site, and intermediary sites along the delivery path.
+Resolution requests and responses can also be read at any of those sites.
+
+All the security implications of HTTP are probably the same for URNs.
+Security features that are added to HTTP will probably increase the
+security of resolving URNs.
+
+8. References
+
+[DNS] RFC 952, "DOD Internet Host Table Specification" and RFC 1123,
+"Requirements for Internet Hosts -- Application and Support".
+
+[HTML] Internet-Draft, "HyperText Markup Language Specification - 2.0". The
+name of the draft at the time of this writing is
+"draft-ietf-html-spec-01.txt".
+
+[HTTP] Internet-Draft, "Hypertext Transfer Protocol -- HTTP/1.0". The name
+of the draft at the time of this writing is
+"draft-ietf-http-v10-spec-00.txt".
+
+[IMT] RFC 1590 "Media Type Registration Procedure".
+
+[LANG] Internet-Draft, "Tags for the identification of languages". The name
+of the draft at the time of this writing is
+"draft-mailext-language-tag-03.txt".
+
+[URC] Internet-Draft, "URC Scenarios and Requirements". The name of the
+draft at the time of this writing is "draft-ietf-uri-urc-req-00.txt".
+
+[URL] RFC 1738, "Uniform Resource Locators (URL)".
+
+[URNO] Internet-Draft, "Uniform Resource Names (URN)" by Mitra, Chris
+Weider, and Mike Mealling. The name of the draft at the time of this
+writing is "draft-ietf-uri-resource-names-03".
+
+9. Author Contact Information
+
+Paul E. Hoffman
+Proper Publishing
+127 Segre Place
+Santa Cruz, CA, USA  95060
+voice:  (408) 426-6222
+phoffman@proper.com
+
+Ron Daniel Jr.
+MS B287
+Los Alamos National Laboratory
+Los Alamos, NM, USA 87545
+voice:  (505) 665-0139
+fax:  (505) 665-4939
+rdaniel@lanl.gov
+
+

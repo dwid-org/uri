@@ -1,0 +1,172 @@
+INTERNET-DRAFT                                      R. Hinden,  Nokia
+September 29, 1999                                  B. Carpenter, IBM
+                                                     L. Masinter, Xerox
+
+           Preferred Format for Literal IPv6 Addresses in URL's
+
+                  <draft-ietf-ipngwg-url-literal-04.txt>
+
+Status of this Memo
+
+    This document is an Internet-Draft and is in full conformance with
+    all provisions of Section 10 of RFC 2026 [STD-PROC].
+
+    Internet-Drafts are working documents of the Internet Engineering
+    Task Force (IETF), its areas, and its working groups.  Note that
+    other groups may also distribute working documents as Internet-
+    Drafts.
+
+    Internet-Drafts are draft documents valid for a maximum of six months
+    and may be updated, replaced, or obsoleted by other documents at any
+    time.  It is inappropriate to use Internet- Drafts as reference
+    material or to cite them other than as "work in progress."
+
+    The list of current Internet-Drafts can be accessed at
+    http://www.ietf.org/ietf/1id-abstracts.txt
+
+    The list of Internet-Draft Shadow Directories can be accessed at
+    http://www.ietf.org/shadow.html.
+
+    This Internet Draft will expire on March 29, 2000.
+
+Abstract
+
+    This document defines the preferred format for literal IPv6 Addresses
+    in URL's for implementation in World Wide Web browsers.  This format
+    has been implemented in the IPv6 versions of several widely deployed
+    browsers including Microsoft Internet Explorer, Mozilla, and Lynx.
+    It is also intended to be used in the IPv6 version of the service
+    location protocol.
+
+    This document incudes an update to the generic syntax for Uniform
+    Resource Identifiers defined in RFC 2396 [URL].  It defines a syntax
+    for IPv6 addresses and allows the use of "[" and "]" within a URI
+    explicitly for this reserved purpose.
+
+draft-ietf-ipngwg-url-literal-04.txt                            [Page 1]
+INTERNET-DRAFT       IPv6 Literal Addresses in URL's      September 1999
+
+1. Introduction
+
+    The textual representation defined for literal IPv6 addresses in
+    [ARCH] is not directly compatible with URL's.  Both use ":" and "."
+    characters as delimiters.  This document defines the preferred format
+    for literal IPv6 Addresses in URL's for implementation in World Wide
+    Web browsers.  The goal is to have a format that allows easy "cut"
+    and "paste" operations with a minimum of editing of the literal
+    address.
+
+    The format defined in this document has been implemented in the IPv6
+    versions of several widely deployed browsers including Microsoft
+    Internet Explorer, Mozilla, and Lynx.  It is also intended to be used
+    in the IPv6 version of the service location protocol.
+
+1.1 Requirements
+
+    The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD,
+    SHOULD NOT, RECOMMENDED, MAY, and OPTIONAL, if and where they appear
+    in this document, are to be interpreted as described in [KEYWORDS].
+
+    World Wide Web browsers SHOULD implement the format of IPv6 literals
+    in URL's defined in this document.  Other types of applications and
+    protocols that use URL's MAY use this format.
+
+2. Literal IPv6 Address Format in URL's Syntax
+
+    To use a literal IPv6 address in a URL, the literal address should be
+    enclosed in "[" and "]" characters.  For example the following
+    literal IPv6 addresses:
+
+       FEDC:BA98:7654:3210:FEDC:BA98:7654:3210
+       1080:0:0:0:8:800:200C:4171
+       3ffe:2a00:100:7031::1
+       1080::8:800:200C:417A
+       ::192.9.5.5
+       ::FFFF:129.144.52.38
+       2010:836B:4179::836B:4179
+
+draft-ietf-ipngwg-url-literal-04.txt                            [Page 2]
+INTERNET-DRAFT       IPv6 Literal Addresses in URL's      September 1999
+
+    would be represented as in the following example URLs:
+
+       http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80/index.html
+       http://[1080:0:0:0:8:800:200C:417A]/index.html
+       http://[3ffe:2a00:100:7031::1]
+       http://[1080::8:800:200C:417A]/foo
+       http://[::192.9.5.5]/ipng
+       http://[::FFFF:129.144.52.38]:80/index.html
+       http://[2010:836B:4179::836B:4179]
+
+3. Changes to RFC 2396
+
+    This document updates the generic syntax for Uniform Resource
+    Identifiers defined in RFC 2396 [URL].  It defines a syntax for IPv6
+    addresses and allows the use of "[" and "]" within a URI explicitly
+    for this reserved purpose.
+
+    The following changes to the syntax in RFC 2396 are made: change the
+    'host' non-terminal to add an IPv6 option:
+
+       host          = hostname | IPv4address | IPv6reference
+       ipv6reference = "[" IPv6address "]"
+
+    where IPv6address is defined as in RFC2373.  The definition of
+    'IPv4address' is also replaced with that of RFC 2373, as it correctly
+    defines an IPv4address as consisting of at most three decimal digits
+    per segment.
+
+    In addition, add "[" and "]" to the set of 'reserved' characters:
+
+       reserved    = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
+                     "$" | "," | "[" | "]"
+
+    and remove them from the 'unwise' set:
+
+       unwise      = "{" | "}" | "|" | "\" | "^" | "`"
+
+4. Security Considerations
+
+    The use of this approach to represent literal IPv6 addresses in URL's
+    does not introduce any known new security concerns.
+
+draft-ietf-ipngwg-url-literal-04.txt                            [Page 3]
+INTERNET-DRAFT       IPv6 Literal Addresses in URL's      September 1999
+
+5. IANA considerations
+
+    None.
+
+6. Authors' Addresses
+
+    Robert M. Hinden                  phone: +1 650 625 2004
+    Nokia                             email: hinden@iprg.nokia.com
+    313 Fairchild Drive               web: http://www.iprg.nokia.com/~hinden
+    Mountain View, CA 94043
+    USA
+
+    Brian E. Carpenter
+    IBM                               email: brian@icair.org
+    iCAIR, Suite 150
+    1890 Maple Avenue
+    Evanston IL 60201
+    USA
+
+    Larry Masinter
+    Xerox Corporation                 email: masinter@parc.xerox.com
+    3333 Coyote Hill Road             web: http://purl.org/NET/masinter
+    Palo Alto, CA 94034
+
+7. References
+
+    [ARCH]     Hinden, R., S. Deering, "IP Version 6 Addressing
+               Architecture", RFC2373, July, 1998.
+
+    [STD-PROC] Bradner, S., The Internet Standards Process -- Revision 3,
+               RFC 2026, October 1996.
+
+    [URL]      Fielding, R., L. Masinter, T. Berners-Lee, "Uniform
+               Resource Identifiers: Generic Syntax", RFC2396, August,
+               1998.
+
+draft-ietf-ipngwg-url-literal-04.txt                            [Page 4]

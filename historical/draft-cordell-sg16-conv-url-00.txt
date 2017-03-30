@@ -1,0 +1,494 @@
+INTERNET-DRAFT                                                 Cordell
+draft-cordell-sg16-conv-url-00.txt                                  BT
+                                                                Editor
+                                                          Dec 16, 1997
+                                                 Expires: 21 June 1998
+
+		Conversational Multimedia URLs
+
+Status of this memo
+
+     This document is an Internet-Draft.  Internet-Drafts are working
+     documents of the Internet Engineering Task Force (IETF), its
+     areas, and its working groups.  Note that other groups may also
+     distribute working documents as Internet-Drafts.
+
+     Internet-Drafts are draft documents valid for a maximum of six
+     months and may be updated, replaced, or obsoleted by other
+     documents at any time.  It is inappropriate to use Internet-
+     Drafts as reference material or to cite them other than as
+     ``work in progress.''
+
+     To learn the current status of any Internet-Draft, please check
+     the ``1id-abstracts.txt'' listing contained in the Internet-
+     Drafts Shadow Directories on ftp.is.co.za (Africa),
+     nic.nordu.net (Europe), munnari.oz.au (Pacific Rim),
+     ds.internic.net (US East Coast), or ftp.isi.edu (US West Coast).
+
+{Editor's comments are in braces}
+
+Abstract
+
+The evolving technologies for real-time conversation over the Internet 
+require URLs to provide user contact information.  As there are many 
+protocols (including some that are not Internet based) that can be used 
+for inter-user conversation, this document describes a two stage 
+transaction process for obtaining a URL that can be used to initiate 
+conversation.  The first stage involves retrieving a list of protocol 
+specific URLs in a MIME encoded file.  The MIME type enables an 
+appropriate application to be launched which will analyse the presented 
+URLs and select the most appropriate one.  The second stage involves 
+interpreting the protocol specific URL and initiating the conversation.
+The protocol specific URLs are encoded in a URL form so that they can be
+embedded directly into HTML pages.  This allows the first stage to be 
+omitted.  The document describes the format of the MIME encoded list of 
+URLs, and the format of a number of protocol specific URLs.
+
+
+Contents
+
+ABSTRACT			1
+CONTENTS			1
+REVISIONS SINCE LAST VERSION	1
+1. INTRODUCTION			1
+2. THE MIME FILE		2
+3. PROTOCOL SPECIFIC URLS	3
+3.1. COMMON URL ELEMENTS	3
+3.2. H.323 URL			3
+3.3. H.324 URL			5
+3.4. H.320 URL			5
+3.5. POTS URL			5
+3.6. T.120 URL			5
+4. E-MAIL LIST			6
+5. SECURITY CONSIDERATIONS	6
+6. ACKNOWLEDGEMENTS		6
+7. REFERENCES			6
+APPENDIX 1 - COMPLETE ABNF	6
+AUTHOR'S ADDRESS		7
+
+
+Revisions Since Last Version 
+
+*	Removed call-id as a parameter
+
+
+1. Introduction
+
+Internet technology allows for real-time conversation to take place.  It
+also provides a convenient method of obtaining user location information
+in the form of URLs.  (Note:  As used here, the term user can refer to a
+person, a machine, or any other entity a person or machine may care to 
+have a conversation with.)  These can describe Internet conversational 
+protocols, and non-Internet based conversational mechanisms such as 
+POTS.  As there are a number of conversational protocols that can be 
+used to contact a user, this document describes a two stage process for 
+initiating conversation, with the first stage being optional.  The first
+stage retrieves a list of protocol specific URLs in a MIME encoded file.
+This list is analysed and the most appropriate URL is selected.  The 
+second stage involves interpreting the protocol specific URL.  The 
+protocol specific URLs are in a form that can be directly embedded into 
+HTML pages so that the first stage can be omitted.
+
+The scheme presented here is designed to leverage as much as possible of
+existing infrastructure.  As other technologies become common place 
+(such as CMA [1] and vCard [2]) the mechanisms presented here may lapse.
+
+The remainder of this document describes the format of the MIME file, 
+and the format of a number of protocol specific URLs.
+
+
+2. The MIME file
+
+The first stage in the contact process is to obtain a list of possible 
+contact mechanisms.  To enable a single link to be placed in an HTML 
+page, an indirection method is used wherein a link to a MIME encoded 
+file is made.  The MIME type of the file is:
+
+	APPLICATION/TALKTO
+
+and the default extension is:
+
+	.tlk
+
+The MIME file should be retrieved using HTTP.  Files that contain time 
+dependent protocol specific URLs should ensure that the files are marked
+as non-cacheable.
+
+The MIME encoded file consists of ASCII text and lists a number of 
+protocol specific URLs that can be used to contact a remote user.  The 
+section below describes a number of protocol specific URLs, but this 
+should not be considered an exhaustive list.
+
+Each protocol specific URL is presented on a separate line with no 
+leading white space.  The preferred line break convention is the one 
+used for HTTP (CRLF), but applications must be tolerant to other line 
+break conventions so that files can be readily edited on diverse hosts.
+
+Each protocol specific URL may be followed by some white space and a 
+comment.  The comment should be in a form that can be presented to a 
+user as part of a manual selection process.  By default the comments are
+ignored.  For example:
+
+<protocol_specific_url>    ;My home number
+<protocol_specific_url>    ;My bosses number
+
+Lines which begin with white-space should be considered as comments and 
+ignored.
+The order of the URLs should be such that the most preferred URL is 
+presented first, and the least preferred is presented last.  When 
+interpreting the file, if a URL is unsupported, or is not understood, it
+should be skipped.  Endpoints are encouraged to take into account the 
+preference order indicated by the file when selecting a URL, but this is
+not required.  Parsing of the file may continue if a contact attempt 
+fails.
+
+Note that the file does not contain any other information such as the 
+times when specific URLs are valid.  This enables a simple file format 
+that does not have to cope with arbitrary search sequences and the 
+complications of time-zones.  Therefore, strictly, the file is only 
+valid at the time it is downloaded and the HTTP cache control attributes
+should be used to control its validity as required. 
+
+As with any file downloaded by HTTP, it can be a static file on a server
+or dynamically generated by an executable.  The data for the latter may 
+be uploaded by schemes such as the VoIP's CMA protocol[1].  
+
+Validation of who is allowed to obtain various types of location 
+information can be done using WWW-Authentication and cookies.  This 
+document provides no additions to these HTTP mechanisms.
+
+Example URLs for downloading the MIME file are:
+
+	http://talkto.mycom.com/me.tlk
+	http://talkto.mycom.com/cma.exe?me
+
+{For consideration:
+The above scheme is simple, but not extensible.  It may be prudent to 
+define a basic extension scheme to cope with any future problems.  The 
+follwing scheme is suggested for consideration.
+If the line starts with a "+", then this line contains a parameter that 
+is optional to interpret, i.e. parsing of the file can continue even if 
+the parameter is not understood.
+If the line starts with "*", then the line contains a parameter that 
+must be understood.  The rest of the file should only be interpreted if 
+the parameter is understood, but earlier lines can be interpreted even 
+if the paramter is not understood.  This definition allows simple parser
+features and complex parser features to co-exist in the same file.  e.g.
+a file might contain:
+
+h323:pete@h323.bt.com
+*time=17:00-8:30
+h323:home@h323.bt.com
+
+where time is a paramter to be defined in the future.  Parsers that 
+don't understand the time parameter could use the first URL, but not the
+second}.
+
+
+3. Protocol Specific URLs
+
+Protocol specific URLs describe contact information for a specific 
+protocol.  This section describes a number of these URLs, but this 
+should not be considered an exhaustive list.  Other suitable URLs 
+include the IETF's SIP, VoIP's CMA, and Microsoft's CALLTO schemes.  
+Although the main intention of these URLs is to describe conversational 
+protocols, URLs such as CHAT and MAILTO may be appropriate as a last 
+resort.  Under certain circumstances RTSP URLs may also be useful.
+This section starts with a description of some common elements.  These 
+are then used in the protocol specific URLs.
+
+
+3.1. Common URL elements
+
+This sub-section describes common elements from which the protocol 
+specific URLs are constructed.  A number of the elements use definitions
+from [3].
+
+	network = packet-network | switched-network
+	packet-network = "ip"  | "tls" | "udp" | "aal5"
+				; ip = IP connection without TLS
+				; tls = IP connection made over TLS
+				; udp = IP connection made over UDP -
+				;	this channel may be made reliable
+				;	using additional means
+				; aal5 = ATM AAL5 call
+	switched-network = "pots" | "isdn" | "aal1"	
+				; pots = GSTN or ISDN speech/audio call
+				; isdn = ISDN data call
+				; aal1 = ATM AAL1 call
+	address = ip-address | phone-address 
+
+	ip-address =  hostport	; hostport defined in [3]
+
+	phone-address = global-phone-number *[ "&" global-phone-number ]
+				; global-phone-number defined in [4].  
+				; H.323 endpoints do not support the
+				; wait for tone pause character
+
+	param-list = param | param  param-list
+	param = ";" h323-param
+
+Telephone numbers in phone-address should always be presented in a full 
+international form, including the "+" sign.  It is the responsibility of
+endpoints and/or gatekeepers to convert these to location specific 
+numbers.
+
+
+3.2. H.323 URL
+
+{Note: the format of this URL has been structured to have a basic form 
+of h323:pete@h323.bt.com.  This is because users are familiar with this 
+format, and it is intuitive what it means.  However, this does present 
+problems when e-mail ids which include an @ are included in the URL.  
+One solution is to include the e-mail @ in its escaped form, i.e. %40.  
+Another option is to specify  that parsers should be tolerant of 
+duplicate @ signs.  Yet another option is to use an alternative 
+character to represent the @ in the basic URL form, i.e.  
+h323:pete/bt.com.  This appears less intuitive, and there may be many 
+erroneous URLs generated as the number of /s at the beginning become 
+very significant, such as in h323:/pete.bt.com which should resolve to 
+an IP address only. }
+
+There are two H.323 related URLs.  The first form initiates a call 
+directly based on the information in the URL.  The second initiates a 
+call based on information that is obtained by first issuing an H.323 
+LRQ.
+
+For the first form, the scheme is:
+
+	h323url = "h323" ":" [ "/" [ network ] "/" ] h323-address 
+					[h323-param-list]
+
+and the second form is:
+
+	lrqurl = "lrq" "://" ip-address [h323-param-list]
+
+where:
+
+	h323-address = user-part | address | user-part address
+	user-part = user [ ":" type ] "@"
+	user = 1*alphanum		; alphanum defined in [3]
+	type = "e164" | "h323id" | "email"
+
+The 'network' part of the URL need only be present if the network is not
+of type IP (i.e. ip is the default network).
+
+If an ip-address is used in the 'address' field, the 'user' and 'type' 
+fields specify the information to be placed in the destinationInfo part 
+of ARQ and destinationAddress part of SETUP.  The 'type' field specifies
+the type of AliasAddress.  If the user field starts with a digit, "*" or
+"#" the default type is "e164", otherwise it is "h323id".  
+
+If a 'phone-number' is used in the address field any 'user' and 'type' 
+parts are placed in the remoteExtensionAddress part of SETUP, and the 
+phone number is placed in the destinationInfo part of ARQ and 
+destinationAddress part of SETUP.  It is the responsibility of the 
+receiving H.323 over ISDN gateway to transfer the remoteExtensionAddress
+to the destinationInfo part of ARQ and destinationAddress part of SETUP 
+prior to making the onward call. 
+
+To place an aliasAddress containing an @ sign in the 'user' field, the 
+escaped form of the @ sign must be used, i.e. %40.
+
+If the 'address' field is of type ip-address this is placed in the 
+destCallSignalAddress fields of both ARQ and SETUP.  
+
+The H.323 URL may have a number of parameters associated with it.  If an
+endpoint does not know how to handle a parameter then it shall ignore 
+the entire URL.  At the time of writing the valid parameters are:
+
+	h323-param = cid-param | token-param | l2-param
+	cid-param = "cid" "=" UUID		; UUID is specified in [5]
+	token-param = "token" "=" "0x" 1* hex 
+	l2-param  = "l2" "=" ( "PPP" | "MPPP" | "SLIP" )
+						; Layer 2 format
+
+The cid parameter encodes a UUID that should be placed in the conference
+ID field of the ARQ and SETUP messages.  This field may appear a maximum
+of 1 time in the URL.  
+
+If a conference Identifier is specified, then the conferenceGoal should 
+be "join" in the outgoing SETUP message, otherwise it should be 
+"create".
+
+The token field represents a hexadecimal representation of an octet 
+sequnce.  0, 1 or more token parameters may be included in a URL.
+
+The 'l2' parameter allows for different packetisation schemes to be used
+over switched network connections.  If applicable, the default is PPP.
+
+Note that an H.323 URL with a network type of ISDN indicates that H.323 
+is carried over the ISDN using a layer 2 protocol such as PPP (specified
+by the 'l2' parameter).  It does not mean that the H.323 system should 
+locate an H.320 gateway and use this to communicate over the ISDN.  The 
+H.320 URL should be used to indicate this.
+
+Example H.323 URLs are as follows:
+
+h323:pete@h323.bt.com
+	AliasAddress = pete, AliasAddress type = h323id, 
+	destCallSignalAddress = h323.bt.com.
+
+h323://pete@h323.bt.com
+	Same as above
+
+h323:646436@h323.bt.com
+	AliasAddress = 646436, AliasAddress type = e164, 
+	destCallSignalAddress = h323.bt.com.
+
+h323:pete@	-- This form requires a gatekeeper to determine a 
+	destCallSignalAddress
+	AliasAddress = pete, AliasAddress type = h323id, 
+	destCallSignalAddress = GK supplied.
+
+h323:pete.bt.com
+	destCallSignalAddress = pete.bt.com
+
+
+h323:/tls/pete%40bt.com:email@bt.com;token=0x5435;token=0xcdfe;cid=f81d4f
+bf-7dec-11d0-a765-00a0c91e6bf6
+	This call should be setup over a secure TLS channel.
+	AliasAddress = pete@bt.com, AliasAddress type = email-ID, 
+	destCallSignalAddress = bt.com, Two tokens are supplied.  
+	A conference ID is also specified.
+
+h323:/pots/+1-515-234-5645
+	H.323 over PPP over GSTN.  destCallSignalAddress = an address of an 
+	H.323 over POTS gateway.  This may be gatekeeper provided.  
+	+1-515-234-5645 is placed in destinationInfo part of ARQ and 
+	destinationAddress part of SETUP.
+
+lrq:pete@h323.bt.com
+	Causes an LRQ to be performed first.
+
+
+3.3. H.324 URL
+
+The format of the H.324 URL is:
+
+h324url = "h324" ":" [ "/" [ switched-network ] "/" ] phone-address
+
+The default switched-network type is "pots".  H.324i is denoted by 
+having a switch-network type of "isdn".
+An example URL is:
+
+	h324:+1-515-234-5678
+
+or:
+
+	h324:/isdn/+1-515-234-5679&+1-515-234-5680
+
+
+3.4. H.320 URL
+
+The format of the H.320 URL is:
+
+	h320url = "h320" ":" phone-address
+
+The network type is always "isdn".  An example is:
+
+	h320:/isdn/+1-515-234-5679&+1-515-234-5680
+
+
+3.5. POTS URL
+
+The telephone number scheme for a basic voice call is defined in [4].
+
+
+3.6. T.120 URL
+
+The format of the T.120 URL is:
+
+	t120url = "t120" ":" [ "/" [ network ] "/" ] address [t120-param-list]
+
+The following parameters are valid: ???????
+
+
+4. E-mail list
+
+As many groups are interested in conversational URLs including SG16, 
+VoIP, MMUSIC, PINT, TIPHON, URL-REG etc), a separate e-mail list has 
+been set up.  You can subscribe to the list by including the word 
+"subscribe" in the message body text of an e-mail sent to the address:
+
+	h323-url-request@vocaltec.com
+
+E-mail can be sent to the list at the following address:
+
+	h323-url@vocaltec.com
+
+
+5. Security Considerations
+
+Umm...
+
+
+6. Acknowledgements
+
+7. References
+
+[1]	"Service Interoperability Implementation Agreement," IMTC VoIP Forum
+[2]	vCard
+[3]	T. Berners-Lee, L. Masinter, M. McCahill, "Uniform Resource 
+	Locators (URL)," RFC1738, December 1994.  {Editor's note: A new 
+	version of RFC1738 is being produced so this reference will have 
+	to be changed.}
+[4]	A. Vaha-Sipila, "URLs for Telephony," 
+	draft-antti-telephony-url-03.txt, 21 Nov 1997
+[5]	"Call Signalling Protocols and media Stream Packetization for 
+	Packet Based Multimedia Communications Systems," 
+	ITU-T Recommendation H.225 Version 2, January 1998
+
+
+Appendix 1 - Complete ABNF
+
+all-urls = h323url | lrqurl | h324url | h320url | t120url
+
+h323url = "h323" ":" [ "/" [ network ] "/" ] h323-address [ 
+h323-param-list ]
+lrqurl = "lrq" "://" ip-address [ h323-param-list ]
+h324url = "h324" ":" [ "/" [ switched-network ] "/" ] phone-address
+h320url = "h320" ":" phone-address
+t120url = "t120" ":" [ "/" [ network ] "/" ] address [ t120-param-list ]
+
+network = packet-network | switched-network
+packet-network = "ip"  | "tls" | "udp" | "aal5"
+switched-network = "pots" | "isdn" | "aal1"
+
+h323-address = user-part | address | user-part address
+user-part = user [ ":" type ] "@"
+user = 1*alphanum		; alphanum defined in [3]
+type = "e164" | "h323id" | "email"
+
+address = ip-address | phone-address 
+
+ip-address =  hostport		; hostport defined in [3]
+
+phone-address = global-phone-number *[ "&" global-phone-number ]
+				; global-phone-number defined in [4].  
+				; H.323 endpoints do not support the
+				; wait for tone pause character
+
+h323-param-list = ";" h323-param | ";" h323-param  h323-param-list
+
+h323-param = cid-param | token-param | l2-param
+cid-param = "cid" "=" UUID	; UUID is specified in [5]
+token-param = "token" "=" "0x" 1* hex 
+l2-param  = "l2" "=" ( "PPP" | "MPPP" | "SLIP" )	
+				; Layer 2 format
+
+t120-param-list = ";" t120-param | ";" t120-param  t120-param-list
+t120-param = {???????}
+
+
+Author's Address
+
+Pete Cordell
+BT Labs
+MLB 4/15
+Martlesham Heath
+Ipswich
+IP5 3RE
+UK
+e-mail: pete.cordell@bt-sys.bt.co.uk
+

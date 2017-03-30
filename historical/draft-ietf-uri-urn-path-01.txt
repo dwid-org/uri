@@ -1,0 +1,555 @@
+INTERNET-DRAFT 
+
+The Path URN Specification
+**************************
+
+draft-ietf-uri-urn-path-01.txt
+Expires 17 Jan 96 
+
+Daniel LaLiberte <liberte@ncsa.uiuc.edu>
+Michael Shapiro <mshapiro@ncsa.uiuc.edu> 
+
+Status of this memo
+===================
+
+This document is an Internet-Draft. Internet-Drafts are working
+documents of the Internet Engineering Task Force (IETF), its
+areas, and its working groups. Note that other groups may also
+distribute working documents as Internet-Drafts. 
+
+Internet-Drafts are draft documents valid for a maximum of six
+months and may be updated, replaced, or obsoleted by other
+documents at any time. It is inappropriate to use Internet-Drafts as
+reference material or to cite them other than as "work in progress." 
+
+To learn the current status of any Internet-Draft, please check the
+"1id-abstracts.txt" listing contained in the Internet-Drafts Shadow
+Directories on ftp.is.co.za (Africa), nic.nordu.net (Europe),
+munnari.oz.au (Pacific Rim), ds.internic.net (US East Coast), or
+ftp.isi.edu (US West Coast). 
+
+This Internet Draft expires 17 Jan 96. 
+
+Last modified: Wed Jul 26 09:56:05 CDT 1995 
+
+This document is also available in HTML at:
+
+  <URL: http://union.ncsa.uiuc.edu/~liberte/www/path.html>
+
+Modifications of that document relative to the internet draft are
+shown in italic font. 
+
+Abstract
+========
+
+A new "path" URN scheme is proposed that defines a uniformly
+hierarchical name space. This URN scheme supports dynamic
+relocation and replication of resources. Existing DNS technology is
+used to resolve a path into sets of equivalent URLs, and then one
+URL is resolved into the named resource. 
+
+Introduction
+============
+
+The path scheme defines a uniformly hierarchical name space
+where a path URN is a sequence of components and an optional
+opaque string. An example path URN is: 
+
+   path:/A/B/C/doc.html 
+
+The path is /A/B/C and the opaque string is doc.html. 
+
+The significant features of the path URN scheme include the
+following: 
+
+Highly Scalable
+
+   The resolution process is highly scalable due to several
+   factors. Resolution is distributed as much as the named
+   resources themselves are. (This also permits the resolution
+   of names to be handled by servers that are motivated to
+   maintain the service because they also serve the named
+   resources.) The public hierarchy enables clients to make
+   use of caches of resolver locations.
+
+Dynamically Reconfigurable
+
+   The resolution process is reconfigurable to support
+   additional scalability and persistence of names in the event
+   of relocations. The responsibility for resolution of a part of a
+   name space may be delegated to another resolver or
+   several parts of the name space may be recombined and
+   resolved by a single server. 
+
+Built-in Fallback Mechanism
+
+   The resolution process has a built-in fallback mechanism in
+   case the original resolver is uncooperative in forwarding
+   references to resources that have moved. 
+
+Easily Deployed
+
+   The resolution and name assignment mechanisms are easily
+   deployable since they use existing DNS technology and URL
+   resolution schemes such as HTTP and FTP. Only a small
+   amount of path-specific code is added to clients or proxy
+   servers. Existing URLs may be automatically mapped to path
+   URNs. 
+
+Resolves to Resource
+
+   A path resolves first into a list of sets of equivalent URLs,
+   and then second, that list is resolved into the named
+   resource using one of the URLs. The type of the resource is
+   identified by the protocol of the particular URL that is used; if
+   metadata for the resource is desired instead, the particular
+   URL scheme may provide it. The path URN scheme does not
+   depend on URCs.
+
+In this document, we first describe the name assignment and
+resolution process conceptually. This is followed by a more detailed
+description of the protocol, the encoding rules, and the compliance
+to URN requirements.
+
+Name Assignment
+===============
+
+Names of resources are assigned by naming authorities that are
+responsible for a subtree of the name space, and naming
+authorities may delegate naming responsibility to sub-authorities.
+The top-most naming authority in the hierarchy is known as the root
+naming authority. Each naming authority corresponds to a name
+resolution service; a name resolution service may be shared by
+several naming authorities.
+
+A naming authority may create any new name for a resource as
+long as the encoding rules described below are met. Once a name
+has been assigned, it should never be assigned again for a different
+resource, as per the URN requirements. Naming authorities are
+responsibile for meeting this uniqueness requirement. 
+
+A path name may be declared by the appropriate naming authority
+as the name of a collection of resources. Such a name must end
+with a final "/". The resource that a collection name resolves into is
+undefined by the path scheme protocol. Not all prefixes of path
+names are guaranteed to be names of collections. 
+
+An automatic mapping from most FTP and HTTP URLs to path
+URNs is feasible and will speed deployment. However, the
+generated names may not be appropriate for some HTTP URLs due
+to encoding requirements or misleading semantics, so some
+manual intervention or customization of the generation process will
+be required. Since the process is repeatable, the same generator
+service may be used as a URN lookup service given URLs. The
+generator service is not described in this document.
+
+The Name Resolution Process
+===========================
+
+The resolution process is described in two steps. The first step
+resolves the name into an ordered list of URL-sets. The second
+step attempts to resolve URLs from successive sets in the list until
+the resolution succeeds or the list is exhausted. 
+
+The first step in the resolution process involves traversing the
+components of the path, left to right. Each component in the path
+(except the final opaque string) has two functions. One function is to
+provide a context for resolving the remainder of the path. The
+context for resolving the first component is the resolver for the root
+naming authority. The other function is to optionally provide a set of
+equivalent URLs (called a URL-set) constructed from URL-prefixes
+and the remainder of the path. All URLs in a set are equivalent in
+that each should resolve to the "same" resource, if it resolves at all.
+
+The first step ends when no more URL-sets are found. The result is
+a list of URL-sets ordered from most-specific to least-specific in
+the reverse order that they were discovered during the first step. 
+
+The second step is to resolve the list of URL-sets to the named
+resource. A URL (which may be a URN) is selected from the first set
+(e.g., randomly) and resolution of the URL is attempted. Any of the
+URLs may be URNs, even other path URNs. If the resolution fails
+because the URL service is unavailable (e.g. connection failure),
+another URL is selected from the set, until none are left; retries with
+exponential backoff may then follow, or the path resolution process
+may be declared a failure. Alternatively, if the resolution of a URL
+fails because the URL is unknown, then the process is repeated
+with the next set in the list. The process is repeated until the
+resolution succeeds or the list is exhausted (which implies
+resolution failure). 
+
+If the resolution of a URL results in a redirection to yet another URL,
+then that redirection should be followed to determine if it succeeds
+before declaring that the first URL has been resolved. A failure to
+resolve the redirection should be treated as the same kind of failure
+to resolve the first URL.
+
+Reconfiguration of the Resolution Service
++++++++++++++++++++++++++++++++++++++++++
+
+The resolution process may be dynamically reconfigured in a
+number of ways to meet the requirements of scalability and
+persistence. 
+
+ o Resolvers may delegate part of their resolution service to
+   sub-resolvers. Since the most specific URL-set is used
+   first, the sub-resolver will have the first chance to resolve
+   the URLs. Note, however, that a sub-resolver can only be
+   created where there is already a corresponding sub-naming
+   authority; that is, the name space must have already been
+   subdivided. 
+
+   Administrators of a resolution service may want to delegate
+   resolution to sub-resolvers for one of two reasons: to
+   reduce the load on a resolver, or to allow a sub-resolver to
+   be located elsewhere on the internet.
+
+ o Responsibility for resolution of a set of path names may fall
+   back to higher level resolution services in the event that a
+   lower level resolution service declines to either resolve the
+   paths to the resources or provide redirects. 
+
+Examples
+++++++++
+
+In the following partial tree diagram, the nodes marked with * have
+URL-sets associated with them. 
+
+                                /
+                                |
+                        -------------------------------
+                        A1                            A2
+                        |                             |
+                    --------------------------
+                    B1*                      B2*
+                    |                        |
+                ----------                   |
+                C1       C2*                 C
+                                             |
+                                             D*
+
+   /A/B1 names resources under /A/B1 except those under 
+   /A/B1/C2 
+   /A/B2 names resources under /A/B2 except those under 
+   /A/B2/C/D 
+
+Details of the Resolution Process
+=================================
+
+This section describes more details of the path scheme resolution
+process using existing capabilities of the Domain Name System
+(DNS) [3]. In principle, the path scheme protocol could use any
+global, hierarchical name system that provides the necessary
+functionality, but it is necessary to specify one protocol so clients
+and servers can communicate. The main reason for using DNS is
+that it is widely deployed and relatively stable. 
+
+The path name space may use existing the DNS name space, or a
+newly created name space within DNS devoted to the path name
+space, or some combination of both. (This draft does not specify
+which will be used.) 
+
+A small amount of new code is required on the client side to drive
+the resolution process, but generic proxy mechanisms available in
+many WWW browsers may be used with a path proxy server to
+share the process across a number of clients.
+
+Resolving the Name into URL-sets 
++++++++++++++++++++++++++++++++++
+
+The implementation uses DNS TXT records that are typed, based
+on the information they contain. At present, there is one type of path
+TXT record beginning with "path-u". TXT records that begin with
+"path-" are reserved for future extensions. 
+
+The "path-u" TXT record is followed by a single URL-prefix. Note
+that a URL-prefix is not necessarily a full URL; it specifies a
+resolution service and it is used to construct a full URL during
+resolution. There may be multiple "path-u" TXT records for a single
+DNS name, and each should logically specify equivalent resolution
+services. 
+
+The DNS step of the resolution process proceeds as follows. 
+
+ 1. The list of URL-sets is initialized to the empty list.
+
+ 2. The entire path URN, except the scheme and the opaque
+   string, is converted to lowercase and then to DNS names
+   (one name for each component of the path). For example, 
+
+      path:/A/B2/C1/doc.html is converted to 
+      /a/b2/c1/doc.html and then to the DNS names 
+
+         . (the root of DNS) 
+         a. 
+         a.b2. 
+         a.b2.c2. 
+
+ 3. For each of the DNS names, in order of the shortest name to
+   longest name, all TXT records associated with it are
+   requested using DNS resolvers. 
+
+   If there are any "path-u" TXT records for a particular DNS
+   name, then a URL-set is constructed from the URL-prefixes
+   in the TXT records and the set is added to the head of the
+   list. The URLs in a URL-set are constructed by appending
+   the remaining components of the path and the opaque string
+   to each URL-prefix. 
+
+   For example, suppose that while resolving 
+   path:/A/B2/C1/doc.html, we discover the the TXT record
+   corresponding to the DNS name b2.a. is 
+      "path-u http://ietf.org/path/docs" 
+   Since b2.a. corresponds to /A/B2I, and remainder of the
+   path is "/c1/doc.html", then the URL for this URL-prefix
+   would be 
+      http://ietf.org/path/docs/c1/doc.html 
+
+To clarify the above algorithm, some examples are presented. The
+examples use the partial document tree specified previously. The
+DNS entries for this partial tree are:
+
+                    TXT
+             a.   -none-
+          b1.a.   "path-u http://ietf.org/path/docs"
+       c2.b1.a.   "path-u http://www.org:70/docs"
+          b2.a.   "path-u http://ietf.org/path/docs"
+      d.c.b1.a.   "path-u http://www.org:70/docs"
+                  "path-u http://w3c.org/docs/www"
+
+Example lookups 
+
+/A/B1/C1/doc.html
+
+          a.     no "path-u" record
+                 repeat with b1.a.
+        b1.a.    URL http://ietf.org/path/docs/c1/doc.html
+                 repeat with c1.b1.a.
+     c1.b1.a.    unknown DNS name - done
+
+  List of URL-sets is
+
+      {http://ietf.org/path/docs/c1/doc.html}
+
+/A/B2/C/D/doc.html
+
+          a.     no "path-u" record
+                 repeat with b2.a.
+        b2.a.    URL ftp://ietf.org/path/docs/c/d/doc.html
+                 repeat with c.b2.a.
+      c.b2.a.    no "path-u" record
+                 repeat with d.c.b2.a.
+    d.c.b2.a.    URL http://www.org:70/docs/doc.html
+                 URL ftp://w3c.org/docs/www/doc.html
+                 done
+
+  List of URL-sets is
+
+     {http://www.org:70/docs/doc.html, ftp://w3c.org/docs/www/doc.html}
+     {ftp://ietf.org/path/docs/c/d/doc.html}
+
+
+Resolving the URL-sets into the Resource 
++++++++++++++++++++++++++++++++++++++++++
+
+After constructing a list of URL-sets, it must be resolved into the
+named resource. The list of URL-sets could itself be an object that
+may be passed back from proxy servers to clients or cached for
+later use. But here we describe the resolution of the list of URL-sets
+into the named resource independent of which agent resolves it or
+whether it is a first class object.
+
+A URL is selected from the first set (e.g., randomly) and resolution of
+the URL is attempted. Any of the URLs may be URNs, even other
+path URNs. The appropriate protocol, as indicated by the scheme of
+the URL and user preference, is used to resolve it. For example, if
+the URL were http://ietf.org/path/docs/c1/doc.html, then
+the HTTP protocol is typically used to resolve that URL using the
+GET method.
+
+If the resolution fails because the URL service is unavailable,
+another URL is selected from the set, until none are left; retries with
+exponential backoff may then follow, or the path resolution process
+may be declared a failure. Resolution may fail because the server
+doesn't exist, or the connection times out before or after it is made,
+or the server returns an error code indicating that the service is
+unavailable.
+
+Alternatively, if the resolution of a URL fails because the URL is
+unknown, then the process is repeated with the next set in the list.
+The process is repeated until the resolution succeeds or the list is
+exhausted (which implies resolution failure). 
+
+If the resolution of a URL results in a redirection to yet another URL
+(which may be a URN), then that redirection should be followed to
+determine if it succeeds before declaring that the first URL has been
+resolved.
+
+Management Issues
+=================
+
+(This section will describe what administrators of naming authorities
+and resolvers need to do to manage their portion of the path name
+space.) 
+
+Encoding Syntax
+===============
+
+The encoding rules may vary depending on the underlying
+implemenation, but, again, we assume DNS is used. Therefore, the
+components of a path must be compatible with DNS <label> names.
+Hex encodings must be used for uppercase characters in the name
+that are to be distinguished from the corresponding lowercase
+characters. Hex encoding is also required for dot ("."), the DNS
+component separator, and slash ("/"), if it is used within a
+component name or the opaque string. Here is a BNF description of
+the encoding rules.
+
+    <path-urn>    ::= "path:" <name>
+    <name>        ::= <path> "/" [ <final-part> ]
+    <path>        ::= "" | "/" <label> [ <path> ]
+
+    <final-part>  ::= any ascii character except "/"
+
+    <label>       ::= any ascii character except "/", or "."
+
+
+URN Requirements
+================
+
+The path scheme meets all of the requirements for Universal
+Resource Names, as described in [2]. For each functional
+requirement, we discuss how the path scheme is in conformance
+with it. We also discuss conformance to the encoding requirements.
+
+Functional Requirements
++++++++++++++++++++++++
+
+ o Global scope: The root of the path name space will be known
+   to all clients, and for each node in the hierarchical name
+   space, the corresponding resolution service will know all its
+   subnodes. This guarantees that any particular path URN will
+   have the same meaning for each client.
+
+ o Global uniqueness: Each node in the hierarchical name
+   space corresponds to a naming authority that is responsible
+   for guaranteeing uniqueness within that portion of the name
+   space, or for delegating that responsibility to a
+   sub-authority.
+
+ o Persistence: To help guarantee that path URNs remain
+   useful as long as they are needed, the path scheme allows
+   any subtree of the name space to be served at any net
+   location, and this location may be changed without having to
+   change names. Additionally, a fallback mechanism is
+   provided by the protocol in case a resolver does not wish to
+   forward requests.
+
+ o Scalability: Assignment of path names is scalable for an
+   arbitrarily large number of names since the assignment
+   process is distributed across an arbitrarily large number of
+   naming authorities. The name resolution process is also
+   scalable for any number of names and clients, as discussed
+   below under "Resolution". Each naming authority and
+   resolution service need know about only a small number of
+   neighboring authorities and services.
+
+ o Legacy support: A legacy naming scheme may be supported
+   in the path URN scheme by assigning it a well-known path
+   naming authority, preferrably near the root. Hierarchical
+   names may be mapped to appropriate path names, or any
+   names may be embedded in the opaque string of a path
+   name. E.g. path:/isbn/1-884777-01-5 or 
+   path:/isbn/1/884777/01/5
+
+ o Extensibility: Same as for legacy support. 
+
+ o Independence: Every path naming authority is constrained
+   by the requirements of the path scheme (e.g. components of
+   the path must follow the encoding rules), but control of
+   whether a naming authority issues a conforming name in its
+   name space is up to that authority alone. 
+
+ o Resolution: The path scheme facilitates efficient resolution of
+   path URNs. The hierarchical nature of the name space
+   allows clients to use caches of remote resolution server
+   locations, so clients rarely need to query servers near the
+   top of the hierarchy. For additional scalability, a server may
+   delegate resolution of parts of its name space to other
+   servers, and clients may then bypass contacting the original
+   server.
+
+There is an implied assumption in the URN requirements document
+that names resolve into locations or metadata as opposed to the
+resources themselves. This based on the need for indirection to
+allow the resource to change location, which we agree with.
+However, a path name is actually a dynamic location since the
+resolution process always finds the current location of the resolvers
+along the path. So there is no need to impose the requirement of an
+explicit indirection solely for the purpose of finding the current
+location. 
+
+Encoding Requirements
++++++++++++++++++++++
+
+The encoding syntax for path URNs conforms to the requirements
+for generic URLs and for URNs. 
+
+Security Considerations
+=======================
+
+The decentralized path scheme is arguably less vulnerable to
+attack than are centralized services.
+
+The path scheme depends on DNS for most of the resolution
+process, and insofar as DNS is secure or insecure, so is the path
+scheme. A more complete reference of relevant weaknesses
+should be included here.
+
+The hierarchical path scheme allows security constraints to be
+imposed on just the subtree of names that require it. The resolution
+process hides whether a name actually is resolvable by first
+requesting authentication. 
+
+References
+==========
+
+ 1. Berners-Lee, T., Masinter, L., McCahill, M. (editors),
+   "Uniform Resource Locators (URL)", RFC 1738, December
+   1994. ftp://ds.internic.net/rfc/rfc1738.txt 
+
+ 2. Sollins, K., Masinter, L. "Functional Requirements for Uniform
+   Resource Names", RFC 1737, December 1994.
+   ftp://ds.internic.net/rfc/rfc1737.txt 
+
+ 3. Mockapetris, P., "Domain Names - Implementation and
+   Specification", RFC 1035, November 1987.
+   ftp://ds.internic.net/rfc/rfc1035.txt 
+
+ 4. T. Berners-Lee, R. T. Fielding, H. Frystyk Nielsen, HTTP
+   Internet-Draft, "Hypertext Transfer Protocol -- HTTP/1.0".
+   The name of the draft at the time of this writing is
+   "draft-ietf-http-v10-spec-00.txt". 
+
+Author Contact Information
+==========================
+
+Daniel LaLiberte
+National Center for Supercomputing Applications
+152 Computing Appliations Building
+605 East Springfield Avenue
+Champaign, IL 61820
+Tel: (217) 244-0013
+liberte@ncsa.uiuc.edu  
+
+Michael Shapiro
+National Center for Supercomputing Applications
+152 Computing Applications Building
+605 East Springfield Avenue
+Champaign, IL 61820
+Tel: (217) 244-6642
+mshapiro@ncsa.uiuc.edu  
+
+draft-ietf-uri-urn-path-01.txt
+Expires 17 Jan 96
+

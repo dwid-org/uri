@@ -1,0 +1,357 @@
+INTERNET DRAFT                                            FUJIKAWA Kenji
+draft-fujikawa-stream-uri-00.txt                          KURIYA Shinobu
+                                                         TANAKA Tsuyoshi
+                                                        Kyoto University
+
+                                                            January 2000
+
+                           Stream URI Scheme
+
+
+Status of this Memo
+
+       This document is an Internet-Draft and is in full conformance
+       with all provisions of Section 10 of RFC2026.
+
+       Internet-Drafts are working documents of the Internet Engineering
+       Task Force (IETF), its areas, and its working groups.  Note that
+       other groups may also distribute working documents as
+       Internet-Drafts.
+
+       Internet-Drafts are draft documents valid for a maximum of six
+       months and may be updated, replaced, or obsoleted by other
+       documents at any time.  It is inappropriate to use Internet-
+       Drafts as reference material or to cite them other than as
+       "work in progress."
+
+       The list of current Internet-Drafts can be accessed at
+       http://www.ietf.org/ietf/1id-abstracts.txt
+
+       The list of Internet-Draft Shadow Directories can be accessed at
+       http://www.ietf.org/shadow.html.
+
+
+Abstract
+
+   This document describes the Stream Uniform Resource Identifier which
+   allows Internet clients to have direct access to multimedia streams.
+
+
+1. Introduction
+
+   This document defines the Stream URI which will allow Internet
+   clients to have direct access to media streams.  It includes
+   information for launching applications to join a session.  It should
+   be included in HTML documents with other information about the
+   session.  A Stream URI client which can be a extended WWW browser
+   will launch applications to participate in the session when a user
+   activate a Stream URI included in the HTML document.
+
+
+
+FUJIKAWA Kenji            Expires in July 2000                  [Page 1]
+
+
+
+
+
+
+INTERNET DRAFT              Stream URI Scheme               January 2000
+
+
+2. Overview of the Stream URI
+
+   A session description, which describes information about sessions,
+   including participating in sessions, is originally defined by Session
+   Description Protocol (SDP) [RFC2327].  Stream URI is the URI which
+   only includes information necessary to launch applications for a
+   multimedia session.  It reuses some formats of SDP.  These formats
+   are "m" that means media name and transport address, "t" that means
+   time the session is active and "a" that means zero or more media
+   attribute lines.  Stream URI doesn't include formats such as session
+   information, email address and phone number, which can be written in
+   HTML documents.
+
+   Stream URI has an optional attribute for QoS routing (this attribute
+   is not defined in SDP).  Specifying this attribute, the media
+   application will be able to receive streams that QoS is satisfied.
+
+
+
+3. Description of the Stream URI scheme
+
+   Stream URI takes the following form:
+
+       stream:// <connection address> [: <connection port>] / [<session name>]
+            # [t = <start time> : <stop time> &]
+            m = <media> : [<port>] : <transport> : <fmt list>
+                 [& a = <attribute> [: <value list>]]
+            *[& m = <media> : [<port>] : <transport> : <fmt list>
+                 *[& a = <attribute> : [<value list>]]]
+
+   <connection address> is the session IP address, to which the media
+   streams are sent.  It is a unicast address or a multicast address.
+
+   <connection port> is the transport port to which the media streams
+   are sent. It can be omitted.
+
+   <session name> is the session name. It must be represented by
+   conventional URI encoding scheme [RFC2396]. It can be omitted.
+
+   <start time> is the time the session will start.  <stop time> is the
+   time the session will close.  They can be omitted.
+
+   <media> is the type of media.  It is one of the terms "video,"
+   "audio" and "wb," which means video stream, audio stream and white
+   board stream, respectively.
+
+   <port> is the transport port number for that media.  If it is
+   omitted, <connection port> will be used instead.  Stream URI must
+
+
+
+FUJIKAWA Kenji            Expires in July 2000                  [Page 2]
+
+
+
+
+
+
+INTERNET DRAFT              Stream URI Scheme               January 2000
+
+
+   contain at least one of <connection port> and <port>.
+
+   <transport> is the transport protocol.  It is one of the terms "RTP-
+   AVP" and "udp," which means the RTP Audio/Video profile [RFC1890] and
+   the UDP protocol, respectively.
+
+   <fmt list> is a list of media formats divided by ":".  These formats
+   are media payload types as defined in the RTP Audio/Video profile.
+   The first one is the default format for the session.  For example,
+   format "0" means u-law PCM coded channel audio sampled at 8KHz.
+
+   <attribute> is attribute which is media specific.  <value list> is a
+   list of values that is related to the attribute, which is divided by
+   ":".  Each media can have any numbers of attribute.  Currently,
+   attribute "framerate" can be used.  Refer to [RFC2327] for details.
+   Besides, this draft defines "qos" attribute, which is described in a
+   later section.
+
+
+4. Examples
+
+   The followings are some examples of Stream URIs.
+
+   (1) internet phone
+
+   o callee's host address is caravan.kuis.kyoto-u.ac.jp
+
+   o callee's port is 23456
+
+   o callee's name is "tanaka" and it is used as a session name.
+
+   o voice is encoded into PCMU whose payload type is 0
+
+       stream://caravan.kuis.kyoto-u.ac.jp:23456/tanaka#m=audio::RTP-AVP:0
+
+   (2) audio and video meeting
+
+   o meeting address is 224.130.54.22
+
+   o audio port is 10000, video port is 10002
+
+   o session name is "ikeda lab meeting"
+
+   o audio encoding is PCMA whose payload type is 8
+
+   o video encoding is JPEG whose payload type is 26
+
+   o maximum framerate of video is 10
+
+
+
+FUJIKAWA Kenji            Expires in July 2000                  [Page 3]
+
+
+
+
+
+
+INTERNET DRAFT              Stream URI Scheme               January 2000
+
+
+       stream://224.130.54.22/ikeda+lab+meeting
+            #m=audio:10000:RTP-AVP:8&m=video:10002:RTP-AVP:26&a=framerate:10
+
+   Multicast addresses could be registered in DNS in [2].  In this case,
+   the URI is also written as:
+
+       stream://meeting.lab1.kuis.kyoto-u.ac.jp/ikeda+lab+meeting
+            #m=audio:10000:RTP-AVP:8&m=video:10002:RTP-AVP:26&a=framerate:10
+
+   where 'meeting.lab1.kuis.kyoto-u.ac.jp' is the domain name of the
+   address 224.130.54.22 .
+
+
+5. Proposed syntax
+
+   The proposed BNF syntax is encoded as specified in [RFC1738].
+
+       streamURI     = "stream://" connection "/" sessionname "#"
+                       [time "&"] media *["&" media]
+
+       connection    = address [":" port]
+       address       = addressnumber | addressname
+       addressnumber = digits "." digits "." digits "." digits
+       digits        = 1*digit
+       addressname   = *[domainlevel "."] toplevel
+       domainlevel   = alphadigit |
+                       alphadigit *[alphadigit | "-"] alphadigit
+       toplevel      = alpha |
+                       alpha *[alphadigit | "-"] alphadigit
+       alphadigit    = alpha | digit
+
+       sessioname    = 1*uchar
+
+       time          = "t=" starttime ":" stoptime
+       starttime     = digits
+       stoptime      = digits
+
+       media         = "m=" mediatype ":" [port] ":" transport ":" formatlist
+                       *["&" attribute]
+       mediatype     = "audio" | "video" | "application" | "data" | "control"
+       transport     = 1*uchar
+       formatlist    = format *[":" format]
+       format        = 1*uchar
+       attribute     = "a=" attributename *[":" value]
+       attributename = 1*uchar
+       value         = 1*uchar
+
+       alpha, digit and uchar are defined in [RFC1738].
+
+
+
+FUJIKAWA Kenji            Expires in July 2000                  [Page 4]
+
+
+
+
+
+
+INTERNET DRAFT              Stream URI Scheme               January 2000
+
+
+6. QoS Attribute
+
+   This documents defines attribute "qos."  It is an ascii caracter
+   string format of REQ_QOS defined in [FK1999].  It takes the following
+   form:
+
+       qos_attribute = "a=qos" ":" R_PRI ":" R_MTU ":" R_PPS ":" R_UTU ":"
+                       R_CDLY ":" R_CCHG ":" R_RDLY ":" R_RCHG
+       R_PRI         = digits
+       R_MTU         = digits
+       R_PPS         = digits
+       R_UTU         = digits
+       R_CDLY        = digits
+       R_CCHG        = digits
+       R_RDLY        = digits
+       R_RCHG        = digits
+
+   Refer to [FK1999] for the meaning of each parameter.
+
+
+7. Considerations of Scope rule
+
+   Though the range of a session is limited by the scope of a multicast,
+   a user can access a WWW server out of the range. Therefore, it is
+   pointed out that there is a situation where a receiver may not join a
+   session announced by WWW.
+
+   However, it is shown in [OM1998] that this is not a problem actually
+   and the conception of the scope itself have some problems.  Thus, we
+   should omit the conception and the TTL management related to it.
+
+
+8. Security Considerations
+
+   Security considerations are not addressed in this document.
+
+
+References
+
+   [RFC2327] Handley, M., Jacobson, V., "SDP: Session Description Protocol,"
+             RFC 2327, April 1998.
+
+   [RFC1890] H. Shulzrinne, "RTP Profile Audio and Vidoe conferences with
+             Minimal Control," RFC 1890, January 1996.
+
+   [RFC1738] Berners-Lee, T., Masinter, L. and McCahill, M., "Uniform
+             Resource Locators (URL)," RFC 1738, December 1994.
+
+
+
+
+FUJIKAWA Kenji            Expires in July 2000                  [Page 5]
+
+
+
+
+
+
+INTERNET DRAFT              Stream URI Scheme               January 2000
+
+
+   [RFC2396] Berners-Lee, T., Fielding, R., Masinter, L., "Uniform Resource
+             Identifiers (URI): Generic Syntax," RFC 2396, August 1998.
+
+   [OM1998]  Ohta, M. and Crowcroft, J., "Static Multicast," Internet Draft
+             draft-ohta-static-multicast-00.txt (work in progress),
+             March 1998.
+
+   [FK1999]  Fujikawa, K., "Service Specification,"
+             http://www.real-internet.org/draft/draft-ric-ss-00.txt,
+             December 1999.
+
+
+
+Authors' Address
+
+   FUJIKAWA, Kenji
+   Graduate School of Informatics, Kyoto University
+   Yoshidahonmachi, Sakyo-ku, Kyoto City, 606-8501, Japan
+   Phone : +81 75-753-5387
+   Email : fujikawa@real-internet.org
+
+   KURIYA, Shinobu
+   Graduate School of Informatics, Kyoto University
+   Yoshidahonmachi, Sakyo-ku, Kyoto City, 606-8501, Japan
+   Phone : +81 75-753-5387
+   Email : kuriya@kuis.kyoto-u.ac.jp
+
+   TANAKA, Tsuyoshi
+   Graduate School of Informatics, Kyoto University
+   Yoshidahonmachi, Sakyo-ku, Kyoto City, 606-8501, Japan
+   Phone : +81 75-753-5387
+   Email : tanaka@kuis.kyoto-u.ac.jp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FUJIKAWA Kenji            Expires in July 2000                  [Page 6]

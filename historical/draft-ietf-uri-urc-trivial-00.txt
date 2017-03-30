@@ -1,0 +1,148 @@
+
+IETF URI Working Group                                         Paul E. Hoffman
+Internet-Draft                                               Proper Publishing
+draft-ietf-uri-urc-trivial-00                                  Ron Daniel, Jr.
+Expires October 21, 1995                        Los Alamos National Laboratory
+
+
+                            Trivial URC Syntax: urc0
+
+Status of this memo
+
+This document is an Internet-Draft. Internet-Drafts are working documents
+of the Internet Engineering Task Force (IETF), its areas, and its working
+groups. Note that other groups may also distribute working documents as
+Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months.
+Internet-Drafts may be updated, replaced, or obsoleted by other documents
+at any time. It s not appropriate to use Internet- Drafts as reference
+material or to cite them other than as a "working draft" or "work in
+progress."
+
+To learn the current status of any Internet-Draft, please check the
+1id-abstracts.txt listing contained n the Internet-Drafts Shadow
+Directories on ds.internic.net, nic.nordu.net, ftp.isi.edu or
+munnari.oz.au.
+
+Abstract
+
+This document defines a trivial, machine-parsable Uniform Resource
+Citiation (URC) syntax that can be returned from the resolution of Uniform
+Resource Names (URNs). The syntax, called urc0, is also appropriate for any
+program that can return URCs. More sophisticated URC schemes will be
+developed later. urc0 is intended to be the simplest possible
+machine-parsable representation of a URC.
+
+This document does not cover any specific resolution schemes or the syntax
+for URNs. It is expected that these issues (and other URN-related topics)
+will be covered in different Internet Drafts submitted to the IETF URI
+Working Group.
+
+1. Introduction
+
+As explained in [URC], the purpose or function of a URC is to provide a
+vehicle or structure for the representation of URIs and their associated
+metainformation. It is expected that the syntax of some URCs may be quite
+complex in order to meet the needs of various Internet communities such as
+librarians, archivists, and researchers. However, not all URCs must have a
+complex structure.
+
+At present, it is not known who will produce and read URCs. Although more
+advanced URCs may be created by computer programs with the intention of
+them only being read and parsed by other programs, it is clear that some
+URCs will be written by people and that some will be read as plain text by
+people. Even these URCs should be machine-parsable in order for some
+Internet users to get the most value out of them.
+
+The URC syntax here, called "urc0", is easy to type and read by people. It
+is also trivial to parse by even the most simple programs.
+
+2. Format URCs in the urc-0 Syntax
+
+The format for urc-0 URCs is:
+
+*[<header><CRLF><some-URL><CRLF>[<metainformation>]]
+
+Each part starts with a header that has the following form:
+
+=====[<charset>[/<language>]]
+
+<charset> is the character set used in the metainformation. The value for
+the field is one of "US-ASCII" or "ISO-8859-x", where "x" is a digit in the
+range "1" through "9". If not specified, the default is "US-ASCII".
+
+<language> is the language used in the metainformation. The value for the
+field is a language identification tag described in [LANG]. If not
+specified, the default is "x-unspecified".
+
+The returned URL must conform to [URL]. If the URL is more than one line
+long, it must begin with the characters "<URL:" and end with a ">"
+character, as described in [URL].
+
+The optional metainformation may be of any format and contain any text. The
+only restriction is that no line of the metainformation may begin with the
+characters "=====".
+
+3. Examples of URCs Using the urc-0 Syntax
+
+A URC that has a single URL and no metainformation might look like:
+
+     =====
+     ftp://elm.wnln.edu/pub/mirrors/phone-list.txt
+
+A URC that has a URL on multiple lines might look like:
+
+     =====
+     <URL:ftp://elm.wnln.edu/pub/mirrors
+     /phone-list.txt>
+
+A URC that has a multiple URLs might look like:
+
+     =====
+     ftp://elm.wnln.edu/pub/mirrors/phone-list.txt
+     =====
+     ftp://gagu.bigstate.edu/admin/phones.html
+
+A URC that has a multiple URLs with metainformation might look like:
+
+     =====
+     ftp://elm.wnln.edu/pub/mirrors/phone-list.txt
+     This is the most up-to-date version of the WNLN-Bigstate phone list. It is
+     maintained by Cheryl O'Donnell.
+     =====US-ASCII/en
+     ftp://gagu.bigstate.edu/admin/phones.html
+     This is the mirror of the first URL at Bigstate.
+
+4. Security Implications
+
+Although there are security implications in transmitting URCs, there are no
+security implications in defining one of their syntaxes.
+
+5. References
+
+[LANG] RFC 1766, "Tags for the Identification of Languages".
+
+[URC] Internet-Draft, "URC Scenarios and Requirements". The name of the
+draft at the time of this writing is "draft-ietf-uri-urc-req-01".
+
+[URL] RFC 1738, "Uniform Resource Locators (URL)".
+
+6. Author Contact Information
+
+Paul E. Hoffman
+Proper Publishing
+127 Segre Place
+Santa Cruz, CA, USA  95060
+voice:  (408) 426-6222
+phoffman@proper.com
+
+Ron Daniel Jr.
+MS B287
+Los Alamos National Laboratory
+Los Alamos, NM, USA 87545
+voice:  (505) 665-0597
+fax:  (505) 665-4939
+rdaniel@lanl.gov
+
+

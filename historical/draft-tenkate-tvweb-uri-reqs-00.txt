@@ -1,0 +1,166 @@
+
+INTERNET-DRAFT                                            W. ten Kate
+draft-tenkate-tvweb-uri-reqs-00.txt            Philips Research Labs.
+November, 1998
+Expires May, 1999                                           G. Thomas
+                                                         LGERCA, Inc.
+
+                                                           C. Finseth
+                                          U.S. Satellite Broadcasting
+
+               Requirements TV Broadcast URI Schemes
+
+   
+1. Status of this Memo
+
+This document is an Internet-Draft. Internet-Drafts are working
+documents of the Internet Engineering Task Force (IETF), its Areas,
+and its Working Groups. Note that other groups may also distribute
+working documents as Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any 
+time. It is inappropriate to use Internet-Drafts as reference 
+material or to cite them other than as a "work in progress." 
+
+To view the entire list of current Internet-Drafts, please check
+the "1id-abstracts.txt" listing contained in the Internet-Drafts
+Shadow Directories on ftp.is.co.za (Africa), ftp.nordu.net
+(Northern Europe), ftp.nic.it (Southern Europe), munnari.oz.au
+(Pacific Rim), ftp.ietf.org (US East Coast), or ftp.isi.edu
+(US West Coast).
+
+Distribution of this document is unlimited. Please send comments 
+to www-tv@w3.org.
+
+This is work in progress by the W3C TV-Web Interest Group [1].
+This group discusses technological aspects concerning usage of 
+Web technology in TV Broadcast environments. A.o. it aims to 
+define a URI scheme for identifying resources in a TV Broadcast 
+environment. This document is also maintained at that group's 
+web page [2].
+
+
+2. Abstract
+
+This document lists the requirements posed to URI schemes for use 
+in TV Broadcast environments. The document summarizes the outcome 
+of discussions on this subject by the W3C TV-Web Interest Group [1].
+
+   
+3. TV Broadcast
+
+Definition: In this document TV Broadcast is used as the generic term 
+to refer to currently existing TV systems, their transport protocols, 
+and their typical operation of content provision and distribution.
+TV Broadcast includes systems like DVB, ATSC, DSS, NTSC, and PAL.
+The TV Broadcast 'network layer' is typically non-IP based.
+
+
+4. Requirements on TV Broadcast URI schemes
+
+o  The URI scheme should comply with RFC 2396.
+o  It must be possible for the resource identified by a URI to 
+   be a channel/service (i.e. a concatenation of programs), an 
+   entire program/event, or just a single component of a 
+   program/event (e.g., a media stream). Fragments within a 
+   component are outside the current scope of requirements.
+o  Given a URI, it must be possible for a receiver to actually 
+   locate the resource, or conclude that it is not reachable. 
+o  Given a URI, it must be possible for a receiver to determine 
+   the time period(s) within which the resource can be retrieved 
+   from the (also resolved) location.
+   [Note: the time period in which the resource is valid/meaningful 
+    is controlled by the lifecycle of the application calling the 
+    resource.]
+o  A URI should be invariant with respect to the normal range of
+   transport stream transformations, both in referencing the time 
+   and the location of the resource in that transport stream.
+o  The URI scheme should support the spectrum of transport protocols 
+   applied and standardized in TV Broadcast systems. This includes 
+   both audio/video and data broadcast protocols.
+o  A URI must be meaningful when interpreted from any of the 
+   following locations relative to the resource being referenced:
+   -  From the same TV Broadcast network
+   -  From another TV Broadcast network
+   -  From an arbitrary location in the Internet
+   [Note: this means that the system can detect it concerns a URI 
+    pointing to a TV Broadcast network.]
+o  A URI should be resolvable under any of the following network 
+   access conditions:
+   -  TV Broadcast, same or another network
+   -  Internet
+   -  In Home/local storage
+   -  Other (future) networks
+   The actual resource's retrieved content data may differ in terms 
+   of content encoding, content quality, performance, and edit version.
+   [Note the difference with the previous requirement, particularly 
+    the use of 'must' and 'should'.]
+o  The URI scheme must be compatible with solutions already adopted 
+   in standardisation bodies such as ATSC, DVB, and DAVIC.
+o  The URI scheme should interoperate with the Internet access schemes, 
+   in particular http.
+   [Note: the scheme, not per se the access protocol it calls; it means 
+    that hierarchies in the URI scheme should map as much as possible.
+    This should assist seamless transitions when the client decides 
+    to use another access protocol (and network).]
+o  Ideally, the URI should support referencing various instantiations 
+   of the same content (encoding, quality/compression ratio, 
+   versions/edits).
+o  The URI scheme should support relative referencing such that 
+   a TV-program with all its associated resources can be referenced 
+   against a common base, which is the TV Broadcast URI of that 
+   aggregate.
+
+
+5. Exceptions in TV Broadcast URIs
+
+TV Broadcast differs from the conventional Internet in several ways.
+The TV Broadcast URI scheme is affected by that in the following aspects:
+
+o  The host is not necessarily a server identifyable through an 
+   IP-address. For instance, the 'host' is a transport stream.
+o  The resource access and retrieval scheme is not necessarily 
+   IP-stack based.
+o  The resource's availability implicitly depends on, or at least 
+   relates to, a transmission schedule.
+
+
+Acknowledgements
+
+Several other members of the TV-Web Interest Group have contributed 
+to the content of this memo. Their comments, suggestions and other 
+input are heighly acknowledged.
+
+
+Authors Address
+
+     * Warner R.Th. ten Kate
+       Philips Research Laboratories
+       Prof. Holstlaan 4
+       5656 AA  Eindhoven
+       The Netherlands
+       Email: tenkate@natlab.research.philips.com
+
+       Gomer Thomas
+       LGERCA, Inc.
+       40 Washington Road
+       Princeton Junction, NJ 08550
+       Email: gomer@lgerca.com
+
+       Craig A. Finseth
+       USSB
+       3415 University Ave, Suite 201
+       St Paul MN 55114
+       Email: craig@finseth.com
+
+
+References
+
+   1. Philipp Hoschka,
+      W3C TVWeb Interest Group, 
+      <http://www.w3.org/TV/TVWeb/>
+   2. Warner ten Kate,
+      TV URI Schemes - Requirements
+      <http://www.w3.org/TV/TVWeb/TVWeb-URI-Requirements-19981110>
+

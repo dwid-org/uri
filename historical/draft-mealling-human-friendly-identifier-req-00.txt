@@ -1,0 +1,302 @@
+
+INTERNET-DRAFT                                                M.Mealling 
+Expires six months from June 1998                Network Solutions, Inc.
+Intended category: Experimental                 
+draft-mealling-human-friendly-identifier-req-00.txt
+
+                Requirements for Human Friendly Identifiers
+
+Status of this Memo
+
+This document is an Internet-Draft. Internet-Drafts are working documents
+of the Internet Engineering Task Force (IETF), its areas, and its working
+groups. Note that other groups may also distribute working documents as
+Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months and
+may be updated, replaced, or obsoleted by other documents at any time. It
+is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as work in progress.
+
+To view the entire list of current Internet-Drafts, please check
+the "1id-abstracts.txt" listing contained in the Internet-Drafts
+Shadow Directories on ftp.is.co.za (Africa), ftp.nordu.net
+(Northern Europe), ftp.nis.garr.it (Southern Europe), munnari.oz.au
+(Pacific Rim), ftp.ietf.org (US East Coast), or ftp.isi.edu
+(US West Coast).
+
+Abstract
+
+This document includes a set of requirements for an identifier that 
+is engineered for human consumption. While the identifier is still 
+machine consumable, the services and capabilities of the underlying
+system are designed with humans in mind. This includes concepts of
+geographic and context specific constraints, non-uniqueness, and
+natural language match semantics.
+
+1. Introduction
+
+The many identifiers used on the Internet are, in general, designed with
+machines in mind. Domains, URIs, and email addresses are all used to 
+identify some component of the network. They are not engineered to provide
+the easiest interface for users. Users routinely handle identifiers where
+two entities are known by the same name (companies with the same name in
+two different geographic locations) or short versions of long names 
+(Coke and Coca-Cola). This document specifies requirements for
+an identifier and resolution system that are can be engineered to solve
+human oriented identification needs. Identifiers that solve these 
+problems are referred to as "human friendly identifiers".
+
+2. Justification
+
+The phenomenal growth of the Internet over the past few years has
+had in immense impact on systems designed for a community of users
+who were highly computer literate. These early users were willing 
+(eager?) to use systems in a manner that suited the machine more than
+the user.
+
+Some would argue that DNS was built specifically for the purpose of
+making life easier for the user. On closer examination though, DNS'
+intended user was significantly more sophisticated than today's
+Internet user. The dot notation and the strict hierarchy are
+foreign to today's users and do not match their methods of
+organizing information and resources very well.
+
+To exacerbate the user-unfriendliness of domain-names, the 
+WorldWideWeb has added the additional property of specifying
+resources and protocols at the particular host identified
+by the domain-name. Many of those in the URI working group cringed
+when the first attempts at URLs were heard on radio or printed
+in newspapers. The quintessential example was heard on the
+Larry King Live show on CNN. The guest was David Letterman.
+
+   LETTERMAN: Can I just take a second here, Larry -- I'm 
+   sorry, I don't mean to interrupt -- To give our World Wide Web 
+   address. If people want to e-mail, we are on the World Wide Web 
+   as well. 
+
+   KING: You are too? 
+
+   LETTERMAN: wwwwww.com com com com ........ com com 
+   diggity diggity diggity dank.com.com diggity www.com 
+   Dave.com.com. So give us some of that e-mail or something. 
+
+   KING: Hold on. 
+
+   LETTERMAN: Have you got that, Larry? 
+
+   KING: Would you repeat that? I want to get it right. 
+
+   LETTERMAN: Come on, Larry. The bit's over. Pick it up. 
+
+While humorous, Letterman's point is that URLs and domain-names
+are not suited for the regular, day-to-day information
+needs of humans. Internet identifiers usually contain odd characters
+that are needed to delimit syntax elements. The mutual exclusivity
+of DNS means that two entities cannot have the same name, thus
+causing those without the desired domain to resort to acronyms
+or other combinations that simply do not meet users expectations.
+
+This inappropriate use of existing identifiers has created two problems:
+
+	Users are left confused and intimidated. While growth
+	of the Internet is large, there are significant sections
+	of the population that are so intimidated by the
+	technical lingo that they refuse to go online.
+
+	Identifiers and services are abused in order to squeeze
+	out some modicum of human oriented functionality. DNS'
+	".com" domain is one such example. Companies and governments
+        routinely attempt to apply trademark law to a medium that
+        cannot cope with the basic tenets of trademarks.
+
+These two problems cannot be solved using existing Internet systems.
+Intimidated users will not feel comfortable until they can use
+the same identifiers they use in everyday conversation. Existing
+systems will be further pressed into service until some system
+accommodates most of the needs of marketers and lawyers.
+
+A solution is needed. This document intends to explore the requirements
+needed to supply a solution. The first task is to identify the specific
+user communities and the specific HFI oriented problems they face.
+Secondly, specific parts of the problem space are analysed for being
+in or out of scope for this effort.  The remaining problems are then merged 
+into a simple set of requirements that define a solvalbe and useful
+problem space.
+
+3. Intended Audience
+
+There are three distinct user communities that have an interest in
+a human friendly identifier:
+
+	Users - The general Internet user desires an identifier that 
+		can be easily remembered and guessed. This makes it
+		much easier to find important resources.
+
+	Marketing - Businesses desire an identifier that gives
+		their marketing campaigns the greatest latitude
+		in terms of character sets, length, and simplicity.
+		In many cases the identifier will be determined as
+   		much by the media in which it is conveyed as the
+		idea it is attempting to convey.
+
+	Trademark holders - Businesses that own trademarks desire
+		an easy way to protect those resources. Many
+		have invested large amounts of money in protecting
+		their marks according to an existing legal 
+		framework.
+
+The features that make sense to users are fairly straightforward. They
+desire an identifier that is as close as possible to the identifiers
+they use in everyday life. When someone mentioned the term "tide", most
+users can differentiate the laundry detergent from the rise
+and fall of oceans by context. At the very least a user would expect an
+identifier to be able to support two definitions for the same term.
+
+The features that a marketing campaign needs are subtly different.
+Currently there is a desire in marketing campaigns that deal with
+the Internet to use the Internet connection as an additional marketing
+point. The ".com" suffix has become a brandname of sorts that
+signifies that the resource being marketed as "Internet savvy".
+Additionally, marketing desires identifiers that are short and
+not syntactically complex. It should be very easy for either
+the user or marketer to use the same identifier for radio and 
+television as well as the Internet. For example, Network Solutions
+does not like to use "NSI" as an identifier because it 
+does not convey meaning. The string "Network Solutions" is preferable.
+In existing Internet identifiers the space (ASCII 20) character
+is problematic. A marketing campaign should not have to know this
+or change their techniques just to advertise on the Internet.
+
+Once a marketing campaign begins to use a slogan or name in
+the public, that name or slogan takes on value as a trademark.
+Trademark makes one very important assumption: a mark can be used
+by two different entities as long as they are either geographically
+separate or exist in two distinctly different industry segments.
+There are exceptions to this of course (federal anti-dilution
+laws) but by and large it is how trademarks have been used
+for hundreds of years. Any system that hopes to be usable by
+a marketing campaign must also be capable of co-existing to some
+degree with existing trademark law. This means any identifier should
+be capable of being used by two separate entities. It 
+also means that in order to create the geographic and 
+industry specific segmentation, the user should be able to 
+specify these components when requesting the resource for
+the identifier.
+
+4. Scope
+
+Each of these user communities, when asked, would probably suggest a rather
+expansive system that would normally be characterized as a full directory 
+service.  The task here is to decide which of those features are
+required and which are out of scope. 
+
+One feature that the end-user will probably request is that the system
+allow for keyword searches on the data returned by an identifier or that
+the HFIs be organized into some topical hierarchy to be used for browsing.
+These features are simply to elaborate and would turn the entire system
+into a simple search engine. These already exist and should not be 
+standardized as part of this problem.
+
+Another feature that the marketing and trademark owners would prefer is
+that the system itself protect trademarks by inserting legal/business
+logic deep into the resolution system. Due to the massive differences
+in legal systems, customs and user expectations, this is simply impossible
+to do with current technology. Thus, all decisions about what entity is
+allowed to insert which identifiers is a policy issue to be decided
+by those entities that participate in the system. In other words, this
+system is not a generic trademark enforcement mechanism anymore than
+the printing press is. Trademark disputes are still adjudicated within
+the legal system. This system should merely reflect that, not enforce it.
+
+Succinctly stated, the requirements that are considered out of scope are
+generic search/navigation and trademark enforcement. 
+
+5. Requirements
+
+The requirements that are left are fairly simple and should allow for
+a system that can be implemented but that still solves enough problems
+to be useful.
+
+Shortness
+
+The identifier should be short so that those dealing with marketing
+and media can create very short identifiers that users can remember
+easily.
+
+Internationalization
+
+The identifier should be fully internationalized. This includes
+matching semantics for left-right, right-left, top-bottom orientation;
+multi-language soundex, etc.
+
+N-to-N mapping
+
+A single identifier should be capable of being used by two separate 
+entities. Conversely, an entity should be capable of having more than
+one identifier.
+
+Matching semantics
+
+At the least, substring matches are required. Other methods
+of matching should be evaluated based on performance and ability
+to give the user an accurate result set.
+
+User level context
+
+The client should be able to communicate to the resolution service
+its geographic and semantic context so that matches can be ranked
+according to location and relevance to the users current context.
+The system should be capable of conveying other contexts on a 
+per-application basis.
+
+Hierarchy
+
+The identifier should be capable of expressing hierarchy. In some
+cases it makes sense for an identifier to appear to belong to a
+hierarchy. But this is merely a capability. It is not a hierarchy.
+It is expected that hierarchical identifiers will be a distinct
+minority.
+
+Openness
+
+The system should allow for end-users to insert their own identifiers
+into the system in an open manner. 
+
+Quality of Service
+
+The user should be presented with some simple system for understanding
+whether the identifier was created by an entity that puts a higher
+quality of service on the data represented by the identifier. The basic
+level of service is where any entity can insert any identifier so 
+long as no gaurantees are made about that identifiers legal or commercial 
+status.  The highest level of service is where the identifier is 
+gauranteed to be a legal trademark in all of the specified contexts and 
+the data returned by the service is gauranteed to be complete and accurate.
+
+Distributed
+
+While the namespace is inherently flag, the top level servers must be 
+distributable and should only contain referrals to servers where the
+actual data is stored.
+
+Data representation
+
+The data returned to the client should be in a format that allows for
+fairly rich content but that does not require the content to be rich.
+
+6. Conclusions
+
+These requirements define a problem space that currently does not have
+a solution. They do, on the other hand, describe a problem that is
+solvable using existing or easiliy developed/evolved technology.
+
+7. Author Contact Information
+
+Michael Mealling
+Network Solutions
+505 Huntmar Park Drive
+Herndon, VA 22070
+voice: (703) 742-0400
+fax: (703) 742-9552
+email: michaelm@rwhois.net

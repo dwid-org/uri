@@ -1,0 +1,439 @@
+INTERNET-DRAFT                                           A. Vaha-Sipila
+Expires 24-Nov-1999                                               Nokia
+                                                            19-May-1999
+
+                   URLs for GSM Short Message Service
+                    <draft-antti-gsm-sms-url-04.txt>
+
+Status of This Memo
+
+   This document is an Internet-Draft and is in full conformance with
+   all provisions of Section 10 of RFC2026.
+
+   This document is an Internet-Draft. Internet-Drafts are working
+   documents of the Internet Engineering Task Force (IETF), its areas,
+   and its working groups. Note that other groups may also distribute
+   working documents as Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time. It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   The list of current Internet-Drafts can be accessed at
+   http://www.ietf.org/ietf/1id-abstracts.txt
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   http://www.ietf.org/shadow.html.
+
+   To view the entire list of current Internet-Drafts, please check the
+   "1id-abstracts.txt" listing contained in the Internet-Drafts Shadow
+   Directories on ftp.is.co.za (Africa), ftp.nordu.net (Northern
+   Europe), ftp.nis.garr.it (Southern Europe), munnari.oz.au (Pacific
+   Rim), ftp.ietf.org (US East Coast), or ftp.isi.edu (US West Coast).
+
+   The distribution of this document before its expiry date is
+   unlimited.
+
+Abstract
+
+   This document specifies a URL (Uniform Resource Locator) scheme "sms"
+   for specifying a recipient for an alphanumeric message (Short
+   Message) in a GSM-based mobile phone system. Short Messages are two-
+   way paging messages that can be sent from a suitably equipped
+   computer or a phone.
+
+
+
+
+
+
+
+
+
+
+
+A. Vaha-Sipila           Expires November, 1999                 [Page 1]
+
+
+Internet-Draft              URLs for GSM SMS                    May 1999
+
+
+Table of Contents
+
+   1. Introduction ................................................    3
+
+   1.1 What is GSM?  ..............................................    3
+
+   1.2 Short Message Service ......................................    3
+
+   1.3 Short Messages and the Internet ............................    3
+
+   1.4 Formal Definitions .........................................    4
+
+   1.5 Requirements ...............................................    4
+
+   2. The "sms" URL Scheme ........................................    4
+
+   2.1 Applicability ..............................................    4
+
+   2.2 Formal Definition ..........................................    5
+
+   2.3 Parsing a "sms" URL ........................................    5
+
+   2.4 Examples of Use ............................................    6
+
+   2.5 Using "sms" URLs in HTML Forms .............................    6
+
+   3. References ..................................................    6
+
+   4. Security Considerations .....................................    7
+
+   5. Authors' Addresses ..........................................    8
+
+   6. Full Copyright Statement ....................................    8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A. Vaha-Sipila           Expires November, 1999                 [Page 2]
+
+
+Internet-Draft              URLs for GSM SMS                    May 1999
+
+
+1. Introduction
+
+1.1 What is GSM?
+
+   GSM (Global System for Mobile Communications) is a digital mobile
+   phone standard which is used extensively in many parts of the world.
+   Named after its frequency band around 900 MHz, GSM-900 has provided
+   the basis for several other networks utilizing GSM technology. When
+   referring to "GSM" in this document, we mean any of these GSM-based
+   networks that operate a short message service.
+
+1.2 Short Message Service
+
+   Short Messages [SMS] are two-way alphanumeric paging messages that
+   can be sent to and from GSM mobile phones. Short Messages can be
+   transmitted over the mobile phone's air interface using the
+   signalling channels so there is no delay for call setup. Short
+   Messages are stored by an entity called Short Message Service Centre
+   (SMSC) and sent to the recipient when the subscriber connects to the
+   network. The number of a cooperative SMSC must be known to the sender
+   when sending the message.
+
+   Short Messages can be mobile terminated (MT) or mobile originated
+   (MO). Mobile terminated messages are the ones that arrive to phones;
+   mobile originating messages are sent by a mobile subscriber. Networks
+   may support either, both or none of these.
+
+   A service similar to GSM SMS can be found also in other mobile phone
+   systems, but it may be called something else. The sender may not be
+   able to know whether it is capable of successfully sending a Short
+   Message to the recipient. The success depends on whether the network
+   operators have a suitable roaming agreement and a mechanism to
+   deliver the messages (theoretically it is possible to deliver short
+   messages between different network types, but this is not common at
+   the moment). It should be the network operator's responsibility to
+   inform the user about a success or a failure of the message delivery.
+
+   If there is a need to use the same scheme specifier for other network
+   types than GSM, this document should be updated.
+
+1.3 Short Messages and the Internet
+
+   Short Messages can be used to transport almost any kind of data.
+   Some examples of possible uses for a Short Message are described
+   below.
+
+
+
+
+A. Vaha-Sipila           Expires November, 1999                 [Page 3]
+
+
+Internet-Draft              URLs for GSM SMS                    May 1999
+
+
+   The Hypertext Markup Language (HTML) provides a way to collect
+   information from the user and pass it to a remote server for
+   processing. This functionality is known as "forms". A filled-in form
+   is usually sent to the destination using Hypertext Transfer Protocol
+   (HTTP) or mail. Short Messages can be used as the transport for these
+   forms. As the Short Message service is "out-of-band" as far as normal
+   HTTP-over-TCP/IP is concerned, this provides a way to fill in forms
+   offline and send the data without making a TCP connection to the
+   remote server, as the set-up time, cost and overhead for a TCP
+   connection are large compared to a Short Message. Also, depending on
+   the network configuration, the sender's telephone number may be
+   included in the Short Message, thus providing a weak form of
+   authentication.
+
+   Short Messages can also provide an alternative to a "mailto" type
+   URL. When a "sms" type URL is activated, the user agent MAY start a
+   program for sending an SMS message, just as "mailto" may open a mail
+   client.
+
+   The recipient need not to be a mobile phone. It can be a server that
+   can process Short Messages, either by gatewaying them to another
+   messaging system or by parsing them for supplementary services.
+
+   GSM Short Messages have a maximum length of 160 characters (from the
+   SMS character set), or 140 octets. However, Short Messages can be
+   concatenated to form longer messages. It is up to the user agent to
+   decide whether to limit the length of the message and how to indicate
+   this limit in its user interface, if necessary. There is one
+   exception to this, see section 2.5.
+
+1.4 Formal Definitions
+
+   Definitions are written using Augmented BNF for Syntax Specifications
+   [RFC2234].
+
+1.5 Requirements
+
+   Compliant software MUST follow this specification. Requirements are
+   indicated by capitalized words as specified in [RFC2119].
+
+2. The "sms" URL Scheme
+
+2.1 Applicability
+
+   This URL scheme is intended for sending a Short Message to a certain
+   recipient(s) through service centre(s). The functionality is quite
+
+
+
+A. Vaha-Sipila           Expires November, 1999                 [Page 4]
+
+
+Internet-Draft              URLs for GSM SMS                    May 1999
+
+
+   similar to that of the "mailto" URL, which (as per [RFC2368]) can
+   also be used with a comma-separated list of email addresses.
+
+   In some situations, it may be necessary to guide the sender to send
+   the Short Message via a certain SMSC. For this purpose, this URL may
+   specify the number of the SMSC.
+
+   The notation for phone numbers is similar to that if [DRAFT-TELURL].
+   Refer to that document and to [RFC2303] for information on why this
+   particular format was chosen.
+
+   How the Short Message is sent to the SMSC is outside the scope of
+   this specification. Short Messages can be sent over the GSM air
+   interface or by using a modem and a suitable protocol (such as UCP
+   [UCP] or TDP [TDP]). Also, Short Message service options like
+   deferred delivery and delivery notification requests are not in the
+   scope of this document. Such services MAY be requested from the
+   network by the user agent if necessary.
+
+   Short Messages sent as a result of this URL MUST be sent as class 1
+   Short Messages, if the user agent is able to specify the message
+   class.
+
+2.2 Formal Definition
+
+   The URL is case-insensitive. The URL syntax is formally described as
+   follows:
+
+      sms-url              = scheme ":" scheme-specific-part
+      scheme               = "sms"
+      scheme-specific-part = subscriber-id [";via=" message-centre-id]
+                             ["," scheme-specific-part]
+      subscriber-id        = ["+"] phone-number
+      message-centre-id    = ["+"] phone-number
+      phone-number         = 1*phonedigit
+      phonedigit           = digit / "-" / "."
+      digit                = "0" / "1" / "2" / "3" / "4" / "5" /
+                             "6" / "7" / "8" / "9"
+
+2.3 Parsing a "sms" URL
+
+   1. <subscriber-id> is extracted. It is the phone number of the final
+   recipient and it MUST be written in international form with country
+   code, unless the number only works from inside a certain geographical
+   area or a network. Note that some numbers may work from several
+   networks but not from the whole world - these SHOULD be written in
+
+
+
+A. Vaha-Sipila           Expires November, 1999                 [Page 5]
+
+
+Internet-Draft              URLs for GSM SMS                    May 1999
+
+
+   international form. All international numbers MUST begin with a "+"
+   character. Hyphens and dots are only to aid readability. They MUST
+   NOT have any other meaning.
+
+   2. <message-centre-id> is extracted if present. User-agent SHOULD try
+   to send the message first using this SMSC. If that fails, user-agent
+   MAY try another SMSC. The number of the SMSC is subject to the same
+   rules as the "subscriber-id" (see above).
+
+   3. If the URL consists of a comma-separated list of recipients, all
+   of them are processed in this manner. Exactly the same content SHOULD
+   be sent to all of the listed recipients.
+
+2.4 Examples of Use
+
+      sms:+3585551234567
+
+   This indicates a mobile terminated (MT) Short Message capable
+   recipient at the given telephone number. The message is sent using
+   the user-agent's default SMSC.
+
+      sms:+3585551234567;via=+3585551000100
+
+   This indicates that the Short Message should be sent using the SMSC
+   at the given number.
+
+2.5 Using "sms" URLs in HTML Forms
+
+   When using a "sms" type URL as an action URL for HTML form submission
+   [RFC1866], the form contents MUST be packaged in the Short Message
+   just as they are packaged when using a "mailto" URL [RFC2368], using
+   "application/x-www-form-urlencoded" MIME type [RFC1866]. The Short
+   Message MUST NOT contain any HTTP headers, only the form data. The
+   MIME type is implicit. It will not be transferred in the Short
+   Message.
+
+   The user agent SHOULD inform the user about the possible security
+   hazards involved when submitting the form.
+
+   If the form submission is longer than the maximum Short Message size,
+   the user agent MAY either concatenate Short Messages, if it is able
+   to do so, or it MAY refuse to send the message. The user agent MUST
+   NOT send out partial form submissions.
+
+3. References
+
+
+
+
+A. Vaha-Sipila           Expires November, 1999                 [Page 6]
+
+
+Internet-Draft              URLs for GSM SMS                    May 1999
+
+
+   [DRAFT-TELURL] URLs for Telephony. A. Vaha-Sipila. 1998.  An
+   Internet-Draft (work in progress).  <ftp://ftp.nordu.net/internet-
+   drafts/ draft-antti-telephony-url-05.txt>
+
+   [RFC1738] Uniform Resource Locators (URL). December 1994. T.
+   Berners-Lee et al. <ftp://ftp.nordu.net/rfc/rfc1738.txt>
+
+   [RFC1866] Hypertext Markup Language - 2.0. T. Berners-Lee et al.
+   November 1995. RFC 1866. <URL:ftp://ftp.nordu.net/rfc/rfc1866.txt>
+
+   [RFC2119] Key words for use in RFCs to Indicate Requirement Levels.
+   April 1997. S. Bradner.  <ftp://ftp.nordu.net/rfc/rfc2119.txt>
+
+   [RFC2234] Augmented BNF for Syntax Specifications: ABNF. November
+   1997. D. Crocker et al. RFC 2234.
+   <URL:ftp://ftp.nordu.net/rfc/rfc2234.txt>
+
+   [RFC2303] Minimal PSTN Address Format in Internet Mail. March 1998.
+   C. Allocchio. RFC 2303.  <URL:ftp://ftp.nordu.net/rfc/rfc2303.txt>
+
+   [RFC2368] The mailto URL Scheme. July 1998. P. Hoffman et al.  RFC
+   2368. <URL:ftp://ftp.nordu.net/rfc/rfc2368.txt>
+
+   [UCP] Paging Systems; European Radio Message System (ERMES) (ETS 300
+   133-3). Part 3: Network Aspects. July 1992. European
+   Telecommunications Standards Institute.
+
+   [TDP] Telocator Data Paging Protocol (TDP). Version 2.0. July 27,
+   1995. Personal Communications Industry Association.
+   <http://www.mot.com/MIMS/MSPG/pcia_protocols/tdp_v2p0/index.html>
+
+   [SMS] Digital Cellular Telecommunications System (Phase 2+):
+   Technical Realization of the Short Message Service (SMS) Point-to-
+   Point (PP) (GSM 3.40). Version 5.2.0. May 1996. European
+   Telecommunications Standards Institute.
+
+4. Security Considerations
+
+   It should be noted that the user agent SHOULD NOT send out Short
+   Messages without the knowledge of the user because of associated
+   risks, which include sending masses of Short Messages to a subscriber
+   without her consent and the costs involved in sending a Short
+   Message.
+
+   The user agent SHOULD have some mechanism that the user can use to
+   filter out unwanted destinations for Short Messages. The user agent
+
+
+
+A. Vaha-Sipila           Expires November, 1999                 [Page 7]
+
+
+Internet-Draft              URLs for GSM SMS                    May 1999
+
+
+   SHOULD also have some means of restricting the number of Short
+   Messages sent.
+
+5. Authors' Addresses
+
+   Contact person and version control responsibility for this
+   specification:
+
+      Nokia Mobile Phones
+      Antti Vaha-Sipila
+      P. O. Box 68
+      FIN-33721 Tampere
+      Finland
+
+      Electronic mail: antti.vaha-sipila@nmp.nokia.com
+
+   Please include your name and electronic mail address in all
+   communications. If you want to receive the newest version of this
+   specification electronically, send mail to the address above.
+
+   This document expires on the 24th of November, 1999, or when a new
+   version is released.
+
+6. Full Copyright Statement
+
+   To be included in the final RFC submission.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A. Vaha-Sipila           Expires November, 1999                 [Page 8]

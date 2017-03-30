@@ -1,0 +1,839 @@
+Internet Draft                                          Keith E. Shafer
+draft-ietf-uri-urn-resolution-01.txt                     Eric J. Miller
+                                                        Vincent M. Tkac
+                                                       Stuart L. Weibel
+Expires January 1, 1996                  Online Computer Library Center
+
+                                                                       
+                             URN Services
+
+Status of this memo
+ 
+This document is an Internet-Draft.  Internet-Drafts are working
+documents of the Internet Engineering Task Force (IETF), its areas,
+and its working groups.  Note that other groups may also distribute
+working documents as Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months.
+Internet-Drafts may be updated, replaced, or obsoleted by other
+documents at any time.  It is not appropriate to use Internet-Drafts
+as reference material or to cite them other than as a ``working
+draft'' or ``work in progress.''
+
+To learn the current status of any Internet-Draft, please check the
+1id-abstracts.txt listing contained in the Internet-Drafts Shadow
+Directories on ds.internic.net, nic.nordu.net, ftp.isi.edu, or
+munnari.oz.au.
+
+
+Abstract
+
+This document focuses on the syntax and function of URNs, the nature
+of registered and unregistered naming authorities, and the
+relationships of URNs to an open-ended variety of resolution services
+that might link these objects within the URI architecture.
+
+
+Design Philosophy ................................................. 1.0
+URN Definition .................................................... 2.0
+   Naming Authorities ............................................. 2.1
+      Name Authority: Hierarchical Name Authority ID ............ 2.1.1
+      Name Authority: Resolution Host ........................... 2.1.2
+   Opaque String .................................................. 2.2
+Resolution Request ................................................ 3.0
+   Resolution Services ............................................ 3.1
+      BNF for Resolution Requests ............................... 3.1.1
+      URN to URL (N2L) .......................................... 3.1.2
+      URN to URN (N2N) .......................................... 3.1.3
+      URN to URC (N2Cx) ......................................... 3.1.4
+      URL to URN (L2N) .......................................... 3.1.5
+     URL to URC (L2Cx) .......................................... 3.1.6
+   Optional Resolution Path ....................................... 3.2
+System Components ................................................. 4.0
+   Name Authority Registry and Resolver ........................... 4.1
+   Naming Authority ............................................... 4.2
+   Resolution Host ................................................ 4.3
+   Client ......................................................... 4.4
+Name Assignment ................................................... 5.0
+Resolution ........................................................ 6.0
+   Client Table ................................................... 6.1
+   Examples ....................................................... 6.2
+      General Algorithm ......................................... 6.2.0
+      Naming authority ID is not overridden and a optional resolution 
+        path is not specified by the author ..................... 6.2.1
+      Naming authority ID is not overridden and a optional resolution 
+        path is specified by the author ......................... 6.2.2
+      Naming Authority ID is overridden in the Client table ..... 6.2.3
+Protocol .......................................................... 7.0
+   Request ........................................................ 7.1
+   Response  ...................................................... 7.2
+   Example of Request Sent to Name Authority Resolvers ............ 7.3
+   Example of Request Sent to Resolution Hosts .................... 7.4
+Fulfillment of URN Requirements ................................... 8.0
+Requirements for URN Function ..................................... 8.1
+Requirements for URN Encoding ..................................... 8.2
+Glossary .......................................................... 9.0
+References ....................................................... 10.0
+Author Contact Information ....................................... 11.0
+
+
+1.0 Design Philosophy
+
+Several URN proposals (including this one) propose a URN syntax that
+consists of some variation on "Name Authority/Opaque String" (NA/OS)
+[URN] [URNS].  This proposal emphasizes the role of a URN as a
+location-independent pointer to an electronic object that has
+potentially many resolution possibilities, depending on the services
+requested (hence the title, "URN Services").  These services can come
+into existence (or be discontinued) as the marketplace dictates, and
+such changes could be accommodated by clients by, for example, simple
+table configuration at launch.  At a minimum, a client can always do
+the simple canonical resolution of a URN to a single URL, but other
+options will be available as service providers respond to the evolving
+needs of users.
+ 
+The present proposal focuses on three basic ideas that address what a
+URN is and how a resolution request might be specified:
+
+ a.  There will be a variety of URN resolution services.
+ b.  Authors/users should be able to specify a particular resolution
+     service.
+ c.  URN name authorities can be registered or unregistered.
+
+a.  In the simplest case, a URN should be resolvable to a URL.  In
+other cases, a URN may need to be resolved to a list of URLs [URC0] or
+some version of a URC.  To support this, one cannot merely say that a
+URN resolution request in a document is specified as URN:NA/OS.
+Instead, one should explicitly state the service desired.  Some
+possible services include (see section 3.1 for details and the actual
+syntax):
+
+
+  N2L:NA/OS  Resolution of URN to exactly one URL (the canonical case)
+ N2C0:NA/OS  Resolution of URN to a list of URLs extracted from a URC
+ N2C1:NA/OS  Resolution of URN to a complete URC
+ N2Cc:NA/OS  Resolution of URN to a standard citation format
+
+b.  To promote competitive, value-added URN resolution services, it
+is envisioned that multiple resolution hosts may be available to
+resolve URNs from certain name spaces.  This results in a scheme that
+allows authors and users a means by which they can suggest which URN
+resolution hosts are contacted to resolve a URN.  This control is
+independent of the actual "URN" as will be shown in section 3.0.
+
+c. Short, simple names (such as OCLC, ATT, and GPO) will be 
+desirable from the point of view of users as well as the naming
+authorities.  However, not everyone will need or want registered names,
+so a means to support unregistered naming authorities is necessary.
+See section 2.1.2.
+
+
+2.0 URN Definition
+
+A Universal Resource Name [URN] is a unique, location independent
+designation for an object or service.  
+
+A URN is a string that consists of a naming authority, a "/", and an
+opaque string (e.g., OCLC/1234).
+
+A URN in running text may be proceeded by "URN:" to signify that it is
+a URN (e.g. URN:OCLC/1234).  However, this does not imply any
+resolution to a URL (see 4.0) it simply identifies the string
+"OCLC/1234" as a URN.
+
+
+2.1 Naming Authorities
+
+The naming authority (NA) part of a URN can be of two types: a
+hierarchical name authority ID or a resolution host.
+
+The hierarchical name authority ID will provide a persistent,
+hierarchical name authority ID space that does not rely on DNS.  The
+resolution host name authority ID will provide a means of phasing in
+the technology as well as the ability to use experimental and
+unregistered naming authorities at the cost of being potentially less
+persistent.
+
+
+2.1.1 Name Authority:  Hierarchical Name Authority ID
+
+A name authority ID is a registered ID approved by a central name
+authority registry that is guaranteed to be unique in the name
+authority ID space.  A name authority ID and resolution service can be
+resolved by a name authority ID resolver to an actual resolution host.
+Naming authority IDs will be case insensitive.  For example, a name
+authority resolver might resolve the registered name authority ID
+"OCLC" and resolution service "N2L" to a resolution host such as
+"res.oclc.org:5001".  Name authority IDs cannot have periods "." in
+them.
+
+A hierarchical name authority ID describes a unique path down a tree
+to a Name Authority Resolver.  The char '_' is reserved as the
+delimiter in the hierarchical name authority ID space.  The path can
+be of arbitrary length.  Different authorities and sub-authorities can
+be responsible for different levels of the tree.  The address of
+resolvers and registries at different levels of the tree can be cached
+so that resolution can start at the most specific known resolver for a
+name.  At each step of the resolution the name authority ID registry
+can return a list of resolution hosts or a redirect to a
+sub-authority.  This is similar to the Path URN Specification [PATH].
+
+
+
+2.1.2 Name Authority:  Resolution Host
+
+The name authority part of a URN is not necessarily a name authority
+ID.  It can also be a resolution host -- a fully qualified domain name
+(FQDN) or IP address and port to a resolution service.  Any name
+authority with a "." in it is assumed to be a resolution host.
+
+It can be argued that all naming authorities should be registered, but
+it is easy to find cases where the registration of a name authority ID
+is neither necessary nor desirable.
+
+This does not impede the ability of those that do want a high level of
+persistence, but it does allow others to use the technology at
+different levels.  This will allow any host to act as a naming
+authority.
+
+2.2 Opaque String 
+
+The opaque string (OS) part of a URN is assigned by the name authority.
+No assumptions can be made about its content or structure.
+
+
+3.0 Resolution Request
+
+A URN can stand alone in text but it is often necessary to provide
+some hints to the client about what the URN should be resolved to
+(i.e. in what context the author was referring to the URN.)  This is
+just a hint to the client and the client is free to ignore it and use
+the URN.
+
+A Resolution Request is a string that consists of a resolution service,
+a ':/', an Optional Resolution Path, a '/' and a URN.
+
+3.1 Resolution Services
+
+A URN can be resolved to a variety of objects, including a single URL,
+a list of URLs, a variety of URC variants, or another URN.  The desired
+resolution service is explicitly specified in a resolution service
+request.
+
+Resolution services can be registered or unregistered.  A resolution
+service is registered if the Name Authority Resolver can provide a
+resolution host for a resolution service and name authority id.  In
+the case of a service that is unregistered, the service should be
+modified with an Optional Resolution Path (ORP) to specify how to
+resolve that particular service.  The ORP contains a list of
+resolution hosts separated by semicolons (see 3.2 on ORP).
+
+3.1.1 BNF for Resolution Service Requests
+
+The following grammar describes a URN resolution service request.  Note
+that "[]" denotes an optional parameter and "*" denotes zero or more
+occurrences of an item.
+
+resolution service request  ::== service:/[orp]/urn
+
+service                     ::== N2L  | N2N  | N2Cx | 
+                                 L2N  | L2Cx | ...
+
+orp                         ::== host_port [;orp]
+
+host_port                   ::== fqdn [:port] |
+                                 ip [:port]
+
+fqdn                        ::== Fully Qualified Domain Name
+
+ip                          ::== IP Address
+
+port                        ::== Port_Number 
+
+urn                         ::== na/opaque_string
+
+na                          ::== name authority ID  | host_port 
+
+opaque_string               ::== the contents of the opaque string 
+                                 are left to the naming authority
+
+
+
+3.1.2 URN to URL  (N2L)
+
+The resolution of a URN to URL is the fundamental URN resolution 
+service.  URNs may be associated with many URLs, but a given service 
+should return exactly one (which may be null in the degenerate case).
+Note that the resulting URL may be dependent upon the resolution 
+authority contacted as duplicates of the object may be used to improve
+performance.  The basic notation of this action may be defined as:
+
+    N2L:/[ORP]/URN                 ->  URL   
+
+For example:
+
+          |----URN----|
+    N2L://OCLC/ISBN1234            ->  http://www.oclc.org/isbn/1234
+
+        Naming authority ID = "OCLC"
+        Opaque_string       = "ISBN1234"
+
+
+3.1.3 URN to URN  (N2N)
+
+Since URNs are meant to be persistent, it may be necessary to provide
+a service that can update old URNs when the original URN may not be
+resolved.
+
+While one could argue that a URN should never become invalid, there
+are several instances when one might want to "change" a URN.  For
+instance, when a naming authority is acquired by another naming
+authority or when an object radically changes ownership (say, from 
+one publisher to another).  This will also provide a facility to
+consolidate duplicate URNs.  The basic notation of this action may 
+be defined as:
+
+    N2N:/[ORP]/URN                 ->  URN
+
+For example:
+
+          |----URN----|
+    N2N://OCLC/ISBN1234            ->  URN:/archive.org/OCLC/ISBN1234
+
+        Naming authority ID = "OCLC"
+        Opaque_string       = "ISBN1234"
+
+
+3.1.4 URN to URC  (N2Cx)
+
+Resolution of a URN to zero or more URCs.  The "x" denotes an
+unspecified variety of projections of the complete URC as noted in
+[URC0].
+
+The definition of such projections is beyond the scope of this draft,
+and will be, in fact, an open ended result of evolving user needs.  The
+basic notation of this action may be defined as: 
+
+    N2Cx:/[ORP]/URN                -> (flavor "x" projection of a URC)
+
+For example:
+
+           |----URN----|           
+    N2C0://OCLC/ISBN1234           -> (the minimum URC projection info)
+
+        Naming authority ID = "OCLC"
+        Opaque_string       = "ISBN1234"
+
+
+3.1.5 URL to URN  (L2N)
+
+Resolution of a URL to zero or more URNs.     
+
+There can be more than one URN/URC for a given URL because a given
+object may have been described by multiple naming authorities.  Note
+that there is no architectural requirement for this service (or any but
+the canonical resolution service), but the need for such a service is
+clear, and it will be satisfied as a result of market demand.
+ 
+The basic notation of this action may be defined as: 
+ 
+    L2N:/[ORP]/URL                       -> URN
+
+For example:
+
+          |------------URL------------|           
+    L2N://http://www.oclc.org/isbn/1234  -> URN://OCLC/ISBN.1994.1234
+
+
+
+3.1.6 URL to URC  (L2Cx)
+
+Resolution of a URL to zero or more URCs.  The "x" is a shorthand
+notation for specifying a projection of the complete URC as noted in 
+[URC0].
+
+There can be more than one URN/URC for a given URL because the URL may 
+be referenced in several collections.   The basic notation of this 
+action may be defined as: 
+
+    L2Cx:/[ORP]/URL                      -> (X level URC projection)
+
+For example:
+
+           |-----------URL-------------|
+    L2Cx://http://www.oclc.org/isbn/1234 -> (X level URC projection)
+
+
+3.2 Optional Resolution Path
+
+The Optional Resolution Path (ORP) provides a mechanism by which new
+or experimental (unregistered) services can be used and tested.  For
+example, once a service is registered and a resolution host can be
+determined dynamically from the name authority registry, the optional
+resolution path in the resolution request may be ignored by the
+client.  Some specific examples follow.
+
+  Eric realizes that scholars are lazy louts who will pay $0.25 for
+  every URN to be converted into the Chicago Manual of Style citation
+  format, and provides a service to do this.
+
+  CMoS://OCLC/0001 won't work, however, because Eric's new service
+  (CMoS) isn't registered with the naming authority (OCLC).  If CMoS
+  is not a registered resolution service under OCLC then the browser 
+  has no   way of resolving it, so he provides a path that will 
+  accomplish this:
+
+          |---------ORP--------| |--URN--|           
+    CMoS:/eric.gets-rich.com:555/OCLC/1234   ->    (CMoS Citation)
+                                      
+        Optional resolution path = eric.gets-rich.com:555
+        Naming authority ID = "OCLC"
+        Opaque_string       = "ISBN1234"
+
+  If CMoS is not a registered resolution service under OCLC then the
+  browser can send the request to eric.gets-rich.com:555.  Since the
+  browser would use the author-specified ORP after the RP from
+  the Name Authority Resolver, the author specified ORP can be 
+  ignored once CMoS is a registered service under OCLC.
+
+  Since it is possible to have a URN resolve to different objects of
+  the same type by a given service (different URLs, for example, or 
+  different versions of a URC), it is useful to be able to specify 
+  an optional resolution path, in order to reference a particular 
+  resolver that is:
+     - closer
+     - faster
+     - cheaper
+     - under local administrative, political, or budgetary control
+
+A resolution path should also be specifiable in the client.  See
+section 6.1.  This will give the user control over how URNs are
+resolved.
+
+
+4.0 System Components
+
+There are four participants in the assignment of URNs and fulfillment
+of resolution requests.
+
+4.1 Name Authority Registry and Resolver
+
+The name authority registry (NAR) is responsible for uniqueness in
+name authority IDs.  In addition to providing uniqueness in name
+authority IDs the registry will also keep track of what services are
+available for each name authority ID and what resolution hosts will
+resolve such resolution requests.
+
+The name authority resolver is responsible for fulfilling queries 
+against the name authority registry.
+
+The architectures of the name authority registry and resolver are
+beyond the scope of this draft and will, for simplicity, be treated as
+a single entity.  The name authority registry and resolver may in fact
+be a distributed system such as DNS [PATH].  The name authority
+resolver returns an RP.
+
+4.2 Naming Authority
+
+The naming authority (NA) is the person or organization responsible 
+for the assignment of opaque string inside a name authority id.  This 
+is not necessarily the same person, organization or site that is 
+responsible for resolution of the opaque string.
+
+4.3 Resolution Host
+
+The resolution host is the mechanism that will fulfill the resolution
+request.
+
+The resolution host can either resolve the request fully and return
+the requested information or it can return a new resolution request (a
+redirect) telling the client to send its request to another server.
+It is perfectly acceptable in the first case for the resolver
+to have connected to another resolution host to fulfill the
+request or to fulfill the request out of cache.
+
+4.4 Client
+
+The client is the user-interface or an automated web discovery tools
+such as a web robot.  The resolution responsibilities of a client are
+described in 6.0.
+
+
+
+5.0 Name Assignment
+
+There are two major steps in name assignment.  First, a person or
+organization must request a name authority ID from the name authority
+registry and provide to the name authority registry the services and
+resolution hosts available for that name authority ID.  This can be 
+done in multiple steps and the information provided to the name 
+authority resolver can be updated at any time.  Second, the person or
+organization responsible for the name authority ID must, using their
+own assignment scheme, determine a unique opaque string to assign to
+an object.
+
+After name assignment the object has a URN.  This does not imply that 
+any resolution is available for that URN.  The person or organization
+requesting the name must communicate the resolution information to 
+the resolution host.  This is separate from name assignment and is left
+to the person or organization in charge of the name authority ID in the
+same manner as the assignment of the opaque string.
+
+
+6.0 Resolution
+
+It is ultimately up to the client to control which URN resolution hosts
+are contacted to resolve a URN.  The Optional Resolution Path allows 
+the document author to provide multiple resolution hosts for the 
+specified service.  A client may also specify its own resolution 
+path for a naming authority ID and service as part of the client 
+properties.
+
+The client has three types of resolution hosts it can send requests to.
+
+   1  Client-specified Resolution Host from client table (see 6.1).
+   2  Naming Authority from URN (Name Authority ID or Resolution Host).
+   3  Author-specified Resolution Host from Optional Resolution Path.
+
+The order that these resolution hosts are queried may also be part of
+the client properties.  For the examples below, they will be queried
+in the order given above.
+
+The entire resolution request (as specified in 3.0) should be sent to
+the resolution host.  No stripping is done on the client side.  This
+will allow multiple resolution host to listen to the same port.  
+In this way a resolution host can now resolve all types of resolution 
+requests, but is not required to.
+
+
+6.1 Client Table
+
+The client may contain a table to allow override specification for
+each resolution service and naming authority ID.  For instance,
+
+N2L
+  ISBN     ->   oclc.org:555
+  ISSN     ->   oclc.org:555
+  LC       ->   loc.gov:120 ; oclc.org:555 
+  GNU      ->   gnu.org:120
+  WWW      ->   info.cern.ch:120 ; oclc.org:555 ; someone.else:1234
+
+N2C
+  OCLC     ->   oclc.org:555
+
+
+6.2 Examples
+
+For the following we assume that a client has the above resolution 
+paths set for N2L and N2C resolution.
+
+6.2.0 General Algorithm
+
+The client checks it's table for the specified service and naming 
+authority ID.  If the client table contains a resolution path then
+the request is sent to the each resolution host in the resolution 
+path.  If a negative response is received from each resolution host
+then the client moves on to the naming authority.
+
+If the naming authority is a name authority ID then the registered
+name and service should be resolved to a resolution host by a name 
+authority resolver and the request sent to each resolution host in 
+the resolution path returned by the name authority resolver.
+
+If the naming authority is not a registered ID then it is a resolution 
+host (a fully qualified domain name or IP and port) and the resolution
+request should be sent to it.
+
+If a negative response is received from the name authority resolver 
+(meaning that either the service or name authority ID were unknown) 
+or from each resolution host (meaning that the resolution host 
+couldn't fulfill the request) then the client should move on to the
+the Optional Resolution Path in the resolution request.
+
+The client sends the resolution request to each host in the Optional
+Resolution Path specified in the resolution request.  If a negative
+response is received from each resolution host then the resolution
+request can't be fulfilled.  Specific examples follow.
+
+
+
+6.2.1 Naming authority ID is not overridden and an Optional Resolution 
+      Path is not specified by the author.
+
+   <N2L://RFC/paper1.1995>
+
+The client checks it's table for the service N2L and naming authority
+ID "RFC" and doesn't find a corresponding entry.  The client then
+moves on to the naming authority.
+
+The naming authority is a name authority ID and should be resolved 
+by the name authority resolver.  The resolution request is sent to
+the name authority resolver.  The name authority resolver parses
+the resolution request and returns a resolution path for the given
+service and name authority ID.  The client should send the resolution 
+request to each host in the resolution path returned from the name 
+authority resolver until it gets a positive response.
+
+If a negative response is received from the name authority resolver
+(meaning that either the service or name authority ID were unknown) or
+from the resolution host (meaning that the resolution host couldn't
+fulfill the request) then the client should move on to the the
+Optional Resolution Path.  Since the Optional Resolution Path is null
+in this case, the client must assume that the resolution request can't
+be fulfilled.
+
+This example is assumed to be the most common case.  It requires the
+fewest lookups to resolve and the least number of options to specify.
+The client table and Optional Resolution Path allow the user and
+author more control over the resolution of URN but that control comes
+at the cost of more lookups (see examples below).
+
+The information returned by a name authority resolver is relatively
+static and can easily be cached by the client to reduce lookups.
+
+
+6.2.2 Naming authority ID is not overridden and an Optional Resolution 
+      Path is specified by the author.
+
+   <N2L:/ncsa.uiuc.edu:120/RFC/paper1.1995>
+
+The client checks it's table for the service N2L and naming authority
+ID "RFC" and doesn't find a corresponding entry.  The client then
+moves on to the naming authority.
+
+The naming authority is a name authority ID and should be resolved by
+the name authority resolver.  The resolution request is sent to the
+name authority resolver.  The name authority resolver parses the
+resolution request and returns a resolution path for the
+given service and name authority ID.  The client should send the
+resolution request to each host in the resolution path returned from
+the name authority resolver until it gets a positive response.
+
+
+If a negative response is received from the name authority resolver
+(meaning that either the service or name authority ID were unknown) or
+from the resolution host (meaning that the resolution host couldn't
+fulfill the request) then the client should move on to the the
+Optional Resolution Path.  The client should send the resolution
+request to each resolution host in the Optional Resolution Path (in
+this case, only ncsa.uiuc.edu:120) until it received a positive
+response.  If a negative response is received from each host then the
+client must assume that the resolution request can't be fulfilled.
+
+
+6.2.3 Naming Authority ID is overridden in the Client table.
+
+   <N2L:/ncsa.uiuc.edu:120/WWW/paper1.1995>
+   
+The client checks it's table for an entry for the service N2L and
+naming authority "WWW".  It finds info.cern.ch:120, oclc.org:555 and
+someone.else:555.  The client sends the resolution request to each
+resolution host in its table until it gets a positive response.
+
+If a negative response is received from each host in the resolution
+path then the client continues as in example 6.2.2.
+
+
+7.0 Protocol
+
+The primary focuses of this draft are resolution requests and the 
+functional components of the registry and resolution system.  This
+section contains a short discussion about the protocol to be used.
+We have chosen to use http [HTTP] as our communication protocol.
+
+7.1 Request
+
+When submitting a resolution request to either a name authority
+resolver or a resolution host, the entire resolution request as
+defined in 3.0 should be sent.  The method should always be 
+GET.  Accept headers should be used to communicate the format of 
+the response not the type of resolution that is being requested.  
+
+7.2 Response
+
+The response returned from either the name authority resolver
+or resolution hosts should contain the Content-type of the response.
+
+The http status codes in responses are significant.  They will be
+used to signal redirections of requests, successful responses and 
+errors.
+
+7.3 Example of Request Sent to Name Authority Resolvers
+
+Accept: text/plain
+GET N2L://OCLC/1234 HTTP/1.0
+
+(returns a resolution path.)
+
+
+HTTP 200 OK
+Content-type: text/plain
+
+oclc.org:555;ncsa.uiuc.edu:120
+
+
+7.4 Example of Request Sent to Resolution Hosts
+
+Accept: text/sgml
+GET N2C://OCLC/1234 HTTP/1.0
+
+(returns the URC for the object formatted in sgml.)
+
+
+
+8.0 Fulfillment of URN Requirements
+
+This proposal meets all of the requirements set forth in [RFC1737].
+
+
+8.1 Requirements for URN Function
+
+Global Scope          -  A URN for a document is location independent.
+                         The document author can specify resolution
+                         information in the resolution request but that
+                         information is not part of the URN and can be 
+                         overridden by the client.  
+
+Global Uniqueness     -  The naming authority and opaque string 
+                         combination are globally unique.
+
+Persistence           -  The facilities are in place to allow for 
+                         name persistence.
+
+Scalability           -  A URN can be assigned to anything.  It is up 
+                         to the resolution host to decide how a URN 
+                         should be resolved or what it should be 
+                         resolved to.
+
+Legacy Support        -  Legacy schemes like "ISBN" are simply naming
+                         authorities and can be supported assuming a 
+                         resolution host is made available to handle 
+                         the resolution requests.
+
+Extensibility         -  The resolution service and name authority are 
+                         dynamic.  New services and name authorities 
+                         can be added and resolved easily.
+
+Independence          -  Name authorities are solely responsible for
+                         all names under their id.
+
+Resolution            -  URNs are resolved by resolution hosts 
+                         according to the resolution service in the 
+                         request.
+
+
+8.2 Requirements for URN Encoding
+
+Single Encoding           -  All portions of the resolution request are
+                             taken from the set of characters, digits 
+                             and punctuation therefore there is a 
+                             single encoding that is human 
+                             transcribable and transport friendly.
+
+Simple Comparison         -  The URN portion of a resolution request 
+                             can be compared to the URN portion of 
+                             another resolution request on a case
+                             insensitive character by character basis 
+                             to determine if they are the same URN.
+
+Human Transcribability    -  See Single Encoding
+
+Transport Friendliness    -  See Single Encoding
+
+Machine Consumption       -  Easily parsed according to the specified 
+                             grammar.
+
+Text Recognition          -  A URN can be preceded with URN: in free 
+                             text to specify that it is a URN (this 
+                             does not imply resolution).
+
+
+9.0 Glossary
+
+Author                      -  The person, organization or program
+                               responsible for the document content.
+
+Client                      -  The interface with the user as well as 
+                               automated web discovery tools like web
+                               robots.
+
+Naming Authority            -  The portion of a URN that refers to the
+                               service or organization that provided 
+                               the opaque string.  A naming authority 
+                               can be a naming authority ID or a 
+                               resolution host.  (see 2.1)
+
+Naming Authority ID         -  A unique ID that refers to a Naming 
+                               Authority.  (see 2.1.1)
+
+Naming Authority Registry   -  A service or organization that provides
+                               unique identifiers for naming 
+                               authorities.  (see 2.1.2)
+
+Naming Authority Resolver   -  A naming authority resolver consists of
+                               a host and port that a name authority 
+                               ID will be sent to for resolution to a 
+                               resolution host.  (see 4.1)
+
+Resolution Host             -  A resolution host consists of a fully 
+                               qualified domain name and port that a 
+                               resolution request will be sent to.  
+                               (see 4.3)
+
+Resolution Path             -  A list of resolution hosts to send 
+                               the resolution requests to.  
+
+Resolution Request          -  The full request for resolution to be 
+                               sent to a resolution host.  (see 3.0)
+
+
+10.0 References
+
+[HTTP]  Internet Draft "Hypertext Transfer Protocol -- HTTP/.10".
+        The name of the draft at the time of this writing is
+        "draft-ietf-http-v10-spec-00".  T. Berners-Lee, R. T. Fielding
+        and H. Frystyk Nielsen.
+
+[PATH]  Internet Draft "The Path URN Specification".  The name of the
+        draft at the time of this writing is 
+        "draft-ietf-uri-urn-path-00".  Daniel LaLiberte and Michael
+        Shapiro.
+
+[URC0]  Internet Draft "Trivial URC Syntax: urc0".  The
+        name of the draft at the time of this writing is 
+        "draft-ietf-uri-urc-trivial-00".  Paul E. Hoffman and 
+        Ron Daniel Jr.
+
+[URN]   Internet Draft "Uniform Resource Names".  The name of 
+        the draft at the time of this writing is 
+        "draft-ietf-uri-resource-names-03".  Mitra, C. Weider,
+        and M. Mealling.
+
+[URNS]  Internet Draft "Generic URN Syntax".  The name of the draft at
+        the time of this writing is "draft-ietf-uri-urn-syntax-00".
+        Paul E. Hoffman and Ron Daniel Jr.
+
+[RFC1737]  "Functional Requirements for Uniform Resource Names".  
+           RFC 1737.  K. Sollins and L. Masinter.
+
+
+11.0 Author Contact Information
+
+Keith E. Shafer                           Stuart L. Weibel
+Senior Research Scientist                 Senior Research Scientist
+(614) 761-5049                            (614) 764-6081
+shafer@oclc.org                           weibel@oclc.org
+
+Eric J. Miller                            Vincent M. Tkac     
+Research Assistant                        Programmer Analyst  
+(614) 761-6109                            (614) 761-5046      
+emiller@oclc.org                          tkac@oclc.org       
+
+Office of Research and Special Projects
+OCLC Online Computer Library Center, Inc.
+6565 Frantz Road, Dublin, Ohio 43017-3395
+
+
+Expires January 1, 1996
+
+

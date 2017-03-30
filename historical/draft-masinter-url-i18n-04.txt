@@ -1,0 +1,783 @@
+INTERNET-DRAFT                                         Larry Masinter
+                                                    Xerox Corporation
+                                                        Martin Duerst
+                                                  W3C/Keio University
+draft-masinter-url-i18n-04.txt                          June 25, 1999
+Expires December 25, 1999
+
+       Internationalized Uniform Resource Identifiers (IURI)
+
+Status of this Memo
+
+This document is an Internet-Draft and is in full conformance
+with all provisions of Section 10 of RFC2026.
+
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF), its areas, and its working groups.  Note that
+other groups may also distribute working documents as
+Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six
+months and may be updated, replaced, or obsoleted by other
+documents at any time.  It is inappropriate to use Internet-
+Drafts as reference material or to cite them other than as
+"work in progress."
+
+The list of current Internet-Drafts can be accessed at
+http://www.ietf.org/ietf/1id-abstracts.txt
+
+The list of Internet-Draft Shadow Directories can be accessed at
+http://www.ietf.org/shadow.html.
+
+This document is not a product of any working group, but may be
+discussed on the mailing list <uri@w3.org>. For more information
+on the topic of this internet-draft, please also see [W3C IURI].
+
+Abstract
+
+URIs [RFC 2396] are defined as sequences of characters chosen
+from a limited subset of the repertoire of ASCII characters both
+for transmission in network protocols and representation in spoken
+and written human communication.
+
+This document defines IURIs (Internationalized URIs) as a sequence
+of characters from the repertorie of the UCS (Universal Character
+Set). A mapping of IURIs to URIs and guidelines for the use and
+deployment of IURIs in various elements of software that deal
+with URIs are given.
+
+0. Change History
+
+>From -03 to -04
+
+Changed copyright statement, added/updated some references.
+
+>From -02 to -03
+
+The main change from draft-masinter-url-i18n-02.txt is a rewrite
+to introduce IURIs as sequences of (abstract) characters. This
+mainly affected the overall structure and wording, but not the
+actual details.
+
+1. Introduction
+
+1.1 Overview
+
+URIs [RFC 2396] are defined as sequences of characters chosen from a
+limited subset of the repertoire of ASCII characters. This document
+defines IURIs (Internationalized URIs) as a sequence of characters
+from a much wider repertoire. The base for the repertoire is the UCS
+(Universal Character Set, [ISO 10646]), but as in the case of URIs
+and ASCII, certain restrictions apply.
+
+The characters in URIs are frequently used for representing words of
+natural languages. However, due to the limited character repertoire
+of URIs, this favors some languages over others; most languages of
+the world are not merely written with the letters A-Z.
+
+Using words from natural languages in identifiers has various
+advantages. This should be quite obvious from the fact that such
+identifiers are extremely widespread. Such identifiers are easier
+to memorize, easier to interpret, to transcribe, easier to create,
+easier to guess, and easier to identify with. Also, for native
+speakers, all these operations are much easier to do in the script
+they are used to; handling Latin letters is as difficult for many
+people around the world as handling the letters of another script
+for people used to the Latin alphabet, and transcriptions to Latin
+letters usually introduce additional ambiguities.
+
+In addition, URIs are not primary identifiers, but define a mechanism
+to integrate a large number of different kinds of identifiers into an
+uniform representation. Using characters beyond the ASCII repertoire
+is widespread and increasing practice for some kinds of primary
+identifiers, and some conventions of how to convert these to URIs
+in a well-defined way are necessary.
+
+1.2 Limitations
+
+The use of words from natural languages in identifiers also can
+bring with it some problems, which are shortly discussed here for
+completeness. In particular, it seemingly creates an association
+between the meaning(s) of a word and the contents or function of
+a resource. This tends to exclude other meanings that may be
+associated to the resource with equal or better reason, and makes
+it impossible to associate the same meaning with another resource
+that would also deserve this association. It may also lead to
+misunderstandings about the content of the resource because most
+words have more than one meaning associated to it. In addition,
+because the content of resources and the meaning of words changes
+over time, it is difficult to maintain the association over time,
+which means that either the identifier becomes meaningless or
+misleading, or it has to be changed, thus breaking existing
+references. The advantages and disadvantages of creating identifiers
+from natural languages therefore have to be carefully considered.
+
+The use of characters outside the strictly limited repertoire of
+a subset of ASCII introduces additional limitations, and gives
+raise to additional considerations, which are discussed wherever
+appropriate thoughout this document. As a base for this discussion,
+it should be noted that the infrastructure for the appropriate
+handling of characters from local scripts is widely deployed in
+local versions of software, and that software that can handle a
+wide variety of scripts and laguages at the same time is increasing.
+
+It is therefore not appropriate to force users in all language
+communities to be restricted to a single alphabet. In particular,
+it is not appropriate to impose the difficulties of using an
+unfamiliar alphabet in cases where e.g. 99.9% or more of the
+potential users of an identifier are more comfortable when
+using that identifier in the appropriate language and script.
+
+However, the decision of where and how the use of identifiers
+with characters other than A-Z is appropriate remains with the
+creators and users of these identifiers. This document defines
+IURIs and their mapping to URIs in order to remove technical
+restrictions on user-oriented decisions, and in order to
+extend the benefits of using native languages and scripts
+without excluding those that do not know these languages or
+scripts or do not have the appropriate software.
+
+1.X Notation
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in RFC 2119.
+
+2. Syntax
+
+This section defines the syntax of Internationalized Uniform
+Resource Identifiers (IURI), and their mapping to URIs.
+In accordance with [RFC 2396, Section 1.5], an IURIs is defined
+as a sequence of characters, which is not always represented as
+a sequence of octets. This assures that IURIs cannot only be
+transmitted electronically, but can also be written on paper
+or read over the radio.
+
+Defining IURIs as characters also takes into account the
+varieties of encodings used on different computer systems
+worldwide. While this is of considerably higher importance
+for IURIs than for URIs, please note that this is also
+relevant for URIs. URIs transported e.g. in HTML documents
+that are encoded in EBCDIC or UTF-16 are not sent over
+the wire using the same octet sequences as URIs in an
+ASCII-encoded HTML document.
+
+Note: Please note that the encoding and the octets discussed
+      here are not the same as those discussed in [RFC 2396,
+      Section 2.1]. Here, we are discussing the encoding
+      of URIs/IURIs, defined in terms of characters, for
+      digital transfer and storage. There, the encoding
+      of octets used in protocols for which URIs are defined
+      into URI characters is defined.
+
+2.1 IURI Syntax
+
+IURIs are defined by extending the syntax of URIs defined in
+[RFC 2396] as follows:
+
+The character category "unreserved" [RFC 2396, Section 2.3]
+is extended by adding all the characters of the UCS (Universal
+Character Set, [ISO 10646/Unicode]) beyond U+0080, subject
+to the limitations given in Section 2.3.
+
+The syntax and use of URI components and reserved characters
+is exactly the same as that in [RFC 2396, Section 3]. This
+means that all the operations defined in [RFC 2396], such
+as the resolution of relative URIs, can be applied to IURIs
+by IURI-processing software exactly in the same way as this
+is done by URI-processing software.
+
+Characters outside the ASCII range MUST NOT be used for
+syntactical purposes, i.e. to delimit components of newly
+defined URL schemes.
+
+2.2 Mapping of IURIs to URIs
+
+This section defines the mapping from IURIs to URIs:
+
+1) Represent the IURI characters as a sequence of ISO 10646
+   characters.
+2) "Normalize" the character sequence to reduce ambiguity.
+   [UNI15] defines several normalization forms; for the purpose
+   of representing characters in URIs, "Normalization Form C".
+   Please refer to further discussion in Section 2.3.
+   Further advice can also be found in [CharMod].
+3) Encode the result with the UTF-8 character encoding [RFC 2279]
+4) Use %HH hex-encoding [RFC 2396, Section 2.4.1] to encode any
+   octet in the hexadecimal range 80-FF.
+5) Represent the remaining octets with their corresponding ASCII
+   character.
+
+In step 4), octets in the ASCII range MUST NOT be escaped further,
+because they are already in their correct escaping stage in IURIs.
+
+The above mapping produces an URI fully conforming to [RFC 2396]
+out of each IURI. In addition, due to the properties of the UTF-8
+character encoding, it results in the identity transformation for
+URIs. Every URI is therefore by definition an IURI.
+
+URIs obtained by converting IURIs as above are also called
+"escaped IURIs" in circumstances where it is necessary to
+distinguish them from URIs in general. In contrast to this,
+IURIs as defined in Section 2.1 are called "native IURIs"
+when an explicit distinction is necessary.
+
+Escaped IURIs can be converted back to their native form.
+In some circumstances, it may not be clear whether an URI
+is the result of escaping an IURI or not. Some cases are
+trivial because the URI and the IURI are identical.
+Also, it should be noted that due to the regularity of the
+UTF-8 character encoding, an URI that looks like an escaped
+IURI with extremely high probability also is an escaped IURI.
+This means that an URI that can be converted back to a sequence
+of characters by inverting the above steps 1)-5) with extremely
+high probability is an escaped URI.
+
+Please note that escaped URIs are also consistent with the
+URN syntax [RFC 2141], and with recent URL scheme definitions
+[RFC 2192], [RFC 2384], because these already are based on
+UTF-8 to encode characters outside the ASCII repertoire.
+As a consequence, in contexts where IURIs are acceptable
+and will be transformed to URIs when necessary, URNs
+and IMAP and POP URIs can be expressed in the
+form of IURIs.
+
+In some cases, some components of an URI may be convertible
+to native IURI form, whereas other components contain %HH
+escapings that cannot be converted back, or that are not
+converted back. In these cases, we use the term "partial
+IURI". In partial IURIs, the conversion between native and
+escaped representation and back can be applied whenever
+and wherever appropriate and possible, but those parts
+that cannot be converted MUST be left intact.
+
+2.3 IURI Syntax Limitations
+
+This section gives the limitations on characters and
+character sequences usable for URIs. These limitations
+are of varying nature, with respect to their strictness
+(expressed with the usual vocabulary from [RFC 2119])
+and with respect to their enforcability. In particular,
+some limitations are very strict, but are not easily
+or only partially enforcable due to the fact that the
+repertoire of the UCS is still being expanded.
+
+In addition, the list of limitations contains limitations
+that can be expressed in terms of codepoints, but not
+in terms of characters.
+
+- The repertoire of characters allowed in each URI
+  component is limited by the definition of this component.
+  For example, the definition of host names currently
+  does not allow the use of e.g. "_", nor of any character
+  outside the ASCII repertoire. This specification does
+  not relax this limitation, it only provides the base
+  to relaxing this limitation when and where this is
+  thought to be appropriate.
+
+  In particular, please note that the scheme component,
+  which is fully defined in [RFC 2396], is not extended
+  by this specification, i.e. scheme names with characters
+  outside the ASCII repertoire are not allowed.
+
+- Characters similar to those in the categories "space",
+  "delims", and "unwise" in [RFC 2396, Section 2.4.3]
+  MUST NOT be used.
+
+  [exact definition; do we need an exception for
+  Persian here? Do we want to repeat the categories from
+  2.4.3? do we want to give a list of characters?]
+
+- Full-width ASCII equivalents
+
+- "Control characters" MUST NOT be used. This includes
+  symmetric swapping, plane-14 language tag characters,...
+  (for BIDI, see below)
+
+- Code points reserved for private use MUST NOT be used.
+
+- Code points reserved for surrogates MUST NOT be used.
+
+- Where there exist duplicate ways of encoding a certain
+  character as visible to the user, the way defined in
+  [UNI15][RFC-Duerst] as canonically composed MUST be used.
+
+- Other cases, to be studied,...
+
+2.4 Bidirectional IURIs
+
+Bidirectional (BIDI) IURIs, i.e. IURIs containing characters
+with an inherent right-to-left writing direction, require
+additional intention when being converted from a visual
+representation to a digital representation.
+
+In digital representations (as well as when read/spelled),
+the sequence of components and characters is in logical
+order. This conforms to the specifications for the UCS and
+allows generic operations, such as the resolution of
+relative IURIs, to be carried out without special provisions.
+
+A visual representation placing the IURI characters strictly
+from left to right would make some of its components, such
+as words written in Arabic or Hebrew, unreadable. On the
+other hand, an uncontrolled reversion of the whole IURI would
+make components with Latin or other left-to-right words
+unreadable, and/or would obscure the seqence of the IURI
+components. In addition, a direct application of the
+Unicode bidirectionality algorithm [????] would relocate
+the reserved characters that define the strucure of an URI
+because most of them have neutral directionality.
+
+The visual representation of IURIs is therefore defined as
+follows:
+
+- The IURI as a whole is presented from left to right,
+  component by component.
+
+- Within each component, the Unicode bidi algorithm is
+  applied, assuming a left-to-right embedding context.
+
+For display, this behavior can be achieved by preceeding
+the IURI with an LRE (left to right embedding) character,
+following it with a PDF (pop directional formatting)
+character, and preceeding and following each reserved
+character by an LRM (left to right mark) character.
+In this form, it can be passed to a display engine
+supporting the Unicode BIDI algorithm.
+
+3. Software requirements
+
+Supporting IURIs in the same places where URIs are currently used
+requires cooperation from the providers of several different
+components of the URI infrastructure: software interfaces that
+handle IURIs, software that allows users to enter IURIs, software
+that generates IURIs, software that displays IURIs, formats that
+transport IURIs, and software that interprets IURIs.
+
+3.1 IURI software interfaces
+
+Software interfaces that handle URIs, such as URI-handling APIs
+and protocols transfering URIs, SHOULD be upgraded to handle IURIs.
+In case the current handling is based on ASCII, UTF-8 SHOULD
+be choosen as the encoding for IURIs, because this is compatible
+with ASCII, is in accordance with the recommendations of [RFC 2277],
+makes it easy to convert to escaped IURIs where necessary, and
+can significantly reduce the space needed for IURIs.
+In any case, the encoding used MUST not be left undefined.
+
+Upgrading to IURIs is important because for certain scripts, for
+example Thai or Georgian, a character that needs one octet in a
+native representation expands to nine octets in an escaped IURI,
+but only three octets in UTF-8. While it can be assumed that there
+should in general be enough slack in the existing length limits
+for URIs to accomodate the later, an expansion by a factor of
+nine is more dangerous.
+
+Software components that transfer from components that
+allow IURIs to components that can only handle URIs MUST
+escape IURIs. Software components that transfer in the
+other direction MAY unescape IURIs. It is preferable
+to not unescape IURIs when there is a chance that
+this cannot be done correctly. For example, if it cannot
+be checked whether the sequence of %HH escapes corresponds
+to a valid sequence of UTF-8 octets, unescaping should not
+be done.
+
+3.2 IURI entry
+
+One component of software that deals with IURIs allows users to enter
+a IURI, e.g. by typing or dictation. For example, a person viewing a
+visual representation of a IURI (as a sequence of glyphs, in some
+order, in some visual display) might use a keyboard entry method for
+keys in that language to create the IURI. Depending on the script
+and the input method used, this may be a more or less complicated
+process.
+
+The process of IURI entry MUST assure as far as possible that the
+limitations defined in Section 2.4 are met. This may be done by
+choosing appropriate input methods or variants thereof, by
+converting the characters being input appropriately, by eliminating
+characters that cannot be converted, and/or by issuing a warning or
+error message to the user.
+
+An input field primarily or only used for the input of URIs/IURIs
+MUST allow the user to view an IURI in its escaped form.
+Places where the input of IURIs is frequent SHOULD provide the
+possibility for viewing an IURI in its escaped form.
+
+An IURI input component that interfaces to components that handle
+URIs, but not IURIs, MUST escape the IURI before passing it to
+such a component.
+
+The input of IURIs with right-to-left characters requires additional
+care to keep the visual and the internal representation in synch,
+and to eliminate control characters and marks used to control
+the display before passing the IURI over to a resolver. IURI
+input fields that allow the input of right-to-left characters
+MUST provide the appropriate functionality.
+
+3.3 URI generation
+
+Systems that are offering resources through the Internet, where those
+resources have logical names, sometimes offer the ability to generate
+URIs for the resources they offer.  For example, some HTTP servers
+offer the ability to generate a 'directory listing' for file
+directories under their purview, and then to respond to the generated
+URIs with the files.
+
+Many legacy character encodings are in use in various file systems.
+Currently deployed systems do not transform the local character
+representation of the underlying system before generating URIs.
+
+For maximum interoperability, systems that generate resource
+identifiers should do the appropriate transformations and use
+escaped IURIs in cases where it cannot be expected that the
+recipient understands native IURIs. Due to the way most
+user agents currently work, native IURIs, encoded in UTF-8,
+may be used if the recipient announces that it can interpret
+UTF-8.
+
+This recommendation in particular applies to HTTP servers.
+For FTP servers, similar considerations apply, see in particular
+[FTPI18N].
+What exactly about gopher and other protocols????
+
+3.4 URI selection
+
+In some cases, resource owners and publishers have control over
+the IURIs used to identify their resources. Such control is mostly
+executed by controlling the resource names, such as file names,
+directly.
+
+In such cases, it is RECOMMENDED to avoid choosing IURIs that are
+easily confused. For example, for ASCII, the lower-case ell "l"
+is easily confused with the digit one "1", and the upper-case oh
+"O" is easily confused with the digit zero "0". Publishers should
+avoid to unintentionally confuse users with "br0ken" or "1ame"
+identifiers.
+
+Outside of the ASCII range, there are many more opportunities
+for confusion; a complete set of guidelines is too lengthy to
+include here. As long as names are limited to characters from
+a single script, native writers of a given script or language
+will know best when ambiguities can appear, and how they can
+be avoided. What may look ambiguous to a stranger may be
+completely obvious to the average native user.
+
+Please note that the limitations defined in Section 2.3 and
+the recommendations given here are of a different nature.
+The limitations defined in Section 2.3 are necessary to
+avoid duplicate encodings that are artefacts of digital
+representation and that the user has no way to distinguish
+visually. On the other hand, in a given context, an idetifier
+such as "BOX0021" can be completely appropriate, and it is
+impossible to find a an algorithm that distinguishes the
+appropriate from the confusing identifiers.
+
+Say something about Latin vs. Greek vs. Cyrillic "A"????
+Here or in 2.1????
+
+3.5 Display of URIs
+
+Many systems contain software that present URIs to users as part of
+their user interface (sometimes presenting 'friendly' URIs; do we
+need a definition for 'friendly' URIs? I don't know what it is.).
+This section applies to this presentation, as well as to the
+strategy for printing URIs in magazines, newspapers, or reading
+them over the radio.
+
+Software that displays identifiers to users should follow a general
+principle: "Don't display something to a user that the user would
+not be able to enter." The consequences of this principle require
+judgement about the availability of software that implements the
+entry methods described in Section 3.2.
+
+a) In situations where a viewer is not likely to have software that
+implements non-ASCII character entry (as described in Section 3.1),
+or where it can be expected that only a limited range of non-ASCII
+characters can be entered, any part of an IURI containg characters
+outside the range allowed in [RFC 2396] or any additions SHOULD be
+escaped before being displayed.
+
+b) In situations where a viewer _is_ likely to have such software,
+IURIs MAY be displayed directly.
+
+For display of BIDI IURIs, please see section 2.4.
+
+3.5 Interpretation of URIs
+
+Software that interprets IURIs as the names of local resources
+SHOULD accept IURIs in multiple forms, and convert and match them
+with the appropriate local resource names.
+
+Multiple representations first includes both IURIs in the
+native character encoding of the protocol (UTF-8 if not
+otherwise defined) and escaped IURIs.
+
+Second, it MAY include URIs constructed based on other character
+encodings than UTF-8. Such URIs may be produced by user agents
+that do not conform to this specification use legacy encodings
+to convert non-ASCII characters to URIs. Whether this is necessary,
+and what character encodings to cover, depends on a number of
+factors, such as the local character encodings and the
+distribution of various versions of user agents. For example,
+software for Japanese may accept URIs in Shift-JIS and/or EUC-JP
+in addition to UTF-8.
+[we have to say more clearly that we are speaking about HTTP here;
+I'm not sure how much this is applicable in general]
+
+Third, it MAY include additional mappings to be more user-friendly
+and robust against transmission errors. These would be similar to
+how currently some servers treat URIs as case-insensitive, or
+perform additional matchings to account for spelling errors.
+For characters beyond the ASCII repertoire, this may e.g.
+include ignoring the accents on received IURIs or resource
+names where appropriate.
+[add warning about dependency of casing and "accents" on
+language]
+
+It may seem to be difficult to unambiguously identify a resource
+if too many mappings are taken into consideration. This can indeed
+be the case. However, because escaped and native IURIs can easily
+be distinguished, and because of the regularity of UTF-8, the
+potential for collisions is usually lower that it may seem
+at first sight.
+
+3.6 Transportation of IURIs in document formats
+
+Document formats that transport URIs should be upgraded to
+allow the transport of IURIs. In those cases where the document
+as a whole has a native character encoding, IURIs should also
+be encoded in this encoding, and converted accordingly by
+the parser and interpreter. IURI characters that are not expressible
+in the native encoding SHOULD be escaped according to Section 2.2,
+or MAY be escaped in another way if the document format provides
+a way to do this (e.g. numeric character references in
+HTML/XML/SGML).
+
+Please note that an interpretation of characters in URIs outside
+the ASCII repertoire as IURIs, i.e. conforming to this specification,
+is already defined as error behaviour in HTML 4.0 [HTML4] and in
+XML 1.0 [XML1]. Also, it is under discussion to require this
+behaviour from all W3C formats [CharMod].
+
+4. Upgrading strategy
+
+As this recommendation places further constraints on software for
+which many instances are already deployed, it is important to
+introduce upgrade carefully, and to be aware of the various
+interdependencies.
+
+4.1 Upgrade dependencies
+
+If IURIs cannot be interpreted correctly, they should not be
+generated or transported. This suggests that upgrading URI
+interpreting software to accept IURIs should have highest
+priority.
+
+On the other hand, a single IURI is interpreted only by
+a single or very few interpreters that are know in advance,
+while it may be entered and transported very widely.
+
+Therefore, IURIs benefit most from a broad upgrade of
+software to be able to enter and transport IURIs, but
+before publishing any individual IURI, care should be
+taken to upgrade the corresponding interpreting software
+in order to cover the forms expected to be received
+by various versions of entry and transport software.
+
+The upgrade of generating software to IURIs (instead of a local
+encoding) should happen only after the service is upgraded to accept
+IURIs. Similarly, IURIs should only be generated when the service
+accepts IURIs and the intervening infrastructure and protocol is
+known to transport them safely.
+
+Display software should be upgraded only after upgraded entry
+software has been widely deployed to the population that will
+see the displayed result.
+
+These recommendations, when taken together, will allow for the
+extension from URIs to IURIs in order to handle scripts other
+than ASCII while minimizing interoperability problems.
+
+4.2 Examples: upgrading to IURIs within various contexts
+
+4.2.1 IURIs within HTTP
+
+The HTTP protocol [RFC 2616] includes the URI of the resource being
+accessed as the 'Request-URI' in the request line. Most deployed HTTP
+servers do not restrict the octets allowed in the protocol.
+Therefore, upgrading from URIs to IURIs encoded in UTF-8
+according to the recommendations of Section 3.1
+will not be difficult.
+
+However, most deployed HTTP servers that access resources with
+localized non-ASCII naming do currently not translate the
+Request-URI's character encoding to a local form, and will need
+to be upgraded to accept such aliases. In order for URI composition
+and transmission software to know that the recipient HTTP server
+has been upgraded, it may be useful to define an extension field
+for HTTP which explicitly informs the client about the server's
+capabilities and translation rules in this area.
+
+For this purpose, the OPTIONS method can be used, with a return value
+that includes a header which has two known enumerated values:
+
+inturi = "inturi" ":" ("iuri" | "utf8")
+
+"iuri" means the server accepts and correctly interprets escaped
+IURIs.
+
+"utf8" means that the server also accepts IURIs sent in UTF-8,
+according to Section 3.1.
+This doesn't guarantee that the transport path can handle
+native UTF-8 all the way through a chain of proxies
+(a hop-by-hop header would be needed to ensure that).
+
+5. Security Considerations
+
+If IURI entry software normalizes the characters entered, but
+the resource names on the interpreting side are not normalized
+accordingly, and the interpreting software does not take this
+into account, there is a possibility of "spoofing". Similar
+possibilities turn up when interpreting software accepts URIs
+in various native encodings or allows to have accents and similar
+things ignored.
+
+"Spoofing" means that somebody may add a resource
+name that looks the same or similar to the user while actually
+different, or a resource name that contains the same characters,
+but in a different encoding. The added resource may pretend
+to be the real resource by looking very similar, but may
+contain all kinds of changes that may be difficult to spot
+but can cause all kinds of problems.
+
+Conceptually, this is no different from the problems surrounding
+the use of case-insensitive web servers. For example, a popular
+web page with a mixed case name (http://big.site/PopularPage)
+might be "spoofed" by someone who obtains access to
+(http://big.site/popularpage).
+
+However, the introduction of character normalization, of additional
+mappings for user convenience, and of mappings for various encodings
+may increase the number of spoofing possibilities. In some cases,
+in particular for Latin-based resource names, this is usually
+easy to detect because UTF-8-encoded names, when interpreted and
+viewed as legacy encodings, produce mostly garbage. In other cases,
+when concurrenly used encodings have a similar structure, but there
+are no characters that have exactly the same encoding, detection
+is more difficult. A good example may be the concurrent use of
+Shift_JIS and EUC-JP on a Japanese server.
+
+Administrators of large sites which allow independent users to
+create subareas may need to be careful that the aliasing rules
+do not create chances for spoofing.
+
+Acknowledgements
+
+The issue addressed here has been discussed at numerous times over the
+last many years; for example, there was a thread in the HTML working
+group in August 1995 (under the topic of "Globalizing URIs") in the
+www-international mailing list in July 1996 (under the topic of
+"Internationalization and URLs"), and ad-hoc meetings at the
+Unicode conferences in September 1995 and September 1997.
+
+Thanks to Francois Yergeau, Chris Wendt, Yaron Goland, Graham Klyne,
+Roy Fielding, M.T. Carrasco Benitez and many others for help with
+understanding the issues and possible solutions.
+
+Copyright
+
+Copyright (C) The Internet Society, 1997. All Rights Reserved.
+
+This document and translations of it may be copied and furnished to
+others, and derivative works that comment on or otherwise explain it
+or assist in its implementation may be prepared, copied, published
+and distributed, in whole or in part, without restriction of any
+kind, provided that the above copyright notice and this paragraph
+are included on all such copies and derivative works.  However, this
+document itself may not be modified in any way, such as by removing
+the copyright notice or references to the Internet Society or other
+Internet organizations, except as needed for the purpose of
+developing Internet standards in which case the procedures for
+copyrights defined in the Internet Standards process must be
+followed, or as required to translate it into languages other
+than English.
+
+The limited permissions granted above are perpetual and will not be
+revoked by the Internet Society or its successors or assigns.
+
+This document and the information contained herein is provided on an
+"AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE."
+
+Author's addresses
+
+        Larry Masinter
+        Xerox Corporation
+        3333 Coyote Hill Road
+        Palo Alto, CA 94304
+        masinter@parc.xerox.com
+        http://www.parc.xerox.com/masinter
+        Fax: +1 650 812-4333
+
+        Martin J. Duerst
+        W3C/Keio University
+        5322 Endo, Fujisawa
+        252-8520 Japan
+        duerst@w3.org
+        http://www.w3.org/People/D%C3%BCrst/
+        Tel/Fax: +81 466 49 1170
+
+        Note: The homepage URI of the second author contains a
+              working escaped IURI.
+
+        Note: Please write "Duerst" with u-umlaut wherever
+              possible, i.e. as "D&uuml;rst" in HTML.
+
+References
+
+[CharMod]     M. Duerst, Ed., Character Model for the World Wide Web,
+              <http://www.w3.org/TR/WD-charmod>.
+
+[HTML4]       "HTML 4.0", World Wide Web Consortium,
+         <http://www.w3.org/TR/REC-html40/appendix/notes.html#h-B.2>.
+
+[RFC 2119]    S. Bradner, "Key words for use in RFCs to Indicate
+              Requirement Levels", March 1997.
+
+[RFC 2141]    R. Moats, "URN Syntax", May 1997.
+
+[RFC 2192]    C. Newman, "IMAP URL Scheme", September 1997.
+
+[RFC 2279]    F. Yergeau. "UTF-8, a transformation format of ISO
+              10646.", January 1998.
+
+[RFC 2384]    R. Gellens, "POP URL Scheme", August 1998.
+
+[RFC 2396]    T.Berners-Lee, R.Fielding, L.Masinter. "Uniform
+              Resource Identifiers (URI): Generic Syntax." August,
+              1998.
+
+[RFC FTP]     B. Curtis, "Internationalization of the File Transfer
+              Protocol", <draft-ietf-ftpext-intl-ftp-05.txt>.
+
+[RFC 2616]    R.Fielding, J.Gettys, et al, "Hypertext Transfer
+              Protocol -- HTTP/1.1", June 1999.
+
+[UNI15]       M.Davis, "Unicode Normalization Forms", Draft Unicode
+              Technical Report #15, April 1999.
+              <http://www.unicode.org/unicode/reports/tr15/>
+
+[W3C IURI]    Internationalization - URIs and other identifiers
+              <http://www.w3.org/International/O-URL-and-ident.html>.
+
+[XML1]        "XML 1.0", World Wide Web Consortium Recommendation,
+              <http://www.w3.org/TR/REC-xml#sec-external-ent>.
+
+Glossary/Index (to be completed)
+
+URI, URN, IURI, UCS, escaped IURI, native IURI,

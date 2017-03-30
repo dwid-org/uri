@@ -1,0 +1,302 @@
+
+
+
+
+
+INTERNET DRAFT                                            FUJIKAWA Kenji
+draft-fujikawa-sdp-url-01.txt                             KURIYA Shinobu
+                                                        Kyoto University
+                                                           7 August 1998
+
+                             SDP URL Scheme
+
+
+
+Status of this Memo
+
+   This document is an Internet-Draft.  Internet-Drafts are working
+   documents of the Internet Engineering Task Force (IETF), its areas,
+   and its working groups.  Note that other groups may also distribute
+   working documents as Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet- Drafts as reference
+   material or to cite them other than as ``work in progress.''
+
+   To view the entire list of current Internet-Drafts, please check the
+   ``1id-abstracts.txt'' listing contained in the Internet-Drafts Shadow
+   Directories on ftp.is.co.za (Africa), ftp.nordu.net (Northern
+   Europe), ftp.nis.garr.it (Southern Europe), munnari.oz.au (Pacific
+   Rim), ftp.ietf.org (US East Coast), or ftp.isi.edu (US West Coast).
+
+
+
+Abstract
+
+   This document describes a format for an Session Description Protocol
+   Uniform Resource Locator (SDP URL) which will allow Internet clients
+   to have direct access to multimedia sessions.
+
+
+
+1. Introduction
+
+   SDP[1] is a format for describing information of multimedia sessions,
+   and generally is conveyed by SAP (Session Announcement Protocol)[4].
+   However, SDP is just a format for session description and is intended
+   to use different transport protocols including SAP, E-mail and World
+   Wide Web (WWW).
+
+   An SDP file has to be saved in a WWW server for distributing SDP
+   messages when utilizing WWW.  At first, Internet clients have access
+   to a WWW server to get an HTML file that has the URL of the SDP file.
+
+
+
+FUJIKAWA Kenji         Expires on 6 February 1999               [Page 1]
+
+
+
+
+
+
+INTERNET DRAFT               SDP URL scheme                  August 1998
+
+
+   Clients have to have another access to the server to get the SDP file
+   to start a multimedia session.
+
+   SDP URL scheme eliminates the second unnecessary access to a WWW
+   server.  Since SDP URL is written directly on an HTML file, a session
+   can be started only by access to the HTML file with SDP URL.  It is
+   not necessary to get another access to the server.
+
+   When a user clicks SDP URL in an HTML file, a WWW browser
+   automatically launch applications for participation in the session.
+   This is equal to selecting a session on an application such as sdr.
+
+
+
+2. Description of the SDP Scheme
+
+   The SDP URL scheme is basically the same format as that of the
+   original SDP except for a few points.
+
+   A whitespace is replaced by '+', a return by '&', and the characters
+   reserved in RFC 1738[2] and a original '+' by ascii code described by
+   %xx.  The term "RTP/AVP" which specifies a transport protocol is
+   replaced by the "RTP-AVP".  The <type> of  'v', 'o' and 's' which
+   cannot be omitted in the original SDP can be omitted.  If 'v' is
+   omitted, then the SDP version of an SDP URL is regarded as 1.
+
+   URL is generally written in the format:
+
+       <scheme>://<address>:<port>/<url-path>
+
+   SDP's connection information and session name correspond to <address>
+   and <url-path> respectively.
+
+   An SDP URL takes the form:
+
+       sdp://[ <address> [:ttl=<ttl>] [:noa=<noa>] ] / [<sessionname>]
+             [ #<type>=<value> *[&<type>=<value>] ]
+
+   The <address> is the connection address that will be either a unicast
+   IP address or a class-D IP multicast group address.  The <ttl> (time-
+   to-live) defines the scope with which multicast packets sent in a
+   session should be sent when the <address> is a multicast address.
+   The <ttl> is ignored when the <address> is a unicast address.  The
+   value of <ttl> takes 1 when the <ttl> is omitted.  The <noa> (number-
+   of-addresses) is the number of multicast addresses contiguously
+   allocated above the base address <address>.
+
+   These can also be described as a connection information 'c' and the
+
+
+
+FUJIKAWA Kenji         Expires on 6 February 1999               [Page 2]
+
+
+
+
+
+
+INTERNET DRAFT               SDP URL scheme                  August 1998
+
+
+   <sessionname> as a session name 's'.  The <type>, the <value> and
+   their order follow [1].
+
+
+
+3. Examples
+
+   The followings are some example SDP URLs using the format defined
+   above. A multimedia session is on a multicast address 224.192.2.3,
+   the session name "sdp test", TTL 16 and port 10000 .  The media type
+   is audio, profile AVP and payload type PCM.
+
+       sdp://224.192.2.3:ttl=16/sdp+test
+       #m=audio+10000+RTP-AVP+0
+
+   This could also be written in
+
+       sdp:///#s=sdp+test&c=IN+IP4+224.192.2.3%2f16&m=audio+10000+RTP-AVP+0
+
+   The former description is preferable for look, suiting to the URL
+   convention.
+
+   Multicast addresses are registered in DNS in [3].  In this case, the
+   URL is also written as:
+
+       sdp://london-station.bbcc.com:ttl=16/sdp+test
+       #m=audio+10000+RTP-AVP+0
+
+   where ``london-station.bbcc.com'' is the domain name of the address
+   224.192.2.3.
+
+   Some services may use additional data.  The time that a session is
+   active is specified.  Both audio and video are used.  All media
+   applications are requested to be receive-only and the maximum
+   framerate of video to be 10.
+
+       sdp://london-station.bbcc.com:ttl=16/sdp+test
+       #t=2873397496+2873404696&a=recvonly
+       &m=audio+10000+RTP-AVP+0
+       &m=video+9999+RTP-AVP+31&a=framerate:10
+
+
+
+5. Considerations to Scope Rule
+
+   It is asserted that announcements of multicast sessions made via WWW
+   cause the mismatch between the scope where WWW is valid and the scope
+   restricted by the multicast addresses. [1] However, Ohta shows that
+
+
+
+FUJIKAWA Kenji         Expires on 6 February 1999               [Page 3]
+
+
+
+
+
+
+INTERNET DRAFT               SDP URL scheme                  August 1998
+
+
+   this is not a problem but the idea of scope has an essential problem.
+   [3]
+
+
+6. QoS Specifications
+
+   The notation of RSVP parameters should be defined in [1] or in this
+   draft for the purpose of specifying Quality of Services (QoS).
+
+
+
+7. Proposed Syntax
+
+   The proposed BNF syntax is encoded as specified in RFC 1738 [2].
+
+       sdpurl          = "sdp://" [ connection ] "/" [ sessionname ]
+                         ["#" parameter *["&" parameter ] ]
+
+       connection      = address [ ":ttl=" ttl ][ ":noa=" noa ]
+       address         = addressname | addressnumber
+       addressname     = *[ domainlabel "." ] toplabel
+       domainlabel     = alphadigit |
+                         alphadigit *[ alphadigit | "-" ] alphadigit
+       toplabel        = alpha | alpha *[ alphadigit | "-" ] alphadigit
+       alphadigit      = alpha | digit
+       addressnumber   = digits "." digits "." digits "." digits
+       ttl             = digits
+       noa             = digits
+       digits          = 1*digit
+
+       sessionname     = 1*uchar
+
+       parameter       = type "=" value
+       type            = alpha
+       value           = 1*uchar [ ":" attributevalue]
+       attributevalue  = 1*uchar
+
+       alpha, digit and uchar are defined in RFC 1738.
+
+
+
+References
+
+[1]    M. Handley and V. Jacobson, "SDP: Session Description Protocol",
+       RFC 2327, Nov 1997.
+
+[2]    T. Berners-Lee, L. Masinter and M. Mccahill, "Uniform Resource
+       Locators (URL)", RFC 1738, Dec 1994.
+
+
+
+FUJIKAWA Kenji         Expires on 6 February 1999               [Page 4]
+
+
+
+
+
+
+INTERNET DRAFT               SDP URL scheme                  August 1998
+
+
+[3]    M. Ohta, J. Crowcroft, "Static Multicast", Internet Draft draft-
+       ohta-static-multicast-00.txt (work in progress), March 1998.
+
+[4]    M. Handley, "SAP: Session Announcement Protocol", Internet Draft
+       draft-ietf-mmusic-sap-00.txt (work in progress), Nov 1996.
+
+
+
+
+Security Considerations
+
+   (to be written)
+
+
+Appendix
+
+
+A. Implementation
+
+   Implementation of an SDP URL interpreter for Emacs/WWW is available
+   at
+   "http://www.lab1.kuis.kyoto-u.ac.jp/members/magician/sdp-url-0.1.tar.gz".
+
+
+Authors' Address
+
+   FUJIKAWA Kenji
+   Graduate School of Informatics,
+   Kyoto University
+   Yoshidahonmachi, Sakyo-Ku, Kyoto City, 606-01, Japan
+   Phone : +81 75-753-5387
+   Email : magician@kuis.kyoto-u.ac.jp
+
+   KURIYA Shinobu
+   Department of Information Science,
+   Faculty of Engineering, Kyoto University
+   Yoshidahonmachi, Sakyo-Ku, Kyoto City, 606-01, Japan
+   Phone : +81 75-753-5387
+   Email : kuriya@kuis.kyoto-u.ac.jp
+
+
+
+
+
+
+
+
+
+
+
+
+FUJIKAWA Kenji         Expires on 6 February 1999               [Page 5]
+

@@ -1,0 +1,369 @@
+
+
+Network Working Group                                     Shirley Browne
+Internet-Draft                                               Keith Moore
+Expires: 7 January 1996                          University of Tennessee
+                                                             7 July 1995
+
+
+            Issues Concerning URN Assignment and Resolution
+
+                    draft-ietf-uri-urn-issues-00.txt
+
+Status of this Memo
+
+     This document is an Internet-Draft.  Internet-Drafts are working
+documents of the Internet Engineering Task Force (IETF), its areas, and
+its working groups.  Note that other groups may also distribute working
+documents as Internet-Drafts.
+
+     Internet-Drafts are draft documents valid for a maximum of six
+months and may be updated, replaced, or obsoleted by other documents at
+any time.  It is inappropriate to use Internet-Drafts as reference mate-
+rial or to cite them other than as "work in progress."
+
+     To learn the current status of any Internet-Draft, please check the
+"1id-abstracts.txt" listing contained in the Internet-Drafts Shadow
+Directories on ftp.is.co.za (Africa), nic.nordu.net (Europe),
+munnari.oz.au (Pacific Rim), ds.internic.net (US East Coast), or
+ftp.isi.edu (US West Coast).
+
+Abstract
+
+     A number of schemes have been proposed over the past year or so for
+assigning and resolving Uniform Resource Names (URNs) and for associat-
+ing meta-information with URNs.  The Uniform Resource Identifier (URI)
+Working Group is currently faced with the task of evaluating these
+schemes.  The schemes all claim to satisfy the functional requirements
+for URNs stated in RFC 1737.  A number of additional issues that will be
+helpful to consider for purposes of evaluation are listed and discussed
+in this draft.  Although this draft is long on questions and short on
+answers, it attempts to distill the issues on which consensus (even if
+it's agreement to disagree) needs to be reached before progress on stan-
+dardization can be made.
+
+
+
+
+
+
+
+
+
+
+Browne/Moore             Expires 7 January 1996                 [Page 1]
+
+
+
+
+
+
+
+
+URN Issues                                                   7 July 1995
+
+
+Contents
+
+
+1  Structure and control of the namespace
+   1.1  Lifetime of a name
+   1.2  Human meaningfulness of names
+   1.3  Flat vs. hierarchical
+   1.4  Name assignment and ownership
+2  Name resolution issues
+   2.1  Responsibility for name resolution
+   2.2  Efficiency
+   2.3  Resolver location
+   2.4  Use of existing Domain Name System
+3  Meta-information issues
+   3.1  What to include and how to structure it
+   3.2  Responsibility and write permission
+   3.3  Search capabilities
+   3.4  Consistency requirements
+4  Support for resource replication
+   4.1  Consistency requirements
+   4.2  Existing mirroring programs
+   4.3  Copyright issues
+5  Level of standardization
+6  Satisfaction of existing naming needs
+7  Copyright and licensing issues
+8  Author's address
+
+
+1  Structure and control of the namespace
+
+1.1  Lifetime of a name
+
+     RFC 1737 states that URNs are to be "persistent" identifiers for
+resources.  But there are several kinds of persistence:
+
+     One kind of persistence is the lifetime of the binding between a
+URN and the resource it describes, independent of whether the resource
+can be accessed.  It is generally understood that once a URN is assigned
+to a particular resource, that same URN should not be used to refer to a
+completely different resource.  If possible, URNs should chosen in such
+a way as to ensure global lifetime uniqueness.
+
+     Another kind of persistence is the lifetime of the meaning that a
+human will associate with the human-readable portions of a URN.  The
+meanings of ordinary words, places, company names, names of countries,
+and even trademarks, change over time and due to unforseen circum-
+stances.  This affects the persistence of URNs which contain such human-
+readable strings.  If URNs are chosen to be somewhat meaningful to
+
+
+
+Browne/Moore             Expires 7 January 1996                 [Page 2]
+
+
+
+
+
+
+
+
+URN Issues                                                   7 July 1995
+
+
+humans (in addition to being resolvable by machines), the persistence of
+the meaning to humans may become an important design consideration.
+
+     Just as the meaning of names changes for humans, the association of
+URN naming authorities (whether human readable or not) with their reso-
+lution services and/or access locations can also change.  Even if a par-
+ticular naming authority is initially well-correlated with particular
+resolution or acesss services for URNs using that naming authority, this
+correlation may decrease over time.
+
+     Finally, there is the lifetime for which resolution of URNs and
+access of the resources named by URNs are available and easily located.
+
+1.2  Human meaningfulness of names
+
+     If names are human meaningful, then humans will have expectations
+that may be not be met and thus may lead to confusion and misinforma-
+tion.  On the other hand, opaque resource names would prevent humans
+from using their intiution to "resolve" them.
+
+1.3  Flat vs. hierarchical
+
+     All the proposed schemes seem to have agreed on at least a two-
+level hierarchy for the namespace, consisting of a division by naming
+authority, followed by a division by a string assigned by a particular
+naming authority.  The flat vs. hierarchical issue has two aspects:
+
+-    the structure used for name assignment
+
+-    the structure used for name resolution
+
+     It would be possible for the namespace to be flat for either pur-
+pose but hierarchical for the other.  Arguments have been put forth that
+a flat namespace does not scale for either purpose.
+
+     Note that the use of a hierarchy for name resolution does not
+require that the hierarchy be either visible in the name or permanently
+fixed once names are assigned.
+
+1.4  Name assignment and ownership
+
+     Who will be allowed to assign names - i.e., how easy will it be to
+establish oneself as a naming authority?
+
+2  Name resolution issues
+
+
+
+
+
+
+Browne/Moore             Expires 7 January 1996                 [Page 3]
+
+
+
+
+
+
+
+
+URN Issues                                                   7 July 1995
+
+
+2.1  Responsibility for name resolution
+
+     Should the naming authority that assigns a name be expected to pro-
+vide a service that resolves that name, and if so, for how long?  If
+only for a limited time, how should the name be resolved after this
+limit expires?  Could resolution be handled by third parties in addition
+to, or instead of, the service provided by the naming authority?
+
+2.2  Efficiency
+
+     How much, if any, slower than current URL retrieval can URN resolu-
+tion be to still be acceptable?  Is the answer for this question differ-
+ent for different users and/or different types of resources?
+
+2.3  Resolver location
+
+     Must it be possible to locate a resolver for a name by doing a
+lookup based only on the name?  In the case of hierarchical lookup, is
+it possible to not expose the resolution hierarchy as part of the name,
+so that the lookup hierarchy can change without changing the names?
+
+2.4  Use of existing Domain Name System
+
+     It has been argued that a name resolution system could be more
+quickly and reliably implemented by building on top of the existing
+Domain Name System, than by building and deploying a new service.
+
+3  Meta-information issues
+
+3.1  What to include and how to structure it
+
+     Should the URI group decide on a minimal set of attributes that are
+required to be included in a catalog record for each URN, or should it
+defer to outside groups to set such standards?  Note that a number of
+standards and conventions already exist -- US MARC, the geospatial meta-
+data standard, and the BIDM for software reuse libraries.
+
+     Some meta-information refers to the conceptual properties of a
+resource, some to the properties of a specific representation, and some
+to the properties of a specific location.  The different categories tend
+to have different update frequency, consistency requirements, and write
+permissions.  It would thus be desirable to be able to maintain each of
+these types of meta-information separately.
+
+3.2  Responsibility and permissions
+
+     Should a naming authority be responsible for supplying meta-
+information for names it assigns, or might third parties do a better job
+
+
+
+Browne/Moore             Expires 7 January 1996                 [Page 4]
+
+
+
+
+
+
+
+
+URN Issues                                                   7 July 1995
+
+
+(e.g., the OCLC Internet cataloging project)?
+
+     If meta-information is maintained under an IETF-sanctioned mecha-
+nism, should others besides the originating naming authority be allowed
+to contribute meta-information for resources they don't own?
+
+3.3  Search capabilities
+
+     Should a meta information, or URC, service provide search capabili-
+ties?  An alternative would be to permit bulk downloading of catalog
+records to third parties who could then provide search services, perhaps
+for a fee.
+
+3.4  Consistency requirements
+
+     What are the consistency requirements for multiple copies of meta-
+information?
+
+4  Support for resource replication
+
+4.1  Consistency requirements
+
+     What are the consistency requirements for multiple locations for a
+resource?
+
+4.2  Existing mirroring programs
+
+     How can name-to-location resolution be merged with current mirror-
+ing protocols and programs?  In particular, can the "pull model" used by
+most existing mirroring programs be supported effectively?
+
+4.3  Copyright issues
+
+     What are the copyright issues involved in mirroring and caching
+resources outside the originating authority?
+
+5  Level of standardization
+
+     It is desirable to allow a handful of name resolution schemes to
+co-exist initially so as to experimentally evaluate and compare them
+under real operating conditions.  Is it possible to do this while pre-
+senting a fairly uniform interface to client programs?  If multiple
+schemes are permitted to co-exist initially, one or perhaps a few will
+eventually win out.  How might names assigned under defunct schemes be
+resolved by surviving schemes?
+
+
+
+
+
+
+Browne/Moore             Expires 7 January 1996                 [Page 5]
+
+
+
+
+
+
+
+
+URN Issues                                                   7 July 1995
+
+
+6  Satisfaction of existing naming needs
+
+     There has been very little in the way of realistic case studies by
+the URI Working Group on how URNs will actually be used.  A number of
+groups and projects, such as the Computer Science Technical Report
+(CSTR) project, the Reuse Library Interoperability Group (RIG), the OCLC
+Internet Cataloging Project, the National HPCC Software Exchange (NHSE),
+the distributed Problem Solving Environment (PSE) project at Purdue Uni-
+versity, and the WebWorks project at Syracuse University, have real nam-
+ing needs.  It would be of value to obtain input from these groups on
+exactly how the need and plan to use globally unique names, and on what
+their performance and other requirements are.
+
+7  Copyright and licensing issues
+
+     Do copyright and licensing issues need to be considered in the con-
+text of name resolution?
+
+8  Authors' addresses
+
+Shirley Browne (browne@cs.utk.edu)
+Keith Moore (moore@cs.utk.edu)
+University of Tennessee
+107 Ayres Hall
+Knoxville, TN  37996-1301
+
+Tel:  (615) 974-5886
+Fax:  (615) 974-8296
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Browne/Moore             Expires 7 January 1996                 [Page 6]

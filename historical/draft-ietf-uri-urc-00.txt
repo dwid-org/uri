@@ -1,0 +1,166 @@
+INTERNET-DRAFT						Michael Mealling
+IETF URI Working Group					
+<draft-ietf-uri-urc-00.txt>
+
+            Specification of Uniform Resource Characteristics
+
+			Michael Mealling
+        Introduction by Karen R. Sollins and Larry Masinter
+                        April 5, 1994               
+
+Status of this Memo
+
+In this paper, the author proposes a set of requirments for a Uniform Resource 
+Characteristic which is designed to provide a method for encapsulating
+meta-information about a given Uniform Resource Name or Uniform Resource 
+Location.
+ 
+     This document is an Internet-Draft.  Internet-Drafts are
+     working documents of the Internet Engineering Task Force
+     (IETF), its areas, and its working groups.  Note that other
+     groups may also distribute working documents as
+     Internet-Drafts.
+ 
+     Internet-Drafts are draft documents valid for a maximum of six
+     months.  Internet-Drafts may be updated, replaced, or obsoleted
+     by other documents at any time.  It is not appropriate to use
+     Internet-Drafts as reference material or to cite them other
+     than as a ``working draft'' or ``work in progress.''
+ 
+     To learn the current status of any Internet-Draft, please check
+     the 1id-abstracts.txt listing contained in the Internet-Drafts
+     Shadow Directories on ds.internic.net, nic.nordu.net,
+     ftp.isi.edu, or munnari.oz.au.
+
+     This Internet Draft expires October 12, 1994.
+ 
+
+Presented here are the requirements and functional specification for
+_uniform resource characteristics (URCs) within the overall architecture of
+_Uniform Resource Identification_.  In order to build applications
+in the most general case, the user must be able to discover and
+identify the information, objects, or what we will call in this
+architecture resources, on which the application is to operate.  As
+the network and interconnectivity grows, the ability to make use of
+remote, perhaps independently managed, resources will become more and
+more important.  This activity of discovering and utilizing resources
+can be broken down into those activities where one of the primary
+constraints is human utility and facility and those in which human
+involvement is small or nonexistent.  Human naming must have such
+characteristics as being both mnemonic and short.  Humans, in contrast
+with computers, are good at heuristic disambiguation and wide
+variability in structure.  In order for computer and network based
+systems to support global naming and access to resources that have
+perhaps an indeterminate lifetime, the flexibility and attendent
+unreliability of human-friendly names should be translated into a
+naming infrastructure more appropriate for the underlying support
+system.  It is this underlying support system that the Internet
+Information Infrastructure Architecture (IIIA) is addressing.
+
+Within the IIIA, several sorts of information about resources are
+specified and divided among different sorts structures, along
+functional lines.  In order to access information, one must be able to
+discover or identify the particular information desired, determined
+both how and where it might be used or accessed.  The partitioning of
+the functionality in this architecture is into _uniform resource names_
+(URN), _uniform resource characteristics (URC), and _uniform resource
+locators_ (URL).  A URN identifies a resource or unit of information.
+It may identify, for example, intellectual content, a particular
+presentation of intellectual content, or whatever a name assignment
+authority determines is a uniquely namable entity.  A URL identifies
+the location or a container for an instance of a resource identified
+by a URN.  The resource identified by a URN may reside in one or more
+locations at any given time, and may move.  Of course, not all
+resources will move during their lifetimes, and not all resources,
+although identifiable and identified by a URN will be instantiated at
+any given time.  As such a URL is identifying a place where a resource
+may reside, or a container, as distinct from the resource itself
+identified by the URN.  A URC is a set of meta-level information about a
+resource.  Examples of such meta-information are: owner, encoding,
+access restrictions (perhaps for particular instances), and location.
+With this in mind, we can make the following statement:
+
+   The purpose or function of a URC is to provide a vehicle or structure
+   for the representation of URIs and their associated meta-information.
+
+As with URNs, the requirements on URCs fall into two categories: functional
+requirements and encoding requirements. The following functional requirements 
+specify what roles URCs will be expected to fulfill
+
+ * Encapsulation: In the most basic sense, a URC must be able to contain
+   ANY conceivable type of meta-information or URI. 
+
+ * Structure: In order to be useful, a URC must contain information
+   regarding which element a piece of meta-information pertains too.
+
+ * Scalability: URCs must be able to encapsulate any resource that can
+   conceivably be available on the network as well as any extraneous
+   information about that resource that may be deemed necessary by the
+   user. Since URCs may contain URNs, the URN scalability function applies
+   here as well.
+
+ * Grandfathering: Current meta-information schemes should be allowed to
+   work within the URC structure. 
+
+ * Caching: Caching should be possible for any URC regardless of whether
+   or not any of its specific elements are not cacheable. 
+
+ * Resolution: A URC is meant to be the format that URNs and URLs are 
+   transported in, therefore a given URN or URL may be resolved into a URC.
+   Nothing within a URC should cause it to not be the solution to a URN
+   or URL resolution.
+
+In addition, the following are requirements for URCs as they are
+encoded:
+
+ * Human readability: A URC must be able to be typed by a user on a keyboard.
+   Some meta-information items are meant for humans only while others are
+   only meant to be machine consumable. One requirement should not 
+   preclude the other from being encoded.
+
+ * Transport friendliness: A URC can be transported unmodified in
+   the common Internet protocols, such as TCP, SMTP, FTP, Telnet, etc.,
+   as well as printed paper.
+
+ * Machine consumption: A URC can be parsed by a computer.
+
+
+Several important characteristics of URCs come about as a result of 
+fulfilling the above requirements. Some of these characteristics are 
+a result of requirements on URNs and URLs that make up some of the 
+elements of a URC:
+
+ * Time To Live: Since a URC contains transient information such as 
+   timestamps, access privileges, etc they can not be guaranteed to have
+   a Time To Live greater than 0. While this does not preclude the
+   user from attempting to trust a URC for a longer amount of time it
+   should not be something to depend on.
+
+ * Character Sets: Since the encapsulation and scalability requirements
+   force the inclusion of alternate character sets, some common
+   scheme must be found that accommodates all character sets in a way
+   that fulfills the transport friendly encoding requirement. This
+   precludes any restrictions on allowable character sets.
+
+ * Data Naming: the fulfillment of the grandfathering requirement will
+   make it nearly impossible to specify the numerous ways extremely
+   similar pieces of information can be represented. Thus one consideration
+   should be a central authority that makes suggestions as to the consolidation
+   of the names used to identify specific pieces of meta-information.
+
+ * Member Element Control: by allowing any piece meta-information to be
+   included within a URC the number of globally understood elements will
+   be small if not non-existant. Therefore some entity must have some
+   control over some set of very concretely specified member elements.
+   The specification of that entity should be done in an encoding 
+   specification and is outside the scope of this list of functional
+   requirements.
+
+
+
+-- 
+------------------------------------------------------------------------------
+Michael Mealling                     ! Hypermedia WWW, WAIS, and gopher will be
+Georgia Institute of Technology      ! here soon via MIME. Your view of the 
+Michael.Mealling@oit.gatech.edu      ! internet is about to change completely!
+

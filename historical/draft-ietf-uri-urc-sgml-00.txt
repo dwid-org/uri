@@ -1,0 +1,1962 @@
+
+Internet Engineering Task Force                         Ron Daniel Jr.
+INTERNET-DRAFT                          Los Alamos National Laboratory
+draft-ietf-uri-urc-sgml-00.txt                             Terry Allen
+                                         O'Reilly and Associates, Inc.
+                                                         June 16, 1995
+
+
+                      An SGML-based URC Service
+
+
+
+
+
+Status of this draft
+
+
+This document is an Internet-Draft.  Internet-Drafts are working
+documents of the Internet Engineering Task Force (IETF), its areas,
+and its working groups.  Note that other groups may also distribute
+working documents as Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months.
+Internet-Drafts may be updated, replaced, or obsoleted by other
+documents at any time.  It is not appropriate to use Internet-Drafts
+as reference material or to cite them other than as a ``working
+draft'' or ``work in progress.''
+
+To learn the current status of any Internet-Draft, please check the
+1id-abstracts.txt listing contained in the Internet-Drafts Shadow
+Directories on ds.internic.net, nic.nordu.net, ftp.isi.edu, or
+munnari.oz.au.
+
+This Internet Draft expires December 15, 1995.
+
+
+Abstract
+
+
+The URI Working Group has been developing an architecture where
+Internet resources are identified using a Uniform Resource Name (URN),
+and retrieved using a Uniform Resource Locator (URL). Mapping URNs to
+URLs is the job of the Uniform Resource Characteristics (URC) service,
+whose requirements were given in [1].  This paper presents one
+possible specification for the URC service.  This spec provides the
+means for the URC service to formally specify new capabilities, while
+retaining the speed that is paramount to the fundamental use of the
+URC service as the means for URN to URL resolution.
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+Contents
+
+
+1 Introduction                                                       4
+
+
+2 URN Resolution Overview                                            5
+
+3 Attribute Sets                                                     5
+
+
+4 Default Attribute Set                                              8
+
+5 Multiple Syntaxes                                                 10
+
+  5.1 Example 1:  text/html . . . . . . . . . . . . . . . . . . . . 10
+
+  5.2 Example 2:  text/urc0 . . . . . . . . . . . . . . . . . . . . 12
+
+  5.3 Example 3:  text/sgml . . . . . . . . . . . . . . . . . . . . 12
+
+
+6 Query Languages                                                   13
+
+  6.1 Trivial Query Language  . . . . . . . . . . . . . . . . . . . 14
+
+  6.2 Query Language Identification . . . . . . . . . . . . . . . . 15
+
+
+7 Requirements Satisfaction                                         16
+
+  7.1 Requirements on the URC . . . . . . . . . . . . . . . . . . . 16
+
+  7.2 Requirements on the URC Service . . . . . . . . . . . . . . . 18
+
+8 Random Notes                                                      19
+
+  8.1 Other IETF Metadata Efforts . . . . . . . . . . . . . . . . . 19
+
+  8.2 Referring to Particular URCs  . . . . . . . . . . . . . . . . 20
+
+
+9 Open Issues                                                       20
+
+  9.1 Query Language  . . . . . . . . . . . . . . . . . . . . . . . 20
+
+  9.2 Meta-metadata . . . . . . . . . . . . . . . . . . . . . . . . 20
+
+  9.3 Attribute set object encapsulation  . . . . . . . . . . . . . 21
+
+10Acknowledgments                                                   21
+
+
+draft-ietf-uri-urc-sgml-00                                    [Page 2]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+11References                                                        22
+
+
+12Security Considerations                                           22
+
+A SGML Declaration                                                  23
+
+
+B DTD for Default Attribute Set                                     25
+
+C DTD for Meta Attribute Set                                        30
+
+
+D Custom Attribute Set Example                                      31
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+draft-ietf-uri-urc-sgml-00                                    [Page 3]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+1 Introduction
+
+
+Experience with the WWW has exposed the problems inherent in basing
+the system on resource locations instead of resource identity.
+Uniform Resource Locators (URLs) typically identify a particular path
+on a particular host.  This leads to a bevy of problems with network
+hotspots, fault-tolerance, and resource management.  To overcome those
+problems, the Uniform Resource Identifiers Working Group of the
+Internet Engineering Task Force has been developing an architecture
+that uses Uniform Resource Names (URNs) for resource identification.
+A name resolution service would handle the problem of mapping names to
+locations for the purpose of retrieval.  The data structures that
+contain the information necessary for this resolution are known as
+Uniform Resource Characteristics (URCs), and the resolution service is
+known as the URC service.
+
+Several scenarios of how this service would be used, and the
+requirements they place on the service, were set forth in [1].  The
+primary purpose of the URC service is to resolve URNs to URLs.
+However, the URC makes too good a place to store additional
+information about the resource to pass up the opportunity.  It is easy
+to imagine storing basic bibliographic information, such as author,
+title, and subject, in order to provide the foundation for a "card
+catalog" service for Internet-accessible documents.  Of course, there
+is no reason to stop with documents.  Scientific datasets, product
+databases, computer-generated music, etc.  are all reasonable
+candidates for publication over the WWW. The more one looks at the URC
+service, the more one realizes just how great a range of information
+it could reasonably provide.  This leads us to looking at the URC
+service as a general service for presenting metadata - or data about
+data.  Because of the wide variety of data that can be made available
+over the Internet, and because of the diversity of the metadata we
+might want to use to describe it, no single set of attributes (such as
+author, title, subject) are universally applicable.  This argues for a
+very general means of specifying attribute sets.  At the same time,
+recall that the primary purpose of the URC service is for URN to URL
+resolution.  This argues for a single, easily parsed, attribute set.
+Other apparently conflicting requirements were set forth in [1].
+
+This proposed specification attempts to reconcile these conflicting
+demands.  The need for a formal method is met by using SGML Document
+Type Definitions (DTDs) to specify the structure of new attribute
+sets.  This is described in section 3.  Simple changes to attribute
+sets can be accommodated through a single-inheritance mechanisms that
+is also described in section 3.  The need for fast, heuristic parsing
+is met by providing a particular DTD that is believed to be widely,
+though not universally, applicable.  The resolution process is
+reviewed in section 2.  The default attribute set is described in
+section 4 and supplied in Appendix B.  The specification allows for
+user agents to request URC information in different transfer syntaxes
+
+
+draft-ietf-uri-urc-sgml-00                                    [Page 4]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+in order to ease parsing or provide particular capabilities, such as
+digital signatures.  The ability for using multiple syntaxes is
+described in section 5.  Another important part of the service is the
+means that it provides for queries.  The specification allows for
+multiple query languages.  This part of the spec is described in
+section 6, which also describes the trivial query language that all
+URC servers must support.  How the specification meets the
+requirements established in [1] is the subject for section 7.
+Section 8 contains random notes and section 9 discusses issues that
+are still unresolved at this time.
+
+This is the first draft of the specification, and it is known to be
+incomplete.  It makes no attempt to discuss how URC information will
+be stored at a server, and does not address issues of maintaining
+URCs, distributing the database for fault-tolerance, etc.
+
+
+
+2 URN Resolution Overview
+
+
+A variety of URN syntaxes and resolution procedures are being studied
+by the URI-WG. This spec assumes a syntax and resolution procedure
+roughly like that in [4].  Briefly, such a URN contains a Fully
+Qualified Domain Name (FQDN), which identifies a set of servers that
+are authorized by the publisher to resolve the publisher's URNs.
+(These are known as default URNs).  The client sends an HTTP GET
+request for the complete URN to that server.  The request may use
+HTTP's Accept:  header to indicate preferences for the results to be
+returned in particular syntaxes.  The result is returned to the
+browser.  Depending on the transfer syntax and browser capabilities,
+the browser may choose one of several URLs itself, it may hand the URC
+off to an external application that can make the selection, or the
+browser may display the URC to the user so the user can make the
+selection.
+
+This specification uses HTTP as the resolution protocol.  Use is made
+of HTTP's format negotiation capabilities.  Using HTTP should ease the
+transition to more secure resolvers, which is a requirement, because
+of S-HTTP, SSL, and similar security efforts.  Furthermore, a wide
+variety of browsers, servers, tools, and expertise already exist for
+HTTP and can quickly be brought to bear on the URC service.
+
+
+3 Attribute Sets
+
+
+The primary purpose of the URC service is to resolve URNs into URLs
+for the purpose of resource retrieval.  However, the URC makes a very
+convenient place to store metadata - data about the resource.
+Frequently this will be bibliographic information, but [1] requires
+
+
+draft-ietf-uri-urc-sgml-00                                    [Page 5]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+that there be no restrictions on the data that can be placed in the
+URC. The URC is intended to be a container for metadata about a wide
+variety of Internet resources.  Satellite images, poems, scientific
+datasets, fine art images, gene sequences, ...  are all reasonable
+candidates for publication in the Internet's Uniform Resource
+Architecture.  All of these resource types will need different sorts
+of metadata.  Other attributes, such as ``subject'', may be used in
+different fashions.  Because of this diversity, we make the
+fundamental assumption:
+
+
+    There are no metadata elements (such as author, title,
+    subject, etc.)  that are applicable to all resources.
+
+
+Because of this assumption, we need a means of specifying what
+attributes are being used in a particular URC, as well as their syntax
+and semantics.  This need brings up the notion of an attribute set and
+the attribute set identifier.
+
+
+
+    Definitions:
+    An Attribute Set (AS) is the particular collection of elements
+    that may appear in a particular URC.
+    An Attribute Set Definition (ASD) is a machine-parsable
+    specification of the elements in an attribute set, and the
+    grammar by which they may be combined.
+    An Attribute Set Identifier (AID) is a URN that can be
+    resolved to obtain the attribute set definition.
+
+
+Using a URN to identify the attribute set of a URC has two advantages.
+First, URNs are unambiguous, so we can tell if the contents of one
+``subject'' field are comparable to another.  Second, using a URN lets
+us retrieve the attribute set definition if we need to.  The
+definition is a machine parsable grammar specification for the URCs.
+This allows us to parse novel URCs, although dealing with the
+semantics of novel elements is still an unsolved problem.  A further
+enhancement to this model is that an AS can be a modification of an
+existing AS. The child AS would specify only the additions and changes
+to the parent AS. Thus, attribute sets can form a single inheritance
+scheme back to some, presumably well-known, base attribute set.
+Multiple Inheritance (MI) of attribute sets was considered and
+explicitly rejected for reasons of complexity, robustness, complexity,
+poor behavior in distributed systems, complexity, lack of universal
+language support, and complexity.  Furthermore, at least one of the
+authors (RD) believes that MI is just too complex.  Dig?
+
+The attribute set definition shall be an SGML DTD. Parameter entities
+shall be used to allow element definitions to be overridden in a
+single inheritance scheme.  Such an approach is illustrated in
+
+draft-ietf-uri-urc-sgml-00                                    [Page 6]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+Appendices B, C, and D.
+
+The AS definition specifies the syntax of a URC in a machine-usable
+fashion.  There are three complications to this model.  First, we must
+also provide a specification of the semantics of the elements.  At
+this time, we are unaware of any machine-usable semantic specification
+schemes with the generality needed for the URC task.  Therefore, we
+rely on human-readable specification of the semantics of the elements.
+The semantics of the elements in the attribute set shall be indicated
+by comments in the DTD. Check w/ comp.text.sgml types on schemes for
+automatically extracting comments for documentation purposes.  Another
+mechanism is available for locating machine-parsable semantic
+definitions once they become available.  But before we can describe
+that, we must talk about the other complications.
+
+A second complication concerns the URC syntax.  Defining the attribute
+set with an SGML DTD only allows us to automatically parse URCs that
+are conveyed in an SGML transfer syntax.  Note that other syntaxes are
+explicitly allowed as a feature of this proposal.  Thus, if a request
+is made for a text/plain syntax, the result is not parsable using the
+AS definition.  This is not a great problem.  First, it is easy enough
+to request the URC in a text/sgml syntax, which is required to be
+conformant with the AS DTD. Second, we rarely care about parsing
+according to ISO 8879.  Because the primary use for the URC service is
+URN to URL resolution, we will usually parse the URC in a heuristic
+fashion, rather than spend the time to retrieve all the inherited DTD
+fragments, build the DTD, parse the document according to it, and then
+find that we have a lot of elements whose meaning we don't know
+anyway.  The default AS is provided to simplify the task of heuristic
+parsing.  In fact, the trivial query language provides the means for
+the client to ask for just a single location of the resource.  More
+capable query languages will offer the ability to ask for arbitrary
+subsets of the URC information.
+
+A third complication arises as a result of using a URN for the AID.
+Assume we have retrieved a URC, call it URC-1, that specifies its AID
+(AID-1).  Also assume that we wish to retrieve the attribute set
+definition.  We resolve AID-1, which is a URN, and get back a URC
+(URC-2) that lists locations for the AS definition.  What is the AID
+in URC-2?  How do we avoid infinite regress?  This standard defines a
+basic meta-attribute set definition that is suitable for the URC of an
+attribute set (see Appendix C).  To avoid infinite regress, AIDs can
+either be a URN, or the distinguished string "root".
+
+Providing a URC for the AS definition is a complication, but it also
+provides us with a natural extension mechanism for dealing with the
+semantics of an attribute set.  Just as a normal document might have
+ASCII and PostScript representations, the AS definition might have
+SGML and KQML representations.  These alternate representations are
+how we can provide versions of an AS definition with machine-readable
+semantic definitions.
+
+
+draft-ietf-uri-urc-sgml-00                                    [Page 7]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+4 Default Attribute Set
+
+
+The use of inherited attribute set grammars provides a very general
+capability, and there are applications that can use that generality to
+improve their functionality and scalability.  However, the primary
+purpose of the URC service is URN to URL resolution, and the speed of
+that resolution is a major concern for the URC service.  Response
+times for interactive browsing do not allow multiple network accesses
+in order to fetch DTD fragments and build a grammar for parsing a URC.
+Therefore, we provide a default attribute set whose semantics are to
+be broadly understood.  If a URC comes in that has been described
+using this attribute set, then it can be parsed in either a formal
+(according to ISO 8879) or a heuristic (anything else) fashion.  If a
+URC comes in with no attribute set specified, then the default
+attribute set is assumed.  Furthermore, if a URC comes in with a
+different attribute set, we mandate that any elements it has with the
+same names as elements in the default attribute set must have similar
+semantics to the elements of the default set.  This will allow
+heuristic parsing of new attribute sets.  To amplify this last point,
+consider the TITLE element.  Anyone creating a new attribute set that
+contains TITLE must use it in a fashion similar to that in the default
+attribute set.  If someone wants to use TITLE for a very different
+purpose (describing royalty perhaps), they must add special
+information (scheme, type, or other attributes) so that it is possible
+to tell that TITLE is being used in a novel fashion and simple parsers
+are not led astray.
+
+For the purposes of this draft of the specification, and the
+prototypes developed from it, the AID for the default attribute set
+shall be:
+
+<urn:x-dns-2:uri.acl.lanl.gov:default-dtd>
+
+It is anticipated that as this specification moves to the standards
+track, IANA will provide the URN for the default attribute set.
+
+The default attribute set is strongly based on the work of the Dublin
+metadata workshop [8].  A brief overview is given below.  The
+attribute set is based on a few principles.  First, we provide a set
+of elements with widely understood semantics (such as <Title>).
+Second, we provide a mechanism for specifying more precise
+interpretations of those elements (such as <Subject scheme="LCSH">).
+Third, we allow a variety of transfer syntaxes for the attributes.
+Plain text, HTML, binary encodings, etc.  can all be used, as
+described further in section 5.  All the elements in the default
+attribute set are optional and repeatable.  No particular order is
+required.
+
+
+
+Identifier: String or number used to uniquely identify this object.
+
+draft-ietf-uri-urc-sgml-00                                    [Page 8]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+    Normally a URN will be the unique identifier, and the <URN>
+    element will be used instead.
+
+URN: Shorthand for <Identifier scheme="URN">.
+
+Instance: Instance is a construct for grouping information on
+    particular instances of a resource, such as location, format,
+    price, etc.
+
+Location: A string to represent information on how to retrive the
+    resource from a particular location.  Usually the <URL> element
+    will be used instead, but this element is here for things like
+    LIFNs, etc.
+
+URL: Shorthand for <Location scheme="URL">.  The content is a URL to
+    fetch an instance of the resource.
+
+Author: The person(s) and/or organization(s) primarily responsible
+    for the intellectual content of the work.
+
+Title: The name of the object.
+
+Subject: The field of knowledge to which the work belongs.
+
+Publisher: The agent or agency responsible for making the object
+    available.
+
+Date: The date of publication.
+
+Other Agent: Other person(s) and/or organization(s), such as editors,
+    transcribers, sponsors, etc.  who have made significant
+    contributions to the work.  Author and Publisher are special cases
+    of OtherAgent.
+
+Object type: The abstract category of the object, such as novel,
+    poem, dictionary.
+
+Form: The particular manifestation or data representation of the
+    object, such as PostScript file or Windows executable.  For URCs,
+    form will typically be specified as an Internet Media Type -
+    formerly known as the MIME Content-type.
+
+Relation: Relationship to other objects.  This element should
+    identify the role of the relationship, as well as the related
+    objects.
+
+Source: Objects, either print or electronic, from which this resource
+    was derived.  This is a special case of the Relation element that
+    is believed to be widely useful to the humanities.
+
+Language: Natural language of the intellectual content.
+
+
+draft-ietf-uri-urc-sgml-00                                    [Page 9]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+Coverage: The spatial locations and temporal durations characteristic
+    of the object.
+
+
+
+5 Multiple Syntaxes
+
+
+Several of the URC requirements are difficult, if not impossible, to
+satisfy at the same time.  For example, it is a requirement to have a
+human-readable, printed representation of a URC. It is also a
+requirement that URCs have a consistent encoding that is suitable for
+digital signature computation.  Unfortunately, end-of-line convention
+differences between platforms make it difficult to meet both
+requirements simultaneously.  A related problem is that there will be
+different uses for URC information, and different encodings will be
+appropriate to meet those different needs.  For example, it might be
+useful to obtain citations in some format (BiBTeX perhaps) for
+inclusion in another system.
+
+Because of these considerations, we make another fundamental
+assumption:
+
+
+    There is no universally applicable syntax for a URC.
+
+
+Because of this assumption, this specification calls for the use of
+format negotiation mechanisms, specifically the Accept:  header in
+HTTP [2], to indicate preferred syntaxes.  Depending on the user's
+intent for the URC, they can ask for an HTML encoding, a plain text
+encoding, an encrypted binary encoding, a synthesized audio rendition,
+etc.
+
+A set of examples are provided that show the requests and responses
+for different renditions of the same underlying information.  All of
+these examples assume we are resolving the URN:
+
+
+    urn:dns:pchs.k-12.okc.ok.us:student-papers-1995/geo3
+
+
+which is a scandalous story written by a student at my old high
+school.
+
+
+5.1 Example 1:  text/html
+
+
+When the URC service is first deployed, there will be a large base of
+existing web browsers that will not have the ability to parse URCs.
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 10]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+One means of remaining compatible with these browsers is to request
+the URC in HTML. The user can look at information on the different
+locations for a resource, pick a site, and click on a link to retrieve
+a resource.
+
+The URN resolution request sent to the URC server's HTTP daemon might
+be:
+
+
+GET student-papers-1995/geo3 HTTP/1.0
+Accept: text/html, */*; q=0.2
+
+
+which says to send text/html if possible, anything else if not.
+
+The reply from the server might be:
+
+
+HTTP/1.0 200 OK
+Date: Tuesday, 08-Oct-96 21:09:16 GMT
+Server: Apache/2.7
+MIME-version: 1.0
+Content-type: text/html
+Last-modified: Friday, 26-Apr-96 21:57:12 GMT
+Content-length: 829
+
+<html>
+<head>
+<title>URC for urn:x-dns-2:pchs.k-12.okc.ok.us:student-papers-1995/geo3
+</title>
+</head>
+<body>
+<h1>urn:x-dns-2:pchs.k-12.okc.ok.us:student-papers-1995/geo3
+</h1>
+Author: Smith, Fred<br>
+Title: A Vicious, Seditious, and Tendentious History of George III<br>
+Subject: American Revolution
+Subject: (In)famous crackpots of history
+Location: <A HREF=
+"http://www.pchs.k-12.okc.ok.us/student-papers/1995/smith/geo3.html">
+http://www.pchs.k-12.okc.ok.us/student-papers/1995/smith/geo3.html</a><br>
+Form:text/html<br>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 11]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+5.2 Example 2:  text/urc0
+
+
+The text/html example above provides one means for backward
+compatibility with legacy clients.  However, the "click twice" model
+is going to get old really quickly.  A CCI helper application could be
+constructed that would parse URCs in some trivial format, such as
+text/urc0 [7], and automatically pick a URL.
+
+
+
+GET student-papers-1995/geo3 HTTP/1.0
+Accept: text/urc0, */*; q=0.2
+
+
+HTTP/1.0 200 OK
+Date: Tuesday, 08-Oct-96 21:09:16 GMT
+Server: Apache/2.7
+MIME-version: 1.0
+Content-type: text/urc0
+Last-modified: Friday, 26-Apr-96 21:57:12 GMT
+Content-length: 62
+
+=====
+http://www.pchs.k-12.okc.ok.us/student-papers/1995/smith/geo3.html
+
+
+5.3 Example 3:  text/sgml
+
+
+This example assumes the URC is prepared according to the default
+attribute set.  Note that the document declaration is included in the
+response, and that a URN is used in the SYSTEM identifier.  This is
+how the attribute set is indicated for the SGML syntax.  This is
+somewhat contrary to the intent of SGML, which wants to use SYSTEM to
+locate local information, and PUBLIC for well-known, publicly
+accessible information.  I have gone against that convention, since
+SGML PUBLIC identifiers have a restricted character set, perform some
+processing on the characters, and encourage a syntax (known as a
+formal public identifier) that has not yet been mapped to onto URNs.
+By using a SYSTEM identifier we get a more liberal character set, and
+the string is handed off unmolested to an ``entity manager'' for
+processing so as to fetch the appropriate file.  Using a URN here will
+require an enhanced entity manager, but such things are already part
+of at least one commercial SGML/WWW product.
+
+The URN resolution request sent to the URC server's HTTP daemon might
+be:
+
+
+GET student-papers-1995/geo3 HTTP/1.0
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 12]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+Accept: text/sgml, */*; q=0.2
+
+
+The reply from the server might be:
+
+
+
+HTTP/1.0 200 OK
+Date: Tuesday, 08-Oct-96 21:09:16 GMT
+Server: Apache/2.7
+MIME-version: 1.0
+Content-type: text/sgml
+Last-modified: Friday, 26-Apr-96 21:57:12 GMT
+Content-length: 129
+
+<!DOCTYPE URC SYSTEM "urn:x-dns-2:uri.acl.lanl.gov:default-1-dtd">
+<urc>
+<identifier scheme="URN">
+urn:dns:pchs.k-12.okc.ok.us:student-papers-1995/geo3
+</identifier>
+<author>
+Smith, Fred
+</author>
+<title>
+A Vicious, Seditious, and Tendentious History of George III
+</title>
+<Subject>American Revolution</subject>
+<Subject>(In)famous crackpots of history</subject>
+<instance>
+<URL>
+http://www.pchs.k-12.okc.ok.us/student-papers/1995/smith/geo3.html
+</URL>
+<form scheme="IMT">text/html</form>
+</instance>
+</URC>
+
+
+
+The examples above have suggested particular syntaxes.  Determining
+the set of ``well-known'' syntaxes that all URC servers must be able
+to emit is one direction this standard could be extended.
+
+
+6 Query Languages
+
+
+Diversity is the hallmark of the URC service.  We want to encourage
+the formation of a variety of value-added services, therefore we need
+a standard means of dealing with unique capabilities.  For example,
+different search services will have different information and support
+different forms of queries.  This section defines a trivial query
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 13]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+language that all URC servers and clients must support in order to
+claim conformance with the standard.  This section also describes the
+scheme by which non-standard queries can be identified.
+
+
+
+6.1 Trivial Query Language
+
+
+This query language is based on work in [3] and [4].  Queries in the
+trivial query language are HTTP GET and POST requests.  The following
+grammar describes the trivial query language.  It assumes a URN syntax
+similar to that in [4].
+
+
+  query        ::==  [N2operation/]urn
+                  |  L2operation/url
+                  |  C2operation/urc
+                  |  Q-id/string
+
+  N2operation  ::==  N2L
+                  |  N2C
+
+  L2operation  ::==  L2C
+  C2operation  ::==  C2C
+
+  Q-id         ::==  "Q-" string
+
+  urn          ::==  name`space:FQDN[:port]:string
+  url          ::==  scheme:scheme-specific-string
+  urc          ::==  some`hairy`string
+
+
+The query operations are:
+
+
+N2L: Given a URN, return a URL. Typically the URL will be returned as
+    an HTTP Location:  header, so that clients will automatically
+    retrive the resource.
+
+N2C: Given a URN, return a URC. The syntax for the result is
+    negotiated by use of the HTTP Accept:  header.  This operation is
+    the default, so that proxies may cache the result.
+
+L2C: Given a URL, return all the URCs that contain it.
+
+C2C: Given a partial URC, return all the URCs that match it.  This
+    part of the specification is being developed and should be the
+    subject of a revised Internet-draft.
+
+Q-id: An extension mechanism for site-specific queries.
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 14]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+The N2 and L2 operations are sent as HTTP GET requests.  The C2C
+operation is sent as an HTTP POST request since it is likely to be
+quite large.
+
+The trivial query language also reserves a section of the URN
+namespace to obtain information on the resolver, resources, etc.  They
+all begin with the reserved string "urn+".  The requests and their
+meaning are:
+
+
+
+ o  urn+m Resolver meta-information
+    (e.g.  GET N2C/urn:x-dns-2:FQDN:urn+m)
+    Returns a URC indicating URLs where resolver metainformation, such
+    as the administrative contact, sponsoring organization,
+    publication policy, etc.  can be retrieved.
+
+ o  urn+a list of All RequestIDs
+    (e.g.  <urn:x-dns-2:FQDN:urn+a>)
+    Returns a URC indicating URLs where a list of all URNs provided by
+    the publisher can be obtained.  The request must be understood by
+    all resolvers, but the response may have zero URLs in it.  In such
+    a case the URC should contain a message saying the equivalent of
+    ``sorry''.
+
+ o  urn+c Child naming authorities
+    (e.g.  <urn:x-dns-2:FQDN:urn+c>)
+    Returns a URC indicating URLs where a list of any child naming
+    authorities licensed by the naming authority associated with the
+    FQDN can be found.
+
+ o  urn+p Parent naming authorities
+    (e.g.  <urn:x-dns-2:FQDN:urn+p>)
+    Returns a URC indicating URLs where a list of any parent naming
+    authorities licensing the naming authority associated with the
+    FQDN can be found.
+
+ o  urn+aids
+    (e.g.  <urn:x-dns-2:FQDN:urn+aids>)
+    Returns a URC indicating the URLs that can be used to fetch a list
+    of all the attribute sets used to describe information on this
+    server.
+
+
+6.2 Query Language Identification
+
+
+This relatively minimal set of queries does not allow the construction
+of complex queries, such as "gimme the URNs and titles of all
+resources with 'Smith' as an author and 'food' as the subject".
+Different organizations will wish to add value to their URC
+collections in different fashions, so it is highly unlikely that one
+
+draft-ietf-uri-urc-sgml-00                                   [Page 15]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+query language will meet all needs.  Therefore, we provide an
+additional well-known query operation, Q-id, given in the grammar
+above.  Sites provide a unique identifier for the ID string, a slash,
+then a query string in their choice of query languages.  It is
+suggested that the query ID string be a URN that will resolve to a
+description of the query language, its grammar, etc.  On a related
+note, an additional URN is reserved:
+
+
+
+ o  urn+qls
+    (e.g.  <urn:x-dns-2:FQDN:urn+qls>)
+    Returns a URC that gives URNs and URLs for all the query languages
+    known by this server, their conditions of use, etc.
+
+
+7 Requirements Satisfaction
+
+
+This section reviews how the proposed URC specification meets the
+requirements set forth in [1].  That document divided the requirements
+into two categories:  requirements on the URC and requirements on the
+URC service.
+
+
+7.1 Requirements on the URC
+
+
+Machine Consumption
+
+Consistent External Representation
+
+Transport Friendliness
+
+Readability: The scenarios paper set forth several requirements on
+    the URC and its encoding.  The first set of those requirements
+    were Machine Consumption, Consistent External Representation,
+    Transport Friendliness, and Human Readability.  Those requirements
+    are very difficult, if not impossible, to meet simultaneously.
+    For example, having a human-readable printed representation makes
+    it possible to cut and paste URCs and send them around via e-mail.
+    Unfortunately, differing conventions for handling EOL, tabs, etc.
+    mean that there will not be a consistent representation for the
+    purposes of digital signatures.  These apparently conflicting
+    requirements were addressed in section 5 on multiple transfer
+    syntaxes.  It suggests that a variety of transfer syntaxes be
+    allowed.  For human readability, a simple text version might be
+    requested.  For digital signatures, a binary transfer syntax might
+    be used, and the client would take responsibility for displaying
+    the URC to the user.
+
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 16]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+Simplicity: Utilizing the defaults for the attribute set, and fixing
+    the transfer sytax to something like text/urc0, text/plain, or
+    text/html, URCs can be simple enough for hand entry.
+
+Rearrangeability: The rearrangability requirement originated with the
+    need to sort locations according to preferences such as cost,
+    format, size, etc.  While this is a very reasonable thing to do,
+    sorting by author name is not so reasonable.
+
+    The default attribute set is independent of element order.
+    Developers of other attribute sets are encouraged to maintain this
+    flexibility.  Developers of software for manipulating URCs are
+    also encouraged to think carefully about what they are doing and
+    not rearrange fields without good reason.
+
+Generality
+
+Structure
+
+Ignorability: The requirements that the URC be general enough to
+    store ANY sort of data, and that it have a self-describing
+    structure, are met by the use of SGML DTDs for URC definition.
+    Being able to determine the extent of novel elements is a function
+    of particular transfer encodings.
+
+Searchable: The trivial query language provides enough capability for
+    URN resolution, but it does not provide the general query
+    capability imposed by the searchability requirement.  A more
+    capable query language specification is under development.  This
+    is discussed further in section 9.1.
+
+Subsettable
+
+Incrementally Modifiable: It is possible to create new URCs from
+    pieces of other ones.  Because all the elements of the default
+    attribute set are optional, any URC prepared according to it can
+    be decimated while still leaving a legal URC. For URCs prepared
+    according to other attribute sets, the attribute set definition
+    must take this requirement into account.  There is nothing in this
+    specification that prevents modifying existing elements in a URC
+    or adding new elements.  The specification that the semantics of
+    the default attribute set are preserved in all elements named the
+    same as those in teh default attribute set does, however, impose
+    the requirement that novel semantics require a different name.
+
+Separable: This is an issue for binary transfer syntaxes.
+
+Versioning: Versioning URC changes is still an open issue (see
+    section 9.2).  The default attribute set will be extended in the
+    next version of this draft to incorporate versioning information.
+
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 17]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+Caching: Because of the use of HTTP as the resolution protocol,
+    existing HTTP caches and proxy servers can be utilized for caching
+    URC information.
+
+Grandfathering: The use of multiple transfer syntaxes and multiple
+    attribute set definitions may ease the grandfathering of older
+    metadata schemes, but this has not been a major consideration in
+    the development of this specification.  Some steps in that
+    direction (see section 8.1) have been taken with respect to IAFA
+    templates [6] and the format suggested in RFC 1357 [5] for
+    emailing bibliographic records.
+
+
+
+7.2 Requirements on the URC Service
+
+
+Resolution: As shown in section 2, it is possible for the URC service
+    to resolve URNs into URCs.  Resolving the URC into a URL can also
+    be performed manually or automatically.  The query language also
+    provides the capability for taking a URL and obtaining URCs that
+    contain it, which should allow URL to URN reverse lookups.
+
+Multiple Syntaxes: Multiple transfer syntaxes are a feature of this
+    specification.
+
+Query Language: As mentioned earlier, the trivial QL in section 6
+    does not meet all the requirements in [1].  This is discussed
+    further in section 9.1.
+
+Security: Because we have used HTTP as the resolution protocol, we
+    believe we can utilize secure HTTP, SSL, and related WWW security
+    work to meet the security requirements.  It may be that only
+    particular transfer syntaxes can be secured, but that is deemed an
+    acceptable compromise by the authors of this spec.
+
+Authentication Chain: Until we have a reasonable public key
+    infrastructure, this requirement can not truly be met.  The system
+    has been architected for the assumption that such a service will
+    arise, and that domain names can be registered as distinguished
+    names in that hierarchy.  Do we need to account for the time of a
+    domain name?
+
+Access Control: Access control is handled through existing HTTP
+    mechanisms.  Future HTTP mechanisms will also be gracefully
+    handled.
+
+Maintenance: It is believed that nothing in the URC specification
+    prevents maintenance of the URC information.  Particular details
+    of maintenance procedures are for implementations to establish and
+    are outside the scope of this spec.
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 18]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+Synchronization: Synchronizing the content of multiple URC servers is
+    outside the scope of this specification.
+
+Development: This specification allows multiple URNs to be associated
+    with a single URC, thus meeting the development requirement.
+
+Choice: This requirements is more properly addressed as part of the
+    URN resolution specification, but nothing in this specification
+    assumes that users must always go through a particular gateway
+    server.  (Note that efficiency considerations may make it very
+    very common to do so, in order to gain the benefits of a caching
+    HTTP proxy, but there is certainly no requirement that we do so).
+
+Scalability: This proposal does not forward resolution queries.  Am I
+    answering the problem here, or is this more properly a part of
+    various URN resolution specs?
+
+Administrative Contact
+
+Hierarchical Operations: The trivial query language provides a query
+    for determining administrative information and the structure of
+    the local publication hierarchy.  It also provides queries to
+    determine the attribute sets used, which can be used to speed
+    subject-specific resource discovery.
+
+
+
+8 Random Notes
+
+
+This section contains notes about the service that are believed
+useful, but haven't found a graceful home elswhere in the draft.
+
+
+8.1 Other IETF Metadata Efforts
+
+
+The URC is not the only IETF-sanctioned metadata effort.  The IAFA
+template [6] and the biblio std [5] are other means for conveying
+information similar to the URC. Because the URC allows different
+attribute sets to be used, it is possible to incorporate those
+standards into the URC service.  Both IAFA and RFC 1357 define a plain
+text encoding for their information.  Our intent at this time is to
+require URCs in the text/plain syntax that have an AID of
+<urn:x-dns-2:acl.lanl.gov:IAFA> or <urn:x-dns-2:acl.lanl.gov:RFC1357>
+to conform to those documents.
+
+
+
+
+
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 19]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+8.2 Referring to Particular URCs
+
+
+Many different URCs can exist for a resource.  For example, if a Dept.
+of Energy laboratory publishes a technical report, they will provide
+the default URC. Other organizations, such as the Library of Congress,
+the OCLC, and the DOE's Office of Scientific and Technical Information
+might all have URCs describing that document.  Subject-specific search
+services would have their own URcs.  There will be occasions when we
+want to indicate that a particular URC should be fetched.  This is a
+job for a URL. As an example, these three URLs show how we might refer
+to different URCs for the same URN:
+
+
+    http://uri.acl.lanl.gov/urn:x-dns-2:uri.acl.lanl.gov/foo57
+    http://urn.oclc.org/urn:x-dns-2:uri.acl.lanl.gov/foo57
+    http://urn.gatech.edu/urn:x-dns-2:uri.acl.lanl.gov/foo57
+
+
+
+9 Open Issues
+
+
+9.1 Query Language
+
+
+Requirements say that ``It must be possible to select a URC based on a
+search of its components.  It must be possible to select which
+components will be searched and which will not be searched.''  They
+also say ``It must be possible for simple resolution queries to be
+augmented with information on the version of a resource desired, and
+an indication of whether signature information should be supplied.  It
+must be possible to select sets of URCs based on criteria such as data
+of last modification, etc.''  The trivial QL in section 6 does not
+meet those requirements.  Do we need to put a more capable QL into
+this paper, can we refer to an external draft under development, or do
+we relax the requirements?  I favor the second option.
+
+
+9.2 Meta-metadata
+
+
+At its simplest, the URC for a resource only contains data about the
+resource.  Of course, this quickly breaks down.  The URC can be
+modified over time, in fact, one of the requirements on the URC
+service is that we be able to do so.  This implies that we might want
+to know information about the URC - when it was created, by whom, what
+is its version, what changes were made since the last version and why,
+etc.  Where to put this meta-metadata and how to access it are open
+issues.  Because of the syntax-independence property we wish to
+provide, URN resolvers will already be constructed with the assumption
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 20]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+of dynamically generating the required output.  Therefore, it probably
+makes sense for the resolver to maintain the metadata, meta-metadata,
+...  locally and only provide it when requested.  The default
+attribute set will probably be augmented with some basic meta-metadata
+capabilities as this specification is developed further.
+
+
+
+9.3 Attribute set object encapsulation
+
+
+Since attribute sets are fundamental to our view of the URC service,
+it is appropriate to ask what sorts of operations will be defined over
+them.  This is one of our current areas of work.  At this time, all
+the operations we are exposing to the client are "get" methods.  Get
+the complete attribute set, get just the changes from the parent, or
+the base, get the name of the parent, get the name of the base, get
+the names of the elements that are new or overridden in the changes,
+etc.
+
+Since the AID is a URN, that means it has a URC, and that URC will
+also have an attribute set.  While we do not want to mandate all the
+attribute sets - the meta-attribute set may be an appropriate element
+for standardization.
+
+
+10 Acknowledgments
+
+
+This specification is the result of many people submitting their ideas
+to the crucible of forums such as the URI-WG, from whence we have
+shamelessly plucked them.  In particular, we would like to acknowledge
+Eric Miller of OCLC for providing the original DTD for the Dublin
+metadata set that has been turned into something he might prefer not
+to think about on a queasy stomach.  Dan Connolly, of the W3O and the
+HTTP-WG, deserves thanks for his unwitting contribution of the SGML
+declaration.  Many other WG members have contributed to the
+development of this specification.  Particular mention must go to the
+working group chair, Larry Masinter of Xerox PARC, for the notion of
+named attribute sets that is central to this specification.  Finally,
+Ron Daniel would like to thank Dave Forslund of Los Alamos National
+Laboratory and Carol Hunter of Lawrence Livermore National Laboratory
+for digging out the funding to let him pursue this work.
+
+
+
+
+
+
+
+
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 21]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+11 References
+
+
+
+References
+
+
+ [1] Ron Daniel and Michael Mealling, ``URC Scenarios and
+     Requirements'',
+     <URL:ftp://cnri.reston.va.us/internet-drafts/draft-ietf-uri-urc-
+     req-01.txt>
+
+ [2] T. Berners-Lee, R.T. Fielding, and H. Frystyk Nielsen,
+     ``Hypertext Transfer Protocol -- HTTP/1.0'',
+     <URL:ftp://cnri.reston.va.us/internet-drafts/draft-fielding-
+     http-spec-01.ps>
+
+ [3] Keith Shafer, Eric Miller, Vincent Tkac, and Stuart Weibel,
+     ``URN Services'',
+     <URL:ftp://cnri.reston.va.us/internet-drafts/draft-shafer-uri-
+     urn-resolution-00.txt>
+
+ [4] Paul Hoffman and Ron Daniel, ``x-dns-2 URN Scheme'',
+     <URL:ftp://cnri.reston.va.us/internet-drafts/draft-ietf-uri-urn-
+     x-dns-2-00.txt>
+
+ [5] D. Cohen, ``A Format for E-Mailing Bibliographic Records'', RFC
+     1357,
+     <URL:http://ds.internic.net/rfc/rfc1357.txt>
+
+ [6] P. Deutsch, A. Emtage, M. Koster, M. Stumpf, ``Publishing
+     Information on the Internet with Anonymous FTP'',
+     <URL:ftp://ietf.cnri.reston.va.us/internet-drafts/draft-ietf-
+     iiir-publishing-03.txt>
+
+ [7] Paul Hoffman and Ron Daniel, ``Trivial URC Syntax:  urc0'',
+     <URL:ftp://cnri.reston.va.us/internet-drafts/draft-ietf-uri-urc-
+     trivial-00.txt>
+
+ [8] Stuart Weibel, Jean Godby, Eric Miller, and Ron Daniel (eds),
+     ``OCLC/NCSA Metadata Workshop Report'',
+     <URL:http://www.oclc.org:5046/conferences/metadata/dublin_core_report.html>
+
+
+
+12 Security Considerations
+
+
+The URC service will provide information of considerable value,
+especially once Internet payment systems become common.  Future
+versions of this specification must address how transactions can be
+validated if desired without imposing significant delays on unsecured
+
+draft-ietf-uri-urc-sgml-00                                   [Page 22]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+operations.  The author believes that supporting multiple syntaxes
+will help in this area, and that new attribute sets can be defined
+which will carry digital signature information.  This is addressed in
+the current version of [1].
+
+
+
+Contact Information
+
+
+Ron Daniel Jr.
+MS B287
+Los Alamos National Laboratory
+Los Alamos, NM, USA 87545
+voice:  (505) 665-0139
+fax:  (505) 665-4939
+rdaniel@lanl.gov
+http://www.acl.lanl.gov/ rdaniel/
+
+Terry Allen
+O'Reilly and Associates, Inc.
+101 Morris St.
+Sebastopol, Calif., 95472
+terry@ora.com
+
+
+A SGML Declaration
+
+
+This appendix presents the boring SGML declaration that is needed for
+specificity.  Serious consideration is being given to the use of ISO
+10646, we are waiting on the HTML working group to decide what will
+happen in that area.  For now we use the so-called "Latin-1" character
+set encoding.
+
+This SGML declaration was stolen from Dan Connolly's work for the HTML
+Check package.  Hey, I steal from the best.
+
+
+
+
+<!SGML  "ISO 8879:1986"
+--
+  SGML Declaration for Uniform Resource Characteristic (URC)
+  DTDs and instances as used in the World Wide Web (WWW).
+
+  This is AMAZINGLY similar to the sdecl for HTML prepared
+  by Dan Connolly. Any errors introduced into it are my
+  fault.
+
+  Ron Daniel  5/24/95
+--
+
+draft-ietf-uri-urc-sgml-00                                   [Page 23]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+
+CHARSET
+         BASESET  "ISO 646:1983//CHARSET
+                   International Reference Version (IRV)//ESC 2/5 4/0"
+         DESCSET  0   9   UNUSED
+                  9   2   9
+                  11  2   UNUSED
+                  13  1   13
+                  14  18  UNUSED
+                  32  95  32
+                  127 1   UNUSED
+     BASESET   "ISO Registration Number 100//CHARSET
+                               ECMA-94  Right  Part  of  Latin  Alpha-
+bet Nr. 1//ESC 2/13 4/1"
+     DESCSET   128 32 UNUSED
+               160 96 32
+
+CAPACITY        SGMLREF
+                TOTALCAP        150000
+                GRPCAP          150000
+
+SCOPE    DOCUMENT
+SYNTAX
+         SHUNCHAR CONTROLS 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
+                           19 20 21 22 23 24 25 26 27 28 29 30 31 127
+         BASESET  "ISO 646:1983//CHARSET
+                   International Reference Version (IRV)//ESC 2/5 4/0"
+         DESCSET  0 128 0
+         FUNCTION
+
+                  RE          13
+                  RS          10
+                  SPACE       32
+                  TAB SEPCHAR  9
+
+
+         NAMING   LCNMSTRT ""
+                  UCNMSTRT ""
+                  LCNMCHAR ".-"
+                  UCNMCHAR ".-"
+                  NAMECASE GENERAL YES
+                           ENTITY  NO
+         DELIM    GENERAL  SGMLREF
+                  SHORTREF SGMLREF
+         NAMES    SGMLREF
+         QUANTITY SGMLREF
+                  NAMELEN  72    -- somewhat arbitrary; taken from
+internet line length conventions --
+                  TAGLVL   100
+                  LITLEN   1024
+                  GRPGTCNT 150
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 24]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+                  GRPCNT   64
+
+FEATURES
+  MINIMIZE
+    DATATAG  NO
+    OMITTAG  YES
+    RANK     NO
+    SHORTTAG NO
+  LINK
+    SIMPLE   NO
+    IMPLICIT NO
+    EXPLICIT NO
+  OTHER
+    CONCUR   NO
+    SUBDOC   NO
+    FORMAL   YES
+  APPINFO    NONE
+>
+
+
+
+
+B DTD for Default Attribute Set
+
+
+This appendix presents the default SGML DTD. This is what would be
+returned as a result of resolving the default AID. (Just what that
+default AID will be depends on the result of the URN effort, we will
+assume <urn:x-dns-2:uri.acl.lanl.gov:default-dtd> for now).
+
+
+
+<!--
+    This is the ISO8879:1986 document type definition for the
+    default URC attribute set.  It is stongly based on the DTD
+    developed for the Dublin Metadata set by Eric Miller of OCLC.
+    This DTD is subject to discussion and change by the members
+    of the IETF's URI working group, or by anyone who cares to
+    express an opinion to me.
+
+
+    Ron Daniel  6/13/95
+-->
+
+
+<!-- ============ Parameter Entities ===============
+
+This DTD makes extensive use of parameter entities so that the
+elements can easily be overridden by people wishing to extend or
+modify the default attribute set. People creating new base attribute
+sets are encouraged to use the same style.  -->
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 25]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+
+<!-- Parameter entities for Elements
+    These define the content models for the elements in the default
+    set. The convention for those names is n.xxx, where xxx is the
+    generic identifier of the element. -->
+
+<!ENTITY   %  n.Instance "(Author | Title | Subject | Identifier |
+                    URN | Location | URL | Form | Publisher | Date |
+                    ObjectType | OtherAgent | Relation | Source |
+                    Language | Coverage)">
+<!ENTITY   % n.URC "(%n.Instance; | Instance)">
+
+<!-- URC is the element that contains all the others. Instance is an
+  element that can group together any of the other elements, but not
+  itself. -->
+
+<!ENTITY   %  n.Author      "(#PCDATA)" >
+<!ENTITY   %  n.Title       "(#PCDATA)" >
+<!ENTITY   %  n.Subject     "(#PCDATA)" >
+<!ENTITY   %  n.Identifier  "(#PCDATA)" >
+<!ENTITY   %  n.URN         "(#PCDATA)" >
+<!ENTITY   %  n.Location    "(#PCDATA)" >
+<!ENTITY   %  n.URL         "(#PCDATA)" >
+<!ENTITY   %  n.Form        "(#PCDATA)" >
+<!ENTITY   %  n.Publisher   "(#PCDATA)" >
+<!ENTITY   %  n.Date        "(#PCDATA)" >
+<!ENTITY   %  n.ObjectType  "(#PCDATA)" >
+<!ENTITY   %  n.OtherAgent  "(#PCDATA)" >
+<!ENTITY   %  n.Relation    "(#PCDATA)" >
+<!ENTITY   %  n.Source      "(#PCDATA)" >
+<!ENTITY   %  n.Language    "(#PCDATA)" >
+<!ENTITY   %  n.Coverage    "(Spatial | Temporal | #PCDATA)*" >
+<!ENTITY   %  n.Spatial     "(#PCDATA)" >
+<!ENTITY   %  n.Temporal    "(#PCDATA)" >
+
+<!-- Parameter entities for Attributes
+    Almost all of the elements can have a "scheme" attribute that
+    can be used to more precisely  indicate their semantics. The
+    URL and INSTANCE elements do not have a scheme at this time.
+    Many of the elements can have a "type" attribute as well in order
+    to specify additional structure.
+ -->
+
+<!ENTITY   % Author.Type
+             "Name | Email | OtherType" >
+<!ENTITY   % Author.Scheme
+             "AACR2 | DUNS | OtherScheme" >
+
+<!ENTITY   % Title.Type
+             "Main | SubTitle | PartTitle | Alternate |
+              Abbrev | OtherType" >
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 26]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+<!ENTITY   % Title.Scheme
+             "AACR2 | OtherScheme" >
+
+<!ENTITY   % Subject.Scheme
+             "LCSH | MeSH | Sears | Abstract | OtherScheme" >
+
+<!ENTITY   % Identifier.Scheme
+             "URN | URL | LCCN | ISBN | ISSN | SICI | MessageID |
+              FPI | UPC | OtherScheme" >
+<!-- URL stays in here for backward compatibility, but people should
+     start to think about URNs as identifiers and URLs as retrival
+     strings.  -->
+
+
+<!ENTITY   % Location.Scheme  "URL | LIFN | OtherScheme">
+
+<!ENTITY   % Form.Scheme
+             "IMT | X.400 | OtherScheme">
+
+<!ENTITY   % Publisher.Scheme
+             "AACR2 | DUNS | OtherScheme" >
+
+<!ENTITY   % Date.Scheme
+             "RFC822 | YYYY | YYYY-MM-DD | OtherScheme" >
+
+<!ENTITY   % OtherAgent.Type
+             "Editor | Sponsor | Principal | Compiler | Funder |
+              Composer | Cataloger | Illustrator | Translator |
+              OtherType"  >
+<!ENTITY   % OtherAgent.Scheme
+             "AACR2 | OtherScheme" >
+
+<!ENTITY   % Relationship.Scheme
+             "URN | URL | LCCN | ISBN | ISSN | SICI | MessageID |
+              FPI | OtherScheme" >
+<!ENTITY   % Relationship.Type
+             "Supersedes | Continues | Continued.From |
+              Contained.In | Superseded.By | Cites | Extracted.From |
+              Is.Part.Of | Contains | IsIndexOf | IsIndexedBy |
+              GlossaryOf | Predecessor | Successor | IsDerivativeOf |
+              Child | Parent | Sibling | OtherType" >
+
+<!-- Element list: Subject to change as this thing gets refined. Some
+     elements for meta-metadata (version info on the URC itself)
+     are the most likely candidates for addition. -->
+
+<!ELEMENT   URC        - -  (%n.URC;)*
+ -- Note that unlike the Dublin DTD, the URC DTD does not define an
+    EXTENSION element. Instead, people extending the default URC DTD
+    are expected to create a new DTD with a new Attribute set ID. -- >
+
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 27]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+
+<!ELEMENT   Author      - -     (%n.Author;)
+ -- Name of the persons and organizations primarily responsible for
+    the intellectual content of the resouce. Encode one name per
+    element. For personal names use Last, First (or whatever
+    the cultural norm is for sorted lists of names). -- >
+<!ATTLIST Author     Type     (%Author.Type;)         #IMPLIED
+                     Scheme   (%Author.Scheme;)       #IMPLIED >
+
+<!ELEMENT   Title       - -     (%n.Title;)
+ -- The name of the object, if it has one. -- >
+<!ATTLIST Title      Type     (%Title.Type;)          #IMPLIED
+                     Scheme   (%Title.Scheme;)        #IMPLIED >
+
+<!ELEMENT   Subject     - -     (%n.Subject;)
+ -- The field of knowledge to which the resource belongs. The default
+    content of the subject element is simple keywords. The scheme
+    attribute can be used to indicate the use of a controlled
+    vocabulary. -- >
+<!ATTLIST Subject    Scheme   (%Subject.Scheme;)      #IMPLIED >
+
+<!ELEMENT   Identifier  - -     (%n.Identifier;)
+ -- String or number used to uniquely identify this resource.
+    Typically the URN element will be used in favor of the URN
+    attribute on this element. Other identification schemes may
+    also be used. -- >
+<!ATTLIST Identifier Scheme   (%Identifier.Scheme;)   #IMPLIED >
+
+<!ELEMENT   URN         - -     (%n.URN;)
+ -- A Uniform Resource Name identifying the resource. -- >
+
+<!ELEMENT   Location    - -     (%n.Location;)
+ -- A string used to retrive a particular instance of the resource.
+    Typically the URL element will be used instead of the URL
+    attribute of this element. -- >
+
+<!ELEMENT   URL         - -     (%n.URL;)
+ -- A Uniform Resource Locator for an instance of the resource. -- >
+
+<!ELEMENT   Instance    - -     (%n.Instance;)
+ -- Instance is a grouping construct to bind together information that
+    relates to one particular instance of a resource. Typically it
+    will bind a URL to its format, language, etc. However, examples
+    can be constructed that use so many other elements that we allow
+    anything to go in there.  -- >
+
+<!ELEMENT   Form        - -     (%n.Form;)
+ -- The particular data representation of the resource. Typically
+    this will be an Internet Media Type (formerly known as MIME
+    content type). In such a case the SCHEME attribute should be used
+    to identify it. -- >
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 28]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+<!ATTLIST Form       Scheme   (%Form.Scheme;)         #IMPLIED >
+
+<!ELEMENT   Publisher   - -     (%n.Publisher;)
+ -- The agent or agency responsible for making the resource
+    available. The value of this element should follow the
+    guidelines for the AUTHOR element. -- >
+<!ATTLIST Publisher  Scheme   (%Publisher.Scheme;)    #IMPLIED >
+
+<!ELEMENT   Date        - -     (%n.Date;)
+ -- The date of publication. The scheme element can be used to
+    indicate the particular format of the date string. -- >
+<!ATTLIST Date       Scheme   (%Date.Scheme;)         #IMPLIED >
+
+<!ELEMENT   ObjectType  - -     (%n.ObjectType;)
+ -- The abstract category of the resource, such as article, image,
+    dictionary, etc. -- >
+
+<!ELEMENT   OtherAgent  - -     (%n.OtherAgent;)
+ -- Other person(s) and/or organization(s) who have made a
+    significant contribution to the resource. The value of this
+    element should follow the guidelines for the AUTHOR element.
+    The Author and Publisher elements are shorthand for using the
+    Author and Publisher attributes of this element. -- >
+<!ATTLIST OtherAgent Type     (%OtherAgent.Type;)     #IMPLIED
+                     Scheme   (%OtherAgent.Scheme;)   #IMPLIED >
+
+<!ELEMENT   Relation    - -     (%n.Relation;)
+ -- Relationship of this resource to another resource. This
+    element should specify what the relationship is, as well as
+    the target of the relationship. The TYPE attribute is used for
+    this purpose, the SCHEME attribute indicates how the
+    destination is encoded.  -- >
+<!ATTLIST Relation   Type     (%Relationship.Type;)   #IMPLIED
+                     Scheme   (%Relationship.Scheme;) #IMPLIED >
+
+<!ELEMENT   Source      - -     (%n.Source;)
+ -- Objects, either electronic or printed, from which this
+    resource was derived. This is a special case of the RELATION
+    element. -- >
+
+<!ELEMENT   Language    - -     (%n.Language;)
+ -- The natural language(s) of the resource. When more than
+    one Language element is specified, it indicates that more than
+    one language is used to a significant degree in the work. No
+    inference should be made about the relative proportions of the
+    language content based on the order of appearence of the
+    Language element. -- >
+
+<!ELEMENT   Coverage    - -     (%n.Coverage;)
+ -- The spatial extent and/or temporal duration characteristic of
+    the resource, e.g. "19'th Century France". -- >
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 29]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+
+<!ELEMENT   Spatial     - -     (%n.Spatial;)
+ -- For more precise indication of the spatial extent characteristic
+    of the resource. -- >
+
+<!ELEMENT   Temporal    - -     (%n.Temporal;)
+ -- For more precise indication of the temporal duration
+    characteristic of the resource. -- >
+
+
+
+
+C DTD for Meta Attribute Set
+
+
+The attribute set definition given in Appendix B is believed to be
+widely applicable, but is certainly not universally applicable.  We
+encourage others to create their own attribute sets that more closely
+meet their needs.
+
+As described in section 3, since the AID is a URN, there needs to be a
+URC that talks about the attribute set definition.  That URC has
+particular needs not addressed by the default attribute set.  This
+appendix presents an attribute set definition that is more useful for
+describing attribute set definitions.  When people create their own
+attribute sets, they are strongly encouraged to use this attribute set
+to describe them.
+
+The AID of this attribute set is
+<urn:x-dns-2:uri.acl.lanl.gov:meta-dtd> for now.  IANA should assign a
+URN once that has been settled.  An example of how to use this to
+create a new attribute set is given in Appendix D.
+
+
+
+<!--
+    This is the ISO8879:1986 document type definition for the
+    URC meta-attribute set. In other words, when people prepare
+    alternative attribute sets, this is the attribute set they
+    use to talk about their new attribute sets.
+
+    This is actually a small modification to the default attribute
+    set, restricting the Relation element to the types
+    Parent, Base, and OtherType.
+
+    !!!! Talk about infinite regress and the need for entity manager
+    to understand the "root" string. Where does that go? !!!
+
+    Ron Daniel  6/13/95
+-->
+
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 30]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+
+<!ENTITY  % Relationship.Type  "Parent | Base | OtherType"
+ -- The Parent and Base relationships are to give us information on
+    the single inheritance hierarchy. Parent points to the attribute
+    set from which the resource was derived. Base points to the
+    attribute set at the root of the single inheritance hierarchy. If
+    only one is specified, they assumed to be equal. -- >
+
+
+<-- No new elements are defined, and the content models are not
+    changed, so just suck in the default attribute set DTD. The
+    preceding definition of Relationship.Type will override the
+    one in the default DTD.
+-->
+
+<!ENTITY % default-as SYSTEM  "urn:x-dns-2:uri.acl.lanl.gov:default-1-
+dtd">
+%default-as;
+
+
+
+
+D Custom Attribute Set Example
+
+
+The role of the meta attribute set definition given in Appendix C is
+somewhat confusing.  Furthermore, we anticipate that most custom
+attribute sets will actually be small modifications of the default
+attribute set - merely adding an element or two.  This appendix
+presents a sample DTD to illustrate how to perform such a minor
+enhancement.  It shows a couple of ways of adding a new element,
+<AccessControl>, to the default attribute set.
+
+The first way is the simplest.  It adds parameter entity definitions
+to the DOCTYPE declaration in the URC itself.  It does not require a
+new attribute set to be widely published, but has limitations.
+
+
+
+<!DOCTYPE URC SYSTEM "urn:x-dns-2:uri.acl.lanl.gov:default-1-dtd"
+[
+<!ENTITY   % n.URC "(Author | Title | Subject | Identifier | URL |
+                    Instance | Form | Publisher | Date | ObjectType |
+                    OtherAgents | Relation | Source | Language |
+                    Coverage | AccessControl)" >
+<!ENTITY   %  n.AccessControl"(#PCDATA)" >
+<!ELEMENT   AccessControl    - -     (%n.AccessControl;)
+ -- Provides a system-specific listing of the groups and individuals
+    with read and write access to the resource. This is intended only
+    for the purposes of an example in this specification. Any real
+    access control list will need more work than this.  -- >
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 31]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+]
+>
+<urc>
+<urn>urn:dns:pchs.k-12.okc.ok.us:student-papers-1995/geo3</urn>
+<author>Smith, Fred</author>
+<title>A Vicious, Seditious, and Tendentious History of George III
+</title>
+<Subject>American Revolution</subject>
+<Subject>(In)famous crackpots of history</subject>
+<instance>
+ <URL>http://www.pchs.k-12.okc.ok.us/student-papers/1995/smith/geo3.html
+ </URL>
+ <form scheme="IMT">text/html</form>
+ <AccessControl>
+  write: fsmith, admin
+  read: any
+ </AccessControl>
+ </instance>
+</URC>
+
+
+
+The disadvantage of this approach is that it does not create a named
+attribute set.  The new AS is anonymous.  Furthermore, text/sgml is
+the only syntax that can use this method.
+
+The second way to create a new attribute set is to create and publish
+a new DTD that extends another DTD. The DTD below adds the
+<AccessControl> element to the default attribute set.
+
+
+
+<!--
+    This is a ISO8879:1986 document type definition for a small
+    extension to the default URC attribute set.
+
+    It is quite possible that this is bug-infested, I have not
+    had this checked by man or machine, I hacked it up right before
+    sending the first draft of this specification to the URI-WG
+    mailing list.
+
+    The general idea is to specify the changes to the default AS,
+    and then to include the default AS by means of a SYSTEM entity.
+
+    Ron Daniel  6/14/95
+-->
+
+<!ENTITY     %  n.Instance  "(Author  |  Title  |  Subject  |  Identi-
+fier | URN |
+                   Location | URL | Form | Publisher | Date  | Object-
+Type |
+                 OtherAgent | Relation | Source | Language |
+
+draft-ietf-uri-urc-sgml-00                                   [Page 32]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+                 Coverage | AccessControl)" >
+
+<!ENTITY % default-asd SYSTEM
+                              "urn:x-dns-2:uri.acl.lanl.gov:default-1-
+dtd">
+
+<!ENTITY   %  n.AccessControl      "(#PCDATA)" >
+<!ELEMENT  AccessControl    - -     (%n.AccessControl;)
+ -- Provides a system-specific listing of the groups and individuals
+    with read and write access to the resource. This is intended only
+    for the purposes of an example in this specification. Any real
+    access control list will need more work than this.  -- >
+
+<-- Suck in the default attribute set's DTD. The n.Instance parameter
+entity above will override the one in the default attribute set,
+thereby adding AccessControl to the URC.  -->
+
+&default-as;
+
+
+
+
+If we assume this attribute set has an AID of
+<urn:x-dns-2:uri.acl.lanl.gov:access-ctl-dtd>, a simple URC prepared
+using it, and transmitted in the text/sgml syntax might look like:
+
+
+<!DOCTYPE URC SYSTEM "urn:x-dns-2:uri.acl.lanl.gov:access-ctl-dtd">
+<urc>
+ <urn>urn:dns:pchs.k-12.okc.ok.us:student-papers-1995/geo3</urn>
+ <author>Smith, Fred</author>
+ <title>A Vicious, Seditious, and Tendentious History of George III
+ </title>
+ <Subject>American Revolution</subject>
+ <Subject>(In)famous crackpots of history</subject>
+ <instance>
+  <URL>http://www.pchs.k-12.okc.ok.us/student-papers/1995/smith/geo3.html
+  </URL>
+  <form scheme="IMT">text/html</form>
+  <AccessControl>
+   read:any
+   write:fsmith, admin
+  </AccessControl>
+ </instance>
+</URC>
+
+
+If we were to resolve the URN of the new attribute set and get back a
+URC, that URC might look like:
+
+
+<!DOCTYPE URC SYSTEM "urn:x-dns-2:uri.acl.lanl.gov:meta-dtd">
+
+draft-ietf-uri-urc-sgml-00                                   [Page 33]
+
+
+INTERNET-DRAFT         An SGML-based URC Service         June 16, 1995
+
+<urc>
+ <urn>urn:x-dns-2:uri.acl.lanl.gov:meta-dtd</urn>
+ <author>Daniel, Ron</author>
+ <Subject scheme="abstract">
+  This attribute set adds a stupid access control element to the
+  default attribute set. Don't use this, use someting better.
+ </subject>
+ <relation type="parent" scheme="urn">
+  urn:x-dns-2:uri.acl.lanl.gov:default-1-dtd
+ </relation>
+ <instance>
+  <URL>http://www.acl.lanl.gov/attribute-sets/access-ctl-dtd.sgml
+  </URL>
+  <form scheme="IMT">text/sgml</form>
+ </instance>
+</URC>
+
+
+
+    This Internet Draft expires December 15, 1995.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+draft-ietf-uri-urc-sgml-00                                   [Page 34]

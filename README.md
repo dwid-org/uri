@@ -9,7 +9,7 @@ for the specifications leading up to
 [RFC3986](https://tools.ietf.org/html/rfc3986), along with various
 [URL parsing tests](https://dwid-org.github.io/uri/test/), copies of
 [related RFCs](https://dwid-org.github.io/uri/rfc/), and
-[historical drafts](https://dwid-org.github.io/uri/drafts/historical.html).
+[historical drafts](https://dwid-org.github.io/uri/historical/index.html).
 
 Please note that the IETF URI working group concluded in 1995. However,
 we still use the [URI mailing list](https://lists.w3.org/Archives/Public/uri/)

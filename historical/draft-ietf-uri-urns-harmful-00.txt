@@ -1,0 +1,660 @@
+
+
+
+
+
+
+Network Working Group                                        Keith Moore
+Internet-Draft                                   University of Tennessee
+Expires: 7 January 1996
+
+
+                       Location-Independent URLs
+                                   or
+                        URNs considered harmful
+
+                   draft-ietf-uri-urns-harmful-00.txt
+
+Status of this Memo
+
+This document is an Internet-Draft.  Internet-Drafts are working docu-
+ments of the Internet Engineering Task Force (IETF), its areas, and its
+working groups.  Note that other groups may also distribute working doc-
+uments as Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any
+time.  It is not appropriate to use Internet-Drafts as reference mate-
+rial or to cite them other than as "work in progress."
+
+To learn the current status of any Internet-Draft, please check the
+"1id-abstracts.txt" listing contained in the Internet-Drafts Shadow
+Directories on ftp.is.co.za (Africa), nic.nordu.net (Europe),
+munnari.oz.au (Pacific Rim), ds.internic.net (US East Coast), or
+ftp.isi.edu (US West Coast).
+
+Abstract
+
+This document describes a means by which location-independent access to
+resources can be provided, without creating a new class of resource
+names.  Instead, a resolution service is proposed for existing URLs,
+which allows information providers to advertise meta-information about a
+resource named by a URL, and/or alternate locations from which that par-
+ticular resource might be accessed.
+
+Depending on your point of view, the approach described in this document
+might be taken as one or more of: (a) an alternative solution to the
+"URL problem", (b) a strategy for gradual transition from URLs to URNs,
+or (c) a worst-case scenario in the event that URN adoption takes too
+long.
+
+1. The Problem
+
+URLs are widely used today, but they have three basic problems: (1) they
+are tied to host names, (2) they are tied to filenames on a particular
+
+
+
+Moore                    Expires 7 January 1996                 [Page 1]
+
+
+
+
+
+
+
+
+
+
+
+URNs considered harmful                                      7 July 1995
+
+
+host, and (3) they are tied to access protocols.  Since all of these are
+likely to change over time, URLs are not stable names.
+
+Host names impose two problems: stability and scalability.  Host names
+based on DNS are frequently unstable because they (by design) reflect
+administrative hierarchies, which tend to change fairly frequently rela-
+tive to the lifetime of a resource.  Host names also reflect the names
+of organizations, which also tend to change over time.  Finally, a
+resource "owned" or maintained by one organization can migrate to
+another "organization", thus necessitating a change in the host name at
+which a resource is located.  All of these changes invalidate old URLs.
+
+So long as the only way to access an object named by a URL, is to con-
+tact the host whose name appears in a URL, it is difficult to provide
+scalable access to those objects.  Popular world wide web sites assign
+several server machines to a single host name (perhaps using a modified
+name server which randomizes responses), but this requires that the
+entire collection of files made available using that host name, be con-
+sistently mirrored to each server machine.  As a practical consequence,
+all of those server machines are usually maintained at a single loca-
+tion, even though better service and conservation of bandwidth would
+result from distributing the servers around the network.
+
+Filenames embedded in URLs serve two purposes which are in conflict.
+They need to be stable so that a reference to a named resource will con-
+tinue to be valid for as long as needed.  On the other hand, files are
+usually organized into hierarchies to help humans browse through the
+file system.  The hierarchies need to change from time to time as new
+files are added and old ones are removed.  When the file system hierar-
+chy is changed, the old URLs become invalid.
+
+Having access protocols implicit in a resource name imposes an addi-
+tional barrier: The client must support the access protocol (perhaps via
+a proxy) in order to access the resource.  This is effectively true even
+if the resource is available via other protocols, because other URLs for
+those protocols may not be available.  Even if several URLs are avail-
+able, the user must be knowledgable enough to choose one which is sup-
+ported by his client, will pass through his security firewall, etc.
+
+The issue of stability deserves careful scrutiny.  Some people might be
+happy with URLs if only they did not become stale during their useful
+lifetime.  Others have suggested that we need resource names to support
+enforcement of copyright laws, and that resource names should therefore
+be stable for the duration of the copyright (up to 150 years or more).
+
+2.  The "official future" scenario: URNs and URCs
+
+The widely expected solution to these problems is something like the
+
+
+
+Moore                    Expires 7 January 1996                 [Page 2]
+
+
+
+
+
+
+
+
+
+
+
+URNs considered harmful                                      7 July 1995
+
+
+following:  Instead of using URLs as resource names, we will migrate to
+using "uniform resource *names*" or URNs.  URNs will not be tied to
+locations, but there will be resolution services available which will
+allow a user to obtain the "characteristics" of the resource (also known
+as the URC).  Locations (URLs) of resources will also be obtainable via
+the URN, either as part of the URC, indirectly (through a location-
+independent file name or LIFN which appears in a URC), or perhaps via
+some separate resolution service.
+
+To solve the problem of stale links, users will have to upgrade to
+browsers that support URNs directly, or access the web via proxy servers
+which convert URNs to URLs.  References to existing objects (several
+million of them) will need to be converted to provide URNs instead of or
+in addition to the URLs.
+
+3.  Cost of Transition to URNs
+
+We have resource names now; they're called URLs.  URLs have all kinds of
+undesirable properties, but one nice thing is that they're cheap.  All
+you need is a host on the Internet and a DNS name, and you have your own
+very large chunk of URL-space.  Since DNS is a well-established part of
+the Internet infrastructure, it's "free".
+
+There's a cost to providing another level of indirection.  New protocols
+have to be defined and tested, new (and more complex) clients and
+servers must be debugged.  The new services have to be managed; the new
+clients have to be configured correctly.  Information providers (which
+potentially includes nearly everybody) will have to learn how to use the
+new tools.
+
+There are also issues of serviceability and reliability.  If the client
+doesn't do what the user thinks it should, the system administrator has
+one or two more possible culprits.  Every additional level of lookup
+imposes an overhead in network bandwidth and delay (as seen by the
+user).  When adding a layer to a service that millions of people depend
+on, the new layer must integrate smoothly with those that already exist
+so as not to adversely impact reliability.
+
+Even after a URN lookup service exists and is available in clients, most
+clients will still support only URLs for some time, and most references
+to resources will still use URLs.  During that period, there will be an
+increased cost due not only to the need to maintain both sets of names,
+but also to having multiple sources of failure. (Did the attempt to
+access the resource fail because the URL was stale, or because the URN
+server returned the wrong answer?).  Due to the large number of
+resources presently named by URLs, one can imagine needing a service to
+map from URLs to URNs, in addition to the other way around.
+
+
+
+
+Moore                    Expires 7 January 1996                 [Page 3]
+
+
+
+
+
+
+
+
+
+
+
+URNs considered harmful                                      7 July 1995
+
+
+For any new protocol, naming scheme, or additional level of lookup, the
+costs and benefits need to be analyzed to see whether the anticipated
+gain is likely to be worth the cost.  An important question is: when
+will the user see a benefit from using a client that supports URNs?
+Another is: how much investment is required to develop the URN infras-
+tructure to the point that the user does see that benefit?
+
+4.  Current state of affairs
+
+The Uniform Resource Identifiers working group was chartered in December
+of 1992. Most of the problems identified in section I of this document
+have been apparent for at least that long, yet there is no agreement on
+an implementable solution for those problems.
+
+A specification for URLs - which were already widely used and interoper-
+able before URI was chartered - has been published.  Some requirements
+for URNs have been specified and published as RFC 1737.  Requirements
+for URCs are still being debated.  Neither URNs, URCs, nor the resolu-
+tion protocols have yet been specified.
+
+To be fair, the URI working group was chartered only to develop resource
+identifiers, not to design a complete system which solves problems.
+Part of the reason for the long delay over URNs and URCs may be that the
+discussion centers around the components of the system, without explic-
+itly considering the system as a whole or the environment in which those
+components must operate.  While many of the proposals for URNs and URCs
+were obviously designed to solve certain problems, there may still be a
+lack of agreement about what problems need to be addressed, or the rela-
+tive importance of those problems.  There may also be a lack of under-
+standing or agreement on the cost of providing a particular service ver-
+sus the benefit that it would provide.
+
+Frederick Brooks's _The Mythical Man-Month_ describes a phenomenon known
+as "the second-system effect".  He writes:
+
+        An architect's first work is apt to be spare and clean.  He
+        knows he doesn't know what he's doing, so he does it carefully
+        and with great restraint.
+
+        As he designs his first work, frill after frill and
+        embellishment after embellishment occur to him.  These
+        get stored away to be used "next time".  Sooner or later
+        the first system is finished, and the architect, with firm
+        confidence and a demonstrated mastery of that class of
+        systems, is ready to build a second system.
+
+        This second is the most dangerous system a man ever designs...
+
+
+
+
+Moore                    Expires 7 January 1996                 [Page 4]
+
+
+
+
+
+
+
+
+
+
+
+URNs considered harmful                                      7 July 1995
+
+
+It is tempting to cite URNs and URCs as examples of the second-system
+effect.  Most of us are painfully aware of the deficiencies of URLs, and
+also of the difficulties in changing from URLs to some other scheme.
+There is therefore a tremendous incentive to do the job "right" this
+time around, lest we end up with URNs and URCs that are somehow insuffi-
+cient for the job within a few years.  Some would even suggest that we
+need to get URNs right "once and for all".
+
+But it's at least possible that problems inherent in URLs and the world
+wide web are not due not only to a lack of foresight in their design
+(after all, who could have predicted the tremendous success of the
+web?), but also to the lack of ability to control the ways in which the
+web was used.  To put it a different way, it takes time for tens of
+thousands of new information providers to acquire disciplines and build
+tools for consistent resource naming and keeping track of resource loca-
+tions.  This is true regardless of the scheme used for resource names.
+
+We probably cannot anticipate needs of web users and information
+providers for more than the next few years, and we are deluding our-
+selves if we believe we can impose a discipline on its use simply by
+creating a new space for resource names.  We need to design a system
+which is adaptable to future needs without knowing precisely what those
+needs are.  At the same time, if a solution for possible future problems
+does not address today's needs, it is doomed to failure.
+
+The functional requirements for URNs (from RFC 1737) include: global
+scope, global uniqueness, persistence, scalability (of assignment),
+legacy support, extensibility, independence, and resolution.  Notably
+absent from this list is scalability of access, even though the lack
+thereof is one of our most pressing problems.
+
+
+5. An alternate scenario: Location-Independent URLs
+
+The usual explanation for why URLs are a Bad Thing (tm) is "URLs are
+tied to locations".  But the Internet has already had one successful
+transition away from location-based names - in electronic mail.  Once
+upon a time, email addresses were of the form user@host, and were there-
+fore tied to the network "locations" of those hosts.  To send mail to a
+user at a host, you connected to that host's SMTP server (before that,
+it was the FTP server), and told it to deliver the message to that
+user's mailbox.
+
+Along came DNS and the MX record.  Addresses are now of the form
+user@domain.  Instead of connecting to the host associated with that
+domain, one now connects to one of the mail exchangers for that domain
+listed in the DNS.  One result is that email domains are increasingly
+decoupled from host names.  It is not uncommon for a single email domain
+
+
+
+Moore                    Expires 7 January 1996                 [Page 5]
+
+
+
+
+
+
+
+
+
+
+
+URNs considered harmful                                      7 July 1995
+
+
+to serve hundreds of Internet hosts, which may not even be directly con-
+nected to the Internet.  Email addresses are now less likely to be tied
+to individual host names.  And since there can be multiple mail exchang-
+ers for a domain, other results have been increased fault-tolerance via
+redundancy, and better ability to handle load.
+
+Imagine a new DNS record type called RCS (for "resource catalog server")
+which performed an MX-like function for URLs.  For example, the records:
+
+www.netlib.org.         RCS     10 netlib2.cs.utk.edu.
+                        RCS     10 netlib1.epm.ornl.gov.
+
+would inform a web client that meta-information for any URL containing
+the domain www.netlib.org, could be found using the resource catalog
+servers at netlib2.cs.utk.edu and netlib1.epm.ornl.gov.
+
+These records would be obtained in a single DNS query for
+www.netlib.org, along with the IP addresses of the RCS servers.  If
+there had been no RCS records, the same query would have returned the IP
+addresses of www.netlib.org.  (Existing TXT records could be used
+instead of RCS records, but additional DNS queries would be required to
+look up the IP addresses of any resource characteristics servers.)
+
+Once the addresses of RCS servers were known for the domain in a URL,
+the client would use a special-purpose resolution protocol to obtain
+characteristics of the resource named by that URL, alternate locations
+(i.e additional URLs) at which that URL could be accessed, or both.
+
+New clients that supported this scheme would use the same URLs as the
+old clients, but would gain immediate benefit from being able to dis-
+cover alternate servers for their resources (with little penalty for
+trying).  Eventually they would be able to make use of URCs as well.
+When coupled with a mechanism such as SONAR for finding network proxim-
+ity information (see draft-moore-sonar-00.txt), the client would gain
+the ability to automatically choose a nearby location for that resource
+(thereby improving access times), and to recover from the failure of any
+single resource server.
+
+Legacy clients would still be able to access those resources as long as
+there were a *host* with the same name as that used in the URL which
+provided such access.  Information providers would therefore continue to
+maintain such servers until most legacy clients had been replaced.
+
+It should be possible to reserve a few chunks of DNS for naming authori-
+ties for long-term resource-names.  Subdomains within these spaces would
+be required to NOT be meaningful to humans; thus, the names themselves
+need never be obsolete.  While such a subdomain would initially be
+assigned to a publisher, the responsibility for serving that subdomain
+
+
+
+Moore                    Expires 7 January 1996                 [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+URNs considered harmful                                      7 July 1995
+
+
+could be transferred as necessary when that publisher or its intellec-
+tual property assets changed hands.  Finally, resource names would only
+be assigned for any particular subdomain for a short time (perhaps a
+year), after which a new resource name would be used.  This would allow
+the resolution service for older subdomains could be shifted from pri-
+mary servers to "custodians".
+
+One nice feature of this scheme is that it still works for ordinary
+users and their home pages.  Sites could set up their location and/or
+URC servers with their existing DNS names; they need not obtain new nam-
+ing authority names.  If a user's web page becomes unexpectedly popular,
+a resource catalog server and appropriate RCS records could be installed
+to inform clients of alternate locations, even though no prior arrange-
+ments were made.
+
+But publishers and others who had an interest in making resources avail-
+able over the long-term (including probably anybody who wanted to make
+money selling access to his works), would see the benefit in using the
+new name space.  And new naming authority names could be distinguished
+from ordinary DNS names.
+
+Such a system would not provide scalable resolution of resource names
+for several centuries in the future.  But it probably would work for a
+few decades, during which usage patterns are almost certainly to change
+beyond what we can anticipate.  It would also encourage building of an
+infrastructure for maintaining meta-information about resources.
+
+6.  URN functional requirements as applied to URLs
+
+RFC 1737 lists the following functional requirements for URNs:
+
+a.   Global scope: A URN is a name with global scope which does not
+     imply a location.  It has the same meaning everywhere.
+
+Non-relative URLs already have the same meaning everywhere.  If an MX
+like system is defined, a URL no longer implies a location.
+
+b.   Global uniqueness: The same URN will never be assigned to two dif-
+     ferent resources.
+
+This is generally true in practice for URLs.  It is only rarely that a
+file name which is exported to the world, is re-used to name a com-
+pletely different resource.  To the extent that this is not true, it is
+a matter of discipline and education on the part of information
+providers.  If providers do not understand the value of unique naming,
+the introduction of URNs will not force them to apply the discipline.
+If providers do understand the value of unique naming, they can provide
+unique names for URLs.
+
+
+
+Moore                    Expires 7 January 1996                 [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+URNs considered harmful                                      7 July 1995
+
+
+c.   Persistence: It is intended that the lifetime of a URN be perma-
+     nent.  That is, the URN will be globally unique forever, and may
+     well be used as a reference to a resource well beyond the lifetime
+     of the resource it identifies or of any naming authority involved
+     in the assignment of its name.
+
+The persistence of URLs depends on the persistence of their components -
+file names and domain names.
+
+Persistence of file names is also a matter of discipline on the part of
+an information provider, since file systems and existing protocol
+servers are capable of storing files under fairly arbitrary names.  If
+the "browsing" function that currently requires human-meaningful file
+names and arranges them into human-meaningful hierarchies is replaced
+with some other means of resource discovery, information providers are
+free to begin using some other naming scheme that allows stable names,
+*without* introducing a new kind of resource name.  Similarly, persis-
+tence of domain names can be achieved by using domain names that do not
+correspond to organizational names or hierarchies, and which will never
+be re-assigned.
+
+On the other hand, for persistent resource names to be useful, requires
+a long-term commitment to maintain the characteristics and location data
+and to provide the resolution and/or access services.  Few organizations
+(and not all countries) can reliably commit to providing such support
+for several generations, yet large centralized databases would provide a
+dangerous means for control of networked information.
+
+d.   Scalability: URNs can be assigned to any resource that might con-
+     ceivably be available on the network, for hundreds of years.
+
+URLs meet this requirement.
+
+e.   Legacy support: The scheme must permit the support of existing
+     legacy naming systems, insofar as they satisfy the other require-
+     ments described here. For example, ISBN numbers, ISO public identi-
+     fiers, and UPC product codes seem to satisfy the functional
+     requirements, and allow an embedding that satisfies the syntactic
+     requirements described here.
+
+URLs were designed to support legacy protocols, and therefore are very
+adaptable to legacy naming systems.
+
+f.   Extensibility: Any scheme for URNs must permit future extensions to
+     the scheme.
+
+URLs have proven to be extensible to several protocols other than those
+for which they were designed.
+
+
+
+Moore                    Expires 7 January 1996                 [Page 8]
+
+
+
+
+
+
+
+
+
+
+
+URNs considered harmful                                      7 July 1995
+
+
+g.   Independence: It is solely the responsibility of a name issuing
+     authority to determine the conditions under which it will issue a
+     name.
+
+URLs meet this requirement.
+
+h.   Resolution: A URN will not impede resolution (translation into a
+     URL, q.v.). To be more specific, for URNs that have corresponding
+     URLs, there must be some feasible mechanism to translate a URN to a
+     URL.
+
+By introducing a resolution service which uses URLs as resource names
+and allows location of resolution servers using DNS, URLs meet this
+requirement.
+
+7. Limitations
+
+If we provide the means for the continued use of URLs, some users and/or
+information providers may delay migrating to new protocols (URC records,
+resolution servers) or to better resource naming schemes (URLs based on
+stable domain names and file names, or a new URL type named "URN").
+Nevertheless, the new proposal provides incentives to migrate for both
+users and providers.
+
+DNS names are not ideally suited as naming authority names.  The problem
+is not so much due to the names themselves (since new DNS subtrees can
+be reserved for naming authorities) but to the way the lookup hierarchy
+is exposed in the name.  If a particular branch of the tree grows too
+big (as in the .COM domain), it is difficult to sub-divide it.  This can
+be solved by limiting the number of branches at any node within the por-
+tion of DNS space reserved for naming authority names.  Alternatively, a
+special-purpose server (which understand the DNS query protocol) could
+be constructed to provide resolution for any large and flat subspace
+within the DNS tree.
+
+8. Summary
+
+The difficulty in transition from URLs to URNs, combined with the delay
+by IETF in defining URNs and resolution services, encourages solutions
+to the existing problems of the web which use existing URLs.  Such solu-
+tions could possibly be implemented and deployed without the cooperation
+of the IETF.
+
+On the other hand, IETF could use this mechanism to provide a transition
+from present-day URLs to names which (while syntactically identical to
+URLs), had all of the characteristics desired for URNs.  The transition
+to such a scheme would be easier than a transition to an entirely new
+naming scheme.
+
+
+
+Moore                    Expires 7 January 1996                 [Page 9]
+
+
+
+
+
+
+
+
+
+
+
+URNs considered harmful                                      7 July 1995
+
+
+Many of the difficulties with the present URL scheme can be seen as a
+lack of knowledge and discipline on the part of network information
+providers.  This is to be expected, considering the rapid growth of the
+web and the fact that many of its information providers are ordinary
+users.  These problems would exist regardless of the naming scheme used,
+and will only be solved through education, new tools, and time.
+
+9. Security Considerations
+
+Security Considerations are not addressed in this memo.
+
+10. Author's Address
+
+Keith Moore
+Department of Computer Science
+University of Tennessee
+107 Ayres Hall
+Knoxville TN 37996-1301
+
+moore@cs.utk.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Moore                    Expires 7 January 1996                [Page 10]
+
+
+
+
+
+
+
+

@@ -1,0 +1,175 @@
+INTERNET-DRAFT                         Expiration Date 6 January 1999
+
+
+
+
+
+                                                            R. Garbrick
+                                                         Data I/O Corp.
+                                                           30 June 1998
+
+
+
+          Content-Specific Hypertext Transfer Protocol
+
+
+Status of this Memo
+
+   This document is an Internet-Draft.  Internet-Drafts are working
+   documents of the Internet Engineering Task Force (IETF), its
+   areas, and its working groups.  Note that other groups may also
+   distribute working documents as Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six
+   months and may be updated, replaced, or obsoleted by other
+   documents at any time.  It is inappropriate to use Internet-
+   Drafts as reference material or to cite them other than as
+   "work in progress."
+
+   To view the entire list of current Internet-Drafts, please check
+   the "1id-abstracts.txt" listing contained in the Internet-Drafts
+   Shadow Directories on ftp.is.co.za (Africa), ftp.nordu.net
+   (Northern Europe), ftp.nis.garr.it (Southern Europe), munnari.oz.au
+   (Pacific Rim), ftp.ietf.org (US East Coast), or ftp.isi.edu
+   (US West Coast).
+
+
+Abstract
+
+   This document describes HTTPX, a protocol for providing access to 
+   materials that may be objectionable or that have age or locale-based 
+   restrictions, while providing a simple method to filter such content 
+   where required.  
+
+   HTTPX uses the protocol HTTP 1.1 ([RFC 2068]), with the single 
+   exception of designating a separate range of TCP and UDP port
+   numbers that are allocated to a specific content type.
+
+1. Rationale and Scope
+
+   The problem of unintentional distribution of adult-oriented
+   materials to minors via the internet has become an increasing
+   problem.  URL filtering schemes have proven either ineffective or
+   too restrictive.  Age verification schemes have proven cumbersome
+
+
+
+Garbrick                     INTERNET-DRAFT                    [Page 1]
+
+
+
+INTERNET-DRAFT                  HTTPX/1.0                  30 June 1998
+
+
+   and expensive.  In addition, these methods place full responsibility
+   for restricting access on the end user and places no responsibility
+   on the distributor, where most such restrictions, such as access to
+   alcohol, cigarettes and explicit magazines, have historically been
+   placed.  
+   
+   Currently available protocols provide no reasonable means for the 
+   distributor to pro-actively apply effective protocol-based controls 
+   on content.  HTTPX is intended to provide a simple, effective means 
+   to filter content by using a standard protocol, HTTP 1.1 
+   ([RFC 2068]), over a specially designated port number.  
+
+   This simple change will allow the creation of a separate, adult 
+   network.  Such entities as schools, libraries and businesses that 
+   have a requirement for filtering content, will be able to do so with
+   minimal expense, using existing routers, proxy servers or firewalls
+   by disabling those ports.  Browser software can be modified to 
+   require a password lock to receive data on those ports. 
+   Distributors of adult content could still provide opening screens
+   And advertisements on the existing port 80, and with minimal
+   expense, provide the adult content on the newly designated ports.
+   Governments and Internet Service Providers might provide some
+   incentive for adult content distributors to move their content to
+   the designated ports via service agreements or minor legislation. 
+   Moving content to the new ports, might even reduce liability for the
+   distributors.
+
+
+2. HTTPX Protocol
+
+   The HTTPX protocol uses the HTTP 1.1 ([RFC 2068]) protocol
+   unchanged, with the exception of designating special TCP and UDP
+   port numbers.
+
+
+2.1 Proposed TCP and UDP Port Numbers
+    Proposed additions to RFC 1700;
+
+    www-httpx  880/tcp  World Wide Web HTTPX for Graphic Sexual content
+    www-httpx  880/udp  World Wide Web HTTPX for Graphic Sexual content
+    www-httpx  881/tcp  World Wide Web HTTPX for Full Nudity
+    www-httpx  881/udp  World Wide Web HTTPX for Full Nudity
+
+
+3. References
+
+   [RFC2068] Fielding, R., Gettys, J., Mogul, J., Frystyk, H., and T.
+   Berners-Lee, "Hypertext Transfer Protocol -- HTTP/1.1", RFC 2068,
+
+
+
+Garbrick                     INTERNET-DRAFT                    [Page 2]
+
+
+
+
+
+INTERNET-DRAFT                  HTTPX/1.0                  30 June 1998
+
+
+January 1997.
+
+   [RFC1700] J. Reynolds and J. Postel, "ASSIGNED NUMBERS", RFC 1700,
+   October 1994
+
+
+4. Author's Address
+
+   Randy Garbrick
+   Data I/O Corp.
+   10525 Willows Rd. NE
+   P.O. Box 97046
+   Redmond, WA  98073-9746
+
+   EMail: garbrir@data-io.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Expiration Date 11 November 1998
+
+Garbrick                     INTERNET-DRAFT                    [Page 3]
+
+

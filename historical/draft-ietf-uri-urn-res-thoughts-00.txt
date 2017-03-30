@@ -1,0 +1,177 @@
+
+Network Working Group                                Karen R. Sollins
+INTERNET-DRAFT                                                MIT/LCS
+<draft-ietf-uri-urn-res-thoughts-00.txt>
+Expires: December 26, 1995                              June 26, 1995
+
+
+      Thoughts on Standardizing URN Resolution Protocols
+                      Karen R. Sollins
+                           MIT/LCS
+                     sollins@lcs.mit.edu
+
+                         Abstract
+
+The problem of standardizing URN resolution needs to be thought
+through carefully.  If we partition the problem of name resolution, it
+becomes clearer that the user to resolution service interaction should
+be standardized.  In contrast, in order to support a variety of
+models, behaviors, and other policies for name resolution services,
+we must allow for a multiplicity of such services, each perhaps
+requiring a different protocol between its servers.  The URI group can
+still limit its efforts, but should support more than one such
+service as a proof of concept that multiple service types can be
+supported.
+
+			Status of this Memo
+
+This document is an Internet-Draft.  Internet-Drafts are working
+documents of the Internet Engineering Task Force (IETF), its areas,
+and its working groups.  Note that other groups may also distribute
+working documents as Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any
+time.  It is inappropriate to use Internet- Drafts as reference
+material or to cite them other than as ``work in progress.''
+ 
+To learn the current status of any Internet-Draft, please check the
+``1id-abstracts.txt'' listing contained in the Internet- Drafts Shadow
+Directories on ftp.is.co.za (Africa), nic.nordu.net (Europe),
+munnari.oz.au (Pacific Rim), ds.internic.net (US East Coast), or
+ftp.isi.edu (US West Coast).
+
+
+1 Introduction
+
+The IETF is general a standards organization.  As such, part of its
+task is to determine what should and what should NOT be standardized.
+In this note, I explore this question with respect to URN resolution,
+which the Uniform Resource Identifiers Working Group is now
+considering.  But first, consider two conflicting goals in the
+standards process.  From one perspective, there is strong motivation
+to maximize the scope of standards.  This leads to a simple,
+uniformity by minimizing diversity, with the result that mechanism and
+implementation can probably be simplified and streamlined.  At the
+other extreme is a path of no standardization in which there is
+nothing but diversity, with no commonality that can be assumed by
+clients of the service being considered.  Generally, a middle ground
+is most effective but the question always must be where the boundary
+is.
+
+Additionally, when considering the problems of name resolution, it is
+important to remember that one can separate the problems or activities
+of name assignment from name resolution.  In order to allow for names
+to be equally resolvable in perpetuity (or even just 100 years), it
+will be important not to burden the name asigner with the
+responsibility for a name resolution service.  Since resources may
+move or evolve in unpredictable ways it is not reasonable even to
+expect that a particular service will necessarily guarantee to provide
+name resolution service for a particular namespace or piece of the
+namespace with a granularity larger than one.  This may happen, but it
+should not be expect or legislated without understanding the serious
+consequences of severe limitations on the client community.  With all
+this in mind, this note concentrates on the question of standardizing
+name resolution.
+
+
+2 Partitioning the problem
+
+Now, consider name resolution.  First we will address a partitioning
+of the problem of name resolution.  This partitioning is not new, and
+has certainly been seen before in other standards activities with
+respect to name resolution, for example the DNS and X.500.  In both
+cases, the universe of discourse is partitioned into clients and
+servers.  In both cases, the interfaces or protocols for servers are
+clearly distinguished between that for clients to communicate with
+servers and that for servers to communicate among themselves.  The
+client interfaces describe client requests for name resolution, while
+server interfaces describe both server requests for resolution and
+inter-server information addition, deletion, and modification, as well
+as perhaps cache maintenance and any other maintenance and
+distribution mechanisms for making translation information available
+among the servers.
+
+2.1 Server Behavior
+
+In that context, consider URNs.  URNs are intended to name an
+extremely broad set of resources, in fact, anything that anyone wishes
+to make public by naming in the Internet.  Ubiquity and penetration as
+well as quantity are expected to be many orders of magnitude greater
+than the resources of either the DNS or X.500.  In addition, there may
+be different sorts of performance requirements for different sorts of
+resources by different sorts of clients or customers.  For example,
+for the human to send a piece of email, the location resolution might
+be adequately provided in 10 minutes, . while, if the human is asking
+for the locations of resources on the Schumacher-Levy 9 comet in
+realtime as part of some complex piece of research there may be a
+cascading set of resolution requirements, leading to each one needing
+to be orders of magnitude faster.  In addition, there may be multiple
+answers to such a request from different kinds of sources, online data
+sets, published papers, or a computation service that might analyze
+observations on the fly.
+
+One conclusion one might draw from this is that there may be widely
+differing requirements or at least expectations for what one might
+call auxilliary characteristics of name resolution services.  In some
+cases, it may be particularly useful that they be replicated widely.
+For example, telephone directories are distributed to every office and
+home with a telephone.  As a first cut at causing email to be
+delivered to the location at which the recipient is receiving mail,
+one might consider distributing email address resolution information
+for everyone, for example, to be widely replicated.  One reason this
+sort of information can be widely replicated is that it doesn't change
+frequently, so exceptional behavior (which is generally much more
+expensive) in the face of changes will not need to be utilized
+frequently.  In contrast, information about the location of most
+satellites changes so frequently that a completely different set of
+mechanisms for managing and therefore finding that information will be
+needed.  Another interesting characteristic of some kinds of
+resolution information is the need for it to be reliably correct.  If
+recourse to an exceptional mechanism is prohibitatively expensive or
+simply unavailable, it becomes much more important that updates of
+information be reliably updated, so that they will not be lost.  One
+might choose some atomic transaction mechanism with a great deal of
+redundancy, recognizing that it would be out of the question for the
+200 million or more telephone books scattered around the country.
+What we are seeing here is that there will be a broad spectrum of
+interesting, useful, perhaps requisite behaviors from name resolution
+services with the conclusion that very different protocols will be
+required among the servers that are providing such characteristics of
+their services in some coordinated fashion.
+
+2.2 Client-server behavior
+
+In contrast with this, consider the clients of the name resolution
+services.  At their most basic level, they want name resolution.  They
+have a URN and they want some location and access method information.
+In fact, for generality, it is desirable that applications not need to
+know exactly which sorts of name resolution services will be
+supporting them.  This allows for portability and longevity of code.
+If an application needs an extremely fast response, it may be equally
+satisfied with a local, atomically updated reliable service, or the
+ubiquitous telephone book equivalent, if both have the same
+information and can respond equally quickly.  In fact, the application
+may not care to know which sort was used.  From the client or
+application's perspective, the name resolution service should handle
+requests for name resolution however it does it best, and for
+modularity the client shouldn't need to know what that is.  Thus, in
+contrast with the server-server protocol(s), we can conclude that the
+client-server protocol for name resolution is a good candidate for
+standardization; there is a big payoff and probably little penalty.
+
+3. Conclusion
+
+There is still a discussion that should be had within the URI Working
+Group about one versus many server-server protocols.  I believe that
+it is important that we design an architecture that permits more than
+one, but there are strong arguments in favor of not spreading the
+efforts too thin.  I suggest that as a community we should put our
+concerted efforts into no less than two, for a proof of concept and
+demonstration of the generality required and supportable, but keep the
+number quite small, perhaps no more than three.
+
+
+
+
+Expires: December 26, 1995                              June 26, 1995

@@ -1,0 +1,171 @@
+
+
+
+
+
+
+Internet Engineering Task Force                                MMUSIC WG
+Internet Draft                                            H. Schulzrinne
+ietf-mmusic-sip-url-00.txt                                   Columbia U.
+May 14, 1997
+Expires: November 1, 1997
+
+
+                             SIP URL Scheme
+
+STATUS OF THIS MEMO
+
+   This document is an Internet-Draft. Internet-Drafts are working
+   documents of the Internet Engineering Task Force (IETF), its areas,
+   and its working groups.  Note that other groups may also distribute
+   working documents as Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as ``work in progress''.
+
+   To learn the current status of any Internet-Draft, please check the
+   ``1id-abstracts.txt'' listing contained in the Internet-Drafts Shadow
+   Directories on ftp.is.co.za (Africa), nic.nordu.net (Europe),
+   munnari.oz.au (Pacific Rim), ds.internic.net (US East Coast), or
+   ftp.isi.edu (US West Coast).
+
+   Distribution of this document is unlimited.
+
+                                 ABSTRACT
+
+
+         A family of new URL schemes, "sip*:", is defined. It is
+         used to establish multimedia conferences using the
+         Session Initiation Protocol (SIP).
+
+1 URL Syntax
+
+   This URL does not designate a data object, but rather requests the
+   initiation of a conference with the designated party using the
+   Session Initation Protocol (SIP) [1]. The details of this conference,
+   such as the type and parameters of media to be used, are not
+   specified by this URL but may be negotiated by the protocol itself.
+
+   A SIP URL is based on the Common Internet Scheme Syntax described in
+   section 3.1 of RFC 1738 [2]. It has the general forms:
+
+
+
+
+
+H. Schulzrinne                                                [Page 1]
+
+Internet Draft                    sip                       May 14, 1997
+
+
+     sip://<user>:<password>@<host>,<ttl>:<port>
+     sips://<user>:<password>@<host>,<ttl>:<port>
+     sipt://<user>:<password>@<host>,<ttl>:<port>
+     sipu://<user>:<password>@<host>,<ttl>:<port>
+
+
+
+   The " :<password> ", " ,<ttl> ", " :<port> " parts are optional. If
+   the port is omitted, then port TBD is assumed for schemes sip:  ,
+   sipu:  , and sipt:  and port TBD for scheme sips:
+
+   The URL scheme name also designates the transport protocol to be used
+   by SIP. For sip:  , either UDP or TCP may be used, depending on the
+   preference of the entity resolving the URL. sipu:  and sipt:
+   explicitly request use of UDP and TCP. sips:  requests use of SSL
+   over TCP.
+
+   The ttl value designates the multicast time-to-live value. This field
+   MUST NOT be used if the host part of the URL is a unicast address.
+   The default value is one. The ttl value is mandatory if the host
+   address designates an IPv6 multicast address. (The textual
+   representation of IPv6 addresses contain colons and thus cannot be
+   delineated from the port identifier.)
+
+2 SIP URL BNF
+
+   The following BNF includes the generic definitions of RFC 1738,
+   Section 5.
+
+
+   sip_URL        = ( "sip:" | "sips:" | "sipt:" | "sipu:" ) "//" login
+   login          = [ user [ ":" password ] "@" ] host_ttl_port
+   host_ttl_port  = host [ "," ttl ] [ ":" port ]
+   ttl            = digits
+
+
+
+3 Author's Address
+
+   Henning Schulzrinne
+   Dept. of Computer Science
+   Columbia University
+   1214 Amsterdam Avenue
+   New York, MY 10027
+   USA
+   electronic mail:  schulzrinne@cs.columbia.edu
+
+4 Bibliography
+
+
+
+H. Schulzrinne                                                [Page 2]
+
+Internet Draft                    sip                       May 14, 1997
+
+
+   [1] M. Handley, H. Schulzrinne, and E. Schooler, "SIP: session
+   initiation protocol," Internet Draft, Internet Engineering Task
+   Force, Mar. 1997.  Work in progress.
+
+   [2] T. Berners-Lee, L. Masinter, and M. McCahill, "Uniform resource
+   locators (URL),"  RFC 1738, Internet Engineering Task Force, Dec.
+   1994.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H. Schulzrinne                                                [Page 3]
+

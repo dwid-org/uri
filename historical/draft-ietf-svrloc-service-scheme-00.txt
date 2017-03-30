@@ -1,0 +1,1631 @@
+
+
+ Service Location Working Group                            Erik Guttman
+ Internet Draft                                  Sun Microsystems, Inc.
+ Expires in six months
+
+
+
+                         The service: URL Scheme
+                <draft-ietf-svrloc-service-scheme-00.txt>
+
+
+
+      This document is an Internet-Draft.  Internet-Drafts are working
+      documents of the Internet Engineering Task Force (IETF), its
+      areas, and its working groups.  Note that other groups may also
+      distribute working documents as Internet-Drafts.
+
+      Internet-Drafts are draft documents valid for a maximum of six
+      months and may be updated, replaced, or obsoleted by other
+      documents at any time.  It is inappropriate to use Internet-
+      Drafts as reference material or to cite them other than as
+      ``work in progress.''
+
+      To learn the current status of any Internet-Draft, please check
+      the ``1id-abstracts.txt'' listing contained in the Internet-
+      Drafts Shadow Directories on ftp.is.co.za (Africa),
+      nic.nordu.net (Europe), munnari.oz.au (Pacific Rim),
+      ds.internic.net (US East Coast), or ftp.isi.edu (US West Coast).
+
+
+Abstract
+
+   The service: URL scheme is used to provide service access information
+   for arbitrary network services.  These URLs provide an extensible
+   framework for client based network software to obtain configuration
+   information required to make use of network services.  A service: URL
+   may be accompanied by a set of well defined attributes which define
+   the characteristics of the service.  These attributes may convey
+   protocol configuration information to client software or service
+   characteristics meaningful to end users.  This document describes how
+   to define and standardize new service types and attributes for use
+   with the service: scheme and provides examples.
+
+
+
+
+
+
+
+
+
+
+Guttman                                                         [Page 1]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+Table of Contents
+
+      1. Introduction
+         1.1. The service: Scheme
+         1.2. Related work
+      2. Use of service: URLs
+      3. Specifying A New Service Type
+         3.1. A Service Type specification defines:
+              3.1.1. Service Type
+              3.1.2. The service: 'urlpath' information
+              3.1.3. Attributes
+              3.1.4. Service Discovery Multicast Address
+         3.2. Specifying Attributes
+              3.2.1. A subtlety
+              3.2.2. Types and String Encoding
+              3.2.3. Attributes with multiple values
+              3.2.4. Grouping attributes values together in records
+         3.3. Special Attributes
+              3.3.1. Service Discovery Multicast Address
+              3.3.2. version
+              3.3.3. Language tag
+         3.4. Service Type templates
+              3.4.1. Definition
+              3.4.2. Manditory Attributes
+              3.4.3. Attribute syntax for Service Type templates
+              3.4.4. Use of templates by the Service Location Protocol
+      4. A Process For Standardizing New Service Types
+      5. Encoding Rules for Service Type URLs
+      6. Examples
+         6.1. NFS
+              6.1.1. The NFS Service Type template
+              6.1.2. Example: A 'pub' directory
+              6.1.3. Example: A 'dist' directory
+         6.2. LPR
+         6.3. POP3
+      7. Security Considerations
+      8. Internationalization Considerations
+         8.1. Character Set identification and use
+         8.2. Language identification and translation
+      9. Bibliography
+     10. Author's Address
+
+1. Introduction
+
+   This document describes a URL scheme which will allow arbitrary
+   network services to have a standard notation for defining their
+   service access point.
+
+
+
+
+Guttman                                                         [Page 2]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   In addition it describes how to define a set of attributes to
+   associate with service: URLs.  These attributes will allow end users
+   and programs to select between network services of the same type that
+   have different capabilities.
+
+   The use of these attributes is recommended but not required to make
+   use of the service: URL.  The minimal encoding rules for attributes
+   are specified.
+
+   Service Type templates are used to describe services which use the
+   service: URL in a standard way.  The rules for writing such a
+   template are provided, as are three examples.
+
+   All grammar encoding follows the Augmented BNF for syntax
+   specifications [ABNF] with a few deviations.
+
+1.1. The service: Scheme
+
+   The service: scheme and all information which follows it MUST obey
+   the URL conventions defined in [RFC1738].
+
+   The scheme specific information following the service: scheme
+   provides the service type and address of a network service.  It may
+   additionally include service type specific information.  The form of
+   a service: URL is as follows:
+
+         serviceurl =  "service:" service-type ":" service-part
+
+   The formal syntax for a serviceurl is given in Section 5.
+
+   The service-type string indicates a specific protocol, such that
+   client software can be expected to unambiguously make use of the
+   service.  The Service Type determines semantics of the service-part
+   and the attributes associated with the service: URL.
+
+   The service-part includes an ip-schemepart.  This will define either
+   a domain name or a numerical ip address for the service and possibly
+   more, such as a port number to use.  The remainder of the service-
+   part is intended to provide sufficient information for client
+   software to be able to bind and make use of a service.
+
+   The service-part allows for extensions to the basic tuple of Service
+   Type and host (and possibly port number), so that more information
+   may be provided to uniquely identify the resource. It is also
+   possible, though less preferable, to provide uniquely identifying
+   information in the attribute information associated with a service:
+   URL.  This string will be referred to in this document as the
+   'urlpath' to be consistent with [RFC 1738].
+
+
+
+Guttman                                                         [Page 3]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   The attributes associated with the URL are not included in the URL.
+   They are stored and retrieved using other mechanisms.  The service:
+   URL serves as a unique identifier, to be used in registering or
+   requesting the attribute information.  The Service Location Protocol
+   [SLP] specifies how such information may be advertised by network
+   services and obtained by client software.  Other facilities, such as
+   Directory Services, could be used to distribute this information.
+
+   Attributes are associated with service: URLs for three reasons:
+
+      1. They allow configuration of the client.  Many servers have
+         optional features.  Clients which require or prefer to make
+         use of these features can proceed to do so without protocol
+         negotiation or feature selection.  Client configuration
+         parameters or server convention information may be obtained.
+
+      2. Client software may have particular requirements.  The
+         attributes associated with a given URL allow for automatic
+         selection of services which have certain features.  For
+         example, client software may require a server which has
+         a particular version or which has access to specific
+         resources.
+
+      3. Attributes support end user selection by characteristic
+         as opposed to simply by type.  These attributes may be
+         used to populate service browsing and choosing user
+         interfaces, for example.
+
+1.2. Related work
+
+   The "Finding Stuff" work by Ryan Moats and Martin Hamilton uses
+   service: URLs provide access information about arbitrary network
+   protocols through DNS.  [FINDING]  They do not associate service
+   attributes with these URLs.  The URLs allow them to provide
+   nonstandard service port information and to relate several protocols
+   to single abstract services, such as white pages and yellow pages.
+
+2. Use of service: URLs
+
+   The service: URL is intended to allow arbitrary client server and
+   peer to peer systems to make use of a standardized dynamic service
+   access point discovery mechanism.
+
+   It is intended that service: URLs be obtained with their associated
+   attributes.  In this way a client application may obtain the URLs of
+   several services of the same type and distinguish the most preferable
+   among them by means of their attributes.
+
+
+
+
+Guttman                                                         [Page 4]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   These attributes will take the form specified by the "service-
+   template", described below.  Each service: URL SHOULD be accompanied
+   by all attributes in the template (except the template specific
+   special attributes.)  The registration of this attribute information
+   could be done using various mechanisms, one of which is the Service
+   Location Protocol [SLP].
+
+   The client will use the service: URL to bind directly to a service.
+   The client must have a priori knowledge of how to use the network
+   protocol associated with the Service Type included in the service:
+   URL.
+
+3. Specifying A New Service Type
+
+   A Service Type should be specified to be a close as possible to a
+   particular protocol.  It may be tempting to create a Service Type for
+   a 'class of services', such as 'printer'. This will complicate the
+   specification later on, as the single service type must be
+   differentiated between the different protocols at the level of
+   service specific information or attributes.
+
+   It is much clearer if the protocol is simply named by a service type.
+   The urlpath is normally used to supply additional naming information
+   to uniquely identify the service.  The attribute information can then
+   be used to indicate configuration details, optional features
+   available and characteristics (which may be relevant to a human user
+   or to a program.)
+
+3.1. A Service Type specification defines:
+
+3.1.1. Service Type
+
+   This is a string which will be prepended by the 'service:' scheme.
+   It may be a name which is entirely invented or be the same as a well
+   known service scheme.  For example, service:http: might refer to a
+   HTTP server, whereas the http: scheme used in a URL generally refers
+   to a document.
+
+   The meaning of this service type must be fully described by service
+   type specification.
+
+   A network protocol specification should be cited as the definitive
+   reference for the protocol to use when binding to the service access
+   point provided by the service: URL.
+
+3.1.2. The service: 'urlpath' information
+
+   This information is included in the URL in order to provide uniquely
+
+
+
+Guttman                                                         [Page 5]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   identifying information.  This mechanism is used in the examples
+   which follow in order to identify a mountable filesystem (using the
+   'nfs' service type) and an lpr print queue (using the 'lpr' service
+   type).
+
+   The syntax and interpretation of the urlpath must accompany the
+   definition of a new Service Type.  The 'default' urlpath definition
+   is that it is entirely omitted except possibly a terminating slash.
+   The syntax is:
+
+         urlpath = [ "/" ]
+
+   Every effort to remain consistent with the syntax forms and styles of
+   other standardized urlpaths should be pursued.  See [RFC1738] for
+   examples and guidance.
+
+3.1.3. Attributes
+
+   This information provides information about the service's
+   capabilities, characteristics and required client configuration.
+   Each attribute which is defined must have a default value and
+   definition of all values it can take.
+
+   An attribute normally takes only one value, but optionally it may be
+   defined to be able to take multiple values.
+
+   The transmission of attributes is not described by this document.
+   Attribute registration, deregistration and the use of attributes in
+   queries may be accomplished using a number of different protocols.  A
+   future document (or possibly a later version of this document) will
+   describe how to encode attributes for use with different services.
+   The Service Location Protocol [SLP] defines one method of encoding
+   attributes.
+
+3.1.4. Service Discovery Multicast Address
+
+   Service Types may be registered with IANA and obtain a unique Service
+   Discovery Multicast Address.  This address is to be used with the
+   Service Location Protocol [SLP] as a means to specifically discover a
+   single type of service in a network without burdening all other
+   servers.
+
+   This is purely optional:  Services which use the service:  scheme do
+   not need to have a unique Service Discovery Multicast Address
+   assigned to them.
+
+3.2. Specifying Attributes
+
+
+
+
+Guttman                                                         [Page 6]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   Attributes are used to convey information about a given service for
+   purposes of differentiating different services of the same type.
+   They convey information to be used in the selection of which service
+   to bind to, either for human consumption or for use by a program.
+
+   Attributes may be encoded in different character sets and in
+   different languages.  The procedure for doing this is described in
+   Section 8.0.
+
+   Attributes have two components.  The first is a 'tag'.  This is a
+   string with certain encoding rules.  The second component is a set of
+   values.  The set of values may be NULL, in which case the attribute
+   is a 'keyword'.  The value or values of an attribute are typed, and
+   must have the same type for each value if the attribute is
+   multivalued.  The rules for typing and encoding of attribute values
+   is given in the rest of Section 3.1.
+
+3.2.1. A subtlety
+
+    There is a subtlety in the definition of attributes.  A service
+    may support 'feature A' and 'feature B'.  It may also have
+    'enhancement C'.  Suppose the enhancement is only available
+    when feature B is used, in this case.  If 'feature' is one
+    attribute and 'enhancement' is a second attribute, we can
+    describe the service with the following:
+
+         feature = A, B
+         enhancement = C
+
+   It will be impossible to tell if there is any dependency between
+   having feature B and enhancement C.  Since the data relationships are
+   flat in the attribute encodings, it is necessary to explicitely state
+   all combinations as distinct values.  This can be done in two ways.
+   Either all combinations of features which may have dependencies must
+   be given a well defined value or a 'record' format for an attribute
+   value must be used.
+
+   The combination method is only useful when there are very few values
+   to be combined, as it will quickly become a very large set of values
+   to define.  In the case of the example we can define feature's values
+   as:
+
+      feature can take:
+
+         "A" | "A enhanced by C" | "B" | "B enhanced by C"
+
+      In our example:
+
+
+
+
+Guttman                                                         [Page 7]
+
+
+
+
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+         feature = "A" , "B enhanced by C"
+
+   The suggested method for solving this problem with the 'record
+   format' is described in Section 3.2.4. below.
+
+3.2.2. Types and String Encoding
+
+   Characters have been reserved in the specification of attributes in
+   order to avoid ambiguity with respect to the delimiters in the string
+   based protocol used in attribute lists.  Further limitations may be
+   imposed if the attributes are to be encoded using another protocol.
+
+   The Service Location Protocol [SLP], for example, has several
+   reserved characters that are not to be used in attributes.  SLP
+   provides an escape sequence to allow these characters to be used in
+   attribute values (not attribute tags.)  The same character escape
+   mechanism is proposed here.
+
+         esc-char     = "&" "#" 1*DIGIT ";"
+
+   The escaped character is replaced by a character sequence with no
+   spaces.  The digits are a decimal representation of the character
+   value to be replaced, in the character set used for the attribute
+   encoding.
+
+   There are only three heavy handed syntactic devices used:
+
+      1. Blank lines are used to separate attributes.  To add a
+         blank line to text, one would have to escape the CRLF
+         with &#13;&#10;
+
+      2. Commas are used to separate attribute values.  To use a
+         comma in attribute encodings, escape the comma with &#44;
+
+      3. Sets of colons are used to mark a default value (see
+         Section 3.4.3.)  This means the string "::" must be
+         escaped in attribute values to &#58;&#58;
+
+      Attributes have the following grammar:
+
+      attribute  =  keyword / tag "=" 1#value CRLF CRLF
+
+      safe-chars =  <any character except "," which is reserved.>
+      white-sp   =  SPACE / CR / LF / TAB
+      key-chars  =  <any safe-chars except for white-sp which is
+                     not allowed.>
+
+      tag        =  1*safe-chars
+
+
+
+Guttman                                                         [Page 8]
+
+
+
+
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+      keyword    =  1*key-chars
+      value      =  string / integer / boolean / opaque
+
+      string     =  1*safe-chars
+
+      integer    =  [-] 1*DIGIT
+                      ; The integer MUST fall within the range of
+                      ; values a 32 bit integer may take, ie.
+                      ; "-2147483648" to "2147483647".
+
+      boolean    =  "TRUE" / "FALSE"
+                      ; These values are the only exception to the
+                      ; Internationalization rules in Section 8.0.
+                      ; Independent of the translation of the
+                      ; attributes, the boolean values remain the
+                      ; indicated strings.
+
+      rad64-char =  ALPHA / DIGIT / "+" / "-" / white-sp
+
+      opaque     =  1*DIGIT ":" 4*rad64-char
+                      ; The digits define the original length of the
+                      ; opaque value. The restricted character string
+                      ; is the radix-64 encoding of the opaque value.
+                      ; See [RFC 1521], Section 5.2.
+
+                      ; NOTE:  White space is ignored in decoding
+                      ; radix-64 values.
+
+   Note on the use of white space:
+
+   A string is considered to be a token in the case of a tag or <string>
+   value.  In this case, the string is 'trimmed'.  White space interior
+   to a string token is left alone, while white space between the tokens
+   is removed.  For example:
+
+         "  some  name  =  some  value , another  example "
+
+      would be trimmed to
+
+         "some  name" '=' "some  value" and "another  example".
+
+   Note on string matching:
+
+   Attribute tags and values may be used by some protocols for directory
+   look-up.  In this case, the following rules should be applied for
+   string matching of attribute strings.
+
+   String matching MUST be done after character escape encoding has been
+
+
+
+Guttman                                                         [Page 9]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   removed, white space has been trimmed.  In addition, string matching
+   SHOULD be case insensitive.
+
+3.2.3. Attributes with multiple values
+
+   Attributes with multiple values must be defined so that the type of
+   each value is the same.  Attributes with a boolean value may not take
+   multiple values.
+
+3.2.4. Grouping attribute values together in records
+
+   In order to make use of this value encoding strategy, the record
+   format must be explicitely described.  A 'delimiter' is used to
+   separate the fields in the record, a 'tab' is suggested, but others
+   are possible.
+
+   Each field in the attribute 'record' value must be defined
+   separately, as though it were an attribute value of its own.  This
+   means it needs to have a type, default value, whether it can have
+   multiple values and a definition for all values it can take.  If a
+   field is omitted, it is assumed to take its default value.  It is
+   wise to have the default value be "NONE" or "NOT APPLICABLE", to make
+   it possible to explicitely declare only the relevent field values and
+   ignore the others.  It is also possible to declare that the field has
+   no default value, if it MUST be defined in each record.
+
+   Following the example in Section 3.1, we can define the attribute
+   "feature" to have a record structure, delimited by tabs.  Both fields
+   are single valued strings.   The first field is the "feature name",
+   and has no default value.  The second field is the "enhancement
+   name", with "NO ENHANCEMENT" as the default value.  The resulting
+   value would be:
+
+         "feature =" "A" TAB "," "B" TAB "C"
+
+   The string "feature =" indicates the attribute 'feature' takes the
+   value to the right of the equals sign.  The quotes will be used to
+   indicate that this is not an ABNF syntax but rather a string encoding
+   resulting from rules given elsewhere.  (In this case the rules were
+   given in Section 3.1.1.).
+
+   The feature "A" has no second field value, the first value record is
+   A with NO ENHANCEMENT.  The second value record that feature may take
+   is B with the enhancement C.
+
+3.3. Special attributes
+
+3.3.1. Service Discovery Multicast Address
+
+
+
+Guttman                                                        [Page 10]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   This attribute is always included in Service Type templates.
+
+   It takes a single valued which takes a numerical IP address
+   specification.  This should take the value of the assigned Service
+   Discovery Multicast Address.  If the service has not been assigned
+   one, this attribute should take the value NONE.  The value that this
+   attribute takes is defined by the following syntax:
+
+         discovery-addr = ipv4-addrport / ipv6-addrport / "NONE"
+
+         byte          = 1*3DIGIT
+                         ; This value MUST be between 0..255
+         ipv4-addrport = byte "." byte "." byte "." byte [":" 1*DIGIT]
+
+         hex           = DIGIT / "A" / "B" / "C" / "D" / "E" /
+                                 "a" / "b" / "c" / "d" / "e"
+         ipv6-addrport = 32hex [":" 1*DIGIT]
+
+   The address must be a valid multicast address (according to either
+   IPv4 or IPv6 addressing rules.  The port number identifies the port
+   number for the service discovery protocol. The Service Location
+   Protocol [SLP] uses port 427, which is the default if no port number
+   is given.
+
+3.3.2. Version
+
+   This attribute has a string value of the form:
+
+         version = 1*DIGIT '.' 1*DIGIT
+
+   This is the version of the Service Type template.
+
+   This attribute MUST be included in every collection of attributes so
+   as to identify which version of the template it used to determine the
+   set of attributes and attribute definitions.  Client software can use
+   these version numbers potentially to support old attributes, allowing
+   a smooth migration to new template definitions.
+
+   A Service Type template proposal starts at 0.0, and the minor number
+   increments once per revision.
+
+   A standardized template starts at 1.0.  Additions of attributes add
+   one to the minor number, where changes of definition or removal of
+   attributes or values adds one to the major number.  See Section 4 for
+   more detail on how to use the Version attribute.
+
+3.3.3. Language tag
+
+
+
+
+Guttman                                                        [Page 11]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   The Language tag attribute must be included with each template and
+   with each set of attributes associated with a particular service:
+   URL.  This allows client applications to identify if the attributes
+   which will be comprehensible for a given user and retrieve them.  See
+   8.2.
+
+3.4. Service Type templates
+
+3.4.1. Definition
+
+   The Service Type for the Service Type template is "service-template".
+   The service type specific information which follows is the location
+   and path information of a hypertext document which describes the
+   Service Type template, which is to be accessed using http.
+
+   For example, this template would be encoded as:
+
+         <URL:service:srv-template://www.ietf.org/internet-drafts/
+          draft-ietf-svrloc-service-scheme-00.txt>
+
+      The document would be accessed by using:
+
+         <URL:http://www.ietf.org/internet-drafts/
+          draft-ietf-svrloc-service-scheme-00.txt>
+
+3.4.2. Mandatory Attributes
+
+   The service-template Service Type has 3 mandatory attributes. The
+   template must also support the two special attributes version and
+   Service Discovery Multicast Address, as defined in Section 3.3.
+   These attributes are NOT specified in attributes which accompany
+   service: URLs.  These attributes are only to be specified in Service
+   Type templates.
+
+      service type
+
+         The value of this attribute is a service type string.
+
+      Service Discovery Multicast Address
+
+         See section 3.3.1.
+
+      description
+
+         The service type is described here.   This is a paragraph or
+         so of text which describes how to interpret the service: URL
+         for this particular service type.  It should be clear what
+         protocol or protocols can bind to the service access point
+
+
+
+Guttman                                                        [Page 12]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+         which the service: URL resolves to.
+
+
+   Of these attributes tags, only "description" may be translated into
+   another language (see Section 8.0.)
+
+3.4.3. Attribute syntax for Service Type templates
+
+   For each attribute the service type supports, an additional attribute
+   is added to the service type template.   This attribute has the same
+   tag as the service type's attribute.  The value of the attribute has
+   the following syntax:
+
+      tmpl-attr   =  attr-tag attr-val
+
+      safe-char   =  Any character other than "," and ":"
+      attr-tag    =  1*[safe-char]
+      attr-val    =  [type] [m] [l] "::" default "::" description
+
+      type        =  ["STRING" | "BOOLEAN" | "INTEGER" | "OPAQUE"]
+      default     =  1*[safe-char]
+      description =  1*[safe-char]
+      m           =  SPACE "M"
+      l           =  SPACE "L"
+
+      The default is "STRING" if type is omitted.
+
+      "M" indicates the attribute can have multiple values.  If this
+          field is omitted it is assumed the attribute can have only
+          one value.
+
+      "L" indicates the attribute and its values must be considered
+          literally, that is, they must not be translated to other
+          languages.  (See Section 8).
+
+   The default field provides the default value for the attribute.
+
+   The description field should be a paragraph of text describing the
+   attribute and the all the values it can take on.  This information
+   will be used by those who develop user interfaces to display service
+   information and those who advertise services using attributes
+   associated with the service: URL.
+
+3.4.4. Use of templates by the Service Location Protocol
+
+   Service templates may be used by the Service Location Protocol [SLP]
+   in three important ways:
+
+
+
+
+Guttman                                                        [Page 13]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   First, those who program user interface front ends may use the
+   template to understand the format, range and meaning or attributes
+   available from Attribute Queries from Service Location.
+
+   Second, the template provides requirements for those who program
+   Service Agents for a particular Service Type.  The attributes in the
+   Service Template must be assigned values to be associated with the
+   service: URL advertisement.
+
+   Finally, the template provides a mechanism for the Service Location
+   Protocol to discover Service Type specific Service Discovery
+   Multicast Addresses.  The template itself is a service of type
+   "service-template".  A User Agent obtains the template in order to
+   discover which multicast address to use for issuing requests to
+   Service Agents.  Service Agents obtain the template to discover which
+   multicast group to join in order to receive multicast User Agent
+   requests.  Both the Directory Agent and Service Agent will use the
+   templates in order to associate the Service Type string with the
+   correct Service Discovery Multicast Address in the SLP's Service Type
+   Reply.
+
+   All that is required to make this work, is to run a Service Agent
+   which advertises the set of templates of all services supported in
+   the network.  ("The network" here refers to a network which has
+   multicast routing support with a maximum multicast TTL of 32.  That
+   is, a "site.")
+
+4. A Process For Standardizing New Service Types
+
+   New Service Types can be suggested simply by providing a Service Type
+   template and a short description of the use for the service:  URL.
+   This should have its 'Version' attribute set to "0.0" initially.
+
+   The minor version number will increment once with each change until
+   it achieves 1.0.  There is no guarantee any version of the service
+   template will be backwards compatible before it reaches 1.0.
+
+   Once a service template has reached 1.0, the definition is "frozen"
+   for that version.  New templates may be defined, of course, to refine
+   that definition, but they must follow these rules:
+
+      - Any new attribute defined for the template will increase
+        the minor version number by one.  All other attributes
+        for the version must continue to be supported as before.
+        A client which supports 1.x can still use later versions
+        of 1.y (where x<y) as it will ignore attributes it doesn't
+        know about.
+
+
+
+
+Guttman                                                        [Page 14]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+      - Deprecating or changing the definition of an attribute
+        requires changing the major version number of a service
+        template.  The client may be unable to make use of this
+        information, or it may need to obtain the most recent
+        service template to help the user interpret the service
+        info.
+
+   The template should be posted to the Service Location Working Group
+   mailing list for review.  Ideally, experts in the implementation and
+   deployment of the particular protocol will be consulted so as to add
+   more attributes or change their definition to make them as useful as
+   possible.
+
+   All published versions of the template must be available on-line,
+   including obsolete ones.
+
+   Once there is no more active dissent the Service Type should be
+   reissued with possible corrections, having its Version number set to
+   "1.0".  If there is no comment on the template after 3 months, it
+   should be considered to have been accepted.
+
+   At that time, the a Service Discovery Multicast address may be
+   obtained from IANA for use with the Service Type.
+
+5. Encoding Rules for Service Type URLs
+
+   Much of this material is directly adapted from [RFC1738].  Note that
+   the syntax for the urlpath depends upon the Service Type definition.
+   See Section 3.  The ABNF for a serviceurl is:
+
+      serviceurl    = "service:" service-type ":" service-part
+
+      service-type  = 1*[ low-alpha / DIGIT / "+" / "-" / "." ]
+      service-part  = "//" login [ "/" urlpath ]
+
+      login         = [ user [ ":" password ] "@" ] hostport
+      hostport      = host [ ":" port ]
+      host          = hostname / hostnumber
+      hostname      = *[ domainlabel "." ] toplabel
+      okchar        = ALPHA / DIGIT
+      domainlabel   = okchar / okchar *[ okchar / "-" ] okchar
+      toplabel      = ALPHA / ALPHA *[ okchar / "-" ] okchar
+      hostnumber    = ipv4-number / ipv6-number
+      ipv4-number   = 1*3DIGIT "." 1*3DIGIT "." 1*3DIGIT "." 1*3DIGIT
+      ipv6-number   = 32hex
+      port          = 1*DIGIT
+      user          = *[ uchar / ";" / "?" / "&" / "=" ]
+      password      = *[ uchar / ";" / "?" / "&" / "=" ]
+
+
+
+Guttman                                                        [Page 15]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+      urlpath       = *xchar ; each Service Type must define its own
+                             ; syntax.  See Section
+
+      safe          = "$" / "-" / "_" / "." / "+"
+      extra         = "!" / "*" / "'" / "(" / ")" / ","
+      hex           = DIGIT / "A" / "B" / "C" / "D" / "E" /
+                              "a" / "b" / "c" / "d" / "e"
+      escape        = "%" hex hex
+      reserved      = ";" / "/" / "?" / ":" / "@" / "&" / "="
+      unreserved    = ALPHA / DIGIT / safe / extra
+
+      uchar         = unreserved / escape
+      xchar         = unreserved / reserved / escape
+
+6. Examples
+
+   The purpose of these examples is demonstrate the manner of specifying
+   new Service Types described in this document.  In addition, it will
+   provide a useful starting point for using service: URLs in
+   applications.
+
+   In the case of file servers, print spoolers and POP3 servers, the
+   client software often requires the user to know the name and even
+   parameters of the server before being able to use the service.  A
+   client which can obtain service: URLs and associated attributes
+   dynamically will be able to bind to the server without any knowledge
+   of the network at all, even the name of the server host.
+
+   Values given for specific attribute assignments will be given in
+   quotes.  The syntax for attribute definitions are given in Section
+   3.2.2.  The syntax used to assign and interpret the values for
+   attributes in the template (other than the mandatory attributes) is
+   given in section 3.4.3.
+
+   Note that in the templates commas are used to separate attributes and
+   that commas themselves must be escaped.  The templates are assumed to
+   be in the [ASCII] character set, so escape values are expressed in
+   that character set.
+
+   Default values are given when they exist, otherwise the value MUST be
+   assigned for each set of attributes associated with a service: URL.
+   String values are to be assigned descriptive values in the absence of
+   a standardized set of identifiers. The strings without standardized
+   identifiers or integer values are intended to be read by human
+   beings.
+
+   Tabs in the example strings are represented by "\t".
+
+
+
+
+Guttman                                                        [Page 16]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+6.1. NFS
+
+   The service type for NFS is "NFS".
+
+   The protocol it refers to is defined in [RFC2055] and [RFC2054].
+
+   The URL has service specific information which specifies the mount
+   path.  The syntax for the urlpath for specifying this is given in
+   [NFSURL].
+
+6.1.1. NFS Service Type template
+
+     "Service Discovery Multicast Address = NONE
+
+      service type = NFS
+
+      version      = 0.0
+
+      Language tag = en
+
+      description  =
+        The NFS service type provides attributes which define the
+        contents and policies of server mount points.  It defines
+        three types of storage:
+           (1) installations (software ready to use)
+           (2) distributions (software ready to install)
+           (3) space         (ready for others to use)
+        Each of these attributes have record structured attribute
+        values which are described below.
+
+      authorization policy = :: NONE ::
+        A text description of any authentication requirements for
+        use of the NFS exported filesystem.  For example:  Only
+        groups x&#44; y and z - only users a&#44; b&#44; c and so on.
+
+      use policy = :: NONE ::
+        The nfs exported file system may be intended for certain
+        purposes or contain software with license restrictions.
+        This text description will make this clear.
+
+      distributions = M :: NONE ::
+        Software distributions&#44; ready to install on other systems.
+        The value will have 5 fields&#44; separated by a tab.
+        The fields are:
+          - distribution name including relative path from the mount
+            point (could be the name of a tar file&#44; a self
+            extracting archive&#44; etc. (String)
+          - platform the distribution is intended to be run on.
+
+
+
+Guttman                                                        [Page 17]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+            (String)
+          - the size of the distribution in KB (required to install it).
+            (Integer)
+          - the date and or version number of the distribution. (String)
+          - a description of the distribution. (String: default = NONE)
+
+      installations = M :: NONE ::
+        An installation is a program which is available on a file
+        server.
+          - relative path and name of executable. (String)
+          - platform the installed program is intended to be run on.
+            (String)
+          - the date and version number of the installed program.
+            (String)
+          - required configuration to use the program (set environment
+            variables&#44; required libraries&#44; etc.) (String:
+            default = NONE)
+          - a description of the installed program.  (String)
+
+      documents = M :: NONE::
+        A document or group of documents can be advertised on a server
+        so as to allow distributed search for the document.
+          - relative path and name of the document or document directory
+            (String)
+          - format the document(s) are in (String)
+          - a list of keywords (separated by semicolons).  These
+            keywords may be determined by an organization which has an
+            indexing policy&#44; or done in an ad hoc manner.  These
+            keywords do not have to be guessed&#44; they can be
+            accumulated and presented to a user or queried for.)
+            (String)
+          - date and or version of the document. (String)
+          - description of the document (String: default = NONE )
+
+      space = M :: NONE ::
+        Space indicates that a filesystem has room for temporary files.
+          - Available space (in KB). (Integer)
+          - Policy statement (how long can files be left on the server&#44;
+            will files be considered temporary and removed when convenient?)
+            (String)"
+
+6.1.2.  Example: A 'pub' directory
+
+   Suppose I have an NFS server which exports two filesystems.  The
+   first one is a 'pub' directory with some documents, the second one is
+   a 'dist' directory with both installed software and software ready to
+   download and install.
+
+
+
+
+Guttman                                                        [Page 18]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   For the pub directory I will assign the following values to the
+   attributes above:
+
+     "version = 0.0
+
+      Language tag = en
+
+      authorization policy = world readable
+
+      use policy = Documents here are for internal company use only
+
+      documents =
+        ./slides \t powerpoint \t marketing&#44; quarterly reports \t
+          10/15/96 \t This directory contains slides are from
+          presentations made over the last year.
+        ./meeting-notes \t text \t planning&#44; update \t 10/22/96 \t
+          This directory is a repository for all group meetings.
+          We keep it up to date and hold our meetings once every
+          25 days.,
+        ./cartoons \t gif \t silly \t 3/23/96 \t This directory has
+          a bunch of silly cartoons from a website I like.
+
+      distributions=NONE
+
+      installations=NONE
+
+      space=NONE"
+
+   Notice that there are multiple values for the attribute "documents."
+   I use a tab delimited format in order to group 5 items together in
+   the same value. Carriage returns and white space is basically ignored
+   BETWEEN values, but is relevent IN values.
+
+6.1.3. Example: A 'dist' directory
+
+   Here is an example of where I use an NFS server to provide access to
+   software.  I will include software in distributed format and
+   installed format.  The distributed format allows someone to either
+   download the distribution or install directly off the fileserver.
+   The installation is already ready to run on the fileserver (ie. it is
+   a distribution which has been installed and resides on the
+   fileserver, in my meaning of the word 'distribution.')
+
+   This form of software distribution is unnecessary if you are using an
+   'applet' approach, but is still absolutely required if you are
+   distributing full applications, scripts, documentation packages, etc.
+
+   Say we have two pieces of software, a word processor WP and a
+
+
+
+Guttman                                                        [Page 19]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   Calendar program CP.  The sofware runs on 3 platforms, Solaris 2.5
+   and up, Windows 95 and NT 4.0, and MacOS 7.5 and up.  We will call
+   these platforms Sol2.5, Win32 and MacOS7.5.  Our file server will
+   offer these preinstalled for Sol2.5 and MacOS7.5 but not for Windows
+   - as software configuration for this platform very often requires
+   modification of the individual host's registry file.  The attributes
+   for this content on the file server could be:
+
+     "version = 0.0
+
+      Language tag = en
+
+      authorization policy=
+         The files available here should be accessed only by the
+         Sales Dept. of Acme Corp.
+
+      use policy=
+         The Sales Dept of Acme Corp. (and no one else) has a
+         software license for all software available here.
+
+      space=NONE
+
+      documents=NONE
+
+      distributions=
+       ./wp-zog/distrib/wp-zog-1-31-sol25.tar.Z \t Sol2.5 \t
+          2054 kb \t 01/13/96 \t version 1.31 \t
+          Word processor from Zog Corp - for X/Motif.,
+       ./wp-zog/distrib/wp-zog-1-31-win32.zip \t Win32 \t
+          3056 kb \t 01/13/96 \t version 1.31 \t
+          Word processor from Zog Corp - for Windows NT and 95,
+       ./wp-zog/distrib/wp-zog-1-31-mac.hqx \t MacOS7.5 \t
+          1980 kb \t 02/23/96 \t version 1.31m \t
+          Word processor from Zog Corp - for Macintosh,
+       ./cp-foo/distrib/cp-foo-2-01-sol25.tar.Z \t Sol2.5 \t
+          1044 kb \t 08/02/95 version 2.01 \t
+          Calender Program from Foo - for Solaris 2.5,
+       ./cp-foo/distrib/cp-foo-2-11-win32.zip \t Win32 \t
+          2096 kb \t 11/30/95 \t version 2.11 \t
+          Calander Program from Foo - for Windows 95,
+       ./cp-foo/distrib/cp-foo-1-4-mac.hqx \t MacOS7.5 \t
+          733 kb \t 03/23/95 \t version 1.4 \t
+          Calander Program from Foo - for Macintosh
+
+      installations=
+       ./wp-zog/sol-inst/wp-zog \t Sol2.5 \t 01/13/96 version 1.31 \t
+          \t Word processor from Zog Corp - for X/Motif.,
+       ./wp-zog/mac-inst/wp-zog \t MacOS7.5 \t 02/23/96 version 1.31m \t
+
+
+
+Guttman                                                        [Page 20]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+            Word processor from Zog Corp - for Macintosh,
+       ./cp-foo/sol-inst/cp-foo \t Sol2.5 \t 08/02/95 version 2.01 \t
+           Set CP-HOME environment variable to ./cp-foo/inst/cp-foo \t
+           Calander Program from Foo - for Solaris 2.5,
+       ./cp-foo/mac-inst/MyCal \t MacOS7.5 \t 03/23/95 version 1.4 \t
+           \t Calander Program from Foo - for Macintosh"
+
+   This could be registered as an attribute string associated with the
+   URL "service:nfs://myhost.sun.com/dist".
+
+   The attribute values MUST supply a complete 'record'; they declare
+   the contents of the file repository, the installation or the
+   distribution.  The notation used for platform name, configuration
+   requirements and so forth is informal and MAY be formalized in the
+   service template text.
+
+   Note that in the example above, only the third installation had any
+   special configuration to be done on the client.  The other
+   installations had a blank field where configuration details would
+   normally be.  In this case these take on the default value given in
+   the template (NONE).
+
+6.2. Line Printer Daemon Protocol
+
+   The service type string for the Line Printer Daemon Protocol is
+   "LPR".
+
+   The protocol it refers to is defined in [RFC1179].
+
+   The URL has service specific information which specifies print queue
+   name.  The syntax for the urlpath for specifying this is:
+
+      name    = 1*[ DIGIT / ALPHA ]
+      urlpath = "/" name
+
+   The attributes for the lpr service are largely derived from the
+   Printer MIB [RFC1759].  The attributes specified are a subset of
+   those in the MIB document, as the goals of service attributes are
+   different than that of system management.  The attributes specified
+   here are intended to facilitate automatic and user selection of
+   services not to provide service statistics or notification.  In
+   short, the target audience of service attributes are users, either
+   processes or people, where the audience of MIB statistics are network
+   managers.
+
+   In all cases the values and terms in [RFC1759] take precedence over
+   those listed below.  Some default "unknown" values have been added
+   which are not part of the Printer MIB specification.
+
+
+
+Guttman                                                        [Page 21]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   The service template for LPR follows:
+
+      "Service Discovery Multicast Address = NONE
+
+       service type = LPR
+
+       version = 0.0
+
+       Language tag = en
+
+       Description =
+          The LPR service provides line printer spooling&#44; using
+          the BSD Unix print spooling protocol&#44; formalized in
+          RFC 1179.  The attributes associated with the LPR
+          service refer to the printer actual printing service
+          will be performed.
+
+       Status = INTEGER L :: 1 ::
+          The status is taken from the Printer Status object of the
+          host MIB&#44; hrDeviceStatus.  The enumerated values have
+          the following definitions:
+             1 = unknown    The state is unknown.
+             2 = running    The device is up:  No known errors.
+             3 = warning    Still operational: Agent has been warned.
+             4 = testing    Not available:  In the 'testing' state.
+             5 = down       Not available.
+
+       Location Description = :: NONE ::
+          This is a text description of the location of the printer.
+          It may make use of office landmarks and so forth to guide
+          people.
+
+       Location Address = :: NONE ::
+          This is the Postal Address of the printer as a minimum.
+          It should also include any office number or other location
+          notation used within an organization.
+
+       Operator = :: NONE ::
+          The name and possibly telephone number of the person
+          responsible for operating the printer.  This value should
+          be obtained from the prtGeneralTable of the Printer MIB&#44;
+          from the prtGeneralCurrentOperator object of the
+          prtGeneralEntry if possible.
+
+       Service Person = :: NONE ::
+          The name and possibly telephone number of the person
+          responsible for servicing the printer if it breaks down.
+          This value should be obtained from the prtGeneralTable of
+
+
+
+Guttman                                                        [Page 22]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+          the Printer MIB from the prtGeneralCurrentOperator object
+          of the prtGeneralEntry&#44; if possible.
+
+       Use policy = :: NONE ::
+          Any restrictions to use&#44; such as intended users should be
+          described here.
+
+       Feed type = INTEGER :: 2 ::
+          This describes the feeder mechanism of the printer. The
+          value should be assigned from the prtInputDefaultIndex
+          entry of the prtInputTable of the Printer MIB if possible.
+          This attribute takes the value of the prtInputType item
+          in the prtInputEntry sequence.  The textual definition of
+          the integer type values are:
+             1 = other
+             2 = unknown
+             3 = sheetFeedAutoRemovableTray
+             4 = sheetFeedAutoNonRemovableTray
+             5 = sheetFeedManual
+             6 = continuousRoll
+             7 = continuousFanFold
+
+       Media length = INTEGER  :: -2 ::
+          This value indicates the length (in the direction of the
+          printer feed) of the media.  The value -2 indicates that
+          the length is unknown&#44; -1 means there is no limit.  All
+          other values are in the Media units given below.  This
+          value should be obtained from the default prtInputEntry
+          (see Feed type) from the prtInputMediaDimFeedDirDeclared
+          item.
+
+       Media width = INTEGER :: -2 ::
+          As for Media length.  This value indicates the width
+          (across the feed path) of the Media.  The item to use
+          is prtInputMediaDimXFeedDirDeclared.
+
+       Media units = INTEGER :: -1 ::
+          -1 indicates the units are unknown.  The value from the
+          default prtInputEntry should be used (see Feed type).
+          The prtInputDimUnit item should be used.  The values
+          are defined as:
+             3  =  .0001 inches
+             4  =  micrometers
+
+       Media type =  L :: stationary ::
+          The Media type describes what is to be printed upon.
+          The value from the default prtInputEntry should be used
+          (see Feed type): the item is prtInputMediaType.  The
+
+
+
+Guttman                                                        [Page 23]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+          defined values are:
+          stationery       Separately cut sheets of an opaque material
+          transparency     Separately cut sheets of a transparent
+   material
+          envelope         Envelopes that can be used for conventional
+          mailing purposes
+          envelope-plain   Envelopes that are not preprinted and have no
+                           windows
+          envelope-window  Envelopes that have windows for addressing
+                           purposes
+          continuous-long  Continuously connected sheets of an opaque
+                           material connected along the long edge
+          continuous-short Continuously connected sheets of an opaque
+                           material connected along the short edge
+          tab-stock        Media with tabs
+          multi-part-form  Form medium composed of multiple layers not
+                           pre-attached to one another; each sheet may
+   be
+                           drawn separately from an input source
+          labels           Label stock
+          multi-layer      Form medium composed of multiple layers which
+                           are pre-attached to one another; e.g.&#44;
+                           for use with impact printers
+
+       Media color =  L :: unknown ::
+          The Media color describes the color of what is printed upon.
+          The value from the default prtInputEntry should be used
+          (see Feed type): the item is prtInputMediaColor.  The
+          defined values are:
+           other         unknown         white
+           pink          yellow          buff
+           goldenrod     blue            green
+           transparent
+          According to [RFC1759]:
+             Implementors may add additional string values. The naming
+             conventions in ISO 9070 are recommended in order to avoid
+             potential name clashes.
+
+      Max speed = INTEGER :: -1 ::
+         The maximum speed of the printer expressed in Speed units.
+         This value should be obtained from the prtMediaPathMaxSpeed
+         object in the default prtMediaPathEntry .  -1 indicates
+         'other'&#44; or 'unknown'.
+
+      Speed units = INTEGER :: 8 ::
+         This value determines unit of speed for the Max speed.  The
+         value should be obtained from the prtMediaPathMaxSpeedPrintUnit
+         of the default prtMediaPathEntry.  The definitions of the
+
+
+
+Guttman                                                        [Page 24]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+         values are:
+             3  =  tenThousandthsOfInchesPerHour -- .0001/hour
+             4  =  micrometersPerHour
+             5  =  charactersPerHour
+             6  =  linesPerHour
+             7  =  impressionsPerHour
+             8  =  sheetsPerHour
+             9  =  dotRowPerHour
+             16 =  feetPerHour
+             17 =  metersPerHour
+
+      Interpreter Language = M :: 37 \t 1 \t 1 ::
+         The Interpreter Language determines what forms of input the
+         printer can accept and interpret.  Multiple values are
+   possible;
+         each of which has a tab delimited form with three values.
+         The table is populated by a complete traversal of the
+         prtInterpreterTable.  The items to use for the fields are
+         given below.  See [RFC1759] for their definitions.
+          - prtInterpreterLangFamily (INTEGER: Default value is 37
+            or langAutomatic.)
+          - prtInterpreterLangVersion (INTEGER: Default value is 1.)
+          - prtInterpreterLangLevel (INTEGER: Default value is 1.)"
+
+6.3. POP3
+
+   The POP3 service type is "POP3".
+
+   The protocol it refers to is defined in [RFC1936].
+
+   The 'urlpath' has the default syntax.  (See Section 3.1.2.)
+
+   The service template for POP3 is as follows:
+
+     "service type = POP3
+
+      Service Discovery Multicast Address = NONE
+
+      version = 0.0
+
+      Language tag = en
+
+      Description =
+         Clients which wish to make use of POP3 services need to
+         be configured to use the correct POP3 server.  The server
+         may or may not be able to use the APOP authentication
+         mechanism.  Clients are able to discover which POP3 server
+         is the correct one for them and whether they can use APOP
+
+
+
+Guttman                                                        [Page 25]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+         to authenticate themselves.  Finally&#44; the POP3 server
+         policy statement may be included.
+
+      Mailboxes = M L :: NONE ::
+         This is a list of all users (by user name) which the
+         POP3 server supports.
+
+      APOP = BOOLEAN L :: FALSE ::
+         This attribute determines whether the POP3 server supports
+         the POP3 AUTHentication command [RFC1734].
+
+      Policy = :: NONE ::
+         This describes the POP3 policy regarding use.  In particular
+         users may be dissuaded from keeping mail on the server or
+         keeping more than a certain amount of mail on the server."
+
+   Mail clients may discover POP3 servers which support these attributes
+   in a new way.  A user need only supply her user name and the client
+   can proceed to use a dynamic configuration protocol, such as Service
+   Location, to determine the server and whether to use APOP.  If the
+   POP3 server is down, a backup server may be discovered using the same
+   mechanism, transparently to the user.
+
+   An example of service attributes associated with a particular POP3
+   server might be:
+
+      <URL:service:pop3://mailfriend.incog.com>
+
+     "version = 0.0
+
+      Language tag = en
+
+      Mailboxes = larry, curly, moe, shemp
+
+      APOP = FALSE
+
+      Policy = Mail should not be left on the server."
+
+   A translation of these attributes could be associated with the same
+   URL to make the policy readable to non-English speakers.  For
+   example, the following is a translation to German:
+
+     "version = 0.0
+
+      Language tag = de
+
+      Mailboxes = larry, curly, moe, shemp
+
+
+
+
+Guttman                                                        [Page 26]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+      APOP = FALSE
+
+      Anweisung = Mail darf nicht auf dem Server bleiben."
+
+   Note that only the last attribute is translated.  That is because
+   version and Language tag are not translated (see Section 3.4.2.) and
+   Mailboxes and APOP are marked with a 'L' in the POP3 template.
+
+7. Security Considerations
+
+   Security considerations are not discussed in this memo.
+
+8. Internationalization Considerations
+
+   The service: URL itself must be encoded using the rules set forth in
+   [RFC1738].  The character set encoding is limited to specific ranges
+   within the US-ASCII character set [ASCII].
+
+   The attribute information associated with the service: URL may be
+   expressed in any character set, and in any language.
+
+8.1. Character Set identification and use
+
+   The way of identifying the character set used is the IANA Character
+   Set registry official name. [CHAR-REG]
+
+   It can be assumed that US-ASCII [ASCII] will be supported.
+
+   For other encodings, the repository of the service template or the
+   protocol which transmits attributes (for registration or query
+   purposes) must be able to identify the encoding using an external
+   mechanism.  It would make no sense to use an 'internal' designation
+   for marking the character encoding, as the attribute information is
+   itself string encoded.   The Service Location Protocol [SLP] makes
+   the character encoding for each registration, query and query result
+   explicit in the protocol header, for example.
+
+   All attribute information in a single transmission, file, etc. MUST
+   be in the same character encoding.
+
+8.2. Language identification and translation
+
+   The language used in attribute string should be identified using a
+   Language tag as defined by [RFC1766].
+
+   All strings used in attributes (tags and values) are assumed to be
+   able to be translated unless explicitely defined as should be
+   literal, so that best effort translation (see below) will not
+
+
+
+Guttman                                                        [Page 27]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   obfuscate strings which are meant to be interpreted by a program, not
+   a person.
+
+   There are two ways to go about translation:  Standardization and best
+   effort.
+
+   When the service type is standardized, more than one document may be
+   submitted for review.  One service type description is registered for
+   each language.  These descriptions must be kept in sync, so that when
+   a service type template is updated in one language, all the
+   translations are (or eventually are) reflect the same semantics.
+
+   If no document exists describing the standard translation of the
+   service type, a 'best effort' translation for strings may be done.
+
+   A given service: URL may have several sets of attributes associated
+   with it.  Each set may be localized to a particular language.
+   Mechanisms for obtaining service attributes MUST be parameterized to
+   allow selection of language by Language tag.  This way, users may
+   access the same information in their own language.
+
+9. Bibliography
+
+   [ABNF]      D. Crocker, "Augmented BNF for Syntax Specifications:
+               ABNF", Work in progress, November 1996.
+
+   [ASCII]     "Coded Character Set -- 7-bit American Standard code
+               for Information Interchange", ANSI X3.4-1986.
+
+   [CHAR-REG]  IANA Character Set registry, <URL:http://www.isi.edu
+               /in-notes/iana/assignments/character-sets>.
+
+   [FINDING]   R. Moats, M. Hamilton, "Finding Stuff (Providing
+               information to support service discovery)", Work in
+               progress, November 1996.
+
+   [NFSURL]    B. Callaghan, "NFS URL Scheme", Work in progress,
+               October, 1996.
+
+   [RFC2055]   B. Callaghan, "WebNFS Server Specification", RFC 2055.
+               July 1996.
+
+   [RFC2054]   B. Callaghan, "WebNFS Client Specification", RFC 2054.
+               July 1996.
+
+   [RFC1939]   J. Myers, M. Rose, "Post Office Protocol - Version 3",
+               RFC 1939.  May 1996.
+
+
+
+
+Guttman                                                        [Page 28]
+
+Internet Draft          The Service: URL Scheme         20 November 1996
+
+
+   [RFC1759]   R. Smith, F. Wright, T. Hastings, S. Zilles, J.
+               Gyllenskog, "Printer MIB", RFC 1759.  March 1995.
+
+   [RFC1766]   H. Alvestrand, "Tags for the Identification of
+               Languages", RFC 1766.  March 1995.
+
+   [RFC1738]   T. Berners-Lee, L. Masinter & M. McCahill,  "Uni-
+               form Resource Locators (URL)", RFC 1738.  December
+               1994.
+
+   [RFC1734]   J. Myers, "POP3 AUTHentication command", RFC 1734.
+               December 1994.
+
+   [RFC1179]   L. McLaughlin III, "Line Printer Daemon Protocol",
+               RFC 1179.  August 1990.
+
+   [SLP]       J. Veizades, E. Guttman, C. Perkins & S. Kaplan,
+               Service Location Protocol", Work in progress,
+               November 1996.
+
+10. Author's Address
+
+         Erik Guttman
+
+         Sun Microsystems, Inc.
+         Gaisbergstr. 6
+         D-69115 Heidelberg
+         Germany
+
+         Phone: +1 415 336 6697
+         email: Erik.Guttman@eng.sun.com
+
+
+      This memo expires on May 20, 1997
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Guttman                                                        [Page 29]
+

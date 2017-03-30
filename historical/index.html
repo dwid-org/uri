@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<HTML><HEAD>
+<TITLE>URI-WG Historical Documents</TITLE>
+</HEAD><BODY>
+<H1>URI-WG Historical Documents</H1>
+
+<a name="WARNING">The following Expired Drafts may be useful for
+looking back at what has been discussed in the past, but most of the
+technical content has been adopted (and hopefully improved)
+by later RFCs, abandoned in favor of other solutions, or simply
+ignored due to lack of implementations or developer interest.
+Their appearance here does not reflect their technical relevance,
+good or bad; be sure to look at the published RFCs first.</a>
+
+<DL>
+<dt>
+  <b>"Mailserver URL Specification"</b>, Paul E. Hoffman, 07 Jul 1995.
+   <A HREF="draft-ietf-uri-url-mailserver-02.txt">
+   &lt;draft-ietf-uri-url-mailserver-02.txt&gt;</A>
+<dd>
+   A new URL scheme, "mailserver", is defined. It allows mail client
+   software to create RFC822 mail messages from a URL.
+
+<p><dt>
+  <b>"finger URL Specification"</b>, Paul E. Hoffman, 28 Jul 1995.
+   <A HREF="draft-ietf-uri-url-finger-03.txt">
+   &lt;draft-ietf-uri-url-finger-03.txt&gt;</A>
+<dd>
+A new URL scheme, "finger", is defined. It allows client software to 
+request information from finger servers that conform to RFC 1288.          
+
+<p><dt>
+  <b>"Uniform Resource Names, ISO OIDs and DNS"</b>,
+  M. Mealling, P. Faltstrom, L. Daigle, 22 Nov 1995, 
+  <A HREF="draft-mealling-oid-dns-00.txt">
+       &lt;draft-mealling-oid-dns-00.txt&gt;</A>
+<dd>
+This paper describes a "resolution-mechanism"-independent architecture for 
+Uniform Resource Name (URN) usage and name space management.  This 
+non-monolithic architecture allows different components of the name space 
+to be managed by the appropriate level of network authority.  This not only
+integrates well with traditional Internet models, it allows flexibility in 
+choice of implementation of support for each layer of the name space.      
+An implementation for the architecture, using OIDs and DNS-based 
+infrastructure, is outlined.                                               
+
+<p><dt>
+  <b>"A Critique of Existing URN Proposals"</b>,
+  M. Madsen, 22 Aug 1995, 
+  <A HREF="draft-ietf-uri-urn-madsen-critique-00.txt">
+       &lt;draft-ietf-uri-urn-madsen-critique-00.txt&gt;</A>
+<dd>
+This document criticises existing URN (Uniform Resource Name) proposals in 
+the light of generality, extensibility, and general futureproofing.  The 
+idea is to draw upon the best characteristics of the existing proposals so 
+as to converge on an acceptably functional and nonrestrictive draft 
+specification for both URN syntax and resolution schemes.                  
+
+<p><dt>
+  <b>"How Roy would Implement URNs and URCs Today"</b>,
+  R. Fielding, 07 Jul 1995, 
+  <A HREF="draft-ietf-uri-roy-urn-urc-00.txt">
+       &lt;draft-ietf-uri-roy-urn-urc-00.txt&gt;</A>
+<dd>
+   This document describes how the author would implement Uniform
+   Resource Names (URNs) and Uniform Resource Characteristics (URCs),
+   such that the basic concepts and technology can be usable by today's
+   World-Wide Web clients and servers.  It is intended to identify the
+   key ingredients which make the WWW extensible and open to the
+   introduction of URNs and URCs, and thereby steer the implementors
+   of URI technology toward more consistent solutions.
+
+<p><dt>
+  <b>"Issues Concerning URN Assignment and Resolution"</b>,
+  S. Browne, K. Moore, 07 Jul 1995, 
+  <A HREF="draft-ietf-uri-urn-issues-00.txt">
+       &lt;draft-ietf-uri-urn-issues-00.txt&gt;</A>
+<dd>
+     A number of schemes have been proposed over the past year or so for
+assigning and resolving Uniform Resource Names (URNs) and for associating
+meta-information with URNs.  The Uniform Resource Identifier (URI)
+Working Group is currently faced with the task of evaluating these
+schemes.  The schemes all claim to satisfy the functional requirements
+for URNs stated in RFC 1737.  A number of additional issues that will be
+helpful to consider for purposes of evaluation are listed and discussed
+in this draft.  Although this draft is long on questions and short on
+answers, it attempts to distill the issues on which consensus (even if
+it's agreement to disagree) needs to be reached before progress on
+standardization can be made.
+
+<p><dt>
+  <b>"Location-Independent URLs /or/ URNs considered harmful"</b>,
+  K. Moore, 07 Jul 1995, 
+  <A HREF="draft-ietf-uri-urns-harmful-00.txt">
+       &lt;draft-ietf-uri-urns-harmful-00.txt&gt;</A>
+<dd>
+This document describes a means by which location-independent access to
+resources can be provided, without creating a new class of resource
+names.  Instead, a resolution service is proposed for existing URLs,
+which allows information providers to advertise meta-information about a
+resource named by a URL, and/or alternate locations from which that par-
+ticular resource might be accessed.<P>
+ 
+Depending on your point of view, the approach described in this document
+might be taken as one or more of: (a) an alternative solution to the
+"URL problem", (b) a strategy for gradual transition from URLs to URNs,
+or (c) a worst-case scenario in the event that URN adoption takes too long.
+
+<p><dt>
+  <b>"Thoughts on Standardizing URN Resolution Protocols"</b>,
+  K. Sollins, 26 Jun 1995, 
+  <A HREF="draft-ietf-uri-urn-res-thoughts-00.txt">
+       &lt;draft-ietf-uri-urn-res-thoughts-00.txt&gt;</A>
+<dd>
+The problem of standardizing URN resolution needs to be thought through 
+carefully.  If we partition the problem of name resolution, it becomes 
+clearer that the user to resolution service interaction should be 
+standardized.  In contrast, in order to support a variety of models, 
+behaviors, and other policies for name resolution services, we must allow 
+for a multiplicity of such services, each perhaps requiring a different 
+protocol between its servers.  The URI group can still limit its efforts, 
+but should support more than one such service as a proof of concept that 
+multiple service types can be supported.                                   
+
+<p><dt>
+  <STRONG>"The Handle System"</STRONG>,<BR>
+   W. Arms, D. Ely, 20 Aug 1996.
+   <A HREF="draft-ietf-uri-urn-handles-00.txt">
+        &lt;draft-ietf-uri-urn-handles-00.txt&gt;</A>
+<dd>
+The Handle System provides identifiers for digital objects
+and other resources in distributed computer systems.  These
+identifiers are known as handles.  The system ensures that
+handles are unique and that they can be retained over long
+time periods.   Since the system makes no assumptions about
+the characteristics of the items that are identified, handles
+can be used in a wide variety of systems and applications.<P>
+ 
+The handle system has the following components:  naming
+authorities, handle generators, the global handle server,
+local handle servers, caching handle servers, client software
+libraries, proxy servers, and administrative tools.  For
+reasons of performance and availability, the global, local,
+and caching servers are implemented as distributed systems
+comprising many server computers.  All components, except the
+local handle server, have been implemented and are available
+for general use by the research community.<P>
+ 
+The handle system provides all the capabilities listed in RFC
+1737, K. Sollins, L. Masinter, "Functional Requirements for
+Uniform Resource Names", 12/20/1994.
+
+<p><dt>
+  <b>"URN Services"</b>, K. Shafer, E. Miller, V. Tkac, S. Weibel, 29 Jun 1995, 
+  <A HREF="draft-ietf-uri-urn-resolution-01.txt">
+       &lt;draft-ietf-uri-urn-resolution-01.txt&gt;</A>
+<dd>
+This document focuses on the syntax and function of URNs, the nature of 
+registered and unregistered naming authorities, and the relationships of 
+URNs to an open-ended variety of resolution services that might link these 
+objects within the URI architecture.                                       
+
+<p><dt>
+  <b>"The Path URN Specification"</b>,
+  Daniel LaLiberte, Michael Shapiro, 27 Jul 1995, 
+  <A HREF="draft-ietf-uri-urn-path-01.txt">
+       &lt;draft-ietf-uri-urn-path-01.txt&gt;</A>
+<dd>
+A new "path" URN scheme is proposed that defines a uniformly hierarchical 
+name space. This URN scheme supports dynamic relocation and replication of 
+resources. Existing DNS technology is used to resolve a path into sets of 
+equivalent URLs, and then one URL is resolved into the named resource.     
+
+<p><dt>
+  <b>"An SGML-based URC Service"</b>, R. Daniel, T. Allen, 16 Jun 1995, 
+  <A HREF="draft-ietf-uri-urc-sgml-00.txt">
+  &lt;draft-ietf-uri-urc-sgml-00.txt&gt;</A>
+<dd>
+The URI Working Group has been developing an architecture where
+Internet resources are identified using a Uniform Resource Name (URN),
+and retrieved using a Uniform Resource Locator (URL). Mapping URNs to
+URLs is the job of the Uniform Resource Characteristics (URC) service,
+whose requirements were given in [1].  This paper presents one
+possible specification for the URC service.  This spec provides the
+means for the URC service to formally specify new capabilities, while
+retaining the speed that is paramount to the fundamental use of the
+URC service as the means for URN to URL resolution.
+
+<p><dt>
+  <b>"Specification of Uniform Resource Characteristics"</b>, M. Mealling, 
+  12 Apr 1994,
+  <A HREF="draft-ietf-uri-urc-00.txt">&lt;draft-ietf-uri-urc-00.txt&gt;</A>                                  
+<dd>
+    In this paper, the author proposes a set of requirments for a Uniform 
+    Resource Characteristic which is designed to provide a method for 
+    encapsulating meta-information about a given Uniform Resource Name or 
+    Uniform Resource Location.                                             
+
+<p><dt>
+  <b>"Uniform Resource Names"</b>, Mitra, C. Weider, M. Mealling, 28 Nov 1994,
+  <A HREF="draft-ietf-uri-resource-names-03.txt">&lt;draft-ietf-uri-resource-names-03.txt&gt;</A>                                   
+<dd>
+This document defines a syntax for URNs, and operational rules for their 
+assignment and usage. The intent is to provide enough information for 
+implementors of IIIR systems to use these in their work.                   
+
+<p><dt>
+  <b>"URN to URC resolution scenario"</b>, Mitra, 14 Apr 1994,
+  <A HREF="draft-ietf-uri-urn2urc-00.txt">&lt;draft-ietf-uri-urn2urc-00.txt&gt;</A>                                          
+<dd>
+    This document is intended to address the issue of URN to URC resolution
+    at a level between the IIIR Vision document [clw/peterd:1] and the 
+    various standards documents such as the URL specification. [timb]. This
+    document is also intended to act as some pointers for people who might 
+    want to implement URNs in information systems they are building.       
+<p><dt>
+  <b>"Encoding and Use of Uniform Resource Characteristics"</b>, M. Mealling, 
+  06 Jul 1994,
+  <A HREF="draft-ietf-uri-urc-spec-00.txt">&lt;draft-ietf-uri-urc-spec-00.txt&gt;</A>
+<dd>
+    This document describes a Uniform Resource Characteristic, a method for
+    encoding information about a given network resource. This information 
+    is called meta-information since it is not information that is actually
+    found in the resource itself. The design of this Uniform Resource 
+    Characteristic was driven by the set of design requirements as 
+    specified in the "Specification of Uniform Resource Characteristics" 
+    Internet draft [Mealling 94]. The method of encoding is based on the 
+    simple use of attribute/value pairs utilized in several existing 
+    network systems including RFC822 e-mail headers, IAFA templates, and 
+    the draft whois++ system [Deutsch 94]. In addition to the 
+    specification, several examples are provided which illustrate complex 
+    information encoding and actual client/server using whois++ as the 
+    protocol.                                                              
+
+<p><dt>
+  <b>"URN Resolution Overview"</b>,
+   Paul E. Hoffman and Ron Daniel, Jr., 21 Apr 1995, 
+   <A HREF="draft-ietf-uri-urn-res-descript-00.txt">
+   &lt;draft-ietf-uri-urn-res-descript-00.txt&gt;</A>
+<dd>
+This document gives an overview of how Uniform Resource Names (URNs) will
+be resolved. It describes how different URN resolution schemes will fit
+together, the requirements for the multiple URN schemes, expectations for
+URN clients, and other general resolution issues.<P>
+
+This document does not cover any specific resolution schemes, the syntax
+for URNs, or the format of resolution results. It is expected that these
+issues (and other URN-related topics) will be covered in different Internet
+Drafts submitted to the IETF URI Working Group.
+
+<p><dt>
+  <b>"Generic URN Syntax"</b>,
+   Paul E. Hoffman and Ron Daniel, Jr., 21 Apr 1995, 
+   <A HREF="draft-ietf-uri-urn-syntax-00.txt">
+   &lt;draft-ietf-uri-urn-syntax-00.txt&gt;</A>
+<dd>
+This document defines the syntax for Uniform Resource Names (URNs). This
+syntax is basically the same as the URN syntax described in RFC 1630.<P>
+
+This document does not cover any specific resolution schemes or the format
+of resolution results. It is expected that these issues (and other
+URN-related topics) will be covered in different Internet Drafts submitted
+to the IETF URI Working Group.
+
+<p><dt>
+  <b>"x-dns-2 URN Scheme"</b>,
+   Paul E. Hoffman and Ron Daniel, Jr., 21 Apr 1995, 
+   <A HREF="draft-ietf-uri-urn-x-dns-2-00.txt">
+   &lt;draft-ietf-uri-urn-x-dns-2-00.txt&gt;</A>
+<dd>
+This document defines a scheme for resolving Uniform Resource Names (URNs)
+using the domain name system. The scheme, called x-dns-2, allows URN
+publishers to create URN resolvers without central registration, and
+without changing or adding any domain names.
+
+<p><dt>
+  <b>"Trivial URC Syntax: urc0"</b>,
+   Paul E. Hoffman and Ron Daniel, Jr., 21 Apr 1995, 
+   <A HREF="draft-ietf-uri-urc-trivial-00.txt">
+   &lt;draft-ietf-uri-urc-trivial-00.txt&gt;</A>
+<dd>
+This document defines a trivial, machine-parsable Uniform Resource
+Citiation (URC) syntax that can be returned from the resolution of Uniform
+Resource Names (URNs). The syntax, called urc0, is also appropriate for any
+program that can return URCs. More sophisticated URC schemes will be
+developed later. urc0 is intended to be the simplest possible
+machine-parsable representation of a URC.<P>
+
+This document does not cover any specific resolution schemes or the syntax
+for URNs. It is expected that these issues (and other URN-related topics)
+will be covered in different Internet Drafts submitted to the IETF URI
+Working Group.
+
+<p><dt>
+  <b>"URC Scenarios and Requirements"</b>, R. Daniel, M. Mealling, 27 Mar 1995, 
+  <A HREF="draft-ietf-uri-urc-req-01.txt">
+  &lt;draft-ietf-uri-urc-req-01.txt&gt;</A> or
+  <A HREF="http://www.acl.lanl.gov/URI/Scenarios/">multiple formats at LANL</A>
+<dd>
+This draft describes the place of the Uniform Resource Characteristic (URC)
+service within the overall context of Uniform Resource Identification on  
+the Internet.  It presents several scenarios illustrating how the  URC 
+service might be used.  From these  usage scenarios, we derive a set of 
+requirements that any proposed URC services must meet.                     
+
+</DL>
+</BODY></HTML>

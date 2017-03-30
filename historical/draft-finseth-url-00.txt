@@ -1,0 +1,221 @@
+                                                              C. Finseth
+INTERNET-DRAFT                               U.S. Satellite Broadcasting
+                                                              April 1999
+
+
+                          The "eid" URL Scheme
+                        draft-finseth-url-00.txt
+
+This document is an Internet-Draft and is in full conformance with all
+provisions of Section 10 of RFC2026.
+
+Internet-Drafts are working documents of the Internet Engineering Task
+Force (IETF), its areas, and its working groups.  Note that other groups
+may also distribute working documents as Internet-Drafts.
+
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any
+time.  It is inappropriate to use Internet- Drafts as reference material
+or to cite them other than as "work in progress."
+
+The list of current Internet-Drafts can be accessed at
+http://www.ietf.org/ietf/1id-abstracts.txt
+
+The list of Internet-Draft Shadow Directories can be accessed at
+http://www.ietf.org/shadow.html.
+
+This document expires 30 September 1999.
+
+Status of this Memo
+
+   This memo provides information for the Internet community.  This memo
+   does not specify an Internet standard of any kind.  Distribution of
+   this memo is unlimited.
+
+Copyright Notice
+
+   Copyright (C) The Internet Society (1999).  All Rights Reserved.
+
+Abstract
+
+   This document defines a new URL scheme, "eid".  This scheme provides
+   a mechanism by which the local application can reference data that
+   has been obtained by other, non-URL scheme means.  The scheme is
+   intended to provide a general escape mechanism to allow access to
+   information for applications that are too specialized to justify
+   their own schemes.
+
+Description
+
+
+
+Finseth                                                         [Page 1]
+
+INTERNET-DRAFT            The "eid" URL Scheme                April 1999
+
+
+   Some computer systems have more than one mechansim for obtaining
+   data.  The data arrive at different times and use different methods
+   for labelling the information.  The "eid" ("External ID") URL schema
+   provides a mechanism for a URL-aware application to specify the
+   identity of this external data.
+
+   The URLs are of the form:
+
+                             eid:<identifier>
+
+   The characters of the <identifier> must drawn from the standard URL
+   character set.
+
+   The <identifier> is interpreted in the application's environment and
+   is meaningful only in that environment.  It follows that construction
+   of the <identifier> requires knowledge of the application's
+   environment.
+
+   This schema does not specify the mechanism used to acquire the data
+   referenced by the <identifier>.  It assumes that either that data is
+   already available to the application or the <identifier> contains
+   enough information to allow the application to obtain the data.
+
+   In sufficiently rich application environments there may be more than
+   one conceptual address space.  Such environments may wish to use
+   identifiers of the form:
+
+                        <selector>/<sub-identifier>
+
+   although any form is acceptable.
+
+Syntax
+
+      eidurl     := "eid:" identifier
+      identifier := *urlchar
+
+   where "urlchar" is imported from [RFC2396].
+
+Examples
+
+   One use of the eid schema would be to access data stored in
+   application memory.  In this case, the <identifier> could specify a
+   memory address.  For example, if there were three fixed buffers at
+   addresses 0x00001000, 0x00002000, and 0x00003000, they could be
+   accessed by:
+
+      eid:0x00001000
+      eid:0x00002000
+
+
+
+Finseth                                                         [Page 2]
+
+INTERNET-DRAFT            The "eid" URL Scheme                April 1999
+
+
+      eid:0x00003000
+
+   Another example might be an application that reads stock market
+   quotations and stores the current values in a mini-database indexed
+   by the ticker symbol.  For example:
+
+      eid:EK               for Eastman Kodak Company
+      eid:F                for Ford Motor Company
+
+   A third example might be a dialup application where the <identifier>
+   specifies a telephone number, login sequence, and remote command to
+   execute.  It might look like:
+
+      eid:555-1212,sample_user,sample_password,sample_command
+
+Security Considerations
+
+   The very nature of this schema is to provide an escape mechanism and
+   by definition there cannot be a generic implementation of such a
+   mechanism.  Thus, many URL-aware applications will not implement this
+   schema and so have no increased exposure.
+
+   Those applications that do implement this schema will do so in
+   application-specific ways.  Hence, there cannot be an "across-the-
+   board" exposure from this schema.  However, each application that
+   does implement this schema will have to provide its own security.
+
+References
+
+   [RFC2396] Berners-Lee, T., Fielding, R., and L. Masinter,
+             "Uniform Resource Identifiers (URI): Generic Syntax", RFC
+             2396, August 1998.
+
+Author's Address
+
+   Craig A. Finseth
+   U.S. Satellite Broadcasting
+   3415 University Ave
+   St Paul MN 55114
+
+   Phone: +1 651-659-7162
+
+   EMail: craig@finseth.com
+
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (1999).  All Rights Reserved.
+
+
+
+
+Finseth                                                         [Page 3]
+
+INTERNET-DRAFT            The "eid" URL Scheme                April 1999
+
+
+   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implmentation may be prepared, copied, published and
+   distributed, in whole or in part, without restriction of any kind,
+   provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE."
+
+   This document expires 30 September 1999.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Finseth                                                         [Page 4]
+

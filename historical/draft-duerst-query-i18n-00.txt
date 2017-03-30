@@ -1,0 +1,395 @@
+
+
+
+
+
+
+Internet Draft                                               M. Duerst
+<draft-duerst-query-i18n-00.txt>                  University of Zurich
+Expires January 1998                                         July 1997
+
+
+          Handling Internationalized Query Components in URLs
+
+
+Status of this Memo
+
+   This document is an Internet-Draft.  Internet-Drafts are working doc-
+   uments of the Internet Engineering Task Force (IETF), its areas, and
+   its working groups. Note that other groups may also distribute work-
+   ing documents as Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six
+   months. Internet-Drafts may be updated, replaced, or obsoleted by
+   other documents at any time.  It is not appropriate to use Internet-
+   Drafts as reference material or to cite them other than as a "working
+   draft" or "work in progress".
+
+   To learn the current status of any Internet-Draft, please check the
+   1id-abstracts.txt listing contained in the Internet-Drafts Shadow
+   Directories on ds.internic.net (US East Coast), nic.nordu.net
+   (Europe), ftp.isi.edu (US West Coast), or munnari.oz.au (Pacific
+   Rim).
+
+   Distribution of this document is unlimited.  Please send comments to
+   the author at <mduerst@ifi.unizh.ch> or to the uri mailing list at
+   uri@bunyip.com. This document is currently a pre-draft, for
+   restricted discussion only. It is intended to become part of a suite
+   of documents related to the internationalization of URLs.
+
+
+Abstract
+
+   HTTP and HTML provide the facility to query the user and return the
+   results. This is usually done in the query component of an URL. This
+   mechanisms works with full satisfaction for characters of the us-
+   ascii repertoire. Due to the lack of an agreed encoding for other
+   characters, the situation is much less satisfactory for characters
+   outside the us-ascii repertoire.
+
+   This document makes two contributions to the problem: (1) It
+   describes an application convention mostly already respected, and
+   sufficient in many cases. (2) It introduces an addition to HTTP to
+   ease the transition to a general internationalized URL architecture.
+
+
+
+
+                       Expires End of January 1998      [Page 1]
+
+Internet Draft     Internationalized Query Components          July 1997
+
+
+Table of contents
+
+   1. Introduction ................................................... 2
+     1.1 General ......................................................2
+     1.2 Terms ........................................................3
+   2. A Simple Application Convention for Browsers ....................3
+   4. Upgrading of Query Component to UTF-8 ...........................4
+     3.1 The Query-UTF-8 Request/Response-Header Field ................4
+     3.2 Rationale ....................................................5
+   Bibliography .......................................................6
+   Author's Address ...................................................7
+
+
+
+1. Introduction
+
+
+1.1 General
+
+
+   HTTP (HyperText Transfer Protocol [HTTP1.1]) and HTML (HyperText
+   Markup Language [HTML4.0]) provide the facility to query the user
+   (with a FORM in HTML) and return the results to the server. There are
+   various ways to return the result (see in particular [Fileupload]),
+   but the one most widely used is to encode the result in the query
+   component of an URL [RFC1738, URLsyntax].  This mechanisms work with
+   full satisfaction for characters of the us-ascii repertoire. Due to
+   the lack of an agreed encoding for other characters, the situation is
+   much less satisfactory for characters outside the us-ascii reper-
+   toire.
+
+   Ideally, the problem would be solved by agreeing on a single charac-
+   ter encoding for all query parts or all URLs. The outstanding candi-
+   date for this is UTF-8 [RFC2044].  UTF-8 is already the preferred
+   encoding for new URL schemes [URLprocess], the only encoding for a
+   recently defined URL scheme [IMAPURL], the encoding on the wire for
+   beyond-ASCII FTP filenames [FTPINT] (thus making it the encoding for
+   the ftp: URL scheme) and the encoding suggested for the Internet in
+   general [RFC2130].  UTF-8 has various important properties, in par-
+   ticular that it is completely compatible with US-ASCII and is easily
+   detectable by simple heuristics.
+
+   Moving to UTF-8 for URLs is most difficult for the query component.
+   This is due to the fact that for the other components, in particular
+   for the path component, the namespace is very sparse and well known
+   to the server, while it is dense and not well known in the case of
+   the query part.  To increase the reliability of transmitting query
+   information, this document describes an existing convention and
+
+
+
+                       Expires End of January 1998      [Page 2]
+
+Internet Draft     Internationalized Query Components          July 1997
+
+
+   proposes some new protocol element for HTTP.
+
+
+
+1.2 Terms
+
+   This section contains definitions and explanations for some terms
+   that may otherwise not be clear.
+
+
+   -  Accept-Charset attribute: An HTML attribute, proposed in [RFC2070]
+      and taken up in HTML 4.0 [HTML4.0]. Please note that this is not
+      the same as the Accept-Charset request-header field in HTTP.
+      Please also note that the Accept-Charset attribute is on INPUT and
+      TEXTAREA in RFC 2070, but on FORM in HTML 4.0. The HTML 4.0 syntax
+      is preferred, and assumed in this document.
+
+   -  CGI Script: In the context of this document, a placeholder for any
+      kind of functional component used to process a response to a
+      query.
+
+   -  Character Encoding: A mapping from an octet sequence to a sequence
+      of characters. Misleadingly called "character set" in some IETF
+      documents [RFC2045]. Denoted by the value of the "charset" pra-
+      mater, with values from the corresponding IANA registry [IANA].
+
+   -  Transcoding Server/Proxy: A HTTP Server or Proxy which transcodes
+      the documents it serves, to respond to an "Accept-Charset" HTTP
+      request header field.
+
+   -  Transcoding: The act of changing the character encoding of a docu-
+      ment, while not changing it otherwise (the length of the document
+      may be affected).
+
+
+
+2. A Simple Application Convention for Browsers
+
+   This section spells out an application convention that is in use in
+   most current and older browsers, although it is not followed, or not
+   completely followded, by all browsers, and that can be implemented
+   easily.
+
+   The convention is that a user agent should send back the results of a
+   query in exactly the same character encoding as the character encod-
+   ing of the document that contained the FORM, as received by the user
+   agent.
+
+
+
+
+                       Expires End of January 1998      [Page 3]
+
+Internet Draft     Internationalized Query Components          July 1997
+
+
+   The advantage of this application convention is that it works nicely
+   for documents and CGI scripts that are assuming a single character
+   encoding. In the plain case, neither the server nor the CGI script
+   have to do any special processing such as trying to detect the char-
+   acter encoding of the query component or transcode the query compo-
+   nent.
+
+   This application convention fails if the document has been transcoded
+   by a transcoding proxy. The query compontent is sent back in the
+   character encoding requested by the user agent, which is the target
+   character encoding of the transcoding undergone at the proxy. The
+   query component sent back to the server, however, must not be changed
+   by the proxy (see [HTTP1.1]).
+
+
+3. Upgrading of Query Component to UTF-8
+
+   For those parts of an URL that originate at the server, in particular
+   for the path component, the introduction of UTF-8 [RFC2044] as the
+   encoding of choice can be made on a per-server or per-resource base.
+   Because the name space of the path component is usually very sparsely
+   populated, it is even possible to accept URLs with path components in
+   different character encodings for the same resource.
+
+   The query component of an URL, however, is in most cases generated
+   independently in the user agent, and the namespace can be very
+   densely populated. To upgrade it to UTF-8 therefore requires addi-
+   tional provisions.
+
+   Here, we propose to add a single header field to HTTP.  The header
+   field is used both as a request header field and as a response header
+   field.
+
+
+3.1 The Query-UTF-8 Request/Response-Header Field
+
+   The syntax of the QUERY-UTF-8 request/response-header field is
+   defined as follows:
+
+        query-utf-8    = "Query-UTF-8" ":" ( "Yes" | "No" )
+
+   Both "Yes" and "No" above are case insensitive. I.e. "Yes" as well as
+   "yes" or "yES", and so on, are acceptable.
+
+   As a response-header field (sent from the server to the client), the
+   field indicates whether the user agent can send back the query compo-
+   nent encoded as UTF-8 or not.  If the value is "Yes", and the scheme
+   component and site component of the URL of the document containing
+
+
+
+                       Expires End of January 1998      [Page 4]
+
+Internet Draft     Internationalized Query Components          July 1997
+
+
+   the FORM and the URL given for query submission are identical, the
+   query component SHOULD be sent back encoded as UTF-8.  If the value
+   is "No", and the FORM does not have an Accept-charset attribute that
+   contains the "charset" parameter value "UTF-8", then the query compo-
+   nent MUST be sent back according to the application convention
+   described in Section 3, or in some other way by older browsers.
+
+   As a request-header field (sent from the client to the server; the
+   term request-header field is somewhat misleading here), the field
+   indicates whether the query component is encoded as UTF-8. A Query-
+   UTF-8 request-header field MUST be sent back when the following con-
+   ditions are all met:
+
+   -  The URL sent back contains a query compontent
+
+   -  The document containing the FORM is received with a Query-UTF-8
+      response-header field with value "Yes" or the Accept-Charset
+      attribute of the FORM contains the charset parameter value of
+      "UTF-8".
+
+   -  The client recognizes the corresponding syntax.  (The intention of
+      the last sentence is to be able to phase out Query-UTF-8 after a
+      transitory period.)
+
+
+
+3.2 Rationale
+
+   The availability of both the Accept-charset attribute on FORM and the
+   Query-UTF-8 response-header field may seem unnecessary. The rationale
+   for this is to allow two modes of operation, called server-driven and
+   script-driven.
+
+   In script-driven mode, the CGI script handles character encoding
+   negotiation and identification. Typically, the author of a FORM docu-
+   ment and the corresponding CGI script will use the Accept-charset
+   attribute on FORM with the value "UTF-8" to tell the client to send
+   back data in UTF-8. It will then check for the presence and value of
+   the Query-UTF-8 request-header field in the response from the client,
+   and make conversions if necessary.
+
+   In server-driven mode, the character encoding that a CGI scripts
+   expects to receive is registered with the server in a similar way as
+   the character encodings of documents (including those generated by
+   CGI scripts) are registered.  A server offering such a functionality
+   adds the Query-UTF-8 response-header field with value "Yes" to outgo-
+   ing documents containing FORMs, and converts from UTF-8 back to the
+   encoding the CGI script is expecting when a query arrives with
+
+
+
+                       Expires End of January 1998      [Page 5]
+
+Internet Draft     Internationalized Query Components          July 1997
+
+
+   "Query-UTF-8: Yes".
+
+   The distinction between script-driven and server-driven mode is not
+   made based on whether Query-UTF-8 or the Accept-Charset attribute are
+   used. Both features are provided because it is easier for a document
+   author to use Accept-Charset, and easier for a server to add Query-
+   UTF-8. Also, because a server does not know about the facilities
+   available on other servers, "Query-UTF-8: Yes" sent from the server
+   to the client is only valid if the query result is sent back to the
+   same server.  For query results sent to other servers, the Accept-
+   Charset attribute must be used.
+
+
+Acknowledgements
+
+   I am grateful in particular to the following persons for their help
+   and/or criticism: Roy Fielding, Eric van der Poel, Francois Yergeau,
+   Gavin Nicol, Frank Tang, Larry Masenter, and Tim Greenwood.
+
+
+
+
+Bibliography
+
+   [Fileupload]   E. Nebel and L. Masinter, "Form-based File Upload in
+                  HTML", draft-ietf-html-fileupload-03.txt, August 1995.
+
+   [FTPINT]       B. Curtin, "Internationalization of the File Transfer
+                  Protocol", draft-ietf-ftpext-intl-ftp-02.txt, June
+                  1997.
+
+   [HTTP1.1]      R. Fielding, J. Gettys, J. Mogul, H. Frystyk, and T.
+                  Berners-Lee, "Hypertext Transfer Protocol --
+                  HTTP/1.1", RFC 2068, January 1997.
+
+   [HTML4.0]      D. Raggett, A. Le Hors, and I. Jacobs, "HTML 4.0 Spec-
+                  ification", http://www.w3.org/TR/WD-html40/, July
+                  1997.
+
+   [IMAPURL]      Ch. Newman, "IMAP URL Scheme", draft-newman-url-
+                  imap-10.txt, July 1997.
+
+   [RFC1738]      T. Berners-Lee, L. Masinter, and M. McCahill, "Uniform
+                  Resource Locators (URL)", CERN, Dec. 1994.
+
+   [RFC2044]      F. Yergeau, "UTF-8, A Transformation Format of Unicode
+                  and ISO 10646", Alis Technologies, October 1996.
+
+
+
+
+                       Expires End of January 1998      [Page 6]
+
+Internet Draft     Internationalized Query Components          July 1997
+
+
+   [RFC2045]      N. Freed, N. Borenstein, "Multipurpose Internet Mail
+                  Extensions (MIME) Part One: Format of Internet Message
+                  Bodies", November 1996.
+
+   [RFC2070]      F. Yergeau, G. Nicol, G. Adams, and M. Duerst, "Inter-
+                  nationalization of the Hypertext Markup Language", RFC
+                  2070, January 1997 (Note: This RFC is currently being
+                  updated to reference Unicode 2.0 and ISO 10646 includ-
+                  ing AM-5. The new definition of UTF-8 should be used).
+
+   [RFC2130]      C. Weider C. Preston, K. Simonsen, H. Alvestrand, R.
+                  Atkinson, M. Crispin, P. Svanberg, "The Report of the
+                  IAB Character Set Workshop held 29 February - 1 March,
+                  1996", April 1997.
+
+   [URLprocess]   L. Masinter, D. Zigmond and H. Alvestrand, "Guidelines
+                  and Process for new URL Schemes", draft-masinter-url-
+                  process-01.txt, March 1997.
+
+   [URLsyntax]    T. Berners-Lee, R. Fielding, L. Masinter, "Uniform
+                  Resource Locators (URL): Generic Syntax and Seman-
+                  tics", draft-fielding-url-syntax-05.txt, May 1997.
+
+
+
+Author's Address
+
+   Martin J. Duerst
+   Multimedia-Laboratory
+   Department of Computer Science
+   University of Zurich
+   Winterthurerstrasse 190
+   CH-8057 Zurich
+   Switzerland
+
+   Tel: +41 1 257 43 16
+   Fax: +41 1 363 00 35
+   E-mail: mduerst@ifi.unizh.ch
+
+
+     NOTE -- Please write the author's name with u-Umlaut wherever
+     possible, e.g. in HTML as D&uuml;rst.
+
+
+
+
+
+
+
+
+
+                       Expires End of January 1998      [Page 7]
+

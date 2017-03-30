@@ -1,0 +1,456 @@
+Uniform Resource Identifiers Working Group                  R. Fielding
+INTERNET-DRAFT                                                UC Irvine
+Expires January 7, 1996                                    July 7, 1995
+
+
+              How Roy would Implement URNs and URCs Today
+                  <draft-ietf-uri-roy-urn-urc-00.txt>
+
+
+Status of this Memo
+
+   This document is an Internet-Draft.  Internet-Drafts are working
+   documents of the Internet Engineering Task Force (IETF), its areas,
+   and its working groups.  Note that other groups may also distribute
+   working documents as Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six
+   months and may be updated, replaced, or obsoleted by other
+   documents at any time.  It is inappropriate to use Internet-
+   Drafts as reference material or to cite them other than as
+   ``work in progress.''
+
+   To learn the current status of any Internet-Draft, please check
+   the ``1id-abstracts.txt'' listing contained in the Internet-
+   Drafts Shadow Directories on ftp.is.co.za (Africa),
+   nic.nordu.net (Europe), munnari.oz.au (Pacific Rim),
+   ds.internic.net (US East Coast), or ftp.isi.edu (US West Coast).
+
+   Distribution of this document is unlimited.  Please send comments
+   to the author, Roy T. Fielding <fielding@ics.uci.edu>, or to the
+   URI working group (URI-WG) of the Internet Engineering Task Force
+   (IETF) at <uri@bunyip.com>. Discussions of the group are archived at
+   <URL:http://www.acl.lanl.gov/URI/archive/uri-archive.index.html>.
+
+   This document has no formal status and should not be considered as
+   anything more than the opinions of the author.  Although it is
+   hoped that someone will eventually implement these ideas, they are
+   nonetheless only ideas and are not intended as a standards track
+   document [which is why I have chosen such a strange title].
+
+
+Abstract
+
+   This document describes how the author would implement Uniform
+   Resource Names (URNs) and Uniform Resource Characteristics (URCs),
+   such that the basic concepts and technology can be usable by today's
+   World-Wide Web clients and servers.  It is intended to identify the
+   key ingredients which make the WWW extensible and open to the
+   introduction of URNs and URCs, and thereby steer the implementors
+   of URI technology toward more consistent solutions.
+
+1.  Introduction
+
+   The URI working group has been discussing the topic of Uniform
+   Resource Names (URNs) for over three years.  Although the intentions
+   of those participating in the WG have always been good, and usually
+   constructive, the WG has failed to attain any consensus on how
+   a URN service can be implemented such that it satisfies everyone's
+   needs.  
+
+   It is my opinion that this search for the "Holy Grail" of URNs is
+   both misguided and unnecessary.  It is neither possible nor
+   appropriate for us to define a single URN service.  Instead, the WG
+   should focus on the interfaces between clients, servers, and name
+   services, such that any reasonable form of naming service can be
+   introduced when they are available, and according to the needs of the
+   end users and content providers rather than those of the WG members.
+
+   The World-Wide Web already contains an architecture capable of
+   supporting the client and server interfaces necessary for URN
+   addressing, though these interfaces have rarely been defined as such.
+   This document is intended to remedy that situation.  Furthermore,
+   it will attempt to identify how several URN services can be defined
+   and implemented today.  Although these solutions will not solve
+   everyone's problems (including such issues as replication and
+   authentication of centralized name services), they do provide a
+   significant step forward and supply the infrastructure required by
+   all URN services.
+
+   This document assumes that the reader has knowledge of the basic
+   syntax of WWW Universal Resource Identifiers [1] and Uniform Resource
+   Locators (URLs) [2].
+
+2.  URI Syntax
+
+   The World-Wide Web architecture assumes that resource addresses are
+   identifiable by their scheme name.  This applies to all URIs, not
+   just to what are commonly considered URLs today.  A URI in absolute
+   form consists of
+
+      <scheme>:<scheme-specific-part>#<fragment>
+
+   where <scheme> contains only US-ASCII lowercase letters, digits, "+",
+   "-", or ".".
+
+   The scheme name identifies the handler routine which would be used
+   to resolve the address.  Note that it does not necessarily define
+   the protocol to be used, although people commonly make that
+   assumption after seeing that the most common scheme names are
+   associated with preexisting Internet application protocols.
+
+   The scheme handler routine may exist internal to the client
+   application (either hardcoded or within a modular library
+   architecture such as that found in libwww or libwww-perl),
+   or may be redirected to a proxy application via environment variables
+   or other user-configurable devices.  This ability to extend the
+   addressing schemes of clients is one of the key features of WWW
+   technology.
+
+   In order to be successfully implemented within the current base of
+   WWW technology, the URN syntax must correspond to the basic URI
+   syntax as described above.  That is, it must start with a scheme name
+   which identifies an appropriate resolver for that address (or allows
+   the client to identify that it has no resolver for that address).
+
+3.  Media Types
+
+   After an address is resolved and a retrieval action has been
+   accomplished through the appropriate scheme handler, a World-Wide Web
+   client will choose a second handler routine for the retrieved
+   document.  The document handler is chosen according to that
+   document's Internet media type [5].  The media type is either
+   assigned by the transfer protocol or guessed by the client.
+
+   The document handler routine may exist internal to the client
+   application, or may be redirected to an external application via the
+   MIME mailcap facility.  Although most handler routines are simply
+   viewers for the document content, others exist that control internal
+   events or prompt the user for additional input.  This ability to
+   extend the behavior of clients is another one of the key features of
+   WWW technology.
+
+4.  URCs are Documents
+
+   The notion of Uniform Resource Characteristics (URCs) has been one
+   of the central issues in the debate about URN services.  Simply put,
+   a URC is a set of characteristics regarding a named resource, in a
+   format that can be easily parsed, which identifies a set of locations
+   from which the named resource may be obtained.  The URC can then be
+   used as the intermediate step between resolving a URN address and
+   determining the most appropriate location (from the perspective of
+   the client configuration) from which to retrieve the resource.
+
+   Proposals for the format of a URC have ranged from a simple list of
+   URLs to a hierarchical query language.  In all cases, however, a URC
+   can be considered a document, and therefore should be assigned an
+   appropriate media type.  Furthermore, since it is impossible for any
+   one group to define a single, all-encompassing format for URCs which
+   will satisfy the needs of all archivists and content providers, it
+   will be necessary to define a range of media types.
+
+   Note that this view of URCs already fits well with the WWW
+   architecture.  If a URC is labelled as such, a WWW client can perform
+   location redirection as part of the document handler routine.
+   In other words, we can have URN -> URC -> URL indirection working
+   with only minor changes to existing clients.
+
+   Unfortunately, that's still not good enough.  Current browsing clients
+   will default to "application/octet-stream" if they do not have a
+   handler routine installed for the indicated media type (usually
+   resulting in a prompt to save the document as a local file).  In
+   practice, this has been a barrier to the wholesale introduction of
+   new media types.  We need an implementation of URCs that will work
+   with all existing clients, because without that assurance, content
+   providers will be unwilling to use URCs as an intermediate step.
+
+   The solution is to start with an intermediate form of URC which
+   is a fixed variant of an already-universal media type: text/html.
+   This is outlined below in Section 6.
+
+5.  URI Resolution Architecture
+
+   But wait, there's more!
+
+   If a URC is identifiable as a document, then any document retrieval
+   action may result in an indirection.  Therefore, we are no longer
+   talking about just URN resolution via URCs, but also URL redirection
+   via URCs (i.e., redirection of a single URL to multiple variants),
+   URN resolution to a single URL (i.e., minimal URCs), and URN
+   resolution directly to the named resource.  As far as the client is
+   concerned, it is just using a URI to retrieve a resource.  All of the
+   details of the resolution mechanism remain internal to the scheme
+   handler and the URN service provider, thereby removing the need for
+   the IETF to attempt to standardize any particular scheme, or any
+   particular URN service.
+
+6.  Graceful Introduction of URNs and URCs
+
+   Well, its not all just a bed of roses -- there are plenty of thorns
+   that need to be smoothed out in order to promulgate widespread
+   implementations of URNs and URCs over the existing WWW.  The
+   following sections outline the steps I would take.
+
+6.1.  The ietf URI scheme
+
+   The first thing we need is a simple, but worthwhile, mechanism for
+   testing these ideas.  I suggest that we should define a new URI
+   scheme called "ietf" -- it's purpose would be to provide a single
+   identifier for the replicated archives of the Internet Engineering
+   Taskforce.  The format for this identifier is simply:
+
+      "ietf" ":" <existing-ietf-path>
+
+   For example, the identifier of RFC 1808 would become
+
+      ietf:/rfc/rfc1808.txt
+
+   and the one for this draft would be
+
+      ietf:/internet-drafts/draft-ietf-uri-roy-urn-urc-00.txt
+
+   The implementation of the scheme handler is a fairly straightforward
+   address replacement table and associated logic.  For example, the
+   following could act as the configuration for my local client:
+
+      PREFIX       REPLACEMENT                            AUTHORITATIVE?
+      ietf:        file:/home/fielding/ietf                     No
+      ietf:/rfc/   ftp://ftp.ics.uci.edu/pub/ietf/rfc/          No
+      ietf:/rfc/   http://info.internet.isi.edu/in-notes/rfc/   No
+      ietf:        http://ds.internic.net                       Yes
+      ietf:        ftp://ds.internic.net                        Yes
+
+   The retrieval logic behind this table is also simple: try each of the
+   matching URI addresses (replacing the matching prefix with the
+   replacement string) until a good response is received, or until a
+   "not found" response is received from an authoritative location.
+
+   Note that the first location points to my own personal archive -- the
+   place where I keep a copy of most of the specs I have referenced in
+   my past work (or anticipate referencing in the near future). 
+   Clearly, I want to retrieve my local copy if I have one available.
+   The second address is also a local copy, but consisting of only RFCs
+   and maintained by others at UC Irvine working on Internet Mail and
+   network management issues.  The ISI archive is also fairly close to
+   my (network and physical) location, but uses a slightly different
+   path and tends to be 1-2 days out-of-sync with the main IETF
+   archives, which are represented as the final two locations.
+
+   There are a couple of interesting features of this example which have
+   rarely been considered during past discussion of URN issues.  The
+   first is that the table is particular to my own client setup.  There
+   is no way for a centralized name service to know these details.
+   The second is that the table format could be generic to any URI which
+   can be resolved directly via some other URL (such as, for instance,
+   via the URL of a URN name service).  Finally, note that the actual
+   protocol used to resolve the name is defined by the replacement URL,
+   and not by any decision of the WG.
+
+6.2.  The ietf URCs
+
+   The above example did not assume any changes to the existing IETF
+   archive namespace.  However, we could get considerably more value
+   out of this scheme if partial name matching resulted in a URC.
+   For example, if the following name
+
+      ietf:/internet-drafts/draft-ietf-uri-roy-urn-urc
+
+   (note the missing "-00.txt") corresponded to a URC pointing to all
+   of the currently available format variants of this draft, then I
+   could avoid having to change references every time a new version is
+   placed in the archives.  Similarly,
+
+      ietf:/internet-drafts/draft-ietf-uri
+
+   could point to a summary of all current drafts by the URI-WG, and
+
+      ietf:/rfc/rfc1521
+
+   could point to all format variants of RFC 1521.
+
+6.3. The urc major media type
+
+   If URCs are to be given media types, we need to register them.  MIME
+   provides four major types: text, application, multipart, message,
+   image, audio, and video [4].  However, it is clear that URCs do
+   not fit within any one of these categories, and that subtypes of URC
+   are desirable.  Therefore, I suggest that we define a new major media
+   type called "urc".
+
+   RFC 1590 [5] states that "If a new fundamental top-level type is
+   needed, its specification must be published as an RFC or submitted in
+   a form suitable to become an RFC, and be subject to the Internet
+   standards process."  We'll just put that on the to-do list.
+
+6.4. The urc/html media type
+
+   The first URC format that must be defined is one which will not
+   adversely affect current WWW clients.  Therefore, we need to define
+   a variant of HTML which will look like a menu on existing browsers,
+   and yet be machine recognizable as a URC by new browsers.  We can
+   do this by using a fixed format and require a specific SGML DOCTYPE
+   declaration to appear as the first line of the URC document.
+   For starters, here is what one may look like:
+
+      <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML URC//EN">
+      <HTML><HEAD>
+      <TITLE>Available resources for ietf:/rfc/rfc1521</TITLE>
+      </HEAD><BODY>
+      <H1>ietf:/rfc/rfc1521</H1>
+      <DL COMPACT>
+      <DT>Title:
+      <DD>MIME (Multipurpose Internet Mail Extensions)
+          Part One: Mechanisms for Specifying and Describing the
+          Format of Internet Message Bodies
+      <DT>Author:
+      <DD>N. Borenstein
+      <DD>N. Freed
+      <DT>Date:
+      <DD>September 1993
+      <DT>Obsoletes:
+      <DD><A rel="obsoletes" href="ietf:/rfc/rfc1341">RFC 1341</A>
+      <DT>Updated-by:
+      <DD><A rev="updates" href="ietf:/rfc/rfc1590">RFC 1590</A>
+      </DL>
+      <MENU vary="location">
+      <LI>ftp.is.co.za (Africa)
+         <MENU vary="type">
+         <LI><A href="ftp://ftp.is.co.za/rfc/rfc1521.txt.gz">
+             gzip(text/plain), 20000 bytes</a>
+         <LI><A href="ftp://ftp.is.co.za/rfc/rfc1521.ps.gz">
+             gzip(application/postscript), 40000 bytes</A>
+         </MENU>
+      <LI>nic.nordu.net (Europe)
+         <MENU vary="type">
+         <LI><A href="ftp://nic.nordu.net/rfc/rfc1521.txt">
+             text/plain, 187424 bytes</a>
+         <LI><A href="ftp://nic.nordu.net/rfc/rfc1521.ps">
+             application/postscript, 393670 bytes</A>
+         </MENU>
+      <LI>munnari.oz.au (Pacific Rim)
+         <MENU vary="type">
+         <LI><A href="ftp://munnari.oz.au/rfc/rfc1521.txt">
+             text/plain, 187424 bytes</a>
+         <LI><A href="ftp://munnari.oz.au/rfc/rfc1521.ps">
+             application/postscript, 393670 bytes</A>
+         </MENU>
+      <LI>ds.internic.net (US East Coast)
+         <MENU vary="type">
+         <LI><A href="http://ds.internic.net/rfc/rfc1521.txt">
+             text/plain, 187424 bytes</a>
+         <LI><A href="http://ds.internic.net/rfc/rfc1521.ps">
+             application/postscript, 393670 bytes</A>
+         <LI><A href="ftp://ds.internic.net/rfc/rfc1521.txt">
+             text/plain, 187424 bytes</a>
+         <LI><A href="ftp://ds.internic.net/rfc/rfc1521.ps">
+             application/postscript, 393670 bytes</A>
+         </MENU>
+      <LI>ftp.isi.edu (US West Coast)
+         <MENU vary="type">
+         <LI><A href="ftp://ftp.isi.edu/rfc/rfc1521.txt">
+             text/plain, 187424 bytes</a>
+         <LI><A href="ftp://ftp.isi.edu/rfc/rfc1521.ps">
+             application/postscript, 393670 bytes</A>
+         </MENU>
+      </MENU>
+      </BODY></HTML>
+
+   This is only an example -- a complete definition (including BNF)
+   would be necessary for the format to be usable for automated
+   indirection.
+
+7.  Unfinished Business
+
+   I do not pretend to think that the suggestions identified by this
+   document will completely solve the URN problem.  However, I am
+   certain that they will eventually be necessary in order to
+   successfully implement any URN scheme on the World-Wide Web.
+   Some of the outstanding problems are identified below, though
+   there are probably more.
+
+7.1.  Changes to HTML to support URNs
+
+   The HTML 2.0 specification [3] already defines an attribute of
+   anchors and link elements for containing a URN.  However, no general
+   client supports it, and its not what we really want anyway.  What we
+   need is a way to assign multiple URIs to a single hypertext anchor.
+   Fortunately, we don't need this right away, so it can be deferred
+   to the HTML WG for consideration later.
+
+7.2.  Name Persistence
+
+   One of the "requirements" identified for URNs is that they be
+   unique for all time (or at least a reasonable time such as to
+   make name collision impossible).  This document completely
+   ignores that issue, as I think should any real implementation
+   of URNs.  Name persistence is not something that technology can
+   guarantee, other than by the undesirable mechanism of assigning
+   a new name based on the location and time of creation.  It is
+   quite possible that some URN schemes will have such persistence,
+   but it will be attained through the institutions responsible
+   for assigning the names and maintaining the resolution services,
+   not by constraining the syntax of names.
+
+7.3.  Sub-second Resolution
+
+   No constraints on resolution times are proposed, because they
+   are simply unnecessary.  Nobody can determine the resolution time
+   for any particular user at any particular network (or, egads,
+   non-networked) site.  People will use the quickest (or cheapest)
+   resolution available to them -- we do not need to define it in
+   advance, nor should we.
+   
+7.3.  Security Considerations
+
+   No security considerations have been identified by this document.
+   This will require future work.
+
+8.  Acknowledgements
+
+   This paper is the result of over a year of thinking and only two
+   days of writing, so I have left some things out and have probably
+   failed to properly acknowledge all those who deserve to be.
+   Tim Berners-Lee is primarily responsible for the extensible
+   architecture of the World-Wide Web.  I have discussed the issues
+   involved in URI indirection, and URCs as media types, with
+   Daniel LaLiberte several times, but he is not to blame for this
+   treatise.  Larry Masinter has pointed out several times that the
+   WG is unable to "create" the institutions needed for true
+   persistence.
+   
+
+9.  References
+
+   [1] T. Berners-Lee, "Universal Resource Identifiers in WWW:
+       A Unifying Syntax for the Expression of Names and Addresses of
+       Objects on the Network as used in the World-Wide Web", RFC 1630,
+       CERN, June 1994.
+
+   [2] T. Berners-Lee, L. Masinter, and M. McCahill, Editors,
+       "Uniform Resource Locators (URL)", RFC 1738, CERN, 
+       Xerox Corporation, University of Minnesota, December 1994. 
+
+   [3] T. Berners-Lee and D. Connolly, "HyperText Markup Language
+       Specification -- 2.0", Work in Progress, MIT/W3C,
+       June 1995.  <URL:http://www.ics.uci.edu/pub/ietf/html/>
+
+   [4] N. Borenstein and N. Freed, "MIME (Multipurpose Internet Mail
+       Extensions): Mechanisms for Specifying and Describing the Format
+       of Internet Message Bodies", RFC 1521, Bellcore, Innosoft,
+       September 1993.
+
+   [5] J. Postel, "Media Type Registration Procedure", RFC 1590,
+       USC/ISI, March 1994.
+
+10.  Author's Address
+
+   Roy T. Fielding
+   Department of Information and Computer Science
+   University of California
+   Irvine, CA  92717-3425
+   U.S.A.
+
+   Tel: +1 (714) 824-4049
+   Fax: +1 (714) 824-4056
+   Email: fielding@ics.uci.edu
+
