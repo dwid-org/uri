@@ -25,7 +25,15 @@ for discussion of URI-related drafts by individual authors.
 * [Compare Internet Draft and Editor's copy](https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-fielding-uri-href&url2=https://dwid-org.github.io/uri/href-2017/draft-fielding-uri-href.txt)
 * [Draft History](https://datatracker.ietf.org/doc/draft-fielding-uri-href/)
 * [Source Repo](https://github.com/dwid-org/uri/tree/master/href-2017)
-* [URI syntax parsing tests](https://dwid-org.github.io/uri/test/index.html)
+
+### Testing Implementations
+
+* Old URI parsing tests
+** [rel_examples1.html](https://dwid-org.github.io/uri/test/rel_examples1.html)
+** [rel_examples2.html](https://dwid-org.github.io/uri/test/rel_examples2.html)
+** [rel_examples3.html](https://dwid-org.github.io/uri/test/rel_examples3.html)
+** [rel_examples4.html](https://dwid-org.github.io/uri/test/rel_examples4.html)
+** [rel_examples5.html](https://dwid-org.github.io/uri/test/rel_examples5.html)
 
 ### Building the Draft
 
@@ -55,6 +63,7 @@ since those won't be accepted.
 * [Draft History](https://datatracker.ietf.org/doc/rfc3986/)
 * [Source Repo](https://github.com/dwid-org/uri/tree/master/rev-2002)
 * [Example 3986 relative parser](https://dwid-org.github.io/uri/rev-2002/uri_test.pl) with [input](https://dwid-org.github.io/uri/rev-2002/example_uri_refs.txt) and [output](https://dwid-org.github.io/uri/rev-2002/example_uri_refs.out)
+* [Implementation Reports](https://dwid-org.github.io/uri/test/implementation_rfc3986.html) \[[xml](https://dwid-org.github.io/uri/test/implementation_rfc3986.xml)\]
 
 ### Uniform Resource Identifiers (URI): Generic Syntax
 
