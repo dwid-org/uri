@@ -28,12 +28,12 @@ for discussion of URI-related drafts by individual authors.
 
 ### Testing Implementations
 
-* Old URI parsing tests
-  * [rel_examples1.html](https://dwid-org.github.io/uri/test/rel_examples1.html)
-  * [rel_examples2.html](https://dwid-org.github.io/uri/test/rel_examples2.html)
-  * [rel_examples3.html](https://dwid-org.github.io/uri/test/rel_examples3.html)
-  * [rel_examples4.html](https://dwid-org.github.io/uri/test/rel_examples4.html)
-  * [rel_examples5.html](https://dwid-org.github.io/uri/test/rel_examples5.html)
+* Old URI parsing test pages:
+  [1](https://dwid-org.github.io/uri/test/rel_examples1.html)
+  [2](https://dwid-org.github.io/uri/test/rel_examples2.html)
+  [3](https://dwid-org.github.io/uri/test/rel_examples3.html)
+  [4](https://dwid-org.github.io/uri/test/rel_examples4.html)
+  [5](https://dwid-org.github.io/uri/test/rel_examples5.html)
 
 ### Building the Draft
 
