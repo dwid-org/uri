@@ -1,7 +1,7 @@
 # Contributing to URI Specification Development
 
-This repo contains documentation and code for which the copyright might be
-owned by various authors and/or employers. All contributors agree that
+This repository contains documentation and code for which copyright might
+be owned by various authors and/or employers. All contributors agree that
 their contributions are intended as both an [IETF Contribution](#note-well)
 and as an open source Contribution under the [Apache License 2.0](LICENSE).
 Contributions that are in the public domain remain in the public domain
@@ -28,72 +28,82 @@ issues list(s). If you are new to this, you may also want to read the
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+
 ## Following Discussion
 
-The Working Group has a few venues for discussion:
+Contributors have a few venues for discussion:
 
-* We plain to meet at all [IETF meetings](https://www.ietf.org/meeting/) for the foreseeable future, and hold interim meetings between them, at least through 2017. See our [meeting materials repository](https://github.com/quicwg/wg-materials) and the [official proceedings](https://datatracker.ietf.org/wg/quic/meetings/).
+* The [URI mailing list](https://lists.w3.org/Archives/Public/uri/) is used for
+  announcements, general discussion of drafts, and contributions that
+  (for whatever reason) are not submitted via GitHub.
 
-* Our [mailing list](https://www.ietf.org/mailman/listinfo/quic) is used for most communication, including notifications of meetings, new drafts, consensus calls and other business, as well as issue discussion.
+* Meetings (if any) are informal and typically held in conjunction with an
+  [IETF](https://www.ietf.org/) or [W3C](https://www.w3.org/) meeting.
 
-* We also discuss specific issues on the appropriate issues list in [Github](https://github.com/quicwg/). If you don't want to use Github to follow these discussions, you can subscribe to the [issue announce list](https://www.ietf.org/mailman/listinfo/quic-issues).
-
-To be active in the Working Group, you can participate in any of these places. Most activity takes
-place on the mailing list, but if you just want to comment on and raise issues, that's fine too.
+* Specific issues and pull requests are discussed using this repository's
+  [Github collaboration tools](https://github.com/dwid-org/uri/).
 
 
 ## Raising Issues
 
-We use our [Github](https://github.com/quicwg/) issues lists to track items for discussion and
-their resolution.
-
 Before filing a new issue, please consider a few things:
 
-* Issues should be just that; issues with our deliverables, **not questions or support requests**.
-* Please review the issues list to make sure that you aren't filing a duplicate.
-* If you're not sure how to phrase your issue, please ask on the [mailing list](https://www.ietf.org/mailman/listinfo/quic).
+* Review the existing issues first to avoid filing a duplicate.
+* Only raise issues with regard to the specification(s),
+  **not to ask questions or make support requests**.
+* If you're not sure how to phrase your issue, please ask on the
+  [mailing list](https://lists.w3.org/Archives/Public/uri/).
 
-Issues can also be raised on the [Working Group mailing
-list](https://www.ietf.org/mailman/listinfo/quic) by clearly marking them as such (e.g., "New
-Issue" in the `Subject:` line).
+Issues can also be raised via email to the list by clearly marking them
+as such (e.g., "New Issue" in the `Subject:` line).
 
-Be aware that issues might be rephrased, changed in scope, or combined with others, so that the
-group can focus its efforts. If you feel that such a change loses an important part of your
-original issue, please bring it up, either in comments or on the list.
+Be aware that the editors might rephrase, change scope, split, or
+combine issues, depending on how the work seems to be progressing.
+If you feel that such a change loses an important part of your
+original issue, please bring that up in comments or on the list.
 
-Off-topic and duplicate issues will be closed without discussion. Note that comments on individual
-commits will only be responded to with best effort, and may not be seen.
+Off-topic and duplicate issues will be closed without discussion.
+Note that comments on individual git commits will only be responded
+to with best effort, and may not be seen.
 
 
 ## Resolving Issues
 
-Issues will be labeled by the Chairs as either `editorial` or `design`:
+Issues will be labeled by the editors as either 
+[`editorial`](https://github.com/dwid-org/uri/labels/editorial) or
+[`design`](https://github.com/dwid-org/uri/labels/design):
 
-* **Design** issues require discussion and consensus in the Working Group. This discussion can happen both in the issue and on the [Working Group mailing list](https://www.ietf.org/mailman/listinfo/quic), as outlined below.
+* **Editorial** issues can be dealt with by the editor(s) without consensus or
+  notification. Typically, any discussion will take place on the issue itself.
 
-* **Editorial** issues can be dealt with by the editor(s) without consensus or notification. Typically, any discussion will take place on the issue itself.
+* **Design** issues require discussion before they can be labeled resolved
+  and closed.
 
-The `open` design issues in the issues list are those that we are currently or plan to discuss. When a design issue is `closed`, it implies that the issue has a proposed resolution that is reflected in the drafts; if a `closed` design issue is labeled with `has-consensus`, it means that the incorporated resolution has Working Group consensus.
+Open design issues can be discussed on the mailing list or the issues list.
+The editors can also propose resolutions to design issues for the group's
+consideration by incorporating them into the draft(s). Additional labels
+are used to indicate when an issue 
+[`needs-discussion`](https://github.com/dwid-org/uri/labels/needs-discussion),
+[`has-proposal`](https://github.com/dwid-org/uri/labels/has-proposal), is
+[`editor-ready`](https://github.com/dwid-org/uri/labels/editor-ready),
+[`incorporated`](https://github.com/dwid-org/uri/labels/incorporated), or
+[`has-consensus`](https://github.com/dwid-org/uri/labels/has-consensus).
 
-Design issues can be discussed on the mailing list or the issues list. The editors can also propose resolutions to design issues for the group's consideration by incorporating them into the draft(s).
+Closed design issues are believed to be not worth further discussion.
+This could be because they have already been resolved in the drafts,
+a decision has been made not to resolve them, they are invalid or a
+duplicate of other issues, or simply not applicable to the current work.
 
-When a new draft is published, the design issues that have been closed since the last draft will be highlighted on the mailing list, to aid reviewers. Once consensus is confirmed, those issues will be labeled with [`has-consensus`](https://github.com/quicwg/base-drafts/issues?utf8=✓&q=label%3Ahas-consensus%20).
-
-Note that whether or not a design issue is closed does **not** reflect consensus of the Working Group; an issue's `open`/`closed` state is only used to organise our discussions. If you have a question or problem with an issue in the `closed` state, please comment on it (either in the issues list or mailing list), and we'll adjust its state accordingly. Note that reopening issues with `has-consensus` requires new information.
-
-### Discretionary Design Issue Labels
-
-We also use the following labels to help understand the state of our design issues:
-
-* [`needs-discussion`](https://github.com/quicwg/base-drafts/labels/needs-discussion): The issue needs significant Working Group discussion before it can progress.
-* [`has-proposal`](https://github.com/quicwg/base-drafts/labels/has-proposal): The issue has a proposal for resolution.
-* [`editor-ready`](https://github.com/quicwg/base-drafts/labels/editor-ready): The Working Group believes it has a viable resolution, but the editors need to incorporate that into the document so we can see it in situ.
+If you have a question or problem with an issue in the `closed` state,
+please comment on it (either in the issues list or mailing list) and
+the editors might adjust its state accordingly. Reopening issues that
+have been labeled as `has-consensus` requires new information.
 
 
 ## Pull Requests
 
-We welcome pull requests, both for editorial suggestions and to resolve open issues. In the latter
-case, please identify the relevant issue.
+We welcome pull requests, both for editorial suggestions and to resolve open issues.
+Please include the relevant issue #number within the pull request.
 
 Please do not use a pull request to open a new design issue; it may not be noticed.
 
@@ -101,7 +111,7 @@ Please do not use a pull request to open a new design issue; it may not be notic
 ## Code of Conduct
 
 The [IETF Guidelines for Conduct](https://tools.ietf.org/html/rfc7154) applies
-to all Working Group communications and meetings.
+to all of our communications and meetings.
 
 
 ## NOTE WELL
